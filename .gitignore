@@ -1,3 +1,8 @@
+Local/
+CRABDir/
+*.log
+*.pyc
+
 # Prerequisites
 *.d
 
