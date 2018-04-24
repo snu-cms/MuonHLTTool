@@ -32,17 +32,17 @@ if __name__ == '__main__':
     from CRABAPI.RawCommand import crabCommand
 
     config.General.requestName = 'METPlots'+version+'ttbar92XForTSG_OldMuonReco'
-    config.Data.inputDataset = '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer17DRStdmix-NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v2/GEN-SIM-DIGI-RAW'
+    config.Data.inputDataset = '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer17DRStdmix-NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v2/GEN-SIM-RAW'
     config.JobType.psetName = 'HLTOpenCfgMET_OldMuonReco.py'
     crabCommand('submit', config = config)
 
     config.General.requestName = 'METPlots'+version+'ttbar92XForTSG_NewMuonReco'
-    config.Data.inputDataset = '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer17DRStdmix-NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v2/GEN-SIM-DIGI-RAW'
+    config.Data.inputDataset = '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer17DRStdmix-NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v2/GEN-SIM-RAW'
     config.JobType.psetName = 'HLTOpenCfgMET_NewMuonReco.py'
     crabCommand('submit', config = config)
 
     config.General.requestName = 'METPlots'+version+'ttbar92XForTSG_IDonhltMuons'
-    config.Data.inputDataset = '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer17DRStdmix-NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v2/GEN-SIM-DIGI-RAW'
+    config.Data.inputDataset = '/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer17DRStdmix-NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v2/GEN-SIM-RAW'
     config.JobType.psetName = 'HLTOpenCfgMET_IDonhltMuons.py'
     crabCommand('submit', config = config)
 
