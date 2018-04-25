@@ -40,33 +40,33 @@ token_genMET     ( consumes< vector<reco::GenMET>  > (iConfig.getUntrackedParame
 }
 
 void MHMETAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iEventSetup) {
-	// -- genMET
-	double genMET = 9999;
 
-	edm::Handle< vector<reco::GenMET> > Handle_genMET;
-	if( iEvent.getByToken(token_genMET, Handle_genMET) )
-		genMET = Handle_genMET->front().pt();
-
-	// cout << "genMET: " << genMET << endl;
-	h_genMET->Fill( genMET );
-
-	// -- online PF MET
-	double onlinePFMET = 9999;
+	edm::Handle< vector<reco::GenMET> > handle_genMET;
 	edm::Handle< reco::PFMETCollection > handle_onlinePFMET;
-	if( iEvent.getByToken( token_onlinePFMET, handle_onlinePFMET ) )
-		onlinePFMET = handle_onlinePFMET->front().pt();
+	if( iEvent.getByToken( token_onlinePFMET, handle_onlinePFMET ) ||
+		  iEvent.getByToken(token_genMET, handle_genMET) ) {
 
-	// cout << "onlinePFMET: " << onlinePFMET << endl;
-	h_onlinePFMET->Fill( onlinePFMET );
+		// -- genMET
+		double genMET = handle_genMET->front().pt();
+		// cout << "genMET: " << genMET << endl;
+		h_genMET->Fill( genMET );
 
-	// -- relative difference between genMET and onlinePFMET
-	double relDiff = 0;
-	if( genMET != 0 )
-		relDiff = (onlinePFMET - genMET ) / genMET;
-	else
-		relDiff = 9.9;
+		// -- online PF MET
+		double onlinePFMET = handle_onlinePFMET->front().pt();
+		// cout << "onlinePFMET: " << onlinePFMET << endl;
+		h_onlinePFMET->Fill( onlinePFMET );
 
-	h_relDiffMET->Fill( relDiff );
+		// -- relative difference between genMET and onlinePFMET
+		double relDiff = 0;
+		if( genMET != 0 )
+			relDiff = (onlinePFMET - genMET ) / genMET;
+		else
+			relDiff = 9.9;
+
+		h_relDiffMET->Fill( relDiff );
+	}
+
+
 }
 
 DEFINE_FWK_MODULE(MHMETAnalyzer);
