@@ -43,7 +43,7 @@ void MHMETAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iEv
 
 	edm::Handle< vector<reco::GenMET> > handle_genMET;
 	edm::Handle< reco::PFMETCollection > handle_onlinePFMET;
-	if( iEvent.getByToken( token_onlinePFMET, handle_onlinePFMET ) ||
+	if( iEvent.getByToken(token_onlinePFMET, handle_onlinePFMET) &&
 		  iEvent.getByToken(token_genMET, handle_genMET) ) {
 
 		// -- genMET
