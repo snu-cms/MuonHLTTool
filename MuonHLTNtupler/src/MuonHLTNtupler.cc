@@ -156,7 +156,6 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   Fill_HLTMuon(iEvent);
   Fill_L1Muon(iEvent);
   Fill_IterL3(iEvent);
-  Fill_IterL3MuonNoID(iEvent);
   if( !isRealData_ ) Fill_GenParticle(iEvent);
 
   ntuple_->Fill();

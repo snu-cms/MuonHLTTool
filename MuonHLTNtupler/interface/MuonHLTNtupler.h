@@ -71,7 +71,6 @@ private:
 
   //For Rerun (Fill_IterL3*)
   void Fill_IterL3(const edm::Event &iEvent);
-  void Fill_IterL3MuonNoID(const edm::Event &iEvent);
 
   bool SavedTriggerCondition( std::string& pathName );
   bool SavedFilterCondition( std::string& filterName );
