@@ -63,7 +63,7 @@ public:
 private:
   void Init();
   void Make_Branch();
-  void Fill_HLT(const edm::Event &iEvent, bool isMYHLT)
+  void Fill_HLT(const edm::Event &iEvent, bool isMYHLT);
   void Fill_Muon(const edm::Event &iEvent);
   void Fill_HLTMuon(const edm::Event &iEvent);
   void Fill_L1Muon(const edm::Event &iEvent);
@@ -182,7 +182,7 @@ private:
   int muon_isTRK_[arrSize_];
   int muon_isPF_[arrSize_];
   int muon_isTight_[arrSize_];
-  int muon_usMedium_[arrSize_];
+  int muon_isMedium_[arrSize_];
   int muon_isLoose_[arrSize_];
   int muon_isHighPt_[arrSize_];
   int muon_isSoft_[arrSize_];

@@ -142,7 +142,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
       {
         if(PVI->getBunchCrossing()==0)
         {
-          trunPU_ = PVI->getTrueNumInteractions();
+          truePU_ = PVI->getTrueNumInteractions();
           continue;
         }
       } // -- end of PU iteration -- //
@@ -751,7 +751,7 @@ void MuonHLTNtupler::Fill_HLT(const edm::Event &iEvent, bool isMYHLT)
   const trigger::size_type nFilter(h_triggerEvent->sizeFilters());
   for( trigger::size_type i_filter=0; i_filter<nFilter; i_filter++)
   {
-    std::string filterName = h_triggerEvent->filterName(i_filter).encode();
+    std::string filterName = h_triggerEvent->filterTag(i_filter).encode();
 
     if( SavedFilterCondition(filterName) )
     {
@@ -859,7 +859,7 @@ void MuonHLTNtupler::Fill_HLTMuon(const edm::Event &iEvent)
 
       _nL2Muon++;
     }
-    nL2Muon = _nL2Muon;
+    nL2Muon_ = _nL2Muon;
   }
 
   ///////////////////
@@ -931,35 +931,35 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
     if( abs(parCand.pdgId()) == 13 ) // -- only muons -- //
     {
-      GenParticle_ID_[_nGenParticle]     = parCand.pdgId();
-      GenParticle_status_[_nGenParticle] = parCand.status();
-      GenParticle_mother_[_nGenParticle] = parCand.mother(0)->pdgId();
+      genParticle_ID_[_nGenParticle]     = parCand.pdgId();
+      genParticle_status_[_nGenParticle] = parCand.status();
+      genParticle_mother_[_nGenParticle] = parCand.mother(0)->pdgId();
 
-      GenParticle_pt_[_nGenParticle]  = parCand.pt();
-      GenParticle_eta_[_nGenParticle] = parCand.eta();
-      GenParticle_phi_[_nGenParticle] = parCand.phi();
-      GenParticle_px_[_nGenParticle]  = parCand.px();
-      GenParticle_py_[_nGenParticle]  = parCand.py();
-      GenParticle_pz_[_nGenParticle]  = parCand.pz();
-      GenParticle_energy_[_nGenParticle] = parCand.energy();
-      GenParticle_charge_[_nGenParticle] = parCand.charge();
+      genParticle_pt_[_nGenParticle]  = parCand.pt();
+      genParticle_eta_[_nGenParticle] = parCand.eta();
+      genParticle_phi_[_nGenParticle] = parCand.phi();
+      genParticle_px_[_nGenParticle]  = parCand.px();
+      genParticle_py_[_nGenParticle]  = parCand.py();
+      genParticle_pz_[_nGenParticle]  = parCand.pz();
+      genParticle_energy_[_nGenParticle] = parCand.energy();
+      genParticle_charge_[_nGenParticle] = parCand.charge();
 
-      if( parCand.statusFlags().isPrompt() )                GenParticle_isPrompt_[_nGenParticle] = 1;
-      if( parCand.statusFlags().isTauDecayProduct() )       GenParticle_isTauDecayProduct_[_nGenParticle] = 1;
-      if( parCand.statusFlags().isPromptTauDecayProduct() ) GenParticle_isPromptTauDecayProduct_[_nGenParticle] = 1;
-      if( parCand.statusFlags().isDecayedLeptonHadron() )   GenParticle_isDecayedLeptonHadron_[_nGenParticle] = 1;
+      if( parCand.statusFlags().isPrompt() )                genParticle_isPrompt_[_nGenParticle] = 1;
+      if( parCand.statusFlags().isTauDecayProduct() )       genParticle_isTauDecayProduct_[_nGenParticle] = 1;
+      if( parCand.statusFlags().isPromptTauDecayProduct() ) genParticle_isPromptTauDecayProduct_[_nGenParticle] = 1;
+      if( parCand.statusFlags().isDecayedLeptonHadron() )   genParticle_isDecayedLeptonHadron_[_nGenParticle] = 1;
 
-      if( parCand.isPromptFinalState() ) GenParticle_isPromptFinalState_[_nGenParticle] = 1;
-      if( parCand.isDirectPromptTauDecayProductFinalState() ) GenParticle_isDirectPromptTauDecayProductFinalState_[_nGenParticle] = 1;
-      if( parCand.isHardProcess() ) GenParticle_isHardProcess_[_nGenParticle] = 1;
-      if( parCand.isLastCopy() ) GenParticle_isLastCopy_[_nGenParticle] = 1;
-      if( parCand.isLastCopyBeforeFSR() ) GenParticle_isLastCopyBeforeFSR_[_nGenParticle] = 1;
+      if( parCand.isPromptFinalState() ) genParticle_isPromptFinalState_[_nGenParticle] = 1;
+      if( parCand.isDirectPromptTauDecayProductFinalState() ) genParticle_isDirectPromptTauDecayProductFinalState_[_nGenParticle] = 1;
+      if( parCand.isHardProcess() ) genParticle_isHardProcess_[_nGenParticle] = 1;
+      if( parCand.isLastCopy() ) genParticle_isLastCopy_[_nGenParticle] = 1;
+      if( parCand.isLastCopyBeforeFSR() ) genParticle_isLastCopyBeforeFSR_[_nGenParticle] = 1;
 
-      if( parCand.isPromptDecayed() )           GenParticle_isPromptDecayed_[_nGenParticle] = 1;
-      if( parCand.fromHardProcessBeforeFSR() )  GenParticle_fromHardProcessBeforeFSR_[_nGenParticle] = 1;
-      if( parCand.fromHardProcessDecayed() )    GenParticle_fromHardProcessDecayed_[_nGenParticle] = 1;
-      if( parCand.fromHardProcessFinalState() ) GenParticle_fromHardProcessFinalState_[_nGenParticle] = 1;
-      // if( parCand.isMostlyLikePythia6Status3() ) this->GenParticle_isMostlyLikePythia6Status3[_nGenParticle] = 1;
+      if( parCand.isPromptDecayed() )           genParticle_isPromptDecayed_[_nGenParticle] = 1;
+      if( parCand.fromHardProcessBeforeFSR() )  genParticle_fromHardProcessBeforeFSR_[_nGenParticle] = 1;
+      if( parCand.fromHardProcessDecayed() )    genParticle_fromHardProcessDecayed_[_nGenParticle] = 1;
+      if( parCand.fromHardProcessFinalState() ) genParticle_fromHardProcessFinalState_[_nGenParticle] = 1;
+      // if( parCand.isMostlyLikePythia6Status3() ) this->genParticle_isMostlyLikePythia6Status3[_nGenParticle] = 1;
 
       _nGenParticle++;
     }
@@ -1050,24 +1050,24 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
     {
       if( h_iterL3FromL2->at(i).trackerTrack().isNonnull() )
       {
-        iterL3FromL2_inner_pt_[_nIterL3_FromL2]     = h_iterL3FromL2->at(i).trackerTrack()->pt();
-        iterL3FromL2_inner_eta_[_nIterL3_FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->eta();
-        iterL3FromL2_inner_phi_[_nIterL3_FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->phi();
-        iterL3FromL2_inner_charge_[_nIterL3_FromL2] = h_iterL3FromL2->at(i).trackerTrack()->charge();
+        iterL3FromL2_inner_pt_[_nIterL3FromL2]     = h_iterL3FromL2->at(i).trackerTrack()->pt();
+        iterL3FromL2_inner_eta_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->eta();
+        iterL3FromL2_inner_phi_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->phi();
+        iterL3FromL2_inner_charge_[_nIterL3FromL2] = h_iterL3FromL2->at(i).trackerTrack()->charge();
       }
       if( h_iterL3FromL2->at(i).standAloneTrack().isNonnull() )
       {
-        iterL3FromL2_outer_pt_[_nIterL3_FromL2]     = h_iterL3FromL2->at(i).standAloneTrack()->pt();
-        iterL3FromL2_outer_eta_[_nIterL3_FromL2]    = h_iterL3FromL2->at(i).standAloneTrack()->eta();
-        iterL3FromL2_outer_phi_[_nIterL3_FromL2]    = h_iterL3FromL2->at(i).standAloneTrack()->phi();
-        iterL3FromL2_outer_charge_[_nIterL3_FromL2] = h_iterL3FromL2->at(i).standAloneTrack()->charge();
+        iterL3FromL2_outer_pt_[_nIterL3FromL2]     = h_iterL3FromL2->at(i).standAloneTrack()->pt();
+        iterL3FromL2_outer_eta_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).standAloneTrack()->eta();
+        iterL3FromL2_outer_phi_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).standAloneTrack()->phi();
+        iterL3FromL2_outer_charge_[_nIterL3FromL2] = h_iterL3FromL2->at(i).standAloneTrack()->charge();
       }
       if( h_iterL3FromL2->at(i).globalTrack().isNonnull() )
       {
-        iterL3FromL2_global_pt_[_nIterL3_FromL2]     = h_iterL3FromL2->at(i).globalTrack()->pt();
-        iterL3FromL2_global_eta_[_nIterL3_FromL2]    = h_iterL3FromL2->at(i).globalTrack()->eta();
-        iterL3FromL2_global_phi_[_nIterL3_FromL2]    = h_iterL3FromL2->at(i).globalTrack()->phi();
-        iterL3FromL2_global_charge_[_nIterL3_FromL2] = h_iterL3FromL2->at(i).globalTrack()->charge();
+        iterL3FromL2_global_pt_[_nIterL3FromL2]     = h_iterL3FromL2->at(i).globalTrack()->pt();
+        iterL3FromL2_global_eta_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).globalTrack()->eta();
+        iterL3FromL2_global_phi_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).globalTrack()->phi();
+        iterL3FromL2_global_charge_[_nIterL3FromL2] = h_iterL3FromL2->at(i).globalTrack()->charge();
       }
       _nIterL3FromL2++;
     }
@@ -1080,16 +1080,16 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   edm::Handle< std::vector<reco::Track> > h_iterL3IOFromL1;
   if( iEvent.getByToken( t_iterL3IOFromL1_, h_iterL3IOFromL1 ) )
   {
-    int _nIterL3IO_FromL1 = 0;
+    int _nIterL3IOFromL1 = 0;
     for( unsigned int i=0; i<h_iterL3IOFromL1->size(); i++)
     {
-      iterL3IOFromL1_pt_[_nIterL3IO_FromL1]     = h_iterL3IOFromL1->at(i).pt();
-      iterL3IOFromL1_eta_[_nIterL3IO_FromL1]    = h_iterL3IOFromL1->at(i).eta();
-      iterL3IOFromL1_phi_[_nIterL3IO_FromL1]    = h_iterL3IOFromL1->at(i).phi();
-      iterL3IOFromL1_charge_[_nIterL3IO_FromL1] = h_iterL3IOFromL1->at(i).charge();
-      _nIterL3IO_FromL1++;
+      iterL3IOFromL1_pt_[_nIterL3IOFromL1]     = h_iterL3IOFromL1->at(i).pt();
+      iterL3IOFromL1_eta_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).eta();
+      iterL3IOFromL1_phi_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).phi();
+      iterL3IOFromL1_charge_[_nIterL3IOFromL1] = h_iterL3IOFromL1->at(i).charge();
+      _nIterL3IOFromL1++;
     }
-    nIterL3IO_FromL1_ = _nIterL3IO_FromL1;
+    nIterL3IOFromL1_ = _nIterL3IOFromL1;
   }
 
   //////////////////////////
