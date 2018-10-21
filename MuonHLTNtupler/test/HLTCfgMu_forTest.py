@@ -3,7 +3,7 @@
 # -- /cdaq/physics/Run2018/2e34/v2.1.1/HLT/V1: same config. used for the data taking
 # ---- https://cmswbm.cern.ch/cmsdb/servlet/RunSummary?RUN=316361&SUBMIT=Submit
 
-# hltGetConfiguration orcoff:/cdaq/physics/Run2018/2e34/v2.1.1/HLT/V1 --globaltag 101X_dataRun2_HLT_v7 --path HLTriggerFirstPath,HLT_IsoMu27_v*,HLT_Mu50_v*,HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*,HLTriggerFinalPath,HLTAnalyzerEndpath --input file:/eos/cms/store/data/Run2018A/SingleMuon/RAW/v1/000/316/361/00000/02F887A1-6758-E811-996B-FA163E5612EB.root --process MYHLT --full --offline --prescale none --max-events 100 --output none
+# hltGetConfiguration orcoff:/cdaq/physics/Run2018/2e34/v2.1.1/HLT/V1 --globaltag 101X_dataRun2_HLT_v7 --path HLTriggerFirstPath,HLT_IsoMu27_v*,HLT_Mu50_v*,HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*,HLTriggerFinalPath,HLTAnalyzerEndpath --input file:/afs/cern.ch/user/k/kplee/work/public/ROOTFile_Test/RAW_SingleMuon_Run2018A_Run316361.root --process MYHLT --full --offline --prescale none --max-events 100 --output none
 
 # /cdaq/physics/Run2018/2e34/v2.1.1/HLT/V1 (CMSSW_10_1_4)
 
@@ -10482,7 +10482,7 @@ process.HLTSchedule = cms.Schedule( *(process.HLTriggerFirstPath, process.HLT_Is
 
 process.source = cms.Source( "PoolSource",
     fileNames = cms.untracked.vstring(
-        'file:/eos/cms/store/data/Run2018A/SingleMuon/RAW/v1/000/316/361/00000/02F887A1-6758-E811-996B-FA163E5612EB.root',
+        'file:/afs/cern.ch/user/k/kplee/work/public/ROOTFile_Test/RAW_SingleMuon_Run2018A_Run316361.root',
     ),
     inputCommands = cms.untracked.vstring(
         'keep *'
@@ -10535,7 +10535,7 @@ _customInfo['inputFiles'][True]  = "file:RelVal_Raw_GRun_DATA.root"
 _customInfo['inputFiles'][False] = "file:RelVal_Raw_GRun_MC.root"
 _customInfo['maxEvents' ]=  100
 _customInfo['globalTag' ]= "101X_dataRun2_HLT_v7"
-_customInfo['inputFile' ]=  ['file:/eos/cms/store/data/Run2018A/SingleMuon/RAW/v1/000/316/361/00000/02F887A1-6758-E811-996B-FA163E5612EB.root']
+_customInfo['inputFile' ]=  ['file:/afs/cern.ch/user/k/kplee/work/public/ROOTFile_Test/RAW_SingleMuon_Run2018A_Run316361.root']
 _customInfo['realData'  ]=  True
 from HLTrigger.Configuration.customizeHLTforALL import customizeHLTforAll
 process = customizeHLTforAll(process,"GRun",_customInfo)
