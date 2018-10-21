@@ -1,7 +1,7 @@
 // -- ntuple maker for Muon HLT study
 // -- author: Kyeongpil Lee (Seoul National University, kplee@cern.ch)
 
-#include "TSNtuple/MuonHLTNtupler/interface/MuonHLTNtupler.h"
+#include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTNtupler.h"
 
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
