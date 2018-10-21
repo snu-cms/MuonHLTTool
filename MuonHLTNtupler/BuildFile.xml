@@ -1,0 +1,17 @@
+<use name="FWCore/Framework"/>
+<use name="FWCore/Utilities"/>
+<use name="FWCore/ParameterSet"/>
+<use name="CommonTools/UtilAlgos"/>
+<use name="DataFormats/MuonReco"/>
+<use name="HLTrigger/HLTcore"/>
+<use name="CLHEP"/>
+<use name="root"/>
+<use name="TrackingTools/TrajectoryState"/>
+<use name="MagneticField/Engine"/>
+<use name="MagneticField/Records"/>
+<use name="TrackingTools/Records"/>
+<use name="TrackPropagation/SteppingHelixPropagator"/>
+<use name="RecoMuon/Records"/>
+<use name="RecoMuon/DetLayers"/>
+<!--   <flags   EDM_PLUGIN="1"/> -->
+<flags EDM_PLUGIN="1"/>
