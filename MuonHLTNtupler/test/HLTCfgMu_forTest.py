@@ -10547,5 +10547,5 @@ process = customizeHLTforCMSSW(process,"GRun")
 from HLTrigger.Configuration.Eras import modifyHLTforEras
 modifyHLTforEras(process)
 
-from MuonHLTTool.MuonHLTNtupler.customizerForNtupler import *
+from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTNtupler import *
 customizerFuncForMuonHLTNtupler(process, "MYHLT")
