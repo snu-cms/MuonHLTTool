@@ -19,34 +19,29 @@ process.load('Configuration.Geometry.GeometryRecoDB_cff')
 # -- ntupler -- #
 flag_HLTRerun = False
 
-from MuonHLTTool.MuonHLTNtupler.ntupler_cfi import ntuplerBase
+if flag_HLTRerun:
+  newProcessName = "MYHLT"
+  
+  from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTNtupler import customizerFuncForMuonHLTNtupler
+  process = customizerFuncForMuonHLTNtupler(process, newProcessName)
 
-process.ntupler = ntuplerBase.clone()
-process.ntupler.OfflineMuon = cms.untracked.InputTag("muons")
-process.ntupler.L3Muon = cms.untracked.InputTag("hltIterL3MuonCandidates")
-process.ntupler.L2Muon = cms.untracked.InputTag("hltL2MuonCandidates")
-process.ntupler.TriggerResults = cms.untracked.InputTag("TriggerResults", "", "HLT")
-process.ntupler.TriggerEvent = cms.untracked.InputTag("hltTriggerSummaryAOD", "", "HLT")
-process.ntupler.OfflineLumiScaler = cms.untracked.InputTag("scalersRawToDigi")
+else: # -- without HLT rerun
+  from MuonHLTTool.MuonHLTNtupler.ntupler_cfi import ntuplerBase
+  process.ntupler = ntuplerBase.clone()
 
-if flag_HLTRerun: # -- after HLT re-run -- #
-  process.ntupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis", "Muon", newProcessName)
-  process.ntupler.MyTriggerResults = cms.untracked.InputTag("TriggerResults", "", newProcessName) # -- result after rerun HLT -- #
-  process.ntupler.MyTriggerEvent   = cms.untracked.InputTag("hltTriggerSummaryAOD", "", newProcessName) # -- result after rerun HLT -- #
-  process.ntupler.LumiScaler       = cms.untracked.InputTag("hltScalersRawToDigi", "", newProcessName)
-  process.ntupler.IterL3MuonNoID   = cms.untracked.InputTag("hltIterL3MuonsNoID", "", newProcessName)
-else: # -- without HLT re-run -- #
-  process.ntupler.L1Muon = cms.untracked.InputTag("gmtStage2Digis", "Muon", "RECO")
-  process.ntupler.MyTriggerResults = cms.untracked.InputTag("TriggerResults")
-  process.ntupler.MyTriggerEvent = cms.untracked.InputTag("hltTriggerSummaryAOD")
-  process.ntupler.LumiScaler = cms.untracked.InputTag("scalersRawToDigi")
+  # -- change the input tag to store the default objects in the input edm file
+  process.ntupler.L1Muon           = cms.untracked.InputTag("gmtStage2Digis",       "Muon", "RECO") # -- if L1 is not emulated
+  process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults",       "",     "HLT")
+  process.ntupler.myTriggerEvent   = cms.untracked.InputTag("hltTriggerSummaryAOD", "",     "HLT")
+  process.ntupler.lumiScaler       = cms.untracked.InputTag("scalersRawToDigi")
 
-process.mypath = cms.EndPath(process.ntupler)
+  process.TFileService = cms.Service("TFileService",
+    fileName = cms.string("ntuple.root"),
+    closeFileFast = cms.untracked.bool(False),
+    )
 
-process.TFileService = cms.Service("TFileService",
-	fileName = cms.string("ntuple.root"),
-	closeFileFast = cms.untracked.bool(False),
-	)
+  process.mypath = cms.EndPath(process.ntupler)
+
 
 process.MessageLogger = cms.Service( "MessageLogger",
 	destinations = cms.untracked.vstring("cerr"),

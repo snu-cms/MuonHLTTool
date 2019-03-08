@@ -13,6 +13,7 @@ HLTAnalyzerEndpath \
 --process MYHLT --full --offline \
 --l1-emulator uGT \
 --l1 L1Menu_Collisions2018_v2_1_0-d1_xml \
+--customise MuonHLTTool/MuonHLTNtupler/customizerForMuonHLTNtupler.customizerFuncForMuonHLTNtupler \
 --prescale none --max-events 100 --output none > HLTCfgData_Mu.py
 
 
@@ -29,5 +30,6 @@ HLTAnalyzerEndpath \
 --mc --process MYHLT --full --offline \
 --l1-emulator uGT \
 --l1 L1Menu_Collisions2018_v2_1_0-d1_xml \
---customise HLTrigger/Configuration/customizeHLTforCMSSW.customiseFor2017DtUnpacking \
+--customise HLTrigger/Configuration/customizeHLTforCMSSW.customiseFor2017DtUnpacking,\
+MuonHLTTool/MuonHLTNtupler/customizerForMuonHLTNtupler.customizerFuncForMuonHLTNtupler \
 --prescale none --max-events 100 --output none > HLTCfgMC_Mu.py
