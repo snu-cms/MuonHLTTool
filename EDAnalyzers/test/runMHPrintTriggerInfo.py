@@ -18,16 +18,10 @@ process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v10'
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 process.load('Configuration.Geometry.GeometryRecoDB_cff')
 
-from MuonHLTTool.Rate.MHMETAnalyzer_cfi import *
+from MuonHLTTool.EDAnalyzers.MHPrintTriggerInfo_cfi import *
 
-process.myMHMETAnalyzer = MHMETAnalyzer.clone()
-# process.myMHMETAnalyzer.onlinePFMET = cms.untracked.InputTag("hltPFMETProducer::HLT")
-# process.myMHMETAnalyzer.genMET = cms.untracked.InputTag("genMetTrue::HLT")
+process.myMHPrintTriggerInfo = MHPrintTriggerInfo.clone()
+# process.myMHPrintTriggerInfo.triggerResults = cms.untracked.InputTag("TriggerResults::HLT")
+# process.myMHPrintTriggerInfo.triggerEvent = cms.untracked.InputTag("hltTriggerSummaryAOD::HLT")
 
-process.mypath = cms.Path(process.myMHMETAnalyzer)
-
-process.TFileService = cms.Service("TFileService",
-	fileName = cms.string("METPlots.root"),
-	closeFileFast = cms.untracked.bool(False),
-)
-
+process.mypath = cms.Path(process.myMHPrintTriggerInfo)

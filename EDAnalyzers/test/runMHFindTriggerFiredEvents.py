@@ -18,7 +18,7 @@ process.GlobalTag.globaltag = '92X_upgrade2017_realistic_v10'
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 process.load('Configuration.Geometry.GeometryRecoDB_cff')
 
-from MuonHLTTool.Rate.MHFindTriggerFiredEvents_cfi import *
+from MuonHLTTool.EDAnalyzers.MHFindTriggerFiredEvents_cfi import *
 
 process.myMHFindTriggerFiredEvents = MHFindTriggerFiredEvents.clone()
 # process.myMHFindTriggerFiredEvents.triggerResults = cms.untracked.InputTag("TriggerResults::HLT")

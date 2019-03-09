@@ -11453,7 +11453,10 @@ process = customiseFor2017DtUnpacking(process)
 #######################
 del process.DQMOutput
 
-from MuonHLTTool.Rate.MHMETAnalyzer_cfi import *
+from customizerForSetup import *
+customizeForSetup(process)
+
+from MuonHLTTool.EDAnalyzers.MHMETAnalyzer_cfi import *
 process.myMHMETAnalyzer = MHMETAnalyzer.clone()
 process.myMHMETAnalyzer.onlinePFMET = cms.untracked.InputTag("hltPFMETProducer::MYHLT")
 process.myMHMETAnalyzer.genMET = cms.untracked.InputTag("genMetTrue::HLT")
@@ -11461,6 +11464,6 @@ process.myMHMETAnalyzer.genMET = cms.untracked.InputTag("genMetTrue::HLT")
 process.mypath = cms.Path(process.myMHMETAnalyzer)
 
 process.TFileService = cms.Service("TFileService",
-  fileName = cms.string("METPlots.root"),
+  fileName = cms.string("METPlots_IDonhltMuons.root"),
   closeFileFast = cms.untracked.bool(False),
 )

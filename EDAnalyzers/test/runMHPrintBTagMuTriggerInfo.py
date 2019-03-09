@@ -18,7 +18,7 @@ process.GlobalTag.globaltag = '101X_dataRun2_Prompt_v9'
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 process.load('Configuration.Geometry.GeometryRecoDB_cff')
 
-from MuonHLTTool.Rate.MHPrintBTagMuTriggerInfo_cfi import *
+from MuonHLTTool.EDAnalyzers.MHPrintBTagMuTriggerInfo_cfi import *
 
 process.myMHPrintBTagMuTriggerInfo = MHPrintBTagMuTriggerInfo.clone()
 # process.myMHPrintBTagMuTriggerInfo.triggerResults = cms.untracked.InputTag("TriggerResults::HLT")
