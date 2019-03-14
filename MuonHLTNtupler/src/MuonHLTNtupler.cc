@@ -650,8 +650,10 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       if( muon::isLooseMuon( (*mu) ) )      muon_isLoose_[_nMuon] = 1;
       if( muon::isHighPtMuon( (*mu), pv ) ) muon_isHighPt_[_nMuon] = 1;
 
-      // bool muon::isSoftMuon(const reco::Muon& muon, const reco::Vertex& vtx, bool run2016_hip_mitigation)
-      if( muon::isSoftMuon( (*mu), pv, 0) ) muon_isSoft_[_nMuon] = 1;
+      // -- bool muon::isSoftMuon(const reco::Muon& muon, const reco::Vertex& vtx, bool run2016_hip_mitigation)
+      // -- it is different under CMSSW_8_0_29: bool muon::isSoftMuon(const reco::Muon& muon, const reco::Vertex& vtx)
+      // -- Remove this part to avoid compile error (and soft muon would not be used for now) - need to be fixed at some point
+      // if( muon::isSoftMuon( (*mu), pv, 0) ) muon_isSoft_[_nMuon] = 1;
 
       muon_iso03_sumPt_[_nMuon] = mu->isolationR03().sumPt;
       muon_iso03_hadEt_[_nMuon] = mu->isolationR03().hadEt;
