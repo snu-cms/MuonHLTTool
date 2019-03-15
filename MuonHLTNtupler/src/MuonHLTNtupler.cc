@@ -261,6 +261,7 @@ void MuonHLTNtupler::Init()
     muon_isMedium_[i] = 0;
     muon_isLoose_[i] = 0;
     muon_isHighPt_[i] = 0;
+    muon_isHighPtNew_[i] = 0;
     muon_isSoft_[i] = 0;
 
     muon_iso03_sumPt_[i] = -999;
@@ -496,6 +497,7 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_isMedium", &muon_isMedium_, "muon_isMedium[nMuon]/I");
   ntuple_->Branch("muon_isLoose", &muon_isLoose_, "muon_isLoose[nMuon]/I");
   ntuple_->Branch("muon_isHighPt", &muon_isHighPt_, "muon_isHighPt[nMuon]/I");
+  ntuple_->Branch("muon_isHighPtNew", &muon_isHighPtNew_, "muon_isHighPtNew[nMuon]/I");
   ntuple_->Branch("muon_isSoft", &muon_isSoft_, "muon_isSoft[nMuon]/I");
 
   ntuple_->Branch("muon_iso03_sumPt", &muon_iso03_sumPt_, "muon_iso03_sumPt[nMuon]/D");
@@ -649,6 +651,7 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       if( muon::isMediumMuon( (*mu) ) )     muon_isMedium_[_nMuon] = 1;
       if( muon::isLooseMuon( (*mu) ) )      muon_isLoose_[_nMuon] = 1;
       if( muon::isHighPtMuon( (*mu), pv ) ) muon_isHighPt_[_nMuon] = 1;
+      if( isNewHighPtMuon( (*mu), pv ) )    muon_isHighPtNew_[_nMuon] = 1;
 
       // -- bool muon::isSoftMuon(const reco::Muon& muon, const reco::Vertex& vtx, bool run2016_hip_mitigation)
       // -- it is different under CMSSW_8_0_29: bool muon::isSoftMuon(const reco::Muon& muon, const reco::Vertex& vtx)
@@ -1119,6 +1122,37 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
     nIterL3MuonNoID_ = _nIterL3MuonNoID;
   } // -- if getByToken is valid
 }
+
+bool isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx){
+  if(!muon.isGlobalMuon()) return false;
+
+  bool muValHits = ( muon.globalTrack()->hitPattern().numberOfValidMuonHits()>0 ||
+                     muon.tunePMuonBestTrack()->hitPattern().numberOfValidMuonHits()>0 );
+
+  bool muMatchedSt = muon.numberOfMatchedStations()>1;
+  if(!muMatchedSt) {
+    if( muon.isTrackerMuon() && muon.numberOfMatchedStations()==1 ) {
+      if( muon.expectedNnumberOfMatchedStations()<2 ||
+          !(muon.stationMask()==1 || muon.stationMask()==16) ||
+          muon.numberOfMatchedRPCLayers()>2
+        )
+        muMatchedSt = true;
+    }
+  }
+
+  bool muID = muValHits && muMatchedSt;
+
+  bool hits = muon.innerTrack()->hitPattern().trackerLayersWithMeasurement() > 5 &&
+    muon.innerTrack()->hitPattern().numberOfValidPixelHits() > 0; 
+
+  bool momQuality = muon.tunePMuonBestTrack()->ptError()/muon.tunePMuonBestTrack()->pt() < 0.3;
+
+  bool ip = fabs(muon.innerTrack()->dxy(vtx.position())) < 0.2 && fabs(muon.innerTrack()->dz(vtx.position())) < 0.5;
+
+  return muID && hits && momQuality && ip;
+
+}
+
 
 void MuonHLTNtupler::endJob() {}
 void MuonHLTNtupler::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}

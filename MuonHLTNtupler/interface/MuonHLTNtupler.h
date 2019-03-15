@@ -184,6 +184,7 @@ private:
   int muon_isMedium_[arrSize_];
   int muon_isLoose_[arrSize_];
   int muon_isHighPt_[arrSize_];
+  int muon_isHighPtNew_[arrSize_];
   int muon_isSoft_[arrSize_];
 
   double muon_iso03_sumPt_[arrSize_];
