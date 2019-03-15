@@ -75,6 +75,8 @@ private:
   bool SavedTriggerCondition( std::string& pathName );
   bool SavedFilterCondition( std::string& filterName );
 
+  bool isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx);
+
   edm::EDGetTokenT< std::vector<reco::Muon> >                t_offlineMuon_;
   edm::EDGetTokenT< reco::VertexCollection >                 t_offlineVertex_;
   edm::EDGetTokenT< edm::TriggerResults >                    t_triggerResults_;

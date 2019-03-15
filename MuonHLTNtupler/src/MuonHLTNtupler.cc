@@ -1123,7 +1123,8 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   } // -- if getByToken is valid
 }
 
-bool isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx){
+// -- reference: https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/src/MuonSelectors.cc#L910-L938
+bool MuonHLTNtupler::isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx){
   if(!muon.isGlobalMuon()) return false;
 
   bool muValHits = ( muon.globalTrack()->hitPattern().numberOfValidMuonHits()>0 ||
