@@ -110,8 +110,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
 
     // -- lumi scaler @ HLT
     edm::Handle<LumiScalersCollection> h_lumiScaler;
-    iEvent.getByToken(t_lumiScaler_, h_lumiScaler);
-    if (h_lumiScaler->begin() != h_lumiScaler->end())
+    if( iEvent.getByToken(t_lumiScaler_, h_lumiScaler) && h_lumiScaler->begin() != h_lumiScaler->end() )
     {
       instLumi_  = h_lumiScaler->begin()->instantLumi();
       dataPU_    = h_lumiScaler->begin()->pileup();
@@ -121,7 +120,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
 
     // -- lumi scaler @ offline
     edm::Handle<LumiScalersCollection> h_offlineLumiScaler;
-    if( iEvent.getByToken(t_offlineLumiScaler_, h_offlineLumiScaler) )
+    if( iEvent.getByToken(t_offlineLumiScaler_, h_offlineLumiScaler) && h_offlineLumiScaler->begin() != h_offlineLumiScaler->end() )
     {
       offlineInstLumi_  = h_offlineLumiScaler->begin()->instantLumi();
       offlineDataPU_    = h_offlineLumiScaler->begin()->pileup();
