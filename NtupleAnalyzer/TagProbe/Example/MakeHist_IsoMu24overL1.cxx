@@ -85,6 +85,7 @@ public:
     for(Int_t i_ev=0; i_ev<nEvent; i_ev++)
     {
       MuonHLT::loadBar(i_ev+1, nEvent, 100, 100);
+      ntuple->GetEvent(i_ev);
 
       Double_t weight = ntuple->isRealData? 1.0 : ntuple->genEventWeight;
 
