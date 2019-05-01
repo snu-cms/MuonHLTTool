@@ -71,7 +71,7 @@ vector<MuonHLT::L2Muon> GetAllL2Muon(NtupleHandle* ntuple, Double_t minPt = -1 )
 
 Bool_t dRMatching( TLorentzVector vecP_ref, vector<TLorentzVector> vec_vecP, Double_t minDR )
 {
-  TString flag = kFALSE;
+  bool flag = kFALSE;
 
   Int_t nObj = (Int_t)vec_vecP.size();
   for(const auto& vecP_target: vec_vecP )
