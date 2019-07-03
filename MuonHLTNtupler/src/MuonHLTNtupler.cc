@@ -72,6 +72,7 @@ t_iterL3IOFromL2_    ( consumes< std::vector<reco::MuonTrackLinks> >      (iConf
 t_iterL3FromL2_      ( consumes< std::vector<reco::MuonTrackLinks> >      (iConfig.getUntrackedParameter<edm::InputTag>("iterL3FromL2"      )) ),
 t_iterL3IOFromL1_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("iterL3IOFromL1"    )) ),
 t_iterL3MuonNoID_    ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("iterL3MuonNoID"    )) ),
+t_iterL3Muon_        ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("iterL3Muon"        )) ),
 
 t_lumiScaler_        ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("lumiScaler"        )) ),
 t_offlineLumiScaler_ ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("offlineLumiScaler" )) ),
@@ -418,6 +419,19 @@ void MuonHLTNtupler::Init()
     iterL3MuonNoID_isSTA_[i] = 0;
     iterL3MuonNoID_isTRK_[i] = 0;
   }
+
+  nIterL3Muon_ = 0;
+  for (int i=0; i<arrSize_; ++i)
+  {
+    iterL3Muon_pt_[i] = -999;
+    iterL3Muon_eta_[i] = -999;
+    iterL3Muon_phi_[i] = -999;
+    iterL3Muon_charge_[i] = -999;
+
+    iterL3Muon_isGLB_[i] = 0;
+    iterL3Muon_isSTA_[i] = 0;
+    iterL3Muon_isTRK_[i] = 0;
+  }
 }
 
 void MuonHLTNtupler::Make_Branch()
@@ -616,6 +630,15 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3MuonNoID_isGLB",  &iterL3MuonNoID_isGLB_,  "iterL3MuonNoID_isGLB[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_isSTA",  &iterL3MuonNoID_isSTA_,  "iterL3MuonNoID_isSTA[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_isTRK",  &iterL3MuonNoID_isTRK_,  "iterL3MuonNoID_isTRK[nIterL3MuonNoID]/I");
+
+  ntuple_->Branch("nIterL3Muon",       &nIterL3Muon_,       "nIterL3Muon/I");
+  ntuple_->Branch("iterL3Muon_pt",     &iterL3Muon_pt_,     "iterL3Muon_pt[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_eta",    &iterL3Muon_eta_,    "iterL3Muon_eta[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_phi",    &iterL3Muon_phi_,    "iterL3Muon_phi[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_charge", &iterL3Muon_charge_, "iterL3Muon_charge[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_isGLB",  &iterL3Muon_isGLB_,  "iterL3Muon_isGLB[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_isSTA",  &iterL3Muon_isSTA_,  "iterL3Muon_isSTA[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_isTRK",  &iterL3Muon_isTRK_,  "iterL3Muon_isTRK[nIterL3Muon]/I");
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
@@ -1120,6 +1143,32 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
     nIterL3MuonNoID_ = _nIterL3MuonNoID;
   } // -- if getByToken is valid
+
+  //////////////////////////
+  // -- IterL3Muon -- //
+  //////////////////////////
+  edm::Handle< std::vector<reco::Muon> > h_iterL3Muon;
+  if( iEvent.getByToken( t_iterL3Muon_, h_iterL3Muon) )
+  {
+    int _nIterL3Muon = 0;
+    for( auto i=0U; i<h_iterL3Muon->size(); ++i )
+    {
+      const auto& muon(h_iterL3Muon->at(i));
+
+      iterL3Muon_pt_[_nIterL3Muon]     = muon.pt();
+      iterL3Muon_eta_[_nIterL3Muon]    = muon.eta();
+      iterL3Muon_phi_[_nIterL3Muon]    = muon.phi();
+      iterL3Muon_charge_[_nIterL3Muon] = muon.charge();
+
+      if( muon.isGlobalMuon() )     iterL3Muon_isGLB_[_nIterL3Muon] = 1;
+      if( muon.isStandAloneMuon() ) iterL3Muon_isSTA_[_nIterL3Muon] = 1;
+      if( muon.isTrackerMuon() )    iterL3Muon_isTRK_[_nIterL3Muon] = 1;
+
+      _nIterL3Muon++;
+    } // -- end of muon iteration
+
+    nIterL3Muon_ = _nIterL3Muon;
+  } // -- if getByToken is valid
 }
 
 // -- reference: https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/src/MuonSelectors.cc#L910-L938
@@ -1152,7 +1201,6 @@ bool MuonHLTNtupler::isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex&
   return muID && hits && momQuality && ip;
 
 }
-
 
 void MuonHLTNtupler::endJob() {}
 void MuonHLTNtupler::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}

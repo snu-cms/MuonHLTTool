@@ -1,0 +1,104 @@
+OI seeds:
+    process.hltDt4DSegments
+        DTRecSegment4DProducer
+            DTRecSegment4DCollection
+    process.hltCscSegments
+        CSCSegmentProducer
+            CSCSegmentCollection
+    process.hltRpcRecHits
+        RPCRecHitProducer
+            RPCRecHitCollection
+
+    process.hltL2OfflineMuonSeeds
+        MuonSeedGenerator
+            TrajectorySeedCollection
+    process.hltL2MuonSeeds
+        L2MuonSeedGeneratorFromL1T
+            L2MuonTrajectorySeedCollection
+
+
+    process.hltSiPixelRecHits
+        SiPixelRecHitConverter
+            SiPixelRecHitCollection
+
+    process.hltSiStripClusters
+        MeasurementTrackerEventProducer
+            MeasurementTrackerEvent
+
+    process.hltIterL3OISeedsFromL2Muons
+        TSGForOIFromL2
+            TrajectorySeedCollection
+
+
+IOFromL2 pixel vertex:
+    process.hltIterL3MuonPixelTracks
+        PixelTrackProducer
+            reco::TrackCollection
+            TrackingRecHitCollection
+            reco::TrackExtraCollection
+
+    process.hltIterL3MuonPixelVertices
+        PixelVertexProducer
+            reco::VertexCollection
+    process.hltIterL3MuonTrimmedPixelVertices
+        PixelVertexCollectionTrimmer
+            reco::VertexCollection
+
+
+IOFromL2 seeds:
+    process.hltIter0IterL3MuonPixelSeedsFromPixelTracks
+        SeedGeneratorFromProtoTracksEDProducer
+            TrajectorySeedCollection
+
+    process.hltIter2IterL3MuonPixelHitTriplets
+        CAHitTripletEDProducer
+            RegionsSeedingHitSets
+    process.hltIter2IterL3MuonPixelSeeds
+        SeedCreatorFromRegionConsecutiveHitsTripletOnlyEDProducer
+            TrajectorySeedCollection
+
+    process.hltIter3IterL3MuonPixelHitDoublets
+        HitPairEDProducer
+            RegionsSeedingHitSets
+    process.hltIter3IterL3MuonPixelSeeds
+        SeedCreatorFromRegionConsecutiveHitsEDProducer
+            TrajectorySeedCollection
+
+
+IOFromL1 pixel vertex:
+    process.hltIterL3FromL1MuonPixelTracks
+        PixelTrackProducer
+            reco::TrackCollection
+            TrackingRecHitCollection
+            reco::TrackExtraCollection
+
+    process.hltIterL3FromL1MuonPixelVertices
+        PixelVertexProducer
+            reco::VertexCollection
+    process.hltIterL3FromL1MuonTrimmedPixelVertices
+        PixelVertexCollectionTrimmer
+            reco::VertexCollection
+
+
+IOFromL1 seeds:
+    process.hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks
+        SeedGeneratorFromProtoTracksEDProducer
+            TrajectorySeedCollection
+
+    process.hltIter2IterL3FromL1MuonPixelHitTriplets
+        CAHitTripletEDProducer
+            RegionsSeedingHitSets
+    process.hltIter2IterL3FromL1MuonPixelSeeds
+        SeedCreatorFromRegionConsecutiveHitsTripletOnlyEDProducer
+            TrajectorySeedCollection
+
+    process.hltIter3IterL3FromL1MuonPixelHitDoublets
+        HitPairEDProducer
+            RegionsSeedingHitSets
+    process.hltIter3IterL3FromL1MuonPixelSeeds
+        SeedCreatorFromRegionConsecutiveHitsEDProducer
+            TrajectorySeedCollection
+
+
+
+

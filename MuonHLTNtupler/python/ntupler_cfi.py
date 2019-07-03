@@ -25,6 +25,7 @@ ntuplerBase = cms.EDAnalyzer("MuonHLTNtupler",
 	iterL3FromL2    = cms.untracked.InputTag("hltIterL3MuonsFromL2LinksCombination", "", "MYHLT"),
 	iterL3IOFromL1  = cms.untracked.InputTag("hltIter3IterL3FromL1MuonMerged",       "", "MYHLT"),
 	iterL3MuonNoID  = cms.untracked.InputTag("hltIterL3MuonsNoID",                   "", "MYHLT"),
+	iterL3Muon      = cms.untracked.InputTag("hltIterL3Muons",                       "", "MYHLT"),
 
 	# -- generator information
 	PUSummaryInfo = cms.untracked.InputTag("addPileupInfo"),
