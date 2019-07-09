@@ -42,6 +42,11 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 
+#include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
+#include "DataFormats/TrajectorySeed/interface/PropagationDirection.h"
+#include "DataFormats/TrajectoryState/interface/PTrajectoryStateOnDet.h"
+#include "DataFormats/TrajectoryState/interface/LocalTrajectoryParameters.h"
+
 #include "TTree.h"
 
 using namespace std;
@@ -71,6 +76,7 @@ private:
 
   //For Rerun (Fill_IterL3*)
   void Fill_IterL3(const edm::Event &iEvent);
+  void Fill_Seed(const edm::Event &iEvent)
 
   bool SavedTriggerCondition( std::string& pathName );
   bool SavedFilterCondition( std::string& filterName );
@@ -95,6 +101,8 @@ private:
   edm::EDGetTokenT< std::vector<reco::Track> >               t_iterL3IOFromL1_;
   edm::EDGetTokenT< std::vector<reco::Muon> >                t_iterL3MuonNoID_;
   edm::EDGetTokenT< std::vector<reco::Muon> >                t_iterL3Muon_;
+
+  edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIterL3OISeedsFromL2Muons_;
 
   edm::EDGetTokenT< LumiScalersCollection >                  t_lumiScaler_;
   edm::EDGetTokenT< LumiScalersCollection >                  t_offlineLumiScaler_;
@@ -336,81 +344,33 @@ private:
   int iterL3Muon_isTRK_[arrSize_];
 
   // -- local reco and seeding information
-  bool doSeeding_;
-
-  int      n_hltDt4DSegments_;
-  uint32_t hltDt4DSegments_rawId_[arrSize_];
-  double   hltDt4DSegments_x_[arrSize_];
-  double   hltDt4DSegments_y_[arrSize_];
-  double   hltDt4DSegments_dxdz_[arrSize_];
-  double   hltDt4DSegments_dydz_[arrSize_];
-  double   hltDt4DSegments_chi2_[arrSize_];
-  int      hltDt4DSegments_dof_[arrSize_];
-  int      hltDt4DSegments_hasPhi_[arrSize_];
-  int      hltDt4DSegments_hasZed_[arrSize_];
-
-  int      n_hltCscSegments_;
-  uint32_t hltCscSegments_rawId_[arrSize_];
-  double   hltCscSegments_x_[arrSize_];
-  double   hltCscSegments_y_[arrSize_];
-  double   hltCscSegments_dxdz_[arrSize_];
-  double   hltCscSegments_dydz_[arrSize_];
-  double   hltCscSegments_chi2_[arrSize_];
-  int      hltCscSegments_dof_[arrSize_];
-  int      hltCscSegments_nRecHits_[arrSize_];
-  float    hltCscSegments_time_[arrSize_];
-
-  int      n_hltRpcRecHits_;
-  uint32_t hltRpcRecHits_rawId_[arrSize_];
-  double   hltRpcRecHits_x_[arrSize_];
-  double   hltRpcRecHits_y_[arrSize_];
-  int      hltRpcRecHits_bx_[arrSize_];
-  int      hltRpcRecHits_clusterSize_[arrSize_];
-  float    hltRpcRecHits_time_[arrSize_];
-  float    hltRpcRecHits_timeErr_[arrSize_];
-
-// hltL2OfflineMuonSeeds
-// hltL2MuonSeeds
-  int      n_hltL2OfflineMuonSeeds_;
-  int      hltL2OfflineMuonSeeds_dir_[arrSize_];
-  uint32_t hltL2OfflineMuonSeeds_tsos_detId_[arrSize_];
-  double   hltL2OfflineMuonSeeds_tsos_pt_[arrSize_];
-  double   hltL2OfflineMuonSeeds_tsos_x_[arrSize_];
-  double   hltL2OfflineMuonSeeds_tsos_y_[arrSize_];
-  double   hltL2OfflineMuonSeeds_tsos_dxdz_[arrSize_];
-  double   hltL2OfflineMuonSeeds_tsos_dydz_[arrSize_];
-  double   hltL2OfflineMuonSeeds_tsos_qbp_[arrSize_];
-  int      hltL2OfflineMuonSeeds_tsos_charge_[arrSize_];
-
-FIXME
-
-hltSiPixelRecHits
-hltSiStripClusters
-hltIterL3OISeedsFromL2Muons
-
-
-hltIterL3MuonPixelTracks
-hltIterL3MuonPixelVertices
-hltIterL3MuonTrimmedPixelVertices
-
-
-hltIter0IterL3MuonPixelSeedsFromPixelTracks
-
-hltIter2IterL3MuonPixelHitTriplets
-hltIter2IterL3MuonPixelSeeds
-
-hltIter3IterL3MuonPixelHitDoublets
-hltIter3IterL3MuonPixelSeeds
-
-hltIterL3FromL1MuonPixelTracks
-hltIterL3FromL1MuonPixelVertices
-hltIterL3FromL1MuonTrimmedPixelVertices
-
-hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks
-
-hltIter2IterL3FromL1MuonPixelHitTriplets
-hltIter2IterL3FromL1MuonPixelSeeds
-
-hltIter3IterL3FromL1MuonPixelHitDoublets
-hltIter3IterL3FromL1MuonPixelSeeds
+  int      nhltIterL3OISeedsFromL2Muons_;
+  int      hltIterL3OISeedsFromL2Muons_dir_[arrSize_];
+  uint32_t hltIterL3OISeedsFromL2Muons_tsos_detId_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_pt_[arrSize_];
+  int      hltIterL3OISeedsFromL2Muons_tsos_hasErr_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err0_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err1_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err2_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err3_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err4_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err5_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err6_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err7_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err8_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err9_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err10_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err11_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err12_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err13_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_err14_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_x_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_y_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_dxdz_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_dydz_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_px_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_py_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_pz_[arrSize_];
+  double   hltIterL3OISeedsFromL2Muons_tsos_qbp_[arrSize_];
+  int      hltIterL3OISeedsFromL2Muons_tsos_charge_[arrSize_];
 };

@@ -30,6 +30,8 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT"):
     process.ntupler.iterL3MuonNoID   = cms.untracked.InputTag("hltIterL3MuonsNoID",                   "", newProcessName)
     process.ntupler.iterL3Muon       = cms.untracked.InputTag("hltIterL3Muons",                       "", newProcessName)
 
+    process.ntupler.hltIterL3OISeedsFromL2Muons  = cms.untracked.InputTag("hltIterL3OISeedsFromL2Muons",   "", newProcessName)
+
     process.TFileService = cms.Service("TFileService",
       fileName = cms.string("ntuple.root"),
       closeFileFast = cms.untracked.bool(False),

@@ -44,6 +44,11 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 
+#include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
+#include "DataFormats/TrajectorySeed/interface/PropagationDirection.h"
+#include "DataFormats/TrajectoryState/interface/PTrajectoryStateOnDet.h"
+#include "DataFormats/TrajectoryState/interface/LocalTrajectoryParameters.h"
+
 
 #include <map>
 #include <string>
@@ -73,6 +78,8 @@ t_iterL3FromL2_      ( consumes< std::vector<reco::MuonTrackLinks> >      (iConf
 t_iterL3IOFromL1_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("iterL3IOFromL1"    )) ),
 t_iterL3MuonNoID_    ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("iterL3MuonNoID"    )) ),
 t_iterL3Muon_        ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("iterL3Muon"        )) ),
+
+t_hltIterL3OISeedsFromL2Muons_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OISeedsFromL2Muons")) ),
 
 t_lumiScaler_        ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("lumiScaler"        )) ),
 t_offlineLumiScaler_ ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("offlineLumiScaler" )) ),
@@ -156,6 +163,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   Fill_HLTMuon(iEvent);
   Fill_L1Muon(iEvent);
   Fill_IterL3(iEvent);
+  Fill_Seed(iEvent);
   if( !isRealData_ ) Fill_GenParticle(iEvent);
 
   ntuple_->Fill();
@@ -1168,6 +1176,57 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
     } // -- end of muon iteration
 
     nIterL3Muon_ = _nIterL3Muon;
+  } // -- if getByToken is valid
+}
+
+void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
+{
+  //////////////////////////
+  // -- hltIterL3OISeedsFromL2Muons -- //
+  //////////////////////////
+  edm::Handle< TrajectorySeedCollection > h_hltIterL3OISeedsFromL2Muons;
+  if( iEvent.getByToken( t_hltIterL3OISeedsFromL2Muons_, h_hltIterL3OISeedsFromL2Muons) )
+  {
+    int _nhltIterL3OISeedsFromL2Muons = 0;
+    for( auto i=0U; i<h_hltIterL3OISeedsFromL2Muons->size(); ++i )
+    {
+      const auto& seed(h_hltIterL3OISeedsFromL2Muons->at(i));
+
+      hltIterL3OISeedsFromL2Muons_dir_[_nhltIterL3OISeedsFromL2Muons]         = seed.direction();
+      hltIterL3OISeedsFromL2Muons_tsos_detId_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().detId();
+      hltIterL3OISeedsFromL2Muons_tsos_pt_[_nhltIterL3OISeedsFromL2Muons]     = seed.startingState().pt();
+      hltIterL3OISeedsFromL2Muons_tsos_hasErr_[_nhltIterL3OISeedsFromL2Muons] = seed.startingState().hasError();
+      if( seed.startingState().hasError() ) {
+        hltIterL3OISeedsFromL2Muons_tsos_err0_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(0);
+        hltIterL3OISeedsFromL2Muons_tsos_err1_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(1);
+        hltIterL3OISeedsFromL2Muons_tsos_err2_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(2);
+        hltIterL3OISeedsFromL2Muons_tsos_err3_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(3);
+        hltIterL3OISeedsFromL2Muons_tsos_err4_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(4);
+        hltIterL3OISeedsFromL2Muons_tsos_err5_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(5);
+        hltIterL3OISeedsFromL2Muons_tsos_err6_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(6);
+        hltIterL3OISeedsFromL2Muons_tsos_err7_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(7);
+        hltIterL3OISeedsFromL2Muons_tsos_err8_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(8);
+        hltIterL3OISeedsFromL2Muons_tsos_err9_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(9);
+        hltIterL3OISeedsFromL2Muons_tsos_err10_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(10);
+        hltIterL3OISeedsFromL2Muons_tsos_err11_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(11);
+        hltIterL3OISeedsFromL2Muons_tsos_err12_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(12);
+        hltIterL3OISeedsFromL2Muons_tsos_err13_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(13);
+        hltIterL3OISeedsFromL2Muons_tsos_err14_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(14);
+      }
+      hltIterL3OISeedsFromL2Muons_tsos_x_[_nhltIterL3OISeedsFromL2Muons]      = seed.startingState().parameters().position().x();
+      hltIterL3OISeedsFromL2Muons_tsos_y_[_nhltIterL3OISeedsFromL2Muons]      = seed.startingState().parameters().position().y();
+      hltIterL3OISeedsFromL2Muons_tsos_dxdz_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().parameters().dxdz();
+      hltIterL3OISeedsFromL2Muons_tsos_dydz_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().parameters().dydz();
+      hltIterL3OISeedsFromL2Muons_tsos_px_[_nhltIterL3OISeedsFromL2Muons]     = seed.startingState().parameters().momentum().x();
+      hltIterL3OISeedsFromL2Muons_tsos_py_[_nhltIterL3OISeedsFromL2Muons]     = seed.startingState().parameters().momentum().y();
+      hltIterL3OISeedsFromL2Muons_tsos_pz_[_nhltIterL3OISeedsFromL2Muons]     = seed.startingState().parameters().momentum().z();
+      hltIterL3OISeedsFromL2Muons_tsos_qbp_[_nhltIterL3OISeedsFromL2Muons]    = seed.startingState().parameters().qbp();
+      hltIterL3OISeedsFromL2Muons_tsos_charge_[_nhltIterL3OISeedsFromL2Muons] = seed.startingState().parameters().charge();
+
+      _nhltIterL3OISeedsFromL2Muons++;
+    } // -- end of seed iteration
+
+    nhltIterL3OISeedsFromL2Muons_ = _nhltIterL3OISeedsFromL2Muons;
   } // -- if getByToken is valid
 }
 
