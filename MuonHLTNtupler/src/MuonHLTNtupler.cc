@@ -440,6 +440,39 @@ void MuonHLTNtupler::Init()
     iterL3Muon_isSTA_[i] = 0;
     iterL3Muon_isTRK_[i] = 0;
   }
+
+  nhltIterL3OISeedsFromL2Muons_ = 0;
+  for (int i=0; i<arrSize_; ++i)
+  {
+    hltIterL3OISeedsFromL2Muons_dir_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_detId_[i] = 1e9;
+    hltIterL3OISeedsFromL2Muons_tsos_pt_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_hasErr_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err0_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err1_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err2_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err3_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err4_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err5_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err6_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err7_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err8_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err9_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err10_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err11_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err12_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err13_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_err14_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_x_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_y_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_dxdz_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_dydz_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_px_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_py_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_pz_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_qbp_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_tsos_charge_[i] = -999;
+  }
 }
 
 void MuonHLTNtupler::Make_Branch()
@@ -647,6 +680,35 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3Muon_isGLB",  &iterL3Muon_isGLB_,  "iterL3Muon_isGLB[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_isSTA",  &iterL3Muon_isSTA_,  "iterL3Muon_isSTA[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_isTRK",  &iterL3Muon_isTRK_,  "iterL3Muon_isTRK[nIterL3Muon]/I");
+
+  ntuple_->Branch("nhltIterL3OISeedsFromL2Muons",             &nhltIterL3OISeedsFromL2Muons_,             "nhltIterL3OISeedsFromL2Muons/I");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_dir",          &hltIterL3OISeedsFromL2Muons_dir_,          "hltIterL3OISeedsFromL2Muons_dir[nhltIterL3OISeedsFromL2Muons]/I");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_detId",   &hltIterL3OISeedsFromL2Muons_tsos_detId_,   "hltIterL3OISeedsFromL2Muons_tsos_detId[nhltIterL3OISeedsFromL2Muons]/i");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_pt",      &hltIterL3OISeedsFromL2Muons_tsos_pt_,      "hltIterL3OISeedsFromL2Muons_tsos_pt[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_hasErr",  &hltIterL3OISeedsFromL2Muons_tsos_hasErr_,  "hltIterL3OISeedsFromL2Muons_tsos_hasErr[nhltIterL3OISeedsFromL2Muons]/I");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err0",    &hltIterL3OISeedsFromL2Muons_tsos_err0_,    "hltIterL3OISeedsFromL2Muons_tsos_err0[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err1",    &hltIterL3OISeedsFromL2Muons_tsos_err1_,    "hltIterL3OISeedsFromL2Muons_tsos_err1[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err2",    &hltIterL3OISeedsFromL2Muons_tsos_err2_,    "hltIterL3OISeedsFromL2Muons_tsos_err2[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err3",    &hltIterL3OISeedsFromL2Muons_tsos_err3_,    "hltIterL3OISeedsFromL2Muons_tsos_err3[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err4",    &hltIterL3OISeedsFromL2Muons_tsos_err4_,    "hltIterL3OISeedsFromL2Muons_tsos_err4[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err5",    &hltIterL3OISeedsFromL2Muons_tsos_err5_,    "hltIterL3OISeedsFromL2Muons_tsos_err5[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err6",    &hltIterL3OISeedsFromL2Muons_tsos_err6_,    "hltIterL3OISeedsFromL2Muons_tsos_err6[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err7",    &hltIterL3OISeedsFromL2Muons_tsos_err7_,    "hltIterL3OISeedsFromL2Muons_tsos_err7[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err8",    &hltIterL3OISeedsFromL2Muons_tsos_err8_,    "hltIterL3OISeedsFromL2Muons_tsos_err8[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err9",    &hltIterL3OISeedsFromL2Muons_tsos_err9_,    "hltIterL3OISeedsFromL2Muons_tsos_err9[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err10",   &hltIterL3OISeedsFromL2Muons_tsos_err10_,   "hltIterL3OISeedsFromL2Muons_tsos_err10[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err11",   &hltIterL3OISeedsFromL2Muons_tsos_err11_,   "hltIterL3OISeedsFromL2Muons_tsos_err11[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err12",   &hltIterL3OISeedsFromL2Muons_tsos_err12_,   "hltIterL3OISeedsFromL2Muons_tsos_err12[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err13",   &hltIterL3OISeedsFromL2Muons_tsos_err13_,   "hltIterL3OISeedsFromL2Muons_tsos_err13[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err14",   &hltIterL3OISeedsFromL2Muons_tsos_err14_,   "hltIterL3OISeedsFromL2Muons_tsos_err14[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_x",       &hltIterL3OISeedsFromL2Muons_tsos_x_,       "hltIterL3OISeedsFromL2Muons_tsos_x[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_y",       &hltIterL3OISeedsFromL2Muons_tsos_y_,       "hltIterL3OISeedsFromL2Muons_tsos_y[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_dxdz",    &hltIterL3OISeedsFromL2Muons_tsos_dxdz_,    "hltIterL3OISeedsFromL2Muons_tsos_dxdz[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_dydz",    &hltIterL3OISeedsFromL2Muons_tsos_dydz_,    "hltIterL3OISeedsFromL2Muons_tsos_dydz[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_px",      &hltIterL3OISeedsFromL2Muons_tsos_px_,      "hltIterL3OISeedsFromL2Muons_tsos_px[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_py",      &hltIterL3OISeedsFromL2Muons_tsos_py_,      "hltIterL3OISeedsFromL2Muons_tsos_py[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_qbp",     &hltIterL3OISeedsFromL2Muons_tsos_qbp_,     "hltIterL3OISeedsFromL2Muons_tsos_qbp[nhltIterL3OISeedsFromL2Muons]/D");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_charge",  &hltIterL3OISeedsFromL2Muons_tsos_charge_,  "hltIterL3OISeedsFromL2Muons_tsos_charge[nhltIterL3OISeedsFromL2Muons]/I");
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
