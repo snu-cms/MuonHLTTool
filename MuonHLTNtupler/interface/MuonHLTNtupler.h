@@ -43,6 +43,7 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
+#include "DataFormats/TrajectorySeed/interface/TrajectorySeedCollection.h"
 #include "DataFormats/TrajectorySeed/interface/PropagationDirection.h"
 #include "DataFormats/TrajectoryState/interface/PTrajectoryStateOnDet.h"
 #include "DataFormats/TrajectoryState/interface/LocalTrajectoryParameters.h"
@@ -76,7 +77,7 @@ private:
 
   //For Rerun (Fill_IterL3*)
   void Fill_IterL3(const edm::Event &iEvent);
-  void Fill_Seed(const edm::Event &iEvent)
+  void Fill_Seed(const edm::Event &iEvent);
 
   bool SavedTriggerCondition( std::string& pathName );
   bool SavedFilterCondition( std::string& filterName );
