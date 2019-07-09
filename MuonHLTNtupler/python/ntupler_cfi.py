@@ -27,7 +27,13 @@ ntuplerBase = cms.EDAnalyzer("MuonHLTNtupler",
 	iterL3MuonNoID  = cms.untracked.InputTag("hltIterL3MuonsNoID",                   "", "MYHLT"),
 	iterL3Muon      = cms.untracked.InputTag("hltIterL3Muons",                       "", "MYHLT"),
 
-	hltIterL3OISeedsFromL2Muons  = cms.untracked.InputTag("hltIterL3OISeedsFromL2Muons",   "", "MYHLT"),
+	hltIterL3OISeedsFromL2Muons                       = cms.untracked.InputTag("hltIterL3OISeedsFromL2Muons",                         "", "MYHLT"),
+	hltIter0IterL3MuonPixelSeedsFromPixelTracks       = cms.untracked.InputTag("hltIter0IterL3MuonPixelSeedsFromPixelTracks",         "", "MYHLT"),
+	hltIter2IterL3MuonPixelSeeds                      = cms.untracked.InputTag("hltIter2IterL3MuonPixelSeeds",                        "", "MYHLT"),
+	hltIter3IterL3MuonPixelSeeds                      = cms.untracked.InputTag("hltIter3IterL3MuonPixelSeeds",                        "", "MYHLT"),
+	hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks = cms.untracked.InputTag("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks",   "", "MYHLT"),
+	hltIter2IterL3FromL1MuonPixelSeeds                = cms.untracked.InputTag("hltIter2IterL3FromL1MuonPixelSeeds",                  "", "MYHLT"),
+	hltIter3IterL3FromL1MuonPixelSeeds                = cms.untracked.InputTag("hltIter3IterL3FromL1MuonPixelSeeds",                  "", "MYHLT"),
 
 	# -- generator information
 	PUSummaryInfo = cms.untracked.InputTag("addPileupInfo"),
