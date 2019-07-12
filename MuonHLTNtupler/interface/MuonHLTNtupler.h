@@ -433,9 +433,9 @@ private:
   float   hltIterL3OISeedsFromL2Muons_tsos_pz_[arrSize_];
   float   hltIterL3OISeedsFromL2Muons_tsos_qbp_[arrSize_];
   int      hltIterL3OISeedsFromL2Muons_tsos_charge_[arrSize_];
-  int hltIterL3OISeedsFromL2Muons_offlineGlobalRef_[arrSize_];
-  int hltIterL3OISeedsFromL2Muons_offlineInnerRef_[arrSize_];
-  int hltIterL3OISeedsFromL2Muons_offlineTunePRef_[arrSize_];
+  int hltIterL3OISeedsFromL2Muons_iterL3GlobalRef_[arrSize_];
+  int hltIterL3OISeedsFromL2Muons_iterL3InnerRef_[arrSize_];
+  int hltIterL3OISeedsFromL2Muons_iterL3OuterRef_[arrSize_];
 
   int      nhltIter0IterL3MuonPixelSeedsFromPixelTracks_;
   int      hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir_[arrSize_];
@@ -466,9 +466,9 @@ private:
   float   hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pz_[arrSize_];
   float   hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp_[arrSize_];
   int      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge_[arrSize_];
-  int hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineGlobalRef_[arrSize_];
-  int hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineInnerRef_[arrSize_];
-  int hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineTunePRef_[arrSize_];
+  int hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[arrSize_];
+  int hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[arrSize_];
+  int hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[arrSize_];
 
   int      nhltIter2IterL3MuonPixelSeeds_;
   int      hltIter2IterL3MuonPixelSeeds_dir_[arrSize_];
@@ -499,9 +499,9 @@ private:
   float   hltIter2IterL3MuonPixelSeeds_tsos_pz_[arrSize_];
   float   hltIter2IterL3MuonPixelSeeds_tsos_qbp_[arrSize_];
   int      hltIter2IterL3MuonPixelSeeds_tsos_charge_[arrSize_];
-  int hltIter2IterL3MuonPixelSeeds_offlineGlobalRef_[arrSize_];
-  int hltIter2IterL3MuonPixelSeeds_offlineInnerRef_[arrSize_];
-  int hltIter2IterL3MuonPixelSeeds_offlineTunePRef_[arrSize_];
+  int hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef_[arrSize_];
+  int hltIter2IterL3MuonPixelSeeds_iterL3InnerRef_[arrSize_];
+  int hltIter2IterL3MuonPixelSeeds_iterL3OuterRef_[arrSize_];
 
   int      nhltIter3IterL3MuonPixelSeeds_;
   int      hltIter3IterL3MuonPixelSeeds_dir_[arrSize_];
@@ -532,9 +532,9 @@ private:
   float   hltIter3IterL3MuonPixelSeeds_tsos_pz_[arrSize_];
   float   hltIter3IterL3MuonPixelSeeds_tsos_qbp_[arrSize_];
   int      hltIter3IterL3MuonPixelSeeds_tsos_charge_[arrSize_];
-  int hltIter3IterL3MuonPixelSeeds_offlineGlobalRef_[arrSize_];
-  int hltIter3IterL3MuonPixelSeeds_offlineInnerRef_[arrSize_];
-  int hltIter3IterL3MuonPixelSeeds_offlineTunePRef_[arrSize_];
+  int hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef_[arrSize_];
+  int hltIter3IterL3MuonPixelSeeds_iterL3InnerRef_[arrSize_];
+  int hltIter3IterL3MuonPixelSeeds_iterL3OuterRef_[arrSize_];
 
   int      nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
   int      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir_[arrSize_];
@@ -565,9 +565,9 @@ private:
   float   hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pz_[arrSize_];
   float   hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp_[arrSize_];
   int      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge_[arrSize_];
-  int hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineGlobalRef_[arrSize_];
-  int hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineInnerRef_[arrSize_];
-  int hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineTunePRef_[arrSize_];
+  int hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[arrSize_];
+  int hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[arrSize_];
+  int hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[arrSize_];
 
   int      nhltIter2IterL3FromL1MuonPixelSeeds_;
   int      hltIter2IterL3FromL1MuonPixelSeeds_dir_[arrSize_];
@@ -598,9 +598,9 @@ private:
   float   hltIter2IterL3FromL1MuonPixelSeeds_tsos_pz_[arrSize_];
   float   hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp_[arrSize_];
   int      hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge_[arrSize_];
-  int hltIter2IterL3FromL1MuonPixelSeeds_offlineGlobalRef_[arrSize_];
-  int hltIter2IterL3FromL1MuonPixelSeeds_offlineInnerRef_[arrSize_];
-  int hltIter2IterL3FromL1MuonPixelSeeds_offlineTunePRef_[arrSize_];
+  int hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[arrSize_];
+  int hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[arrSize_];
+  int hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[arrSize_];
 
   int      nhltIter3IterL3FromL1MuonPixelSeeds_;
   int      hltIter3IterL3FromL1MuonPixelSeeds_dir_[arrSize_];
@@ -631,7 +631,7 @@ private:
   float   hltIter3IterL3FromL1MuonPixelSeeds_tsos_pz_[arrSize_];
   float   hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp_[arrSize_];
   int      hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge_[arrSize_];
-  int hltIter3IterL3FromL1MuonPixelSeeds_offlineGlobalRef_[arrSize_];
-  int hltIter3IterL3FromL1MuonPixelSeeds_offlineInnerRef_[arrSize_];
-  int hltIter3IterL3FromL1MuonPixelSeeds_offlineTunePRef_[arrSize_];
+  int hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[arrSize_];
+  int hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[arrSize_];
+  int hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[arrSize_];
 };

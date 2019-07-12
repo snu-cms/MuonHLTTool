@@ -481,9 +481,9 @@ void MuonHLTNtupler::Init()
     hltIterL3OISeedsFromL2Muons_tsos_pz_[i] = -999;
     hltIterL3OISeedsFromL2Muons_tsos_qbp_[i] = -999;
     hltIterL3OISeedsFromL2Muons_tsos_charge_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_offlineGlobalRef_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_offlineInnerRef_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_offlineTunePRef_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_iterL3GlobalRef_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_iterL3InnerRef_[i] = -999;
+    hltIterL3OISeedsFromL2Muons_iterL3OuterRef_[i] = -999;
   }
 
   nhltIter0IterL3MuonPixelSeedsFromPixelTracks_ = 0;
@@ -517,9 +517,9 @@ void MuonHLTNtupler::Init()
     hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pz_[i] = -999;
     hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp_[i] = -999;
     hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineGlobalRef_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineInnerRef_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineTunePRef_[i] = -999;
+    hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[i] = -999;
+    hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[i] = -999;
+    hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[i] = -999;
   }
 
   nhltIter2IterL3MuonPixelSeeds_ = 0;
@@ -553,9 +553,9 @@ void MuonHLTNtupler::Init()
     hltIter2IterL3MuonPixelSeeds_tsos_pz_[i] = -999;
     hltIter2IterL3MuonPixelSeeds_tsos_qbp_[i] = -999;
     hltIter2IterL3MuonPixelSeeds_tsos_charge_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_offlineGlobalRef_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_offlineInnerRef_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_offlineTunePRef_[i] = -999;
+    hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef_[i] = -999;
+    hltIter2IterL3MuonPixelSeeds_iterL3InnerRef_[i] = -999;
+    hltIter2IterL3MuonPixelSeeds_iterL3OuterRef_[i] = -999;
   }
 
   nhltIter3IterL3MuonPixelSeeds_ = 0;
@@ -589,9 +589,9 @@ void MuonHLTNtupler::Init()
     hltIter3IterL3MuonPixelSeeds_tsos_pz_[i] = -999;
     hltIter3IterL3MuonPixelSeeds_tsos_qbp_[i] = -999;
     hltIter3IterL3MuonPixelSeeds_tsos_charge_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_offlineGlobalRef_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_offlineInnerRef_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_offlineTunePRef_[i] = -999;
+    hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef_[i] = -999;
+    hltIter3IterL3MuonPixelSeeds_iterL3InnerRef_[i] = -999;
+    hltIter3IterL3MuonPixelSeeds_iterL3OuterRef_[i] = -999;
   }
 
   nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_ = 0;
@@ -625,9 +625,9 @@ void MuonHLTNtupler::Init()
     hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pz_[i] = -999;
     hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp_[i] = -999;
     hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineGlobalRef_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineInnerRef_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineTunePRef_[i] = -999;
+    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[i] = -999;
+    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[i] = -999;
+    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[i] = -999;
   }
 
   nhltIter2IterL3FromL1MuonPixelSeeds_ = 0;
@@ -661,9 +661,9 @@ void MuonHLTNtupler::Init()
     hltIter2IterL3FromL1MuonPixelSeeds_tsos_pz_[i] = -999;
     hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp_[i] = -999;
     hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_offlineGlobalRef_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_offlineInnerRef_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_offlineTunePRef_[i] = -999;
+    hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[i] = -999;
+    hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[i] = -999;
+    hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[i] = -999;
   }
 
   nhltIter3IterL3FromL1MuonPixelSeeds_ = 0;
@@ -697,9 +697,9 @@ void MuonHLTNtupler::Init()
     hltIter3IterL3FromL1MuonPixelSeeds_tsos_pz_[i] = -999;
     hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp_[i] = -999;
     hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_offlineGlobalRef_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_offlineInnerRef_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_offlineTunePRef_[i] = -999;
+    hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[i] = -999;
+    hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[i] = -999;
+    hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[i] = -999;
   }
 }
 
@@ -937,9 +937,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_py",      &hltIterL3OISeedsFromL2Muons_tsos_py_,      "hltIterL3OISeedsFromL2Muons_tsos_py[nhltIterL3OISeedsFromL2Muons]/F");
   ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_qbp",     &hltIterL3OISeedsFromL2Muons_tsos_qbp_,     "hltIterL3OISeedsFromL2Muons_tsos_qbp[nhltIterL3OISeedsFromL2Muons]/F");
   ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_charge",  &hltIterL3OISeedsFromL2Muons_tsos_charge_,  "hltIterL3OISeedsFromL2Muons_tsos_charge[nhltIterL3OISeedsFromL2Muons]/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_offlineGlobalRef", &hltIterL3OISeedsFromL2Muons_offlineGlobalRef_, "hltIterL3OISeedsFromL2Muons_offlineGlobalRef[nhltIterL3OISeedsFromL2Muons]/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_offlineInnerRef", &hltIterL3OISeedsFromL2Muons_offlineInnerRef_, "hltIterL3OISeedsFromL2Muons_offlineInnerRef[nhltIterL3OISeedsFromL2Muons]/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_offlineTunePRef", &hltIterL3OISeedsFromL2Muons_offlineTunePRef_, "hltIterL3OISeedsFromL2Muons_offlineTunePRef[nhltIterL3OISeedsFromL2Muons]/I");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_iterL3GlobalRef", &hltIterL3OISeedsFromL2Muons_iterL3GlobalRef_, "hltIterL3OISeedsFromL2Muons_iterL3GlobalRef[nhltIterL3OISeedsFromL2Muons]/I");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_iterL3InnerRef", &hltIterL3OISeedsFromL2Muons_iterL3InnerRef_, "hltIterL3OISeedsFromL2Muons_iterL3InnerRef[nhltIterL3OISeedsFromL2Muons]/I");
+  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_iterL3OuterRef", &hltIterL3OISeedsFromL2Muons_iterL3OuterRef_, "hltIterL3OISeedsFromL2Muons_iterL3OuterRef[nhltIterL3OISeedsFromL2Muons]/I");
 
   ntuple_->Branch("nhltIter0IterL3MuonPixelSeedsFromPixelTracks",             &nhltIter0IterL3MuonPixelSeedsFromPixelTracks_,             "nhltIter0IterL3MuonPixelSeedsFromPixelTracks/I");
   ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir",          &hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir_,          "hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
@@ -969,9 +969,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_py",      &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_py_,      "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_py[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
   ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp",     &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp_,     "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
   ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge",  &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge_,  "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineGlobalRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineGlobalRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineGlobalRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineInnerRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineInnerRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineInnerRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineTunePRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineTunePRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineTunePRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
+  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
+  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
+  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
 
   ntuple_->Branch("nhltIter2IterL3MuonPixelSeeds",             &nhltIter2IterL3MuonPixelSeeds_,             "nhltIter2IterL3MuonPixelSeeds/I");
   ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_dir",          &hltIter2IterL3MuonPixelSeeds_dir_,          "hltIter2IterL3MuonPixelSeeds_dir[nhltIter2IterL3MuonPixelSeeds]/I");
@@ -1001,9 +1001,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_py",      &hltIter2IterL3MuonPixelSeeds_tsos_py_,      "hltIter2IterL3MuonPixelSeeds_tsos_py[nhltIter2IterL3MuonPixelSeeds]/F");
   ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_qbp",     &hltIter2IterL3MuonPixelSeeds_tsos_qbp_,     "hltIter2IterL3MuonPixelSeeds_tsos_qbp[nhltIter2IterL3MuonPixelSeeds]/F");
   ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_charge",  &hltIter2IterL3MuonPixelSeeds_tsos_charge_,  "hltIter2IterL3MuonPixelSeeds_tsos_charge[nhltIter2IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_offlineGlobalRef", &hltIter2IterL3MuonPixelSeeds_offlineGlobalRef_, "hltIter2IterL3MuonPixelSeeds_offlineGlobalRef[nhltIter2IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_offlineInnerRef", &hltIter2IterL3MuonPixelSeeds_offlineInnerRef_, "hltIter2IterL3MuonPixelSeeds_offlineInnerRef[nhltIter2IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_offlineTunePRef", &hltIter2IterL3MuonPixelSeeds_offlineTunePRef_, "hltIter2IterL3MuonPixelSeeds_offlineTunePRef[nhltIter2IterL3MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef", &hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef_, "hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef[nhltIter2IterL3MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_iterL3InnerRef", &hltIter2IterL3MuonPixelSeeds_iterL3InnerRef_, "hltIter2IterL3MuonPixelSeeds_iterL3InnerRef[nhltIter2IterL3MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_iterL3OuterRef", &hltIter2IterL3MuonPixelSeeds_iterL3OuterRef_, "hltIter2IterL3MuonPixelSeeds_iterL3OuterRef[nhltIter2IterL3MuonPixelSeeds]/I");
 
   ntuple_->Branch("nhltIter3IterL3MuonPixelSeeds",             &nhltIter3IterL3MuonPixelSeeds_,             "nhltIter3IterL3MuonPixelSeeds/I");
   ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_dir",          &hltIter3IterL3MuonPixelSeeds_dir_,          "hltIter3IterL3MuonPixelSeeds_dir[nhltIter3IterL3MuonPixelSeeds]/I");
@@ -1033,9 +1033,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_py",      &hltIter3IterL3MuonPixelSeeds_tsos_py_,      "hltIter3IterL3MuonPixelSeeds_tsos_py[nhltIter3IterL3MuonPixelSeeds]/F");
   ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_qbp",     &hltIter3IterL3MuonPixelSeeds_tsos_qbp_,     "hltIter3IterL3MuonPixelSeeds_tsos_qbp[nhltIter3IterL3MuonPixelSeeds]/F");
   ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_charge",  &hltIter3IterL3MuonPixelSeeds_tsos_charge_,  "hltIter3IterL3MuonPixelSeeds_tsos_charge[nhltIter3IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_offlineGlobalRef", &hltIter3IterL3MuonPixelSeeds_offlineGlobalRef_, "hltIter3IterL3MuonPixelSeeds_offlineGlobalRef[nhltIter3IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_offlineInnerRef", &hltIter3IterL3MuonPixelSeeds_offlineInnerRef_, "hltIter3IterL3MuonPixelSeeds_offlineInnerRef[nhltIter3IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_offlineTunePRef", &hltIter3IterL3MuonPixelSeeds_offlineTunePRef_, "hltIter3IterL3MuonPixelSeeds_offlineTunePRef[nhltIter3IterL3MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef", &hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef_, "hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef[nhltIter3IterL3MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_iterL3InnerRef", &hltIter3IterL3MuonPixelSeeds_iterL3InnerRef_, "hltIter3IterL3MuonPixelSeeds_iterL3InnerRef[nhltIter3IterL3MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_iterL3OuterRef", &hltIter3IterL3MuonPixelSeeds_iterL3OuterRef_, "hltIter3IterL3MuonPixelSeeds_iterL3OuterRef[nhltIter3IterL3MuonPixelSeeds]/I");
 
   ntuple_->Branch("nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks",             &nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_,             "nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks/I");
   ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir",          &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir_,          "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
@@ -1065,9 +1065,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_py",      &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_py_,      "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_py[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
   ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp",     &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp_,     "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
   ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge",  &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge_,  "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineGlobalRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineGlobalRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineGlobalRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineInnerRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineInnerRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineInnerRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineTunePRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineTunePRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineTunePRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
+  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
+  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
+  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
 
   ntuple_->Branch("nhltIter2IterL3FromL1MuonPixelSeeds",             &nhltIter2IterL3FromL1MuonPixelSeeds_,             "nhltIter2IterL3FromL1MuonPixelSeeds/I");
   ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_dir",          &hltIter2IterL3FromL1MuonPixelSeeds_dir_,          "hltIter2IterL3FromL1MuonPixelSeeds_dir[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
@@ -1097,9 +1097,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_py",      &hltIter2IterL3FromL1MuonPixelSeeds_tsos_py_,      "hltIter2IterL3FromL1MuonPixelSeeds_tsos_py[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
   ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp",     &hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp_,     "hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
   ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge",  &hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge_,  "hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_offlineGlobalRef", &hltIter2IterL3FromL1MuonPixelSeeds_offlineGlobalRef_, "hltIter2IterL3FromL1MuonPixelSeeds_offlineGlobalRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_offlineInnerRef", &hltIter2IterL3FromL1MuonPixelSeeds_offlineInnerRef_, "hltIter2IterL3FromL1MuonPixelSeeds_offlineInnerRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_offlineTunePRef", &hltIter2IterL3FromL1MuonPixelSeeds_offlineTunePRef_, "hltIter2IterL3FromL1MuonPixelSeeds_offlineTunePRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef", &hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_, "hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef", &hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef_, "hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef", &hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef_, "hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
 
   ntuple_->Branch("nhltIter3IterL3FromL1MuonPixelSeeds",             &nhltIter3IterL3FromL1MuonPixelSeeds_,             "nhltIter3IterL3FromL1MuonPixelSeeds/I");
   ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_dir",          &hltIter3IterL3FromL1MuonPixelSeeds_dir_,          "hltIter3IterL3FromL1MuonPixelSeeds_dir[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
@@ -1129,9 +1129,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_py",      &hltIter3IterL3FromL1MuonPixelSeeds_tsos_py_,      "hltIter3IterL3FromL1MuonPixelSeeds_tsos_py[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
   ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp",     &hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp_,     "hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
   ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge",  &hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge_,  "hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_offlineGlobalRef", &hltIter3IterL3FromL1MuonPixelSeeds_offlineGlobalRef_, "hltIter3IterL3FromL1MuonPixelSeeds_offlineGlobalRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_offlineInnerRef", &hltIter3IterL3FromL1MuonPixelSeeds_offlineInnerRef_, "hltIter3IterL3FromL1MuonPixelSeeds_offlineInnerRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_offlineTunePRef", &hltIter3IterL3FromL1MuonPixelSeeds_offlineTunePRef_, "hltIter3IterL3FromL1MuonPixelSeeds_offlineTunePRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
+  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
@@ -1147,7 +1147,6 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
     int _nMuon = 0;
     for(std::vector<reco::Muon>::const_iterator mu=h_offlineMuon->begin(); mu!=h_offlineMuon->end(); ++mu)
     {
-      unsigned int dist = std::distance(h_offlineMuon->begin(),mu);
       muon_pt_[_nMuon]  = mu->pt();
       muon_eta_[_nMuon] = mu->eta();
       muon_phi_[_nMuon] = mu->phi();
@@ -1200,10 +1199,6 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
         muon_nTrackerLayer_global_[_nMuon] = globalTrkHit.trackerLayersWithMeasurement();
         muon_nPixelHit_global_[_nMuon]     = globalTrkHit.numberOfValidPixelHits();
         muon_nMuonHit_global_[_nMuon]      = globalTrkHit.numberOfValidMuonHits();
-
-        const PTrajectoryStateOnDet tmpseed = globalTrk->seedRef()->startingState();
-        tmpTSOD tsod(tmpseed);
-        MuonIterSeedMap.insert(make_pair(tsod,dist));
       }
 
       reco::TrackRef innerTrk = mu->innerTrack();
@@ -1215,10 +1210,6 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
         muon_nTrackerHit_inner_[_nMuon]   = innerTrkHit.numberOfValidTrackerHits();
         muon_nTrackerLayer_inner_[_nMuon] = innerTrkHit.trackerLayersWithMeasurement();
         muon_nPixelHit_inner_[_nMuon]     = innerTrkHit.numberOfValidPixelHits();
-
-        const PTrajectoryStateOnDet tmpseed = innerTrk->seedRef()->startingState();
-        tmpTSOD tsod(tmpseed);
-        MuonIterSeedMap.insert(make_pair(tsod,dist));
       }
 
       reco::TrackRef tunePTrk = mu->tunePMuonBestTrack();
@@ -1226,10 +1217,6 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       {
         muon_pt_tuneP_[_nMuon]      = tunePTrk->pt();
         muon_ptError_tuneP_[_nMuon] = tunePTrk->ptError();
-
-        const PTrajectoryStateOnDet tmpseed = tunePTrk->seedRef()->startingState();
-        tmpTSOD tsod(tmpseed);
-        MuonIterSeedMap.insert(make_pair(tsod,dist));
       }
 
       muon_dxyVTX_best_[_nMuon] = mu->muonBestTrack()->dxy( pv.position() );
@@ -1659,6 +1646,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
     int _nIterL3Muon = 0;
     for( auto i=0U; i<h_iterL3Muon->size(); ++i )
     {
+      unsigned int dist = i;
       const auto& muon(h_iterL3Muon->at(i));
 
       iterL3Muon_pt_[_nIterL3Muon]     = muon.pt();
@@ -1669,6 +1657,30 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
       if( muon.isGlobalMuon() )     iterL3Muon_isGLB_[_nIterL3Muon] = 1;
       if( muon.isStandAloneMuon() ) iterL3Muon_isSTA_[_nIterL3Muon] = 1;
       if( muon.isTrackerMuon() )    iterL3Muon_isTRK_[_nIterL3Muon] = 1;
+
+      reco::TrackRef globalTrk = muon.globalTrack();
+      if( globalTrk.isNonnull() )
+      {
+        const PTrajectoryStateOnDet tmpseed = globalTrk->seedRef()->startingState();
+        tmpTSOD tsod(tmpseed);
+        MuonIterSeedMap.insert(make_pair(tsod,dist));
+      }
+
+      reco::TrackRef innerTrk = muon.innerTrack();
+      if( innerTrk.isNonnull() )
+      {
+        const PTrajectoryStateOnDet tmpseed = innerTrk->seedRef()->startingState();
+        tmpTSOD tsod(tmpseed);
+        MuonIterSeedMap.insert(make_pair(tsod,dist));
+      }
+
+      reco::TrackRef outerTrk = muon.outerTrack();
+      if( outerTrk.isNonnull() )
+      {
+        const PTrajectoryStateOnDet tmpseed = outerTrk->seedRef()->startingState();
+        tmpTSOD tsod(tmpseed);
+        MuonIterSeedMap.insert(make_pair(tsod,dist));
+      }
 
       _nIterL3Muon++;
     } // -- end of muon iteration
@@ -1723,9 +1735,9 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIterL3OISeedsFromL2Muons_offlineGlobalRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIterL3OISeedsFromL2Muons_offlineInnerRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIterL3OISeedsFromL2Muons_offlineTunePRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIterL3OISeedsFromL2Muons_iterL3GlobalRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIterL3OISeedsFromL2Muons_iterL3InnerRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIterL3OISeedsFromL2Muons_iterL3OuterRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
 
       _nhltIterL3OISeedsFromL2Muons++;
     } // -- end of seed iteration
@@ -1778,9 +1790,9 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineGlobalRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineInnerRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_offlineTunePRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
 
       _nhltIter0IterL3MuonPixelSeedsFromPixelTracks++;
     } // -- end of seed iteration
@@ -1832,9 +1844,9 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter2IterL3MuonPixelSeeds_offlineGlobalRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter2IterL3MuonPixelSeeds_offlineInnerRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter2IterL3MuonPixelSeeds_offlineTunePRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter2IterL3MuonPixelSeeds_iterL3InnerRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter2IterL3MuonPixelSeeds_iterL3OuterRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
 
       _nhltIter2IterL3MuonPixelSeeds++;
     } // -- end of seed iteration
@@ -1886,9 +1898,9 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter3IterL3MuonPixelSeeds_offlineGlobalRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter3IterL3MuonPixelSeeds_offlineInnerRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter3IterL3MuonPixelSeeds_offlineTunePRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter3IterL3MuonPixelSeeds_iterL3InnerRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter3IterL3MuonPixelSeeds_iterL3OuterRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
 
       _nhltIter3IterL3MuonPixelSeeds++;
     } // -- end of seed iteration
@@ -1940,9 +1952,9 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineGlobalRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineInnerRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_offlineTunePRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
 
       _nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks++;
     } // -- end of seed iteration
@@ -1994,9 +2006,9 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter2IterL3FromL1MuonPixelSeeds_offlineGlobalRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter2IterL3FromL1MuonPixelSeeds_offlineInnerRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter2IterL3FromL1MuonPixelSeeds_offlineTunePRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
 
       _nhltIter2IterL3FromL1MuonPixelSeeds++;
     } // -- end of seed iteration
@@ -2048,9 +2060,9 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter3IterL3FromL1MuonPixelSeeds_offlineGlobalRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter3IterL3FromL1MuonPixelSeeds_offlineInnerRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter3IterL3FromL1MuonPixelSeeds_offlineTunePRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
 
       _nhltIter3IterL3FromL1MuonPixelSeeds++;
     } // -- end of seed iteration
