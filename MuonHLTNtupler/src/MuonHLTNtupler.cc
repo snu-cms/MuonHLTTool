@@ -88,6 +88,15 @@ t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_ ( consumes< TrajectorySeedC
 t_hltIter2IterL3FromL1MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonPixelSeeds")) ),
 t_hltIter3IterL3FromL1MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonPixelSeeds")) ),
 
+t_hltIterL3OIMuonTrack_    ( consumes< std::vector<reco::Track> >                  (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OIMuonTrack"    )) ),
+t_hltIter0IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonTrack"    )) ),
+t_hltIter2IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3MuonTrack"    )) ),
+t_hltIter3IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3MuonTrack"    )) ),
+t_hltIter0IterL3FromL1MuonTrack_    ( consumes< std::vector<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3FromL1MuonTrack"    )) ),
+t_hltIter2IterL3FromL1MuonTrack_    ( consumes< std::vector<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonTrack"    )) ),
+t_hltIter3IterL3FromL1MuonTrack_    ( consumes< std::vector<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonTrack"    )) ),
+
+
 t_lumiScaler_        ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("lumiScaler"        )) ),
 t_offlineLumiScaler_ ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("offlineLumiScaler" )) ),
 t_PUSummaryInfo_     ( consumes< std::vector<PileupSummaryInfo> >         (iConfig.getUntrackedParameter<edm::InputTag>("PUSummaryInfo"     )) ),
@@ -701,6 +710,69 @@ void MuonHLTNtupler::Init()
     hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[i] = -999;
     hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[i] = -999;
   }
+
+  nhltIterL3OIMuonTrack_ = 0;
+  for( int i=0; i<arrSize_; i++)
+  {
+    hltIterL3OIMuonTrack_pt_[i] = -999;
+    hltIterL3OIMuonTrack_eta_[i] = -999;
+    hltIterL3OIMuonTrack_phi_[i] = -999;
+    hltIterL3OIMuonTrack_charge_[i] = -999;
+  }
+
+  nhltIter0IterL3MuonTrack_ = 0;
+  for( int i=0; i<arrSize_; i++)
+  {
+    hltIter0IterL3MuonTrack_pt_[i] = -999;
+    hltIter0IterL3MuonTrack_eta_[i] = -999;
+    hltIter0IterL3MuonTrack_phi_[i] = -999;
+    hltIter0IterL3MuonTrack_charge_[i] = -999;
+  }
+
+  nhltIter2IterL3MuonTrack_ = 0;
+  for( int i=0; i<arrSize_; i++)
+  {
+    hltIter2IterL3MuonTrack_pt_[i] = -999;
+    hltIter2IterL3MuonTrack_eta_[i] = -999;
+    hltIter2IterL3MuonTrack_phi_[i] = -999;
+    hltIter2IterL3MuonTrack_charge_[i] = -999;
+  }
+
+  nhltIter0IterL3MuonTrack_ = 0;
+  for( int i=0; i<arrSize_; i++)
+  {
+    hltIter3IterL3MuonTrack_pt_[i] = -999;
+    hltIter3IterL3MuonTrack_eta_[i] = -999;
+    hltIter3IterL3MuonTrack_phi_[i] = -999;
+    hltIter3IterL3MuonTrack_charge_[i] = -999;
+  }
+
+  hltIter0IterL3FromL1MuonTrack = 0;
+  for( int i=0; i<arrSize_; i++)
+  {
+    hltIter0IterL3FromL1MuonTrack_pt_[i] = -999;
+    hltIter0IterL3FromL1MuonTrack_eta_[i] = -999;
+    hltIter0IterL3FromL1MuonTrack_phi_[i] = -999;
+    hltIter0IterL3FromL1MuonTrack_charge_[i] = -999;
+  }
+
+  hltIter2IterL3FromL1MuonTrack = 0;
+  for( int i=0; i<arrSize_; i++)
+  {
+    hltIter2IterL3FromL1MuonTrack_pt_[i] = -999;
+    hltIter2IterL3FromL1MuonTrack_eta_[i] = -999;
+    hltIter2IterL3FromL1MuonTrack_phi_[i] = -999;
+    hltIter2IterL3FromL1MuonTrack_charge_[i] = -999;
+  }
+
+  hltIter3IterL3FromL1MuonTrack = 0;
+  for( int i=0; i<arrSize_; i++)
+  {
+    hltIter3IterL3FromL1MuonTrack_pt_[i] = -999;
+    hltIter3IterL3FromL1MuonTrack_eta_[i] = -999;
+    hltIter3IterL3FromL1MuonTrack_phi_[i] = -999;
+    hltIter3IterL3FromL1MuonTrack_charge_[i] = -999;
+  }
 }
 
 void MuonHLTNtupler::Make_Branch()
@@ -1132,6 +1204,42 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
   ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
   ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
+
+  ntuple_->Branch("nhltIterL3OIMuonTrack",      &nhltIterL3OIMuonTrack_,       "nhltIterL3OIMuonTrack/I");
+  ntuple_->Branch("hltIterL3OIMuonTrack_pt",     &hltIterL3OIMuonTrack_pt_,     "hltIterL3OIMuonTrack_pt[nhltIterL3OIMuonTrack]/D");
+  ntuple_->Branch("hltIterL3OIMuonTrack_eta",    &hltIterL3OIMuonTrack_eta_,    "hltIterL3OIMuonTrack_eta[nhltIterL3OIMuonTrack]/D");
+  ntuple_->Branch("hltIterL3OIMuonTrack_phi",    &hltIterL3OIMuonTrack_phi_,    "hltIterL3OIMuonTrack_phi[nhltIterL3OIMuonTrack]/D");
+  ntuple_->Branch("hltIterL3OIMuonTrack_charge", &hltIterL3OIMuonTrack_charge_, "hltIterL3OIMuonTrack_charge[nhltIterL3OIMuonTrack]/D");
+  ntuple_->Branch("nhltIter0IterL3MuonTrack",      &nhltIter0IterL3MuonTrack_,       "nhltIter0IterL3MuonTrack/I");
+  ntuple_->Branch("hltIter0IterL3MuonTrack_pt",     &hltIter0IterL3MuonTrack_pt_,     "hltIter0IterL3MuonTrack_pt[nhltIter0IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter0IterL3MuonTrack_eta",    &hltIter0IterL3MuonTrack_eta_,    "hltIter0IterL3MuonTrack_eta[nhltIter0IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter0IterL3MuonTrack_phi",    &hltIter0IterL3MuonTrack_phi_,    "hltIter0IterL3MuonTrack_phi[nhltIter0IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter0IterL3MuonTrack_charge", &hltIter0IterL3MuonTrack_charge_, "hltIter0IterL3MuonTrack_charge[nhltIter0IterL3MuonTrack]/D");
+  ntuple_->Branch("nhltIter2IterL3MuonTrack",      &nhltIter2IterL3MuonTrack_,       "nhltIter2IterL3MuonTrack/I");
+  ntuple_->Branch("hltIter2IterL3MuonTrack_pt",     &hltIter2IterL3MuonTrack_pt_,     "hltIter2IterL3MuonTrack_pt[nhltIter2IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter2IterL3MuonTrack_eta",    &hltIter2IterL3MuonTrack_eta_,    "hltIter2IterL3MuonTrack_eta[nhltIter2IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter2IterL3MuonTrack_phi",    &hltIter2IterL3MuonTrack_phi_,    "hltIter2IterL3MuonTrack_phi[nhltIter2IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter2IterL3MuonTrack_charge", &hltIter2IterL3MuonTrack_charge_, "hltIter2IterL3MuonTrack_charge[nhltIter2IterL3MuonTrack]/D");
+  ntuple_->Branch("nhltIter3IterL3MuonTrack",      &nhltIter3IterL3MuonTrack_,       "nhltIter3IterL3MuonTrack/I");
+  ntuple_->Branch("hltIter3IterL3MuonTrack_pt",     &hltIter3IterL3MuonTrack_pt_,     "hltIter3IterL3MuonTrack_pt[nhltIter3IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter3IterL3MuonTrack_eta",    &hltIter3IterL3MuonTrack_eta_,    "hltIter3IterL3MuonTrack_eta[nhltIter3IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter3IterL3MuonTrack_phi",    &hltIter3IterL3MuonTrack_phi_,    "hltIter3IterL3MuonTrack_phi[nhltIter3IterL3MuonTrack]/D");
+  ntuple_->Branch("hltIter3IterL3MuonTrack_charge", &hltIter3IterL3MuonTrack_charge_, "hltIter3IterL3MuonTrack_charge[nhltIter3IterL3MuonTrack]/D");
+  ntuple_->Branch("nhltIter0IterL3FromL1MuonTrack",      &nhltIter0IterL3FromL1MuonTrack_,       "nhltIter0IterL3FromL1MuonTrack/I");
+  ntuple_->Branch("hltIter0IterL3FromL1MuonTrack_pt",     &hltIter0IterL3FromL1MuonTrack_pt_,     "hltIter0IterL3FromL1MuonTrack_pt[nhltIter0IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter0IterL3FromL1MuonTrack_eta",    &hltIter0IterL3FromL1MuonTrack_eta_,    "hltIter0IterL3FromL1MuonTrack_eta[nhltIter0IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter0IterL3FromL1MuonTrack_phi",    &hltIter0IterL3FromL1MuonTrack_phi_,    "hltIter0IterL3FromL1MuonTrack_phi[nhltIter0IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter0IterL3FromL1MuonTrack_charge", &hltIter0IterL3FromL1MuonTrack_charge_, "hltIter0IterL3FromL1MuonTrack_charge[nhltIter0IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("nhltIter2IterL3FromL1MuonTrack",      &nhltIter2IterL3FromL1MuonTrack_,       "nhltIter2IterL3FromL1MuonTrack/I");
+  ntuple_->Branch("hltIter2IterL3FromL1MuonTrack_pt",     &hltIter2IterL3FromL1MuonTrack_pt_,     "hltIter2IterL3FromL1MuonTrack_pt[nhltIter2IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter2IterL3FromL1MuonTrack_eta",    &hltIter2IterL3FromL1MuonTrack_eta_,    "hltIter2IterL3FromL1MuonTrack_eta[nhltIter2IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter2IterL3FromL1MuonTrack_phi",    &hltIter2IterL3FromL1MuonTrack_phi_,    "hltIter2IterL3FromL1MuonTrack_phi[nhltIter2IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter2IterL3FromL1MuonTrack_charge", &hltIter2IterL3FromL1MuonTrack_charge_, "hltIter2IterL3FromL1MuonTrack_charge[nhltIter2IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("nhltIter3IterL3FromL1MuonTrack",      &nhltIter3IterL3FromL1MuonTrack_,       "nhltIter3IterL3FromL1MuonTrack/I");
+  ntuple_->Branch("hltIter3IterL3FromL1MuonTrack_pt",     &hltIter3IterL3FromL1MuonTrack_pt_,     "hltIter3IterL3FromL1MuonTrack_pt[nhltIter3IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter3IterL3FromL1MuonTrack_eta",    &hltIter3IterL3FromL1MuonTrack_eta_,    "hltIter3IterL3FromL1MuonTrack_eta[nhltIter3IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter3IterL3FromL1MuonTrack_phi",    &hltIter3IterL3FromL1MuonTrack_phi_,    "hltIter3IterL3FromL1MuonTrack_phi[nhltIter3IterL3FromL1MuonTrack]/D");
+  ntuple_->Branch("hltIter3IterL3FromL1MuonTrack_charge", &hltIter3IterL3FromL1MuonTrack_charge_, "hltIter3IterL3FromL1MuonTrack_charge[nhltIter3IterL3FromL1MuonTrack]/D");
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
@@ -1491,6 +1599,21 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   ////////////////////
   // -- IterL3OI -- //
   ////////////////////
+  edm::Handle< std::vector<reco::Track> > h_hltIterL3OIMuonTrack;
+  if( iEvent.getByToken( t_hltIterL3OIMuonTrack_, h_hltIterL3OIMuonTrack ) )
+  {
+    int _nhltIterL3OIMuonTrack = 0;
+    for( unsigned int i=0; i<h_hltIterL3OIMuonTrack->size(); i++)
+    {
+      hltIterL3OIMuonTrack_pt_[_nhltIterL3OIMuonTrack]     = h_hltIterL3OIMuonTrack->at(i).pt();
+      hltIterL3OIMuonTrack_eta_[_nhltIterL3OIMuonTrack]    = h_hltIterL3OIMuonTrack->at(i).eta();
+      hltIterL3OIMuonTrack_phi_[_nhltIterL3OIMuonTrack]    = h_hltIterL3OIMuonTrack->at(i).phi();
+      hltIterL3OIMuonTrack_charge_[_nhltIterL3OIMuonTrack] = h_hltIterL3OIMuonTrack->at(i).charge();
+      _nhltIterL3OIMuonTrack++;
+    }
+    nhltIterL3OIMuonTrack_ = _nhltIterL3OIMuonTrack;
+  }
+
   edm::Handle< std::vector<reco::MuonTrackLinks> > h_iterL3OI;
   if( iEvent.getByToken( t_iterL3OI_, h_iterL3OI ) )
   {
@@ -1526,6 +1649,49 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   //////////////////////////
   // -- IterL3IOFromL2 -- //
   //////////////////////////
+  edm::Handle< std::vector<reco::Track> > h_hltIter0IterL3MuonTrack;
+  if( iEvent.getByToken( t_hltIter0IterL3MuonTrack_, h_hltIter0IterL3MuonTrack ) )
+  {
+    int _nhltIter0IterL3MuonTrack = 0;
+    for( unsigned int i=0; i<h_hltIter0IterL3MuonTrack->size(); i++)
+    {
+      hltIter0IterL3MuonTrack_pt_[_nhltIter0IterL3MuonTrack]     = h_hltIter0IterL3MuonTrack->at(i).pt();
+      hltIter0IterL3MuonTrack_eta_[_nhltIter0IterL3MuonTrack]    = h_hltIter0IterL3MuonTrack->at(i).eta();
+      hltIter0IterL3MuonTrack_phi_[_nhltIter0IterL3MuonTrack]    = h_hltIter0IterL3MuonTrack->at(i).phi();
+      hltIter0IterL3MuonTrack_charge_[_nhltIter0IterL3MuonTrack] = h_hltIter0IterL3MuonTrack->at(i).charge();
+      _nhltIter0IterL3MuonTrack++;
+    }
+    nhltIter0IterL3MuonTrack_ = _nhltIter0IterL3MuonTrack;
+  }
+  edm::Handle< std::vector<reco::Track> > h_hltIter2IterL3MuonTrack;
+  if( iEvent.getByToken( t_hltIter2IterL3MuonTrack_, h_hltIter2IterL3MuonTrack ) )
+  {
+    int _nhltIter2IterL3MuonTrack = 0;
+    for( unsigned int i=0; i<h_hltIter2IterL3MuonTrack->size(); i++)
+    {
+      hltIter2IterL3MuonTrack_pt_[_nhltIter2IterL3MuonTrack]     = h_hltIter2IterL3MuonTrack->at(i).pt();
+      hltIter2IterL3MuonTrack_eta_[_nhltIter2IterL3MuonTrack]    = h_hltIter2IterL3MuonTrack->at(i).eta();
+      hltIter2IterL3MuonTrack_phi_[_nhltIter2IterL3MuonTrack]    = h_hltIter2IterL3MuonTrack->at(i).phi();
+      hltIter2IterL3MuonTrack_charge_[_nhltIter2IterL3MuonTrack] = h_hltIter2IterL3MuonTrack->at(i).charge();
+      _nhltIter2IterL3MuonTrack++;
+    }
+    nhltIter2IterL3MuonTrack_ = _nhltIter2IterL3MuonTrack;
+  }
+  edm::Handle< std::vector<reco::Track> > h_hltIter3IterL3MuonTrack;
+  if( iEvent.getByToken( t_hltIter3IterL3MuonTrack_, h_hltIter3IterL3MuonTrack ) )
+  {
+    int _nhltIter3IterL3MuonTrack = 0;
+    for( unsigned int i=0; i<h_hltIter3IterL3MuonTrack->size(); i++)
+    {
+      hltIter3IterL3MuonTrack_pt_[_nhltIter3IterL3MuonTrack]     = h_hltIter3IterL3MuonTrack->at(i).pt();
+      hltIter3IterL3MuonTrack_eta_[_nhltIter3IterL3MuonTrack]    = h_hltIter3IterL3MuonTrack->at(i).eta();
+      hltIter3IterL3MuonTrack_phi_[_nhltIter3IterL3MuonTrack]    = h_hltIter3IterL3MuonTrack->at(i).phi();
+      hltIter3IterL3MuonTrack_charge_[_nhltIter3IterL3MuonTrack] = h_hltIter3IterL3MuonTrack->at(i).charge();
+      _nhltIter3IterL3MuonTrack++;
+    }
+    nhltIter3IterL3MuonTrack_ = _nhltIter3IterL3MuonTrack;
+  }
+        
   edm::Handle< std::vector<reco::MuonTrackLinks> > h_iterL3IOFromL2;
   if( iEvent.getByToken( t_iterL3IOFromL2_, h_iterL3IOFromL2 ) )
   {
@@ -1596,6 +1762,49 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   //////////////////////////
   // -- IterL3IOFromL1 -- //
   //////////////////////////
+  edm::Handle< std::vector<reco::Track> > h_hltIter0IterL3FromL1MuonTrack;
+  if( iEvent.getByToken( t_hltIter0IterL3FromL1MuonTrack_, h_hltIter0IterL3FromL1MuonTrack ) )
+  {
+    int _nhltIter0IterL3FromL1MuonTrack = 0;
+    for( unsigned int i=0; i<h_hltIter0IterL3FromL1MuonTrack->size(); i++)
+    {
+      hltIter0IterL3FromL1MuonTrack_pt_[_nhltIter0IterL3FromL1MuonTrack]     = h_hltIter0IterL3FromL1MuonTrack->at(i).pt();
+      hltIter0IterL3FromL1MuonTrack_eta_[_nhltIter0IterL3FromL1MuonTrack]    = h_hltIter0IterL3FromL1MuonTrack->at(i).eta();
+      hltIter0IterL3FromL1MuonTrack_phi_[_nhltIter0IterL3FromL1MuonTrack]    = h_hltIter0IterL3FromL1MuonTrack->at(i).phi();
+      hltIter0IterL3FromL1MuonTrack_charge_[_nhltIter0IterL3FromL1MuonTrack] = h_hltIter0IterL3FromL1MuonTrack->at(i).charge();
+      _nhltIter0IterL3FromL1MuonTrack++;
+    }
+    nhltIter0IterL3FromL1MuonTrack_ = _nhltIter0IterL3FromL1MuonTrack;
+  }
+  edm::Handle< std::vector<reco::Track> > h_hltIter2IterL3FromL1MuonTrack;
+  if( iEvent.getByToken( t_hltIter2IterL3FromL1MuonTrack_, h_hltIter2IterL3FromL1MuonTrack ) )
+  {
+    int _nhltIter2IterL3FromL1MuonTrack = 0;
+    for( unsigned int i=0; i<h_hltIter2IterL3FromL1MuonTrack->size(); i++)
+    {
+      hltIter2IterL3FromL1MuonTrack_pt_[_nhltIter2IterL3FromL1MuonTrack]     = h_hltIter2IterL3FromL1MuonTrack->at(i).pt();
+      hltIter2IterL3FromL1MuonTrack_eta_[_nhltIter2IterL3FromL1MuonTrack]    = h_hltIter2IterL3FromL1MuonTrack->at(i).eta();
+      hltIter2IterL3FromL1MuonTrack_phi_[_nhltIter2IterL3FromL1MuonTrack]    = h_hltIter2IterL3FromL1MuonTrack->at(i).phi();
+      hltIter2IterL3FromL1MuonTrack_charge_[_nhltIter2IterL3FromL1MuonTrack] = h_hltIter2IterL3FromL1MuonTrack->at(i).charge();
+      _nhltIter2IterL3FromL1MuonTrack++;
+    }
+    nhltIter2IterL3FromL1MuonTrack_ = _nhltIter2IterL3FromL1MuonTrack;
+  }
+  edm::Handle< std::vector<reco::Track> > h_hltIter3IterL3FromL1MuonTrack;
+  if( iEvent.getByToken( t_hltIter3IterL3FromL1MuonTrack_, h_hltIter3IterL3FromL1MuonTrack ) )
+  {
+    int _nhltIter3IterL3FromL1MuonTrack = 0;
+    for( unsigned int i=0; i<h_hltIter3IterL3FromL1MuonTrack->size(); i++)
+    {
+      hltIter3IterL3FromL1MuonTrack_pt_[_nhltIter3IterL3FromL1MuonTrack]     = h_hltIter3IterL3FromL1MuonTrack->at(i).pt();
+      hltIter3IterL3FromL1MuonTrack_eta_[_nhltIter3IterL3FromL1MuonTrack]    = h_hltIter3IterL3FromL1MuonTrack->at(i).eta();
+      hltIter3IterL3FromL1MuonTrack_phi_[_nhltIter3IterL3FromL1MuonTrack]    = h_hltIter3IterL3FromL1MuonTrack->at(i).phi();
+      hltIter3IterL3FromL1MuonTrack_charge_[_nhltIter3IterL3FromL1MuonTrack] = h_hltIter3IterL3FromL1MuonTrack->at(i).charge();
+      _nhltIter3IterL3FromL1MuonTrack++;
+    }
+    nhltIter3IterL3FromL1MuonTrack_ = _nhltIter3IterL3FromL1MuonTrack;
+  }
+  
   edm::Handle< std::vector<reco::Track> > h_iterL3IOFromL1;
   if( iEvent.getByToken( t_iterL3IOFromL1_, h_iterL3IOFromL1 ) )
   {

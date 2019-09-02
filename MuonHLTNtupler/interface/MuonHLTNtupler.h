@@ -111,6 +111,14 @@ private:
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter2IterL3FromL1MuonPixelSeeds_;
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter3IterL3FromL1MuonPixelSeeds_;
 
+  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIterL3OIMuonTrack_;
+  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter0IterL3MuonTrack_;
+  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter2IterL3MuonTrack_;
+  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter3IterL3MuonTrack_;
+  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter0IterL3FromL1MuonTrack_;
+  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter2IterL3FromL1MuonTrack_;
+  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter3IterL3FromL1MuonTrack_;
+
   edm::EDGetTokenT< LumiScalersCollection >                  t_lumiScaler_;
   edm::EDGetTokenT< LumiScalersCollection >                  t_offlineLumiScaler_;
   edm::EDGetTokenT< std::vector<PileupSummaryInfo> >         t_PUSummaryInfo_;
@@ -332,6 +340,12 @@ private:
   double TkMuon_trkPt_[arrSize_];
 
   // -- iterL3 object from outside-in step
+  int    nhltIterL3OIMuonTrack_;
+  double hltIterL3OIMuonTrack_pt_[arrSize_];
+  double hltIterL3OIMuonTrack_eta_[arrSize_];
+  double hltIterL3OIMuonTrack_phi_[arrSize_];
+  double hltIterL3OIMuonTrack_charge_[arrSize_];
+
   int    nIterL3OI_;
   double iterL3OI_inner_pt_[arrSize_];
   double iterL3OI_inner_eta_[arrSize_];
@@ -347,6 +361,22 @@ private:
   double iterL3OI_global_charge_[arrSize_];
 
   // -- iterL3 object from inside-out step (from L2)
+  int    nhltIter0IterL3MuonTrack_;
+  double hltIter0IterL3MuonTrack_pt_[arrSize_];
+  double hltIter0IterL3MuonTrack_eta_[arrSize_];
+  double hltIter0IterL3MuonTrack_phi_[arrSize_];
+  double hltIter0IterL3MuonTrack_charge_[arrSize_];
+  int    nhltIter2IterL3MuonTrack_;
+  double hltIter2IterL3MuonTrack_pt_[arrSize_];
+  double hltIter2IterL3MuonTrack_eta_[arrSize_];
+  double hltIter2IterL3MuonTrack_phi_[arrSize_];
+  double hltIter2IterL3MuonTrack_charge_[arrSize_];
+  int    nhltIter3IterL3MuonTrack_;
+  double hltIter3IterL3MuonTrack_pt_[arrSize_];
+  double hltIter3IterL3MuonTrack_eta_[arrSize_];
+  double hltIter3IterL3MuonTrack_phi_[arrSize_];
+  double hltIter3IterL3MuonTrack_charge_[arrSize_];
+
   int    nIterL3IOFromL2_;
   double iterL3IOFromL2_inner_pt_[arrSize_];
   double iterL3IOFromL2_inner_eta_[arrSize_];
@@ -377,6 +407,22 @@ private:
   double iterL3FromL2_global_charge_[arrSize_];
 
   // -- iterL3 object from inside-out step (from L1)
+  int    nhltIter0IterL3FromL1MuonTrack_;
+  double hltIter0IterL3FromL1MuonTrack_pt_[arrSize_];
+  double hltIter0IterL3FromL1MuonTrack_eta_[arrSize_];
+  double hltIter0IterL3FromL1MuonTrack_phi_[arrSize_];
+  double hltIter0IterL3FromL1MuonTrack_charge_[arrSize_];
+  int    nhltIter2IterL3FromL1MuonTrack_;
+  double hltIter2IterL3FromL1MuonTrack_pt_[arrSize_];
+  double hltIter2IterL3FromL1MuonTrack_eta_[arrSize_];
+  double hltIter2IterL3FromL1MuonTrack_phi_[arrSize_];
+  double hltIter2IterL3FromL1MuonTrack_charge_[arrSize_];
+  int    nhltIter3IterL3FromL1MuonTrack_;
+  double hltIter3IterL3FromL1MuonTrack_pt_[arrSize_];
+  double hltIter3IterL3FromL1MuonTrack_eta_[arrSize_];
+  double hltIter3IterL3FromL1MuonTrack_phi_[arrSize_];
+  double hltIter3IterL3FromL1MuonTrack_charge_[arrSize_];
+
   int    nIterL3IOFromL1_;
   double iterL3IOFromL1_pt_[arrSize_];
   double iterL3IOFromL1_eta_[arrSize_];
