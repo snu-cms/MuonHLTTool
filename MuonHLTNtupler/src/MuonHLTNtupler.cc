@@ -738,7 +738,7 @@ void MuonHLTNtupler::Init()
     hltIter2IterL3MuonTrack_charge_[i] = -999;
   }
 
-  nhltIter0IterL3MuonTrack_ = 0;
+  nhltIter3IterL3MuonTrack_ = 0;
   for( int i=0; i<arrSize_; i++)
   {
     hltIter3IterL3MuonTrack_pt_[i] = -999;
@@ -747,7 +747,7 @@ void MuonHLTNtupler::Init()
     hltIter3IterL3MuonTrack_charge_[i] = -999;
   }
 
-  hltIter0IterL3FromL1MuonTrack = 0;
+  nhltIter0IterL3FromL1MuonTrack_ = 0;
   for( int i=0; i<arrSize_; i++)
   {
     hltIter0IterL3FromL1MuonTrack_pt_[i] = -999;
@@ -756,7 +756,7 @@ void MuonHLTNtupler::Init()
     hltIter0IterL3FromL1MuonTrack_charge_[i] = -999;
   }
 
-  hltIter2IterL3FromL1MuonTrack = 0;
+  nhltIter2IterL3FromL1MuonTrack_ = 0;
   for( int i=0; i<arrSize_; i++)
   {
     hltIter2IterL3FromL1MuonTrack_pt_[i] = -999;
@@ -765,7 +765,7 @@ void MuonHLTNtupler::Init()
     hltIter2IterL3FromL1MuonTrack_charge_[i] = -999;
   }
 
-  hltIter3IterL3FromL1MuonTrack = 0;
+  nhltIter3IterL3FromL1MuonTrack_ = 0;
   for( int i=0; i<arrSize_; i++)
   {
     hltIter3IterL3FromL1MuonTrack_pt_[i] = -999;
