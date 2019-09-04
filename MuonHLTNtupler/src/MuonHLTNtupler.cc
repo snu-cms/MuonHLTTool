@@ -266,7 +266,14 @@ void MuonHLTNtupler::Init()
   vec_myHLTObj_phi_.clear();
 
   MuonIterSeedMap.clear();
-
+  hltIterL3OIMuonTrackMap.clear();
+  hltIter0IterL3MuonTrackMap.clear();
+  hltIter2IterL3MuonTrackMap.clear();
+  hltIter3IterL3MuonTrackMap.clear();
+  hltIter0IterL3FromL1MuonTrackMap.clear();
+  hltIter2IterL3FromL1MuonTrackMap.clear();
+  hltIter3IterL3FromL1MuonTrackMap.clear();
+  iterL3IDpassed.clear();
 
   nMuon_ = 0;
   for( int i=0; i<arrSize_; i++)
@@ -450,6 +457,7 @@ void MuonHLTNtupler::Init()
   for (int i=0; i<arrSize_; ++i)
   {
     iterL3Muon_pt_[i] = -999;
+    iterL3Muon_innerPt_[i] = -999;
     iterL3Muon_eta_[i] = -999;
     iterL3Muon_phi_[i] = -999;
     iterL3Muon_charge_[i] = -999;
@@ -459,320 +467,21 @@ void MuonHLTNtupler::Init()
     iterL3Muon_isTRK_[i] = 0;
   }
 
-  nhltIterL3OISeedsFromL2Muons_ = 0;
-  for (int i=0; i<arrSize_; ++i)
-  {
-    hltIterL3OISeedsFromL2Muons_dir_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_detId_[i] = 1e9;
-    hltIterL3OISeedsFromL2Muons_tsos_pt_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_hasErr_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err0_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err1_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err2_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err3_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err4_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err5_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err6_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err7_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err8_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err9_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err10_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err11_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err12_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err13_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_err14_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_x_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_y_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_dxdz_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_dydz_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_px_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_py_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_pz_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_qbp_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_tsos_charge_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_iterL3GlobalRef_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_iterL3InnerRef_[i] = -999;
-    hltIterL3OISeedsFromL2Muons_iterL3OuterRef_[i] = -999;
-  }
+  SThltIterL3OISeedsFromL2Muons->clear();
+  SThltIter0IterL3MuonPixelSeedsFromPixelTracks->clear();
+  SThltIter2IterL3MuonPixelSeeds->clear();
+  SThltIter3IterL3MuonPixelSeeds->clear();
+  SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->clear();
+  SThltIter2IterL3FromL1MuonPixelSeeds->clear();
+  SThltIter3IterL3FromL1MuonPixelSeeds->clear();
 
-  nhltIter0IterL3MuonPixelSeedsFromPixelTracks_ = 0;
-  for (int i=0; i<arrSize_; ++i)
-  {
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_detId_[i] = 1e9;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pt_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_hasErr_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err0_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err1_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err2_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err3_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err4_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err5_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err6_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err7_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err8_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err9_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err10_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err11_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err12_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err13_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err14_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_x_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_y_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dxdz_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dydz_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_px_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_py_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pz_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[i] = -999;
-    hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[i] = -999;
-  }
-
-  nhltIter2IterL3MuonPixelSeeds_ = 0;
-  for (int i=0; i<arrSize_; ++i)
-  {
-    hltIter2IterL3MuonPixelSeeds_dir_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_detId_[i] = 1e9;
-    hltIter2IterL3MuonPixelSeeds_tsos_pt_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_hasErr_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err0_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err1_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err2_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err3_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err4_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err5_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err6_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err7_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err8_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err9_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err10_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err11_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err12_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err13_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_err14_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_x_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_y_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_dxdz_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_dydz_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_px_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_py_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_pz_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_qbp_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_tsos_charge_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_iterL3InnerRef_[i] = -999;
-    hltIter2IterL3MuonPixelSeeds_iterL3OuterRef_[i] = -999;
-  }
-
-  nhltIter3IterL3MuonPixelSeeds_ = 0;
-  for (int i=0; i<arrSize_; ++i)
-  {
-    hltIter3IterL3MuonPixelSeeds_dir_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_detId_[i] = 1e9;
-    hltIter3IterL3MuonPixelSeeds_tsos_pt_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_hasErr_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err0_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err1_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err2_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err3_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err4_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err5_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err6_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err7_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err8_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err9_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err10_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err11_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err12_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err13_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_err14_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_x_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_y_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_dxdz_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_dydz_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_px_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_py_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_pz_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_qbp_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_tsos_charge_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_iterL3InnerRef_[i] = -999;
-    hltIter3IterL3MuonPixelSeeds_iterL3OuterRef_[i] = -999;
-  }
-
-  nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_ = 0;
-  for (int i=0; i<arrSize_; ++i)
-  {
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_detId_[i] = 1e9;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pt_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_hasErr_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err0_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err1_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err2_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err3_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err4_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err5_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err6_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err7_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err8_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err9_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err10_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err11_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err12_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err13_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err14_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_x_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_y_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dxdz_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dydz_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_px_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_py_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pz_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[i] = -999;
-    hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[i] = -999;
-  }
-
-  nhltIter2IterL3FromL1MuonPixelSeeds_ = 0;
-  for (int i=0; i<arrSize_; ++i)
-  {
-    hltIter2IterL3FromL1MuonPixelSeeds_dir_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_detId_[i] = 1e9;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_pt_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_hasErr_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err0_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err1_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err2_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err3_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err4_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err5_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err6_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err7_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err8_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err9_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err10_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err11_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err12_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err13_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_err14_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_x_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_y_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_dxdz_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_dydz_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_px_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_py_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_pz_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[i] = -999;
-    hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[i] = -999;
-  }
-
-  nhltIter3IterL3FromL1MuonPixelSeeds_ = 0;
-  for (int i=0; i<arrSize_; ++i)
-  {
-    hltIter3IterL3FromL1MuonPixelSeeds_dir_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_detId_[i] = 1e9;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_pt_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_hasErr_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err0_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err1_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err2_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err3_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err4_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err5_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err6_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err7_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err8_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err9_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err10_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err11_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err12_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err13_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_err14_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_x_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_y_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_dxdz_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_dydz_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_px_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_py_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_pz_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[i] = -999;
-    hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[i] = -999;
-  }
-
-  nhltIterL3OIMuonTrack_ = 0;
-  for( int i=0; i<arrSize_; i++)
-  {
-    hltIterL3OIMuonTrack_pt_[i] = -999;
-    hltIterL3OIMuonTrack_eta_[i] = -999;
-    hltIterL3OIMuonTrack_phi_[i] = -999;
-    hltIterL3OIMuonTrack_charge_[i] = -999;
-  }
-
-  nhltIter0IterL3MuonTrack_ = 0;
-  for( int i=0; i<arrSize_; i++)
-  {
-    hltIter0IterL3MuonTrack_pt_[i] = -999;
-    hltIter0IterL3MuonTrack_eta_[i] = -999;
-    hltIter0IterL3MuonTrack_phi_[i] = -999;
-    hltIter0IterL3MuonTrack_charge_[i] = -999;
-  }
-
-  nhltIter2IterL3MuonTrack_ = 0;
-  for( int i=0; i<arrSize_; i++)
-  {
-    hltIter2IterL3MuonTrack_pt_[i] = -999;
-    hltIter2IterL3MuonTrack_eta_[i] = -999;
-    hltIter2IterL3MuonTrack_phi_[i] = -999;
-    hltIter2IterL3MuonTrack_charge_[i] = -999;
-  }
-
-  nhltIter3IterL3MuonTrack_ = 0;
-  for( int i=0; i<arrSize_; i++)
-  {
-    hltIter3IterL3MuonTrack_pt_[i] = -999;
-    hltIter3IterL3MuonTrack_eta_[i] = -999;
-    hltIter3IterL3MuonTrack_phi_[i] = -999;
-    hltIter3IterL3MuonTrack_charge_[i] = -999;
-  }
-
-  nhltIter0IterL3FromL1MuonTrack_ = 0;
-  for( int i=0; i<arrSize_; i++)
-  {
-    hltIter0IterL3FromL1MuonTrack_pt_[i] = -999;
-    hltIter0IterL3FromL1MuonTrack_eta_[i] = -999;
-    hltIter0IterL3FromL1MuonTrack_phi_[i] = -999;
-    hltIter0IterL3FromL1MuonTrack_charge_[i] = -999;
-  }
-
-  nhltIter2IterL3FromL1MuonTrack_ = 0;
-  for( int i=0; i<arrSize_; i++)
-  {
-    hltIter2IterL3FromL1MuonTrack_pt_[i] = -999;
-    hltIter2IterL3FromL1MuonTrack_eta_[i] = -999;
-    hltIter2IterL3FromL1MuonTrack_phi_[i] = -999;
-    hltIter2IterL3FromL1MuonTrack_charge_[i] = -999;
-  }
-
-  nhltIter3IterL3FromL1MuonTrack_ = 0;
-  for( int i=0; i<arrSize_; i++)
-  {
-    hltIter3IterL3FromL1MuonTrack_pt_[i] = -999;
-    hltIter3IterL3FromL1MuonTrack_eta_[i] = -999;
-    hltIter3IterL3FromL1MuonTrack_phi_[i] = -999;
-    hltIter3IterL3FromL1MuonTrack_charge_[i] = -999;
-  }
+  TThltIterL3OIMuonTrack->clear();
+  TThltIter0IterL3MuonTrack->clear();
+  TThltIter2IterL3MuonTrack->clear();
+  TThltIter3IterL3MuonTrack->clear();
+  TThltIter0IterL3FromL1MuonTrack->clear();
+  TThltIter2IterL3FromL1MuonTrack->clear();
+  TThltIter3IterL3FromL1MuonTrack->clear();
 }
 
 void MuonHLTNtupler::Make_Branch()
@@ -974,6 +683,7 @@ void MuonHLTNtupler::Make_Branch()
 
   ntuple_->Branch("nIterL3Muon",       &nIterL3Muon_,       "nIterL3Muon/I");
   ntuple_->Branch("iterL3Muon_pt",     &iterL3Muon_pt_,     "iterL3Muon_pt[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_innerPt", &iterL3Muon_innerPt_, "iterL3Muon_innerPt[nIterL3Muon]/D");
   ntuple_->Branch("iterL3Muon_eta",    &iterL3Muon_eta_,    "iterL3Muon_eta[nIterL3Muon]/D");
   ntuple_->Branch("iterL3Muon_phi",    &iterL3Muon_phi_,    "iterL3Muon_phi[nIterL3Muon]/D");
   ntuple_->Branch("iterL3Muon_charge", &iterL3Muon_charge_, "iterL3Muon_charge[nIterL3Muon]/D");
@@ -981,265 +691,21 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3Muon_isSTA",  &iterL3Muon_isSTA_,  "iterL3Muon_isSTA[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_isTRK",  &iterL3Muon_isTRK_,  "iterL3Muon_isTRK[nIterL3Muon]/I");
 
-  ntuple_->Branch("nhltIterL3OISeedsFromL2Muons",             &nhltIterL3OISeedsFromL2Muons_,             "nhltIterL3OISeedsFromL2Muons/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_dir",          &hltIterL3OISeedsFromL2Muons_dir_,          "hltIterL3OISeedsFromL2Muons_dir[nhltIterL3OISeedsFromL2Muons]/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_detId",   &hltIterL3OISeedsFromL2Muons_tsos_detId_,   "hltIterL3OISeedsFromL2Muons_tsos_detId[nhltIterL3OISeedsFromL2Muons]/i");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_pt",      &hltIterL3OISeedsFromL2Muons_tsos_pt_,      "hltIterL3OISeedsFromL2Muons_tsos_pt[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_hasErr",  &hltIterL3OISeedsFromL2Muons_tsos_hasErr_,  "hltIterL3OISeedsFromL2Muons_tsos_hasErr[nhltIterL3OISeedsFromL2Muons]/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err0",    &hltIterL3OISeedsFromL2Muons_tsos_err0_,    "hltIterL3OISeedsFromL2Muons_tsos_err0[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err1",    &hltIterL3OISeedsFromL2Muons_tsos_err1_,    "hltIterL3OISeedsFromL2Muons_tsos_err1[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err2",    &hltIterL3OISeedsFromL2Muons_tsos_err2_,    "hltIterL3OISeedsFromL2Muons_tsos_err2[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err3",    &hltIterL3OISeedsFromL2Muons_tsos_err3_,    "hltIterL3OISeedsFromL2Muons_tsos_err3[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err4",    &hltIterL3OISeedsFromL2Muons_tsos_err4_,    "hltIterL3OISeedsFromL2Muons_tsos_err4[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err5",    &hltIterL3OISeedsFromL2Muons_tsos_err5_,    "hltIterL3OISeedsFromL2Muons_tsos_err5[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err6",    &hltIterL3OISeedsFromL2Muons_tsos_err6_,    "hltIterL3OISeedsFromL2Muons_tsos_err6[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err7",    &hltIterL3OISeedsFromL2Muons_tsos_err7_,    "hltIterL3OISeedsFromL2Muons_tsos_err7[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err8",    &hltIterL3OISeedsFromL2Muons_tsos_err8_,    "hltIterL3OISeedsFromL2Muons_tsos_err8[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err9",    &hltIterL3OISeedsFromL2Muons_tsos_err9_,    "hltIterL3OISeedsFromL2Muons_tsos_err9[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err10",   &hltIterL3OISeedsFromL2Muons_tsos_err10_,   "hltIterL3OISeedsFromL2Muons_tsos_err10[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err11",   &hltIterL3OISeedsFromL2Muons_tsos_err11_,   "hltIterL3OISeedsFromL2Muons_tsos_err11[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err12",   &hltIterL3OISeedsFromL2Muons_tsos_err12_,   "hltIterL3OISeedsFromL2Muons_tsos_err12[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err13",   &hltIterL3OISeedsFromL2Muons_tsos_err13_,   "hltIterL3OISeedsFromL2Muons_tsos_err13[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_err14",   &hltIterL3OISeedsFromL2Muons_tsos_err14_,   "hltIterL3OISeedsFromL2Muons_tsos_err14[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_x",       &hltIterL3OISeedsFromL2Muons_tsos_x_,       "hltIterL3OISeedsFromL2Muons_tsos_x[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_y",       &hltIterL3OISeedsFromL2Muons_tsos_y_,       "hltIterL3OISeedsFromL2Muons_tsos_y[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_dxdz",    &hltIterL3OISeedsFromL2Muons_tsos_dxdz_,    "hltIterL3OISeedsFromL2Muons_tsos_dxdz[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_dydz",    &hltIterL3OISeedsFromL2Muons_tsos_dydz_,    "hltIterL3OISeedsFromL2Muons_tsos_dydz[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_px",      &hltIterL3OISeedsFromL2Muons_tsos_px_,      "hltIterL3OISeedsFromL2Muons_tsos_px[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_py",      &hltIterL3OISeedsFromL2Muons_tsos_py_,      "hltIterL3OISeedsFromL2Muons_tsos_py[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_qbp",     &hltIterL3OISeedsFromL2Muons_tsos_qbp_,     "hltIterL3OISeedsFromL2Muons_tsos_qbp[nhltIterL3OISeedsFromL2Muons]/F");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_tsos_charge",  &hltIterL3OISeedsFromL2Muons_tsos_charge_,  "hltIterL3OISeedsFromL2Muons_tsos_charge[nhltIterL3OISeedsFromL2Muons]/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_iterL3GlobalRef", &hltIterL3OISeedsFromL2Muons_iterL3GlobalRef_, "hltIterL3OISeedsFromL2Muons_iterL3GlobalRef[nhltIterL3OISeedsFromL2Muons]/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_iterL3InnerRef", &hltIterL3OISeedsFromL2Muons_iterL3InnerRef_, "hltIterL3OISeedsFromL2Muons_iterL3InnerRef[nhltIterL3OISeedsFromL2Muons]/I");
-  ntuple_->Branch("hltIterL3OISeedsFromL2Muons_iterL3OuterRef", &hltIterL3OISeedsFromL2Muons_iterL3OuterRef_, "hltIterL3OISeedsFromL2Muons_iterL3OuterRef[nhltIterL3OISeedsFromL2Muons]/I");
+  SThltIterL3OISeedsFromL2Muons->setBranch(ntuple_,"hltIterL3OISeedsFromL2Muons");
+  SThltIter0IterL3MuonPixelSeedsFromPixelTracks->setBranch(ntuple_,"hltIter0IterL3MuonPixelSeedsFromPixelTracks");
+  SThltIter2IterL3MuonPixelSeeds->setBranch(ntuple_,"hltIter2IterL3MuonPixelSeeds");
+  SThltIter3IterL3MuonPixelSeeds->setBranch(ntuple_,"hltIter3IterL3MuonPixelSeeds");
+  SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->setBranch(ntuple_,"hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks");
+  SThltIter2IterL3FromL1MuonPixelSeeds->setBranch(ntuple_,"hltIter2IterL3FromL1MuonPixelSeeds");
+  SThltIter3IterL3FromL1MuonPixelSeeds->setBranch(ntuple_,"hltIter3IterL3FromL1MuonPixelSeeds");
 
-  ntuple_->Branch("nhltIter0IterL3MuonPixelSeedsFromPixelTracks",             &nhltIter0IterL3MuonPixelSeedsFromPixelTracks_,             "nhltIter0IterL3MuonPixelSeedsFromPixelTracks/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir",          &hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir_,          "hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_detId",   &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_detId_,   "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_detId[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/i");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pt",      &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pt_,      "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pt[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_hasErr",  &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_hasErr_,  "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_hasErr[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err0",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err0_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err0[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err1",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err1_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err1[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err2",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err2_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err2[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err3",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err3_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err3[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err4",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err4_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err4[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err5",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err5_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err5[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err6",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err6_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err6[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err7",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err7_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err7[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err8",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err8_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err8[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err9",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err9_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err9[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err10",   &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err10_,   "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err10[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err11",   &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err11_,   "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err11[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err12",   &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err12_,   "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err12[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err13",   &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err13_,   "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err13[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err14",   &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err14_,   "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err14[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_x",       &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_x_,       "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_x[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_y",       &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_y_,       "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_y[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dxdz",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dxdz_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dxdz[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dydz",    &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dydz_,    "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dydz[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_px",      &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_px_,      "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_px[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_py",      &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_py_,      "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_py[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp",     &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp_,     "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge",  &hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge_,  "hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef", &hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef_, "hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef[nhltIter0IterL3MuonPixelSeedsFromPixelTracks]/I");
-
-  ntuple_->Branch("nhltIter2IterL3MuonPixelSeeds",             &nhltIter2IterL3MuonPixelSeeds_,             "nhltIter2IterL3MuonPixelSeeds/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_dir",          &hltIter2IterL3MuonPixelSeeds_dir_,          "hltIter2IterL3MuonPixelSeeds_dir[nhltIter2IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_detId",   &hltIter2IterL3MuonPixelSeeds_tsos_detId_,   "hltIter2IterL3MuonPixelSeeds_tsos_detId[nhltIter2IterL3MuonPixelSeeds]/i");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_pt",      &hltIter2IterL3MuonPixelSeeds_tsos_pt_,      "hltIter2IterL3MuonPixelSeeds_tsos_pt[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_hasErr",  &hltIter2IterL3MuonPixelSeeds_tsos_hasErr_,  "hltIter2IterL3MuonPixelSeeds_tsos_hasErr[nhltIter2IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err0",    &hltIter2IterL3MuonPixelSeeds_tsos_err0_,    "hltIter2IterL3MuonPixelSeeds_tsos_err0[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err1",    &hltIter2IterL3MuonPixelSeeds_tsos_err1_,    "hltIter2IterL3MuonPixelSeeds_tsos_err1[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err2",    &hltIter2IterL3MuonPixelSeeds_tsos_err2_,    "hltIter2IterL3MuonPixelSeeds_tsos_err2[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err3",    &hltIter2IterL3MuonPixelSeeds_tsos_err3_,    "hltIter2IterL3MuonPixelSeeds_tsos_err3[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err4",    &hltIter2IterL3MuonPixelSeeds_tsos_err4_,    "hltIter2IterL3MuonPixelSeeds_tsos_err4[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err5",    &hltIter2IterL3MuonPixelSeeds_tsos_err5_,    "hltIter2IterL3MuonPixelSeeds_tsos_err5[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err6",    &hltIter2IterL3MuonPixelSeeds_tsos_err6_,    "hltIter2IterL3MuonPixelSeeds_tsos_err6[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err7",    &hltIter2IterL3MuonPixelSeeds_tsos_err7_,    "hltIter2IterL3MuonPixelSeeds_tsos_err7[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err8",    &hltIter2IterL3MuonPixelSeeds_tsos_err8_,    "hltIter2IterL3MuonPixelSeeds_tsos_err8[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err9",    &hltIter2IterL3MuonPixelSeeds_tsos_err9_,    "hltIter2IterL3MuonPixelSeeds_tsos_err9[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err10",   &hltIter2IterL3MuonPixelSeeds_tsos_err10_,   "hltIter2IterL3MuonPixelSeeds_tsos_err10[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err11",   &hltIter2IterL3MuonPixelSeeds_tsos_err11_,   "hltIter2IterL3MuonPixelSeeds_tsos_err11[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err12",   &hltIter2IterL3MuonPixelSeeds_tsos_err12_,   "hltIter2IterL3MuonPixelSeeds_tsos_err12[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err13",   &hltIter2IterL3MuonPixelSeeds_tsos_err13_,   "hltIter2IterL3MuonPixelSeeds_tsos_err13[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_err14",   &hltIter2IterL3MuonPixelSeeds_tsos_err14_,   "hltIter2IterL3MuonPixelSeeds_tsos_err14[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_x",       &hltIter2IterL3MuonPixelSeeds_tsos_x_,       "hltIter2IterL3MuonPixelSeeds_tsos_x[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_y",       &hltIter2IterL3MuonPixelSeeds_tsos_y_,       "hltIter2IterL3MuonPixelSeeds_tsos_y[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_dxdz",    &hltIter2IterL3MuonPixelSeeds_tsos_dxdz_,    "hltIter2IterL3MuonPixelSeeds_tsos_dxdz[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_dydz",    &hltIter2IterL3MuonPixelSeeds_tsos_dydz_,    "hltIter2IterL3MuonPixelSeeds_tsos_dydz[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_px",      &hltIter2IterL3MuonPixelSeeds_tsos_px_,      "hltIter2IterL3MuonPixelSeeds_tsos_px[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_py",      &hltIter2IterL3MuonPixelSeeds_tsos_py_,      "hltIter2IterL3MuonPixelSeeds_tsos_py[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_qbp",     &hltIter2IterL3MuonPixelSeeds_tsos_qbp_,     "hltIter2IterL3MuonPixelSeeds_tsos_qbp[nhltIter2IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_tsos_charge",  &hltIter2IterL3MuonPixelSeeds_tsos_charge_,  "hltIter2IterL3MuonPixelSeeds_tsos_charge[nhltIter2IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef", &hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef_, "hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef[nhltIter2IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_iterL3InnerRef", &hltIter2IterL3MuonPixelSeeds_iterL3InnerRef_, "hltIter2IterL3MuonPixelSeeds_iterL3InnerRef[nhltIter2IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3MuonPixelSeeds_iterL3OuterRef", &hltIter2IterL3MuonPixelSeeds_iterL3OuterRef_, "hltIter2IterL3MuonPixelSeeds_iterL3OuterRef[nhltIter2IterL3MuonPixelSeeds]/I");
-
-  ntuple_->Branch("nhltIter3IterL3MuonPixelSeeds",             &nhltIter3IterL3MuonPixelSeeds_,             "nhltIter3IterL3MuonPixelSeeds/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_dir",          &hltIter3IterL3MuonPixelSeeds_dir_,          "hltIter3IterL3MuonPixelSeeds_dir[nhltIter3IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_detId",   &hltIter3IterL3MuonPixelSeeds_tsos_detId_,   "hltIter3IterL3MuonPixelSeeds_tsos_detId[nhltIter3IterL3MuonPixelSeeds]/i");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_pt",      &hltIter3IterL3MuonPixelSeeds_tsos_pt_,      "hltIter3IterL3MuonPixelSeeds_tsos_pt[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_hasErr",  &hltIter3IterL3MuonPixelSeeds_tsos_hasErr_,  "hltIter3IterL3MuonPixelSeeds_tsos_hasErr[nhltIter3IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err0",    &hltIter3IterL3MuonPixelSeeds_tsos_err0_,    "hltIter3IterL3MuonPixelSeeds_tsos_err0[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err1",    &hltIter3IterL3MuonPixelSeeds_tsos_err1_,    "hltIter3IterL3MuonPixelSeeds_tsos_err1[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err2",    &hltIter3IterL3MuonPixelSeeds_tsos_err2_,    "hltIter3IterL3MuonPixelSeeds_tsos_err2[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err3",    &hltIter3IterL3MuonPixelSeeds_tsos_err3_,    "hltIter3IterL3MuonPixelSeeds_tsos_err3[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err4",    &hltIter3IterL3MuonPixelSeeds_tsos_err4_,    "hltIter3IterL3MuonPixelSeeds_tsos_err4[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err5",    &hltIter3IterL3MuonPixelSeeds_tsos_err5_,    "hltIter3IterL3MuonPixelSeeds_tsos_err5[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err6",    &hltIter3IterL3MuonPixelSeeds_tsos_err6_,    "hltIter3IterL3MuonPixelSeeds_tsos_err6[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err7",    &hltIter3IterL3MuonPixelSeeds_tsos_err7_,    "hltIter3IterL3MuonPixelSeeds_tsos_err7[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err8",    &hltIter3IterL3MuonPixelSeeds_tsos_err8_,    "hltIter3IterL3MuonPixelSeeds_tsos_err8[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err9",    &hltIter3IterL3MuonPixelSeeds_tsos_err9_,    "hltIter3IterL3MuonPixelSeeds_tsos_err9[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err10",   &hltIter3IterL3MuonPixelSeeds_tsos_err10_,   "hltIter3IterL3MuonPixelSeeds_tsos_err10[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err11",   &hltIter3IterL3MuonPixelSeeds_tsos_err11_,   "hltIter3IterL3MuonPixelSeeds_tsos_err11[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err12",   &hltIter3IterL3MuonPixelSeeds_tsos_err12_,   "hltIter3IterL3MuonPixelSeeds_tsos_err12[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err13",   &hltIter3IterL3MuonPixelSeeds_tsos_err13_,   "hltIter3IterL3MuonPixelSeeds_tsos_err13[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_err14",   &hltIter3IterL3MuonPixelSeeds_tsos_err14_,   "hltIter3IterL3MuonPixelSeeds_tsos_err14[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_x",       &hltIter3IterL3MuonPixelSeeds_tsos_x_,       "hltIter3IterL3MuonPixelSeeds_tsos_x[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_y",       &hltIter3IterL3MuonPixelSeeds_tsos_y_,       "hltIter3IterL3MuonPixelSeeds_tsos_y[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_dxdz",    &hltIter3IterL3MuonPixelSeeds_tsos_dxdz_,    "hltIter3IterL3MuonPixelSeeds_tsos_dxdz[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_dydz",    &hltIter3IterL3MuonPixelSeeds_tsos_dydz_,    "hltIter3IterL3MuonPixelSeeds_tsos_dydz[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_px",      &hltIter3IterL3MuonPixelSeeds_tsos_px_,      "hltIter3IterL3MuonPixelSeeds_tsos_px[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_py",      &hltIter3IterL3MuonPixelSeeds_tsos_py_,      "hltIter3IterL3MuonPixelSeeds_tsos_py[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_qbp",     &hltIter3IterL3MuonPixelSeeds_tsos_qbp_,     "hltIter3IterL3MuonPixelSeeds_tsos_qbp[nhltIter3IterL3MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_tsos_charge",  &hltIter3IterL3MuonPixelSeeds_tsos_charge_,  "hltIter3IterL3MuonPixelSeeds_tsos_charge[nhltIter3IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef", &hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef_, "hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef[nhltIter3IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_iterL3InnerRef", &hltIter3IterL3MuonPixelSeeds_iterL3InnerRef_, "hltIter3IterL3MuonPixelSeeds_iterL3InnerRef[nhltIter3IterL3MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3MuonPixelSeeds_iterL3OuterRef", &hltIter3IterL3MuonPixelSeeds_iterL3OuterRef_, "hltIter3IterL3MuonPixelSeeds_iterL3OuterRef[nhltIter3IterL3MuonPixelSeeds]/I");
-
-  ntuple_->Branch("nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks",             &nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_,             "nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir",          &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir_,          "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_detId",   &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_detId_,   "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_detId[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/i");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pt",      &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pt_,      "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pt[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_hasErr",  &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_hasErr_,  "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_hasErr[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err0",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err0_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err0[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err1",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err1_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err1[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err2",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err2_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err2[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err3",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err3_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err3[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err4",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err4_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err4[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err5",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err5_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err5[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err6",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err6_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err6[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err7",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err7_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err7[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err8",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err8_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err8[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err9",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err9_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err9[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err10",   &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err10_,   "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err10[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err11",   &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err11_,   "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err11[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err12",   &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err12_,   "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err12[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err13",   &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err13_,   "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err13[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err14",   &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err14_,   "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err14[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_x",       &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_x_,       "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_x[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_y",       &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_y_,       "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_y[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dxdz",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dxdz_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dxdz[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dydz",    &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dydz_,    "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dydz[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_px",      &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_px_,      "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_px[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_py",      &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_py_,      "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_py[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp",     &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp_,     "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/F");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge",  &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge_,  "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef", &hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef_, "hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef[nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]/I");
-
-  ntuple_->Branch("nhltIter2IterL3FromL1MuonPixelSeeds",             &nhltIter2IterL3FromL1MuonPixelSeeds_,             "nhltIter2IterL3FromL1MuonPixelSeeds/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_dir",          &hltIter2IterL3FromL1MuonPixelSeeds_dir_,          "hltIter2IterL3FromL1MuonPixelSeeds_dir[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_detId",   &hltIter2IterL3FromL1MuonPixelSeeds_tsos_detId_,   "hltIter2IterL3FromL1MuonPixelSeeds_tsos_detId[nhltIter2IterL3FromL1MuonPixelSeeds]/i");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_pt",      &hltIter2IterL3FromL1MuonPixelSeeds_tsos_pt_,      "hltIter2IterL3FromL1MuonPixelSeeds_tsos_pt[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_hasErr",  &hltIter2IterL3FromL1MuonPixelSeeds_tsos_hasErr_,  "hltIter2IterL3FromL1MuonPixelSeeds_tsos_hasErr[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err0",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err0_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err0[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err1",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err1_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err1[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err2",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err2_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err2[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err3",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err3_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err3[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err4",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err4_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err4[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err5",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err5_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err5[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err6",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err6_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err6[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err7",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err7_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err7[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err8",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err8_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err8[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err9",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err9_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err9[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err10",   &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err10_,   "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err10[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err11",   &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err11_,   "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err11[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err12",   &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err12_,   "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err12[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err13",   &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err13_,   "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err13[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_err14",   &hltIter2IterL3FromL1MuonPixelSeeds_tsos_err14_,   "hltIter2IterL3FromL1MuonPixelSeeds_tsos_err14[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_x",       &hltIter2IterL3FromL1MuonPixelSeeds_tsos_x_,       "hltIter2IterL3FromL1MuonPixelSeeds_tsos_x[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_y",       &hltIter2IterL3FromL1MuonPixelSeeds_tsos_y_,       "hltIter2IterL3FromL1MuonPixelSeeds_tsos_y[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_dxdz",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_dxdz_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_dxdz[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_dydz",    &hltIter2IterL3FromL1MuonPixelSeeds_tsos_dydz_,    "hltIter2IterL3FromL1MuonPixelSeeds_tsos_dydz[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_px",      &hltIter2IterL3FromL1MuonPixelSeeds_tsos_px_,      "hltIter2IterL3FromL1MuonPixelSeeds_tsos_px[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_py",      &hltIter2IterL3FromL1MuonPixelSeeds_tsos_py_,      "hltIter2IterL3FromL1MuonPixelSeeds_tsos_py[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp",     &hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp_,     "hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp[nhltIter2IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge",  &hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge_,  "hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef", &hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_, "hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef", &hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef_, "hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef", &hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef_, "hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef[nhltIter2IterL3FromL1MuonPixelSeeds]/I");
-
-  ntuple_->Branch("nhltIter3IterL3FromL1MuonPixelSeeds",             &nhltIter3IterL3FromL1MuonPixelSeeds_,             "nhltIter3IterL3FromL1MuonPixelSeeds/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_dir",          &hltIter3IterL3FromL1MuonPixelSeeds_dir_,          "hltIter3IterL3FromL1MuonPixelSeeds_dir[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_detId",   &hltIter3IterL3FromL1MuonPixelSeeds_tsos_detId_,   "hltIter3IterL3FromL1MuonPixelSeeds_tsos_detId[nhltIter3IterL3FromL1MuonPixelSeeds]/i");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_pt",      &hltIter3IterL3FromL1MuonPixelSeeds_tsos_pt_,      "hltIter3IterL3FromL1MuonPixelSeeds_tsos_pt[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_hasErr",  &hltIter3IterL3FromL1MuonPixelSeeds_tsos_hasErr_,  "hltIter3IterL3FromL1MuonPixelSeeds_tsos_hasErr[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err0",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err0_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err0[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err1",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err1_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err1[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err2",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err2_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err2[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err3",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err3_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err3[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err4",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err4_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err4[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err5",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err5_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err5[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err6",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err6_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err6[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err7",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err7_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err7[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err8",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err8_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err8[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err9",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err9_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err9[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err10",   &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err10_,   "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err10[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err11",   &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err11_,   "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err11[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err12",   &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err12_,   "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err12[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err13",   &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err13_,   "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err13[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_err14",   &hltIter3IterL3FromL1MuonPixelSeeds_tsos_err14_,   "hltIter3IterL3FromL1MuonPixelSeeds_tsos_err14[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_x",       &hltIter3IterL3FromL1MuonPixelSeeds_tsos_x_,       "hltIter3IterL3FromL1MuonPixelSeeds_tsos_x[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_y",       &hltIter3IterL3FromL1MuonPixelSeeds_tsos_y_,       "hltIter3IterL3FromL1MuonPixelSeeds_tsos_y[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_dxdz",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_dxdz_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_dxdz[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_dydz",    &hltIter3IterL3FromL1MuonPixelSeeds_tsos_dydz_,    "hltIter3IterL3FromL1MuonPixelSeeds_tsos_dydz[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_px",      &hltIter3IterL3FromL1MuonPixelSeeds_tsos_px_,      "hltIter3IterL3FromL1MuonPixelSeeds_tsos_px[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_py",      &hltIter3IterL3FromL1MuonPixelSeeds_tsos_py_,      "hltIter3IterL3FromL1MuonPixelSeeds_tsos_py[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp",     &hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp_,     "hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp[nhltIter3IterL3FromL1MuonPixelSeeds]/F");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge",  &hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge_,  "hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef", &hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_, "hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef[nhltIter3IterL3FromL1MuonPixelSeeds]/I");
-
-  ntuple_->Branch("nhltIterL3OIMuonTrack",      &nhltIterL3OIMuonTrack_,       "nhltIterL3OIMuonTrack/I");
-  ntuple_->Branch("hltIterL3OIMuonTrack_pt",     &hltIterL3OIMuonTrack_pt_,     "hltIterL3OIMuonTrack_pt[nhltIterL3OIMuonTrack]/D");
-  ntuple_->Branch("hltIterL3OIMuonTrack_eta",    &hltIterL3OIMuonTrack_eta_,    "hltIterL3OIMuonTrack_eta[nhltIterL3OIMuonTrack]/D");
-  ntuple_->Branch("hltIterL3OIMuonTrack_phi",    &hltIterL3OIMuonTrack_phi_,    "hltIterL3OIMuonTrack_phi[nhltIterL3OIMuonTrack]/D");
-  ntuple_->Branch("hltIterL3OIMuonTrack_charge", &hltIterL3OIMuonTrack_charge_, "hltIterL3OIMuonTrack_charge[nhltIterL3OIMuonTrack]/D");
-  ntuple_->Branch("nhltIter0IterL3MuonTrack",      &nhltIter0IterL3MuonTrack_,       "nhltIter0IterL3MuonTrack/I");
-  ntuple_->Branch("hltIter0IterL3MuonTrack_pt",     &hltIter0IterL3MuonTrack_pt_,     "hltIter0IterL3MuonTrack_pt[nhltIter0IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter0IterL3MuonTrack_eta",    &hltIter0IterL3MuonTrack_eta_,    "hltIter0IterL3MuonTrack_eta[nhltIter0IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter0IterL3MuonTrack_phi",    &hltIter0IterL3MuonTrack_phi_,    "hltIter0IterL3MuonTrack_phi[nhltIter0IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter0IterL3MuonTrack_charge", &hltIter0IterL3MuonTrack_charge_, "hltIter0IterL3MuonTrack_charge[nhltIter0IterL3MuonTrack]/D");
-  ntuple_->Branch("nhltIter2IterL3MuonTrack",      &nhltIter2IterL3MuonTrack_,       "nhltIter2IterL3MuonTrack/I");
-  ntuple_->Branch("hltIter2IterL3MuonTrack_pt",     &hltIter2IterL3MuonTrack_pt_,     "hltIter2IterL3MuonTrack_pt[nhltIter2IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter2IterL3MuonTrack_eta",    &hltIter2IterL3MuonTrack_eta_,    "hltIter2IterL3MuonTrack_eta[nhltIter2IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter2IterL3MuonTrack_phi",    &hltIter2IterL3MuonTrack_phi_,    "hltIter2IterL3MuonTrack_phi[nhltIter2IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter2IterL3MuonTrack_charge", &hltIter2IterL3MuonTrack_charge_, "hltIter2IterL3MuonTrack_charge[nhltIter2IterL3MuonTrack]/D");
-  ntuple_->Branch("nhltIter3IterL3MuonTrack",      &nhltIter3IterL3MuonTrack_,       "nhltIter3IterL3MuonTrack/I");
-  ntuple_->Branch("hltIter3IterL3MuonTrack_pt",     &hltIter3IterL3MuonTrack_pt_,     "hltIter3IterL3MuonTrack_pt[nhltIter3IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter3IterL3MuonTrack_eta",    &hltIter3IterL3MuonTrack_eta_,    "hltIter3IterL3MuonTrack_eta[nhltIter3IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter3IterL3MuonTrack_phi",    &hltIter3IterL3MuonTrack_phi_,    "hltIter3IterL3MuonTrack_phi[nhltIter3IterL3MuonTrack]/D");
-  ntuple_->Branch("hltIter3IterL3MuonTrack_charge", &hltIter3IterL3MuonTrack_charge_, "hltIter3IterL3MuonTrack_charge[nhltIter3IterL3MuonTrack]/D");
-  ntuple_->Branch("nhltIter0IterL3FromL1MuonTrack",      &nhltIter0IterL3FromL1MuonTrack_,       "nhltIter0IterL3FromL1MuonTrack/I");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonTrack_pt",     &hltIter0IterL3FromL1MuonTrack_pt_,     "hltIter0IterL3FromL1MuonTrack_pt[nhltIter0IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonTrack_eta",    &hltIter0IterL3FromL1MuonTrack_eta_,    "hltIter0IterL3FromL1MuonTrack_eta[nhltIter0IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonTrack_phi",    &hltIter0IterL3FromL1MuonTrack_phi_,    "hltIter0IterL3FromL1MuonTrack_phi[nhltIter0IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter0IterL3FromL1MuonTrack_charge", &hltIter0IterL3FromL1MuonTrack_charge_, "hltIter0IterL3FromL1MuonTrack_charge[nhltIter0IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("nhltIter2IterL3FromL1MuonTrack",      &nhltIter2IterL3FromL1MuonTrack_,       "nhltIter2IterL3FromL1MuonTrack/I");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonTrack_pt",     &hltIter2IterL3FromL1MuonTrack_pt_,     "hltIter2IterL3FromL1MuonTrack_pt[nhltIter2IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonTrack_eta",    &hltIter2IterL3FromL1MuonTrack_eta_,    "hltIter2IterL3FromL1MuonTrack_eta[nhltIter2IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonTrack_phi",    &hltIter2IterL3FromL1MuonTrack_phi_,    "hltIter2IterL3FromL1MuonTrack_phi[nhltIter2IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter2IterL3FromL1MuonTrack_charge", &hltIter2IterL3FromL1MuonTrack_charge_, "hltIter2IterL3FromL1MuonTrack_charge[nhltIter2IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("nhltIter3IterL3FromL1MuonTrack",      &nhltIter3IterL3FromL1MuonTrack_,       "nhltIter3IterL3FromL1MuonTrack/I");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonTrack_pt",     &hltIter3IterL3FromL1MuonTrack_pt_,     "hltIter3IterL3FromL1MuonTrack_pt[nhltIter3IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonTrack_eta",    &hltIter3IterL3FromL1MuonTrack_eta_,    "hltIter3IterL3FromL1MuonTrack_eta[nhltIter3IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonTrack_phi",    &hltIter3IterL3FromL1MuonTrack_phi_,    "hltIter3IterL3FromL1MuonTrack_phi[nhltIter3IterL3FromL1MuonTrack]/D");
-  ntuple_->Branch("hltIter3IterL3FromL1MuonTrack_charge", &hltIter3IterL3FromL1MuonTrack_charge_, "hltIter3IterL3FromL1MuonTrack_charge[nhltIter3IterL3FromL1MuonTrack]/D");
+  TThltIterL3OIMuonTrack->setBranch(ntuple_,"hltIterL3OIMuonTrack");
+  TThltIter0IterL3MuonTrack->setBranch(ntuple_,"hltIter0IterL3MuonTrack");
+  TThltIter2IterL3MuonTrack->setBranch(ntuple_,"hltIter2IterL3MuonTrack");
+  TThltIter3IterL3MuonTrack->setBranch(ntuple_,"hltIter3IterL3MuonTrack");
+  TThltIter0IterL3FromL1MuonTrack->setBranch(ntuple_,"hltIter0IterL3FromL1MuonTrack");
+  TThltIter2IterL3FromL1MuonTrack->setBranch(ntuple_,"hltIter2IterL3FromL1MuonTrack");
+  TThltIter3IterL3FromL1MuonTrack->setBranch(ntuple_,"hltIter3IterL3FromL1MuonTrack");
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
@@ -1596,22 +1062,66 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
 void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 {
+  //////////////////////////
+  // -- IterL3Muon -- //
+  //////////////////////////
+  edm::Handle< std::vector<reco::Muon> > h_iterL3Muon;
+  if( iEvent.getByToken( t_iterL3Muon_, h_iterL3Muon) )
+  {
+    int _nIterL3Muon = 0;
+    for( auto i=0U; i<h_iterL3Muon->size(); ++i )
+    {
+      const auto& muon(h_iterL3Muon->at(i));
+
+      iterL3Muon_pt_[_nIterL3Muon]     = muon.pt();
+      iterL3Muon_eta_[_nIterL3Muon]    = muon.eta();
+      iterL3Muon_phi_[_nIterL3Muon]    = muon.phi();
+      iterL3Muon_charge_[_nIterL3Muon] = muon.charge();
+
+      if( muon.isGlobalMuon() )     iterL3Muon_isGLB_[_nIterL3Muon] = 1;
+      if( muon.isStandAloneMuon() ) iterL3Muon_isSTA_[_nIterL3Muon] = 1;
+      if( muon.isTrackerMuon() )    iterL3Muon_isTRK_[_nIterL3Muon] = 1;
+
+      reco::TrackRef innerTrk = muon.innerTrack();
+      if( innerTrk.isNonnull() ) {
+        iterL3Muon_innerPt_[_nIterL3Muon] = innerTrk->pt();
+
+        tmpTrk* trkTmp = new tmpTrk();
+        trkTmp->fill(innerTrk);
+        iterL3IDpassed.push_back(trkTmp);
+
+        const PTrajectoryStateOnDet tmpseed = innerTrk->seedRef()->startingState();
+        tmpTSOD tsod(tmpseed);
+        MuonIterSeedMap.insert(make_pair(tsod,i));
+      }
+
+      _nIterL3Muon++;
+    } // -- end of muon iteration
+
+    nIterL3Muon_ = _nIterL3Muon;
+  } // -- if getByToken is valid
+
   ////////////////////
   // -- IterL3OI -- //
   ////////////////////
   edm::Handle< std::vector<reco::Track> > h_hltIterL3OIMuonTrack;
   if( iEvent.getByToken( t_hltIterL3OIMuonTrack_, h_hltIterL3OIMuonTrack ) )
   {
-    int _nhltIterL3OIMuonTrack = 0;
     for( unsigned int i=0; i<h_hltIterL3OIMuonTrack->size(); i++)
     {
-      hltIterL3OIMuonTrack_pt_[_nhltIterL3OIMuonTrack]     = h_hltIterL3OIMuonTrack->at(i).pt();
-      hltIterL3OIMuonTrack_eta_[_nhltIterL3OIMuonTrack]    = h_hltIterL3OIMuonTrack->at(i).eta();
-      hltIterL3OIMuonTrack_phi_[_nhltIterL3OIMuonTrack]    = h_hltIterL3OIMuonTrack->at(i).phi();
-      hltIterL3OIMuonTrack_charge_[_nhltIterL3OIMuonTrack] = h_hltIterL3OIMuonTrack->at(i).charge();
-      _nhltIterL3OIMuonTrack++;
+      TThltIterL3OIMuonTrack->fill(h_hltIterL3OIMuonTrack->at(i));
+
+      int linkNo = -1;
+      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
+        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIterL3OIMuonTrack->at(i)) ) linkNo = idxL3passed;
+      }
+
+      TThltIterL3OIMuonTrack->linkIterL3(linkNo);
+
+      const PTrajectoryStateOnDet tmpseed = h_hltIterL3OIMuonTrack->at(i).seedRef()->startingState();
+      tmpTSOD tsod(tmpseed);
+      hltIterL3OIMuonTrackMap.insert(make_pair(tsod,i));
     }
-    nhltIterL3OIMuonTrack_ = _nhltIterL3OIMuonTrack;
   }
 
   edm::Handle< std::vector<reco::MuonTrackLinks> > h_iterL3OI;
@@ -1652,46 +1162,61 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   edm::Handle< std::vector<reco::Track> > h_hltIter0IterL3MuonTrack;
   if( iEvent.getByToken( t_hltIter0IterL3MuonTrack_, h_hltIter0IterL3MuonTrack ) )
   {
-    int _nhltIter0IterL3MuonTrack = 0;
     for( unsigned int i=0; i<h_hltIter0IterL3MuonTrack->size(); i++)
     {
-      hltIter0IterL3MuonTrack_pt_[_nhltIter0IterL3MuonTrack]     = h_hltIter0IterL3MuonTrack->at(i).pt();
-      hltIter0IterL3MuonTrack_eta_[_nhltIter0IterL3MuonTrack]    = h_hltIter0IterL3MuonTrack->at(i).eta();
-      hltIter0IterL3MuonTrack_phi_[_nhltIter0IterL3MuonTrack]    = h_hltIter0IterL3MuonTrack->at(i).phi();
-      hltIter0IterL3MuonTrack_charge_[_nhltIter0IterL3MuonTrack] = h_hltIter0IterL3MuonTrack->at(i).charge();
-      _nhltIter0IterL3MuonTrack++;
+      TThltIter0IterL3MuonTrack->fill(h_hltIter0IterL3MuonTrack->at(i));
+
+      int linkNo = -1;
+      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
+        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter0IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
+      }
+
+      TThltIter0IterL3MuonTrack->linkIterL3(linkNo);
+
+      const PTrajectoryStateOnDet tmpseed = h_hltIter0IterL3MuonTrack->at(i).seedRef()->startingState();
+      tmpTSOD tsod(tmpseed);
+      hltIter0IterL3MuonTrackMap.insert(make_pair(tsod,i));
     }
-    nhltIter0IterL3MuonTrack_ = _nhltIter0IterL3MuonTrack;
   }
   edm::Handle< std::vector<reco::Track> > h_hltIter2IterL3MuonTrack;
   if( iEvent.getByToken( t_hltIter2IterL3MuonTrack_, h_hltIter2IterL3MuonTrack ) )
   {
-    int _nhltIter2IterL3MuonTrack = 0;
     for( unsigned int i=0; i<h_hltIter2IterL3MuonTrack->size(); i++)
     {
-      hltIter2IterL3MuonTrack_pt_[_nhltIter2IterL3MuonTrack]     = h_hltIter2IterL3MuonTrack->at(i).pt();
-      hltIter2IterL3MuonTrack_eta_[_nhltIter2IterL3MuonTrack]    = h_hltIter2IterL3MuonTrack->at(i).eta();
-      hltIter2IterL3MuonTrack_phi_[_nhltIter2IterL3MuonTrack]    = h_hltIter2IterL3MuonTrack->at(i).phi();
-      hltIter2IterL3MuonTrack_charge_[_nhltIter2IterL3MuonTrack] = h_hltIter2IterL3MuonTrack->at(i).charge();
-      _nhltIter2IterL3MuonTrack++;
+      TThltIter2IterL3MuonTrack->fill(h_hltIter2IterL3MuonTrack->at(i));
+
+      int linkNo = -1;
+      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
+        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter2IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
+      }
+
+      TThltIter2IterL3MuonTrack->linkIterL3(linkNo);
+
+      const PTrajectoryStateOnDet tmpseed = h_hltIter2IterL3MuonTrack->at(i).seedRef()->startingState();
+      tmpTSOD tsod(tmpseed);
+      hltIter2IterL3MuonTrackMap.insert(make_pair(tsod,i));
     }
-    nhltIter2IterL3MuonTrack_ = _nhltIter2IterL3MuonTrack;
   }
   edm::Handle< std::vector<reco::Track> > h_hltIter3IterL3MuonTrack;
   if( iEvent.getByToken( t_hltIter3IterL3MuonTrack_, h_hltIter3IterL3MuonTrack ) )
   {
-    int _nhltIter3IterL3MuonTrack = 0;
     for( unsigned int i=0; i<h_hltIter3IterL3MuonTrack->size(); i++)
     {
-      hltIter3IterL3MuonTrack_pt_[_nhltIter3IterL3MuonTrack]     = h_hltIter3IterL3MuonTrack->at(i).pt();
-      hltIter3IterL3MuonTrack_eta_[_nhltIter3IterL3MuonTrack]    = h_hltIter3IterL3MuonTrack->at(i).eta();
-      hltIter3IterL3MuonTrack_phi_[_nhltIter3IterL3MuonTrack]    = h_hltIter3IterL3MuonTrack->at(i).phi();
-      hltIter3IterL3MuonTrack_charge_[_nhltIter3IterL3MuonTrack] = h_hltIter3IterL3MuonTrack->at(i).charge();
-      _nhltIter3IterL3MuonTrack++;
+      TThltIter3IterL3MuonTrack->fill(h_hltIter3IterL3MuonTrack->at(i));
+
+      int linkNo = -1;
+      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
+        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter3IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
+      }
+
+      TThltIter3IterL3MuonTrack->linkIterL3(linkNo);
+
+      const PTrajectoryStateOnDet tmpseed = h_hltIter3IterL3MuonTrack->at(i).seedRef()->startingState();
+      tmpTSOD tsod(tmpseed);
+      hltIter3IterL3MuonTrackMap.insert(make_pair(tsod,i));
     }
-    nhltIter3IterL3MuonTrack_ = _nhltIter3IterL3MuonTrack;
   }
-        
+
   edm::Handle< std::vector<reco::MuonTrackLinks> > h_iterL3IOFromL2;
   if( iEvent.getByToken( t_iterL3IOFromL2_, h_iterL3IOFromL2 ) )
   {
@@ -1765,46 +1290,61 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   edm::Handle< std::vector<reco::Track> > h_hltIter0IterL3FromL1MuonTrack;
   if( iEvent.getByToken( t_hltIter0IterL3FromL1MuonTrack_, h_hltIter0IterL3FromL1MuonTrack ) )
   {
-    int _nhltIter0IterL3FromL1MuonTrack = 0;
     for( unsigned int i=0; i<h_hltIter0IterL3FromL1MuonTrack->size(); i++)
     {
-      hltIter0IterL3FromL1MuonTrack_pt_[_nhltIter0IterL3FromL1MuonTrack]     = h_hltIter0IterL3FromL1MuonTrack->at(i).pt();
-      hltIter0IterL3FromL1MuonTrack_eta_[_nhltIter0IterL3FromL1MuonTrack]    = h_hltIter0IterL3FromL1MuonTrack->at(i).eta();
-      hltIter0IterL3FromL1MuonTrack_phi_[_nhltIter0IterL3FromL1MuonTrack]    = h_hltIter0IterL3FromL1MuonTrack->at(i).phi();
-      hltIter0IterL3FromL1MuonTrack_charge_[_nhltIter0IterL3FromL1MuonTrack] = h_hltIter0IterL3FromL1MuonTrack->at(i).charge();
-      _nhltIter0IterL3FromL1MuonTrack++;
+      TThltIter0IterL3FromL1MuonTrack->fill(h_hltIter0IterL3FromL1MuonTrack->at(i));
+
+      int linkNo = -1;
+      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
+        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter0IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
+      }
+
+      TThltIter0IterL3FromL1MuonTrack->linkIterL3(linkNo);
+
+      const PTrajectoryStateOnDet tmpseed = h_hltIter0IterL3FromL1MuonTrack->at(i).seedRef()->startingState();
+      tmpTSOD tsod(tmpseed);
+      hltIter0IterL3FromL1MuonTrackMap.insert(make_pair(tsod,i));
     }
-    nhltIter0IterL3FromL1MuonTrack_ = _nhltIter0IterL3FromL1MuonTrack;
   }
   edm::Handle< std::vector<reco::Track> > h_hltIter2IterL3FromL1MuonTrack;
   if( iEvent.getByToken( t_hltIter2IterL3FromL1MuonTrack_, h_hltIter2IterL3FromL1MuonTrack ) )
   {
-    int _nhltIter2IterL3FromL1MuonTrack = 0;
     for( unsigned int i=0; i<h_hltIter2IterL3FromL1MuonTrack->size(); i++)
     {
-      hltIter2IterL3FromL1MuonTrack_pt_[_nhltIter2IterL3FromL1MuonTrack]     = h_hltIter2IterL3FromL1MuonTrack->at(i).pt();
-      hltIter2IterL3FromL1MuonTrack_eta_[_nhltIter2IterL3FromL1MuonTrack]    = h_hltIter2IterL3FromL1MuonTrack->at(i).eta();
-      hltIter2IterL3FromL1MuonTrack_phi_[_nhltIter2IterL3FromL1MuonTrack]    = h_hltIter2IterL3FromL1MuonTrack->at(i).phi();
-      hltIter2IterL3FromL1MuonTrack_charge_[_nhltIter2IterL3FromL1MuonTrack] = h_hltIter2IterL3FromL1MuonTrack->at(i).charge();
-      _nhltIter2IterL3FromL1MuonTrack++;
+      TThltIter2IterL3FromL1MuonTrack->fill(h_hltIter2IterL3FromL1MuonTrack->at(i));
+
+      int linkNo = -1;
+      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
+        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter2IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
+      }
+
+      TThltIter2IterL3FromL1MuonTrack->linkIterL3(linkNo);
+
+      const PTrajectoryStateOnDet tmpseed = h_hltIter2IterL3FromL1MuonTrack->at(i).seedRef()->startingState();
+      tmpTSOD tsod(tmpseed);
+      hltIter2IterL3FromL1MuonTrackMap.insert(make_pair(tsod,i));
     }
-    nhltIter2IterL3FromL1MuonTrack_ = _nhltIter2IterL3FromL1MuonTrack;
   }
   edm::Handle< std::vector<reco::Track> > h_hltIter3IterL3FromL1MuonTrack;
   if( iEvent.getByToken( t_hltIter3IterL3FromL1MuonTrack_, h_hltIter3IterL3FromL1MuonTrack ) )
   {
-    int _nhltIter3IterL3FromL1MuonTrack = 0;
     for( unsigned int i=0; i<h_hltIter3IterL3FromL1MuonTrack->size(); i++)
     {
-      hltIter3IterL3FromL1MuonTrack_pt_[_nhltIter3IterL3FromL1MuonTrack]     = h_hltIter3IterL3FromL1MuonTrack->at(i).pt();
-      hltIter3IterL3FromL1MuonTrack_eta_[_nhltIter3IterL3FromL1MuonTrack]    = h_hltIter3IterL3FromL1MuonTrack->at(i).eta();
-      hltIter3IterL3FromL1MuonTrack_phi_[_nhltIter3IterL3FromL1MuonTrack]    = h_hltIter3IterL3FromL1MuonTrack->at(i).phi();
-      hltIter3IterL3FromL1MuonTrack_charge_[_nhltIter3IterL3FromL1MuonTrack] = h_hltIter3IterL3FromL1MuonTrack->at(i).charge();
-      _nhltIter3IterL3FromL1MuonTrack++;
+      TThltIter3IterL3FromL1MuonTrack->fill(h_hltIter3IterL3FromL1MuonTrack->at(i));
+
+      int linkNo = -1;
+      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
+        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter3IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
+      }
+
+      TThltIter3IterL3FromL1MuonTrack->linkIterL3(linkNo);
+
+      const PTrajectoryStateOnDet tmpseed = h_hltIter3IterL3FromL1MuonTrack->at(i).seedRef()->startingState();
+      tmpTSOD tsod(tmpseed);
+      hltIter3IterL3FromL1MuonTrackMap.insert(make_pair(tsod,i));
     }
-    nhltIter3IterL3FromL1MuonTrack_ = _nhltIter3IterL3FromL1MuonTrack;
   }
-  
+
   edm::Handle< std::vector<reco::Track> > h_iterL3IOFromL1;
   if( iEvent.getByToken( t_iterL3IOFromL1_, h_iterL3IOFromL1 ) )
   {
@@ -1845,57 +1385,6 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
     nIterL3MuonNoID_ = _nIterL3MuonNoID;
   } // -- if getByToken is valid
-
-  //////////////////////////
-  // -- IterL3Muon -- //
-  //////////////////////////
-  edm::Handle< std::vector<reco::Muon> > h_iterL3Muon;
-  if( iEvent.getByToken( t_iterL3Muon_, h_iterL3Muon) )
-  {
-    int _nIterL3Muon = 0;
-    for( auto i=0U; i<h_iterL3Muon->size(); ++i )
-    {
-      unsigned int dist = i;
-      const auto& muon(h_iterL3Muon->at(i));
-
-      iterL3Muon_pt_[_nIterL3Muon]     = muon.pt();
-      iterL3Muon_eta_[_nIterL3Muon]    = muon.eta();
-      iterL3Muon_phi_[_nIterL3Muon]    = muon.phi();
-      iterL3Muon_charge_[_nIterL3Muon] = muon.charge();
-
-      if( muon.isGlobalMuon() )     iterL3Muon_isGLB_[_nIterL3Muon] = 1;
-      if( muon.isStandAloneMuon() ) iterL3Muon_isSTA_[_nIterL3Muon] = 1;
-      if( muon.isTrackerMuon() )    iterL3Muon_isTRK_[_nIterL3Muon] = 1;
-
-      reco::TrackRef globalTrk = muon.globalTrack();
-      if( globalTrk.isNonnull() )
-      {
-        const PTrajectoryStateOnDet tmpseed = globalTrk->seedRef()->startingState();
-        tmpTSOD tsod(tmpseed);
-        MuonIterSeedMap.insert(make_pair(tsod,dist));
-      }
-
-      reco::TrackRef innerTrk = muon.innerTrack();
-      if( innerTrk.isNonnull() )
-      {
-        const PTrajectoryStateOnDet tmpseed = innerTrk->seedRef()->startingState();
-        tmpTSOD tsod(tmpseed);
-        MuonIterSeedMap.insert(make_pair(tsod,dist));
-      }
-
-      reco::TrackRef outerTrk = muon.outerTrack();
-      if( outerTrk.isNonnull() )
-      {
-        const PTrajectoryStateOnDet tmpseed = outerTrk->seedRef()->startingState();
-        tmpTSOD tsod(tmpseed);
-        MuonIterSeedMap.insert(make_pair(tsod,dist));
-      }
-
-      _nIterL3Muon++;
-    } // -- end of muon iteration
-
-    nIterL3Muon_ = _nIterL3Muon;
-  } // -- if getByToken is valid
 }
 
 void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
@@ -1906,52 +1395,20 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
   edm::Handle< TrajectorySeedCollection > h_hltIterL3OISeedsFromL2Muons;
   if( iEvent.getByToken( t_hltIterL3OISeedsFromL2Muons_, h_hltIterL3OISeedsFromL2Muons) )
   {
-    int _nhltIterL3OISeedsFromL2Muons = 0;
     for( auto i=0U; i<h_hltIterL3OISeedsFromL2Muons->size(); ++i )
     {
       const auto& seed(h_hltIterL3OISeedsFromL2Muons->at(i));
 
-      hltIterL3OISeedsFromL2Muons_dir_[_nhltIterL3OISeedsFromL2Muons]         = seed.direction();
-      hltIterL3OISeedsFromL2Muons_tsos_detId_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().detId();
-      hltIterL3OISeedsFromL2Muons_tsos_pt_[_nhltIterL3OISeedsFromL2Muons]     = seed.startingState().pt();
-      hltIterL3OISeedsFromL2Muons_tsos_hasErr_[_nhltIterL3OISeedsFromL2Muons] = seed.startingState().hasError();
-      if( seed.startingState().hasError() ) {
-        hltIterL3OISeedsFromL2Muons_tsos_err0_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(0);
-        hltIterL3OISeedsFromL2Muons_tsos_err1_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(1);
-        hltIterL3OISeedsFromL2Muons_tsos_err2_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(2);
-        hltIterL3OISeedsFromL2Muons_tsos_err3_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(3);
-        hltIterL3OISeedsFromL2Muons_tsos_err4_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(4);
-        hltIterL3OISeedsFromL2Muons_tsos_err5_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(5);
-        hltIterL3OISeedsFromL2Muons_tsos_err6_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(6);
-        hltIterL3OISeedsFromL2Muons_tsos_err7_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(7);
-        hltIterL3OISeedsFromL2Muons_tsos_err8_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(8);
-        hltIterL3OISeedsFromL2Muons_tsos_err9_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().error(9);
-        hltIterL3OISeedsFromL2Muons_tsos_err10_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(10);
-        hltIterL3OISeedsFromL2Muons_tsos_err11_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(11);
-        hltIterL3OISeedsFromL2Muons_tsos_err12_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(12);
-        hltIterL3OISeedsFromL2Muons_tsos_err13_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(13);
-        hltIterL3OISeedsFromL2Muons_tsos_err14_[_nhltIterL3OISeedsFromL2Muons]  = seed.startingState().error(14);
-      }
-      hltIterL3OISeedsFromL2Muons_tsos_x_[_nhltIterL3OISeedsFromL2Muons]      = seed.startingState().parameters().position().x();
-      hltIterL3OISeedsFromL2Muons_tsos_y_[_nhltIterL3OISeedsFromL2Muons]      = seed.startingState().parameters().position().y();
-      hltIterL3OISeedsFromL2Muons_tsos_dxdz_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().parameters().dxdz();
-      hltIterL3OISeedsFromL2Muons_tsos_dydz_[_nhltIterL3OISeedsFromL2Muons]   = seed.startingState().parameters().dydz();
-      hltIterL3OISeedsFromL2Muons_tsos_px_[_nhltIterL3OISeedsFromL2Muons]     = seed.startingState().parameters().momentum().x();
-      hltIterL3OISeedsFromL2Muons_tsos_py_[_nhltIterL3OISeedsFromL2Muons]     = seed.startingState().parameters().momentum().y();
-      hltIterL3OISeedsFromL2Muons_tsos_pz_[_nhltIterL3OISeedsFromL2Muons]     = seed.startingState().parameters().momentum().z();
-      hltIterL3OISeedsFromL2Muons_tsos_qbp_[_nhltIterL3OISeedsFromL2Muons]    = seed.startingState().parameters().qbp();
-      hltIterL3OISeedsFromL2Muons_tsos_charge_[_nhltIterL3OISeedsFromL2Muons] = seed.startingState().parameters().charge();
+      SThltIterL3OISeedsFromL2Muons->fill(seed);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIterL3OISeedsFromL2Muons_iterL3GlobalRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIterL3OISeedsFromL2Muons_iterL3InnerRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIterL3OISeedsFromL2Muons_iterL3OuterRef_[_nhltIterL3OISeedsFromL2Muons] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      SThltIterL3OISeedsFromL2Muons->linkIterL3((where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod]);
 
-      _nhltIterL3OISeedsFromL2Muons++;
+      std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIterL3OIMuonTrackMap.find(seedTsod);
+      SThltIterL3OISeedsFromL2Muons->linktmpL3((where2==hltIterL3OIMuonTrackMap.end()) ? -1 : hltIterL3OIMuonTrackMap[seedTsod]);
+      SThltIterL3OISeedsFromL2Muons->matchingL3((where2==hltIterL3OIMuonTrackMap.end()) ? -1 : TThltIterL3OIMuonTrack->matchedIDpassedL3(hltIterL3OIMuonTrackMap[seedTsod]));
     } // -- end of seed iteration
-
-    nhltIterL3OISeedsFromL2Muons_ = _nhltIterL3OISeedsFromL2Muons;
   } // -- if getByToken is valid
 
 
@@ -1961,52 +1418,20 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
   edm::Handle< TrajectorySeedCollection > h_hltIter0IterL3MuonPixelSeedsFromPixelTracks;
   if( iEvent.getByToken( t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_, h_hltIter0IterL3MuonPixelSeedsFromPixelTracks) )
   {
-    int _nhltIter0IterL3MuonPixelSeedsFromPixelTracks = 0;
     for( auto i=0U; i<h_hltIter0IterL3MuonPixelSeedsFromPixelTracks->size(); ++i )
     {
       const auto& seed(h_hltIter0IterL3MuonPixelSeedsFromPixelTracks->at(i));
 
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_dir_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]         = seed.direction();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_detId_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]  = seed.startingState().detId();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pt_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]     = seed.startingState().pt();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_hasErr_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = seed.startingState().hasError();
-      if( seed.startingState().hasError() ) {
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err0_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(0);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err1_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(1);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err2_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(2);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err3_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(3);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err4_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(4);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err5_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(5);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err6_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(6);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err7_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(7);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err8_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(8);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err9_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(9);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err10_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(10);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err11_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(11);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err12_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(12);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err13_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(13);
-        hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_err14_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(14);
-      }
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_x_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]      = seed.startingState().parameters().position().x();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_y_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]      = seed.startingState().parameters().position().y();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dxdz_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().parameters().dxdz();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_dydz_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]   = seed.startingState().parameters().dydz();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_px_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]     = seed.startingState().parameters().momentum().x();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_py_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]     = seed.startingState().parameters().momentum().y();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_pz_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]     = seed.startingState().parameters().momentum().z();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_qbp_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks]    = seed.startingState().parameters().qbp();
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_tsos_charge_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = seed.startingState().parameters().charge();
+      SThltIter0IterL3MuonPixelSeedsFromPixelTracks->fill(seed);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter0IterL3MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[_nhltIter0IterL3MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      SThltIter0IterL3MuonPixelSeedsFromPixelTracks->linkIterL3((where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod]);
 
-      _nhltIter0IterL3MuonPixelSeedsFromPixelTracks++;
+      std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIter0IterL3MuonTrackMap.find(seedTsod);
+      SThltIter0IterL3MuonPixelSeedsFromPixelTracks->linktmpL3((where2==hltIter0IterL3MuonTrackMap.end()) ? -1 : hltIter0IterL3MuonTrackMap[seedTsod]);
+      SThltIter0IterL3MuonPixelSeedsFromPixelTracks->matchingL3((where2==hltIter0IterL3MuonTrackMap.end()) ? -1 : TThltIter0IterL3MuonTrack->matchedIDpassedL3(hltIter0IterL3MuonTrackMap[seedTsod]));
     } // -- end of seed iteration
-
-    nhltIter0IterL3MuonPixelSeedsFromPixelTracks_ = _nhltIter0IterL3MuonPixelSeedsFromPixelTracks;
   } // -- if getByToken is valid
 
   //////////////////////////
@@ -2015,52 +1440,20 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
   edm::Handle< TrajectorySeedCollection > h_hltIter2IterL3MuonPixelSeeds;
   if( iEvent.getByToken( t_hltIter2IterL3MuonPixelSeeds_, h_hltIter2IterL3MuonPixelSeeds) )
   {
-    int _nhltIter2IterL3MuonPixelSeeds = 0;
     for( auto i=0U; i<h_hltIter2IterL3MuonPixelSeeds->size(); ++i )
     {
       const auto& seed(h_hltIter2IterL3MuonPixelSeeds->at(i));
 
-      hltIter2IterL3MuonPixelSeeds_dir_[_nhltIter2IterL3MuonPixelSeeds]         = seed.direction();
-      hltIter2IterL3MuonPixelSeeds_tsos_detId_[_nhltIter2IterL3MuonPixelSeeds]  = seed.startingState().detId();
-      hltIter2IterL3MuonPixelSeeds_tsos_pt_[_nhltIter2IterL3MuonPixelSeeds]     = seed.startingState().pt();
-      hltIter2IterL3MuonPixelSeeds_tsos_hasErr_[_nhltIter2IterL3MuonPixelSeeds] = seed.startingState().hasError();
-      if( seed.startingState().hasError() ) {
-        hltIter2IterL3MuonPixelSeeds_tsos_err0_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(0);
-        hltIter2IterL3MuonPixelSeeds_tsos_err1_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(1);
-        hltIter2IterL3MuonPixelSeeds_tsos_err2_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(2);
-        hltIter2IterL3MuonPixelSeeds_tsos_err3_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(3);
-        hltIter2IterL3MuonPixelSeeds_tsos_err4_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(4);
-        hltIter2IterL3MuonPixelSeeds_tsos_err5_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(5);
-        hltIter2IterL3MuonPixelSeeds_tsos_err6_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(6);
-        hltIter2IterL3MuonPixelSeeds_tsos_err7_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(7);
-        hltIter2IterL3MuonPixelSeeds_tsos_err8_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(8);
-        hltIter2IterL3MuonPixelSeeds_tsos_err9_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().error(9);
-        hltIter2IterL3MuonPixelSeeds_tsos_err10_[_nhltIter2IterL3MuonPixelSeeds]  = seed.startingState().error(10);
-        hltIter2IterL3MuonPixelSeeds_tsos_err11_[_nhltIter2IterL3MuonPixelSeeds]  = seed.startingState().error(11);
-        hltIter2IterL3MuonPixelSeeds_tsos_err12_[_nhltIter2IterL3MuonPixelSeeds]  = seed.startingState().error(12);
-        hltIter2IterL3MuonPixelSeeds_tsos_err13_[_nhltIter2IterL3MuonPixelSeeds]  = seed.startingState().error(13);
-        hltIter2IterL3MuonPixelSeeds_tsos_err14_[_nhltIter2IterL3MuonPixelSeeds]  = seed.startingState().error(14);
-      }
-      hltIter2IterL3MuonPixelSeeds_tsos_x_[_nhltIter2IterL3MuonPixelSeeds]      = seed.startingState().parameters().position().x();
-      hltIter2IterL3MuonPixelSeeds_tsos_y_[_nhltIter2IterL3MuonPixelSeeds]      = seed.startingState().parameters().position().y();
-      hltIter2IterL3MuonPixelSeeds_tsos_dxdz_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().parameters().dxdz();
-      hltIter2IterL3MuonPixelSeeds_tsos_dydz_[_nhltIter2IterL3MuonPixelSeeds]   = seed.startingState().parameters().dydz();
-      hltIter2IterL3MuonPixelSeeds_tsos_px_[_nhltIter2IterL3MuonPixelSeeds]     = seed.startingState().parameters().momentum().x();
-      hltIter2IterL3MuonPixelSeeds_tsos_py_[_nhltIter2IterL3MuonPixelSeeds]     = seed.startingState().parameters().momentum().y();
-      hltIter2IterL3MuonPixelSeeds_tsos_pz_[_nhltIter2IterL3MuonPixelSeeds]     = seed.startingState().parameters().momentum().z();
-      hltIter2IterL3MuonPixelSeeds_tsos_qbp_[_nhltIter2IterL3MuonPixelSeeds]    = seed.startingState().parameters().qbp();
-      hltIter2IterL3MuonPixelSeeds_tsos_charge_[_nhltIter2IterL3MuonPixelSeeds] = seed.startingState().parameters().charge();
+      SThltIter2IterL3MuonPixelSeeds->fill(seed);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter2IterL3MuonPixelSeeds_iterL3GlobalRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter2IterL3MuonPixelSeeds_iterL3InnerRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter2IterL3MuonPixelSeeds_iterL3OuterRef_[_nhltIter2IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      SThltIter2IterL3MuonPixelSeeds->linkIterL3((where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod]);
 
-      _nhltIter2IterL3MuonPixelSeeds++;
+      std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIter2IterL3MuonTrackMap.find(seedTsod);
+      SThltIter2IterL3MuonPixelSeeds->linktmpL3((where2==hltIter2IterL3MuonTrackMap.end()) ? -1 : hltIter2IterL3MuonTrackMap[seedTsod]);
+      SThltIter2IterL3MuonPixelSeeds->matchingL3((where2==hltIter2IterL3MuonTrackMap.end()) ? -1 : TThltIter2IterL3MuonTrack->matchedIDpassedL3(hltIter2IterL3MuonTrackMap[seedTsod]));
     } // -- end of seed iteration
-
-    nhltIter2IterL3MuonPixelSeeds_ = _nhltIter2IterL3MuonPixelSeeds;
   } // -- if getByToken is valid
 
   //////////////////////////
@@ -2069,52 +1462,20 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
   edm::Handle< TrajectorySeedCollection > h_hltIter3IterL3MuonPixelSeeds;
   if( iEvent.getByToken( t_hltIter3IterL3MuonPixelSeeds_, h_hltIter3IterL3MuonPixelSeeds) )
   {
-    int _nhltIter3IterL3MuonPixelSeeds = 0;
     for( auto i=0U; i<h_hltIter3IterL3MuonPixelSeeds->size(); ++i )
     {
       const auto& seed(h_hltIter3IterL3MuonPixelSeeds->at(i));
 
-      hltIter3IterL3MuonPixelSeeds_dir_[_nhltIter3IterL3MuonPixelSeeds]         = seed.direction();
-      hltIter3IterL3MuonPixelSeeds_tsos_detId_[_nhltIter3IterL3MuonPixelSeeds]  = seed.startingState().detId();
-      hltIter3IterL3MuonPixelSeeds_tsos_pt_[_nhltIter3IterL3MuonPixelSeeds]     = seed.startingState().pt();
-      hltIter3IterL3MuonPixelSeeds_tsos_hasErr_[_nhltIter3IterL3MuonPixelSeeds] = seed.startingState().hasError();
-      if( seed.startingState().hasError() ) {
-        hltIter3IterL3MuonPixelSeeds_tsos_err0_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(0);
-        hltIter3IterL3MuonPixelSeeds_tsos_err1_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(1);
-        hltIter3IterL3MuonPixelSeeds_tsos_err2_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(2);
-        hltIter3IterL3MuonPixelSeeds_tsos_err3_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(3);
-        hltIter3IterL3MuonPixelSeeds_tsos_err4_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(4);
-        hltIter3IterL3MuonPixelSeeds_tsos_err5_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(5);
-        hltIter3IterL3MuonPixelSeeds_tsos_err6_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(6);
-        hltIter3IterL3MuonPixelSeeds_tsos_err7_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(7);
-        hltIter3IterL3MuonPixelSeeds_tsos_err8_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(8);
-        hltIter3IterL3MuonPixelSeeds_tsos_err9_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().error(9);
-        hltIter3IterL3MuonPixelSeeds_tsos_err10_[_nhltIter3IterL3MuonPixelSeeds]  = seed.startingState().error(10);
-        hltIter3IterL3MuonPixelSeeds_tsos_err11_[_nhltIter3IterL3MuonPixelSeeds]  = seed.startingState().error(11);
-        hltIter3IterL3MuonPixelSeeds_tsos_err12_[_nhltIter3IterL3MuonPixelSeeds]  = seed.startingState().error(12);
-        hltIter3IterL3MuonPixelSeeds_tsos_err13_[_nhltIter3IterL3MuonPixelSeeds]  = seed.startingState().error(13);
-        hltIter3IterL3MuonPixelSeeds_tsos_err14_[_nhltIter3IterL3MuonPixelSeeds]  = seed.startingState().error(14);
-      }
-      hltIter3IterL3MuonPixelSeeds_tsos_x_[_nhltIter3IterL3MuonPixelSeeds]      = seed.startingState().parameters().position().x();
-      hltIter3IterL3MuonPixelSeeds_tsos_y_[_nhltIter3IterL3MuonPixelSeeds]      = seed.startingState().parameters().position().y();
-      hltIter3IterL3MuonPixelSeeds_tsos_dxdz_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().parameters().dxdz();
-      hltIter3IterL3MuonPixelSeeds_tsos_dydz_[_nhltIter3IterL3MuonPixelSeeds]   = seed.startingState().parameters().dydz();
-      hltIter3IterL3MuonPixelSeeds_tsos_px_[_nhltIter3IterL3MuonPixelSeeds]     = seed.startingState().parameters().momentum().x();
-      hltIter3IterL3MuonPixelSeeds_tsos_py_[_nhltIter3IterL3MuonPixelSeeds]     = seed.startingState().parameters().momentum().y();
-      hltIter3IterL3MuonPixelSeeds_tsos_pz_[_nhltIter3IterL3MuonPixelSeeds]     = seed.startingState().parameters().momentum().z();
-      hltIter3IterL3MuonPixelSeeds_tsos_qbp_[_nhltIter3IterL3MuonPixelSeeds]    = seed.startingState().parameters().qbp();
-      hltIter3IterL3MuonPixelSeeds_tsos_charge_[_nhltIter3IterL3MuonPixelSeeds] = seed.startingState().parameters().charge();
+      SThltIter3IterL3MuonPixelSeeds->fill(seed);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter3IterL3MuonPixelSeeds_iterL3GlobalRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter3IterL3MuonPixelSeeds_iterL3InnerRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter3IterL3MuonPixelSeeds_iterL3OuterRef_[_nhltIter3IterL3MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      SThltIter3IterL3MuonPixelSeeds->linkIterL3((where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod]);
 
-      _nhltIter3IterL3MuonPixelSeeds++;
+      std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIter3IterL3MuonTrackMap.find(seedTsod);
+      SThltIter3IterL3MuonPixelSeeds->linktmpL3((where2==hltIter3IterL3MuonTrackMap.end()) ? -1 : hltIter3IterL3MuonTrackMap[seedTsod]);
+      SThltIter3IterL3MuonPixelSeeds->matchingL3((where2==hltIter3IterL3MuonTrackMap.end()) ? -1 : TThltIter3IterL3MuonTrack->matchedIDpassedL3(hltIter3IterL3MuonTrackMap[seedTsod]));
     } // -- end of seed iteration
-
-    nhltIter3IterL3MuonPixelSeeds_ = _nhltIter3IterL3MuonPixelSeeds;
   } // -- if getByToken is valid
 
   //////////////////////////
@@ -2123,52 +1484,20 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
   edm::Handle< TrajectorySeedCollection > h_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks;
   if( iEvent.getByToken( t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_, h_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks) )
   {
-    int _nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks = 0;
     for( auto i=0U; i<h_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->size(); ++i )
     {
       const auto& seed(h_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->at(i));
 
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_dir_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]         = seed.direction();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_detId_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]  = seed.startingState().detId();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pt_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]     = seed.startingState().pt();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_hasErr_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = seed.startingState().hasError();
-      if( seed.startingState().hasError() ) {
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err0_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(0);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err1_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(1);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err2_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(2);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err3_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(3);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err4_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(4);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err5_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(5);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err6_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(6);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err7_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(7);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err8_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(8);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err9_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().error(9);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err10_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(10);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err11_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(11);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err12_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(12);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err13_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(13);
-        hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_err14_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]  = seed.startingState().error(14);
-      }
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_x_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]      = seed.startingState().parameters().position().x();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_y_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]      = seed.startingState().parameters().position().y();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dxdz_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().parameters().dxdz();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_dydz_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]   = seed.startingState().parameters().dydz();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_px_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]     = seed.startingState().parameters().momentum().x();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_py_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]     = seed.startingState().parameters().momentum().y();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_pz_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]     = seed.startingState().parameters().momentum().z();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_qbp_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks]    = seed.startingState().parameters().qbp();
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_tsos_charge_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = seed.startingState().parameters().charge();
+      SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->fill(seed);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3GlobalRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3InnerRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_iterL3OuterRef_[_nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->linkIterL3((where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod]);
 
-      _nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks++;
+      std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIter0IterL3FromL1MuonTrackMap.find(seedTsod);
+      SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->linktmpL3((where2==hltIter0IterL3FromL1MuonTrackMap.end()) ? -1 : hltIter0IterL3FromL1MuonTrackMap[seedTsod]);
+      SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->matchingL3((where2==hltIter0IterL3FromL1MuonTrackMap.end()) ? -1 : TThltIter0IterL3FromL1MuonTrack->matchedIDpassedL3(hltIter0IterL3FromL1MuonTrackMap[seedTsod]));
     } // -- end of seed iteration
-
-    nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_ = _nhltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks;
   } // -- if getByToken is valid
 
   //////////////////////////
@@ -2177,52 +1506,20 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
   edm::Handle< TrajectorySeedCollection > h_hltIter2IterL3FromL1MuonPixelSeeds;
   if( iEvent.getByToken( t_hltIter2IterL3FromL1MuonPixelSeeds_, h_hltIter2IterL3FromL1MuonPixelSeeds) )
   {
-    int _nhltIter2IterL3FromL1MuonPixelSeeds = 0;
     for( auto i=0U; i<h_hltIter2IterL3FromL1MuonPixelSeeds->size(); ++i )
     {
       const auto& seed(h_hltIter2IterL3FromL1MuonPixelSeeds->at(i));
 
-      hltIter2IterL3FromL1MuonPixelSeeds_dir_[_nhltIter2IterL3FromL1MuonPixelSeeds]         = seed.direction();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_detId_[_nhltIter2IterL3FromL1MuonPixelSeeds]  = seed.startingState().detId();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_pt_[_nhltIter2IterL3FromL1MuonPixelSeeds]     = seed.startingState().pt();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_hasErr_[_nhltIter2IterL3FromL1MuonPixelSeeds] = seed.startingState().hasError();
-      if( seed.startingState().hasError() ) {
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err0_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(0);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err1_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(1);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err2_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(2);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err3_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(3);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err4_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(4);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err5_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(5);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err6_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(6);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err7_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(7);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err8_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(8);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err9_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(9);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err10_[_nhltIter2IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(10);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err11_[_nhltIter2IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(11);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err12_[_nhltIter2IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(12);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err13_[_nhltIter2IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(13);
-        hltIter2IterL3FromL1MuonPixelSeeds_tsos_err14_[_nhltIter2IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(14);
-      }
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_x_[_nhltIter2IterL3FromL1MuonPixelSeeds]      = seed.startingState().parameters().position().x();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_y_[_nhltIter2IterL3FromL1MuonPixelSeeds]      = seed.startingState().parameters().position().y();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_dxdz_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().parameters().dxdz();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_dydz_[_nhltIter2IterL3FromL1MuonPixelSeeds]   = seed.startingState().parameters().dydz();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_px_[_nhltIter2IterL3FromL1MuonPixelSeeds]     = seed.startingState().parameters().momentum().x();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_py_[_nhltIter2IterL3FromL1MuonPixelSeeds]     = seed.startingState().parameters().momentum().y();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_pz_[_nhltIter2IterL3FromL1MuonPixelSeeds]     = seed.startingState().parameters().momentum().z();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_qbp_[_nhltIter2IterL3FromL1MuonPixelSeeds]    = seed.startingState().parameters().qbp();
-      hltIter2IterL3FromL1MuonPixelSeeds_tsos_charge_[_nhltIter2IterL3FromL1MuonPixelSeeds] = seed.startingState().parameters().charge();
+      SThltIter2IterL3FromL1MuonPixelSeeds->fill(seed);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter2IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter2IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter2IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[_nhltIter2IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      SThltIter2IterL3FromL1MuonPixelSeeds->linkIterL3((where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod]);
 
-      _nhltIter2IterL3FromL1MuonPixelSeeds++;
+      std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIter2IterL3FromL1MuonTrackMap.find(seedTsod);
+      SThltIter2IterL3FromL1MuonPixelSeeds->linktmpL3((where2==hltIter2IterL3FromL1MuonTrackMap.end()) ? -1 : hltIter2IterL3FromL1MuonTrackMap[seedTsod]);
+      SThltIter2IterL3FromL1MuonPixelSeeds->matchingL3((where2==hltIter2IterL3FromL1MuonTrackMap.end()) ? -1 : TThltIter2IterL3FromL1MuonTrack->matchedIDpassedL3(hltIter2IterL3FromL1MuonTrackMap[seedTsod]));
     } // -- end of seed iteration
-
-    nhltIter2IterL3FromL1MuonPixelSeeds_ = _nhltIter2IterL3FromL1MuonPixelSeeds;
   } // -- if getByToken is valid
 
   //////////////////////////
@@ -2231,52 +1528,20 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
   edm::Handle< TrajectorySeedCollection > h_hltIter3IterL3FromL1MuonPixelSeeds;
   if( iEvent.getByToken( t_hltIter3IterL3FromL1MuonPixelSeeds_, h_hltIter3IterL3FromL1MuonPixelSeeds) )
   {
-    int _nhltIter3IterL3FromL1MuonPixelSeeds = 0;
     for( auto i=0U; i<h_hltIter3IterL3FromL1MuonPixelSeeds->size(); ++i )
     {
       const auto& seed(h_hltIter3IterL3FromL1MuonPixelSeeds->at(i));
 
-      hltIter3IterL3FromL1MuonPixelSeeds_dir_[_nhltIter3IterL3FromL1MuonPixelSeeds]         = seed.direction();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_detId_[_nhltIter3IterL3FromL1MuonPixelSeeds]  = seed.startingState().detId();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_pt_[_nhltIter3IterL3FromL1MuonPixelSeeds]     = seed.startingState().pt();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_hasErr_[_nhltIter3IterL3FromL1MuonPixelSeeds] = seed.startingState().hasError();
-      if( seed.startingState().hasError() ) {
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err0_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(0);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err1_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(1);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err2_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(2);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err3_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(3);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err4_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(4);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err5_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(5);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err6_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(6);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err7_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(7);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err8_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(8);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err9_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().error(9);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err10_[_nhltIter3IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(10);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err11_[_nhltIter3IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(11);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err12_[_nhltIter3IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(12);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err13_[_nhltIter3IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(13);
-        hltIter3IterL3FromL1MuonPixelSeeds_tsos_err14_[_nhltIter3IterL3FromL1MuonPixelSeeds]  = seed.startingState().error(14);
-      }
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_x_[_nhltIter3IterL3FromL1MuonPixelSeeds]      = seed.startingState().parameters().position().x();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_y_[_nhltIter3IterL3FromL1MuonPixelSeeds]      = seed.startingState().parameters().position().y();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_dxdz_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().parameters().dxdz();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_dydz_[_nhltIter3IterL3FromL1MuonPixelSeeds]   = seed.startingState().parameters().dydz();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_px_[_nhltIter3IterL3FromL1MuonPixelSeeds]     = seed.startingState().parameters().momentum().x();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_py_[_nhltIter3IterL3FromL1MuonPixelSeeds]     = seed.startingState().parameters().momentum().y();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_pz_[_nhltIter3IterL3FromL1MuonPixelSeeds]     = seed.startingState().parameters().momentum().z();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_qbp_[_nhltIter3IterL3FromL1MuonPixelSeeds]    = seed.startingState().parameters().qbp();
-      hltIter3IterL3FromL1MuonPixelSeeds_tsos_charge_[_nhltIter3IterL3FromL1MuonPixelSeeds] = seed.startingState().parameters().charge();
+      SThltIter3IterL3FromL1MuonPixelSeeds->fill(seed);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
-      hltIter3IterL3FromL1MuonPixelSeeds_iterL3GlobalRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter3IterL3FromL1MuonPixelSeeds_iterL3InnerRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
-      hltIter3IterL3FromL1MuonPixelSeeds_iterL3OuterRef_[_nhltIter3IterL3FromL1MuonPixelSeeds] = (where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod];
+      SThltIter3IterL3FromL1MuonPixelSeeds->linkIterL3((where==MuonIterSeedMap.end()) ? -1 : MuonIterSeedMap[seedTsod]);
 
-      _nhltIter3IterL3FromL1MuonPixelSeeds++;
+      std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIter3IterL3FromL1MuonTrackMap.find(seedTsod);
+      SThltIter3IterL3FromL1MuonPixelSeeds->linktmpL3((where2==hltIter3IterL3FromL1MuonTrackMap.end()) ? -1 : hltIter3IterL3FromL1MuonTrackMap[seedTsod]);
+      SThltIter3IterL3FromL1MuonPixelSeeds->matchingL3((where2==hltIter3IterL3FromL1MuonTrackMap.end()) ? -1 : TThltIter3IterL3FromL1MuonTrack->matchedIDpassedL3(hltIter3IterL3FromL1MuonTrackMap[seedTsod]));
     } // -- end of seed iteration
-
-    nhltIter3IterL3FromL1MuonPixelSeeds_ = _nhltIter3IterL3FromL1MuonPixelSeeds;
   } // -- if getByToken is valid
 }
 
