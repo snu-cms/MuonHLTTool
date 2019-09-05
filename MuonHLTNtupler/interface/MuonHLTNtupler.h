@@ -632,7 +632,7 @@ private:
     int matchedIDpassedL3(int idx) { return linkToL3s.at(idx); }
   };
 
-  std::vector<tmpTrk*> iterL3IDpassed;
+  std::vector<tmpTrk> iterL3IDpassed;
 
   seedTemplate* SThltIterL3OISeedsFromL2Muons = new seedTemplate();
   seedTemplate* SThltIter0IterL3MuonPixelSeedsFromPixelTracks = new seedTemplate();
