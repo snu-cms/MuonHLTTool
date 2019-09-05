@@ -583,6 +583,8 @@ private:
       trkPhi = trk_->phi();
       trkCharge = trk_->charge();
     }
+
+    tmpTrk(const reco::TrackRef trk_) { fill(trk_); }
   };
 
   class trkTemplate {

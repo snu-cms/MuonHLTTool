@@ -1086,8 +1086,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
       if( innerTrk.isNonnull() ) {
         iterL3Muon_innerPt_[_nIterL3Muon] = innerTrk->pt();
 
-        tmpTrk* trkTmp = new tmpTrk();
-        trkTmp->fill(innerTrk);
+        tmpTrk trkTmp(innerTrk);
         iterL3IDpassed.push_back(trkTmp);
 
         const PTrajectoryStateOnDet tmpseed = innerTrk->seedRef()->startingState();
@@ -1113,7 +1112,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIterL3OIMuonTrack->at(i)) ) linkNo = idxL3passed;
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIterL3OIMuonTrack->at(i)) ) linkNo = idxL3passed;
       }
 
       TThltIterL3OIMuonTrack->linkIterL3(linkNo);
@@ -1168,7 +1167,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter0IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter0IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
       }
 
       TThltIter0IterL3MuonTrack->linkIterL3(linkNo);
@@ -1187,7 +1186,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter2IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter2IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
       }
 
       TThltIter2IterL3MuonTrack->linkIterL3(linkNo);
@@ -1206,7 +1205,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter3IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter3IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
       }
 
       TThltIter3IterL3MuonTrack->linkIterL3(linkNo);
@@ -1296,7 +1295,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter0IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter0IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
       }
 
       TThltIter0IterL3FromL1MuonTrack->linkIterL3(linkNo);
@@ -1315,7 +1314,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter2IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter2IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
       }
 
       TThltIter2IterL3FromL1MuonTrack->linkIterL3(linkNo);
@@ -1334,7 +1333,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed)->isMatched(h_hltIter3IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter3IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
       }
 
       TThltIter3IterL3FromL1MuonTrack->linkIterL3(linkNo);
