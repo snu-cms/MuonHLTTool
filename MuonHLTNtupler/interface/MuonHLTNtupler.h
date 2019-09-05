@@ -574,7 +574,7 @@ private:
     int trkCharge;
   public:
     bool isMatched(const reco::Track trk_) {
-      return std::abs(trk_.pt()/trkPt) < 0.01 && std::abs(trk_.eta()-trkEta) < 0.01 && std::abs(trk_.phi()-trkPhi) < 0.01 && trk_.charge()==trkCharge;
+      return std::abs(trk_.pt()-trkPt)/trkPt < 0.01 && std::abs(trk_.eta()-trkEta) < 0.01 && std::abs(trk_.phi()-trkPhi) < 0.01 && trk_.charge()==trkCharge;
     }
 
     void fill(const reco::TrackRef trk_) {
