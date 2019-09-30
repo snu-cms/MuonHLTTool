@@ -104,6 +104,9 @@ private:
   edm::EDGetTokenT< std::vector<reco::Muon> >                t_iterL3MuonNoID_;
   edm::EDGetTokenT< std::vector<reco::Muon> >                t_iterL3Muon_;
 
+  edm::EDGetTokenT< reco::VertexCollection >                 t_hltIterL3MuonTrimmedPixelVertices_;
+  edm::EDGetTokenT< reco::VertexCollection >                 t_hltIterL3FromL1MuonTrimmedPixelVertices_;
+
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIterL3OISeedsFromL2Muons_;
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_;
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter2IterL3MuonPixelSeeds_;
@@ -632,6 +635,69 @@ private:
     int matchedIDpassedL3(int idx) { return linkToL3s.at(idx); }
   };
 
+  class vtxTemplate {
+  private:
+    int nVtxs;
+    std::vector<int> isValid;
+    std::vector<double> chi2;
+    std::vector<double> ndof;
+    std::vector<double> nTracks;
+    std::vector<double> vtxX;
+    std::vector<double> vtxXerr;
+    std::vector<double> vtxY;
+    std::vector<double> vtxYerr;
+    std::vector<double> vtxZ;
+    std::vector<double> vtxZerr;
+  public:
+    void clear() {
+      nVtxs = 0;
+      isValid.clear();
+      chi2.clear();
+      ndof.clear();
+      nTracks.clear();
+      vtxX.clear();
+      vtxXerr.clear();
+      vtxY.clear();
+      vtxYerr.clear();
+      vtxZ.clear();
+      vtxZerr.clear();
+
+      return;
+    }
+
+    void setBranch(TTree* tmpntpl, TString name) {
+      tmpntpl->Branch("n"+name, &nVtxs);
+      tmpntpl->Branch(name+"_isValid", &isValid);
+      tmpntpl->Branch(name+"_chi2", &chi2);
+      tmpntpl->Branch(name+"_ndof", &ndof);
+      tmpntpl->Branch(name+"_nTracks", &nTracks);
+      tmpntpl->Branch(name+"_x", &vtxX);
+      tmpntpl->Branch(name+"_xerr", &vtxXerr);
+      tmpntpl->Branch(name+"_y", &vtxY);
+      tmpntpl->Branch(name+"_yerr", &vtxYerr);
+      tmpntpl->Branch(name+"_z", &vtxZ);
+      tmpntpl->Branch(name+"_zerr", &vtxZerr);
+
+      return;
+    }
+
+    void fill(const reco::Vertex vtx) {
+      isValid.push_back(vtx.isValid());
+      chi2.push_back(vtx.chi2());
+      ndof.push_back(vtx.ndof());
+      nTracks.push_back(vtx.nTracks());
+      vtxX.push_back(vtx.x());
+      vtxXerr.push_back(vtx.xError());
+      vtxY.push_back(vtx.y());
+      vtxYerr.push_back(vtx.yError());
+      vtxZ.push_back(vtx.z());
+      vtxZerr.push_back(vtx.zError());
+      nVtxs++;
+
+      return;
+    }
+  };
+
   std::vector<tmpTrk> iterL3IDpassed;
 
   seedTemplate* SThltIterL3OISeedsFromL2Muons = new seedTemplate();
@@ -649,4 +715,7 @@ private:
   trkTemplate* TThltIter0IterL3FromL1MuonTrack = new trkTemplate();
   trkTemplate* TThltIter2IterL3FromL1MuonTrack = new trkTemplate();
   trkTemplate* TThltIter3IterL3FromL1MuonTrack = new trkTemplate();
+
+  vtxTemplate* VThltIterL3MuonTrimmedPixelVertices = new vtxTemplate();
+  vtxTemplate* VThltIterL3FromL1MuonTrimmedPixelVertices = new vtxTemplate();
 };

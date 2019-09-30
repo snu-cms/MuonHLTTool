@@ -80,6 +80,9 @@ t_iterL3IOFromL1_    ( consumes< std::vector<reco::Track> >               (iConf
 t_iterL3MuonNoID_    ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("iterL3MuonNoID"    )) ),
 t_iterL3Muon_        ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("iterL3Muon"        )) ),
 
+t_hltIterL3MuonTrimmedPixelVertices_       ( consumes< reco::VertexCollection > (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3MuonTrimmedPixelVertices"     )) ),
+t_hltIterL3FromL1MuonTrimmedPixelVertices_ ( consumes< reco::VertexCollection > (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3FromL1MuonTrimmedPixelVertices"     )) ),
+
 t_hltIterL3OISeedsFromL2Muons_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OISeedsFromL2Muons")) ),
 t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonPixelSeedsFromPixelTracks")) ),
 t_hltIter2IterL3MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3MuonPixelSeeds")) ),
@@ -126,6 +129,22 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
       if( it->isValid() ) nGoodVtx++;
 
     nVertex_ = nGoodVtx;
+  }
+
+  // -- hltIterL3MuonTrimmedPixelVertices
+  edm::Handle<reco::VertexCollection> h_hltIterL3MuonTrimmedPixelVertices;
+  if( iEvent.getByToken(t_hltIterL3MuonTrimmedPixelVertices_, h_hltIterL3MuonTrimmedPixelVertices) )
+  {
+    for(reco::VertexCollection::const_iterator it = h_hltIterL3MuonTrimmedPixelVertices->begin(); it != h_hltIterL3MuonTrimmedPixelVertices->end(); ++it)
+      VThltIterL3MuonTrimmedPixelVertices->fill(*it);
+  }
+
+  // -- hltIterL3FromL1MuonTrimmedPixelVertices
+  edm::Handle<reco::VertexCollection> h_hltIterL3FromL1MuonTrimmedPixelVertices;
+  if( iEvent.getByToken(t_hltIterL3FromL1MuonTrimmedPixelVertices_, h_hltIterL3FromL1MuonTrimmedPixelVertices) )
+  {
+    for(reco::VertexCollection::const_iterator it = h_hltIterL3FromL1MuonTrimmedPixelVertices->begin(); it != h_hltIterL3FromL1MuonTrimmedPixelVertices->end(); ++it)
+      VThltIterL3FromL1MuonTrimmedPixelVertices->fill(*it);
   }
 
   if( isRealData_ )
@@ -482,6 +501,9 @@ void MuonHLTNtupler::Init()
   TThltIter0IterL3FromL1MuonTrack->clear();
   TThltIter2IterL3FromL1MuonTrack->clear();
   TThltIter3IterL3FromL1MuonTrack->clear();
+
+  VThltIterL3MuonTrimmedPixelVertices->clear();
+  VThltIterL3FromL1MuonTrimmedPixelVertices->clear();
 }
 
 void MuonHLTNtupler::Make_Branch()
@@ -706,6 +728,9 @@ void MuonHLTNtupler::Make_Branch()
   TThltIter0IterL3FromL1MuonTrack->setBranch(ntuple_,"hltIter0IterL3FromL1MuonTrack");
   TThltIter2IterL3FromL1MuonTrack->setBranch(ntuple_,"hltIter2IterL3FromL1MuonTrack");
   TThltIter3IterL3FromL1MuonTrack->setBranch(ntuple_,"hltIter3IterL3FromL1MuonTrack");
+
+  VThltIterL3MuonTrimmedPixelVertices->setBranch(ntuple_,"hltIterL3MuonTrimmedPixelVertices");
+  VThltIterL3FromL1MuonTrimmedPixelVertices->setBranch(ntuple_,"hltIterL3FromL1MuonTrimmedPixelVertices");
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
