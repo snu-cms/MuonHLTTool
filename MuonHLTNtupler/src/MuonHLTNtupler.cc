@@ -12,6 +12,7 @@
 #include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/EDConsumerBase.h"
 
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/View.h"
@@ -49,6 +50,8 @@
 #include "DataFormats/TrajectorySeed/interface/PropagationDirection.h"
 #include "DataFormats/TrajectoryState/interface/PTrajectoryStateOnDet.h"
 #include "DataFormats/TrajectoryState/interface/LocalTrajectoryParameters.h"
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
+#include "CommonTools/Utils/interface/associationMapFilterValues.h"
 
 
 #include <map>
@@ -62,6 +65,11 @@ using namespace edm;
 
 
 MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
+trackerHitAssociatorConfig_(iConfig, consumesCollector()),
+associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
+// associatorToken(consumes<reco::RecoToSimCollection(iConfig.getUntrackedParameter<edm::InputTag>("associator"))>),
+// associator(iConfig.getUntrackedParameter<edm::InputTag>("associator")),
+trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackingParticle"))),
 t_offlineMuon_       ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"       )) ),
 t_offlineVertex_     ( consumes< reco::VertexCollection >                 (iConfig.getUntrackedParameter<edm::InputTag>("offlineVertex"     )) ),
 t_triggerResults_    ( consumes< edm::TriggerResults >                    (iConfig.getUntrackedParameter<edm::InputTag>("triggerResults"    )) ),
@@ -91,7 +99,7 @@ t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_ ( consumes< TrajectorySeedC
 t_hltIter2IterL3FromL1MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonPixelSeeds")) ),
 t_hltIter3IterL3FromL1MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonPixelSeeds")) ),
 
-t_hltIterL3OIMuonTrack_    ( consumes< std::vector<reco::Track> >                  (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OIMuonTrack"    )) ),
+t_hltIterL3OIMuonTrack_    ( consumes< edm::View<reco::Track> >                  (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OIMuonTrack"    )) ),
 t_hltIter0IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonTrack"    )) ),
 t_hltIter2IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3MuonTrack"    )) ),
 t_hltIter3IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3MuonTrack"    )) ),
@@ -106,7 +114,7 @@ t_PUSummaryInfo_     ( consumes< std::vector<PileupSummaryInfo> >         (iConf
 t_genEventInfo_      ( consumes< GenEventInfoProduct >                    (iConfig.getUntrackedParameter<edm::InputTag>("genEventInfo"      )) ),
 t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) )
 {
-
+  // associatorToken = consumes<reco::RecoToSimCollection>(associator);
 }
 
 void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
@@ -194,12 +202,12 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   // -- fill each object
   Fill_Muon(iEvent);
   Fill_HLT(iEvent, 0); // -- original HLT objects saved in data taking
-  Fill_HLT(iEvent, 1); // -- rerun objects
+  // Fill_HLT(iEvent, 1); // -- rerun objects
   Fill_HLTMuon(iEvent);
   Fill_L1Muon(iEvent);
   Fill_IterL3(iEvent);
   Fill_Seed(iEvent);
-  if( !isRealData_ ) Fill_GenParticle(iEvent);
+  // if( !isRealData_ ) Fill_GenParticle(iEvent);
 
   ntuple_->Fill();
 }
@@ -1087,10 +1095,28 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
 void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 {
+  std::cout << "Fill iterL3 start" << std::endl;
   //////////////////////////
   // -- IterL3Muon -- //
   //////////////////////////
   edm::Handle< std::vector<reco::Muon> > h_iterL3Muon;
+  edm::Handle<reco::TrackToTrackingParticleAssociator> theAssociator;
+  iEvent.getByToken(associatorToken, theAssociator);
+  // edm::Handle<reco::RecoToSimCollection> recoToSimCollectionH;
+  // iEvent.getByToken(associatorToken,recoToSimCollectionH);
+  edm::Handle<TrackingParticleCollection> TPCollection;
+  iEvent.getByToken(trackingParticleToken, TPCollection);
+  TrackingParticleRefVector tmpTP;
+
+  for (unsigned i = 0; i < TPCollection->size(); i++) {
+    tmpTP.push_back(TrackingParticleRef(TPCollection,i));
+  }
+  const TrackingParticleRefVector* tmpTPptr = &tmpTP;
+  // const TrackingParticleRefVector* tmpTPptr = TPCollection.product();
+  TrackingParticleRefVector const& TPC = *tmpTPptr;
+
+  std::cout << "GetByToken done" << std::endl;
+
   if( iEvent.getByToken( t_iterL3Muon_, h_iterL3Muon) )
   {
     int _nIterL3Muon = 0;
@@ -1128,23 +1154,53 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   ////////////////////
   // -- IterL3OI -- //
   ////////////////////
-  edm::Handle< std::vector<reco::Track> > h_hltIterL3OIMuonTrack;
+
+  edm::Handle< edm::View<reco::Track> > h_hltIterL3OIMuonTrack;
   if( iEvent.getByToken( t_hltIterL3OIMuonTrack_, h_hltIterL3OIMuonTrack ) )
   {
-    for( unsigned int i=0; i<h_hltIterL3OIMuonTrack->size(); i++)
+    const edm::View<reco::Track>& _h_hltIterL3OIMuonTrack = *h_hltIterL3OIMuonTrack;
+    edm::RefToBaseVector<reco::Track> trackRefs;
+    for (edm::View<reco::Track>::size_type i = 0; i < _h_hltIterL3OIMuonTrack.size(); ++i) {
+      trackRefs.push_back(_h_hltIterL3OIMuonTrack.refAt(i));
+    }
+    auto recSimCollL = theAssociator->associateRecoToSim(trackRefs,TPC);
+    auto recSimCollP = &recSimCollL;
+    // auto recSimCollP = recoToSimCollectionH.product();
+    // auto recSimCollL = associationMapFilterValues(*recSimCollP,TPC);
+    // recSimCollP = &recSimCollL;
+    reco::RecoToSimCollection const& recSimColl = *recSimCollP;
+
+    for( edm::View<reco::Track>::size_type i=0; i< _h_hltIterL3OIMuonTrack.size(); ++i)
     {
-      TThltIterL3OIMuonTrack->fill(h_hltIterL3OIMuonTrack->at(i));
+      std::cout << i << "-th track" << std::endl;
+      TThltIterL3OIMuonTrack->fill(_h_hltIterL3OIMuonTrack.at(i));
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIterL3OIMuonTrack->at(i)) ) linkNo = idxL3passed;
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(_h_hltIterL3OIMuonTrack.at(i)) ) linkNo = idxL3passed;
       }
 
       TThltIterL3OIMuonTrack->linkIterL3(linkNo);
 
-      const PTrajectoryStateOnDet tmpseed = h_hltIterL3OIMuonTrack->at(i).seedRef()->startingState();
+      const PTrajectoryStateOnDet tmpseed = _h_hltIterL3OIMuonTrack.at(i).seedRef()->startingState();
       tmpTSOD tsod(tmpseed);
       hltIterL3OIMuonTrackMap.insert(make_pair(tsod,i));
+
+      // RefToBase<reco::Track> track(h_hltIterL3OIMuonTrack,i);
+      auto track = _h_hltIterL3OIMuonTrack.refAt(i);
+      // std::vector<std::pair<TrackingParticleRef, double>> TPmatch;
+      auto TPfound = recSimColl.find(track);
+      if (TPfound != recSimColl.end()) {
+        std::cout << "RecSimColl loop start" << std::endl;
+        // TPmatch = recSimColl[track];
+        const auto& TPmatch = TPfound->val;
+        std::cout << "TPfound val extracted" << std::endl;
+        // if(TPmatch.size() !=0 ) {
+        //   std::cout << "association qual = " << TPmatch.begin()->second << std::endl;
+        // }
+        std::cout << "shard frac = " << TPmatch[0].second << std::endl;
+      }
+      std::cout << "Next track" << std::endl;
     }
   }
 
@@ -1413,6 +1469,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 
 void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
 {
+  TrackerHitAssociator associate(iEvent, trackerHitAssociatorConfig_);
   //////////////////////////
   // -- hltIterL3OISeedsFromL2Muons -- //
   //////////////////////////
@@ -1432,6 +1489,13 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
       std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIterL3OIMuonTrackMap.find(seedTsod);
       SThltIterL3OISeedsFromL2Muons->linktmpL3((where2==hltIterL3OIMuonTrackMap.end()) ? -1 : hltIterL3OIMuonTrackMap[seedTsod]);
       SThltIterL3OISeedsFromL2Muons->matchingL3((where2==hltIterL3OIMuonTrackMap.end()) ? -1 : TThltIterL3OIMuonTrack->matchedIDpassedL3(hltIterL3OIMuonTrackMap[seedTsod]));
+
+      std::cout << "OI RecHit loop start" << std::endl;
+      for (auto rechit = seed.recHits().first; rechit != seed.recHits().second; ++rechit) {
+        std::cout << "OI RecHit is valid : " << rechit->isValid() << std::endl;
+        auto matched = associate.associateHit(*rechit);
+        std::cout << "OI Matched RecHit size = " << matched.size() << std::endl;
+      }
     } // -- end of seed iteration
   } // -- if getByToken is valid
 
@@ -1455,6 +1519,13 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
       std::map<tmpTSOD,unsigned int>::const_iterator where2 = hltIter0IterL3MuonTrackMap.find(seedTsod);
       SThltIter0IterL3MuonPixelSeedsFromPixelTracks->linktmpL3((where2==hltIter0IterL3MuonTrackMap.end()) ? -1 : hltIter0IterL3MuonTrackMap[seedTsod]);
       SThltIter0IterL3MuonPixelSeedsFromPixelTracks->matchingL3((where2==hltIter0IterL3MuonTrackMap.end()) ? -1 : TThltIter0IterL3MuonTrack->matchedIDpassedL3(hltIter0IterL3MuonTrackMap[seedTsod]));
+
+      std::cout << "IO RecHit loop start" << std::endl;
+      for (auto rechit = seed.recHits().first; rechit != seed.recHits().second; ++rechit) {
+        std::cout << "IO RecHit is valid : " << rechit->isValid() << std::endl;
+        auto matched = associate.associateHit(*rechit);
+        std::cout << "IO Matched RecHit size = " << matched.size() << std::endl;
+      }
     } // -- end of seed iteration
   } // -- if getByToken is valid
 

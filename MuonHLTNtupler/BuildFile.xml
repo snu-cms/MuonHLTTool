@@ -13,5 +13,14 @@
 <use name="TrackPropagation/SteppingHelixPropagator"/>
 <use name="RecoMuon/Records"/>
 <use name="RecoMuon/DetLayers"/>
+<use name="SimTracker/TrackerHitAssociation"/>
+<use name="SimDataFormats/Associations"/>
+<use name="SimDataFormats/TrackingAnalysis"/>
+<use name="SimTracker/Common"/>
+<use name="SimGeneral/TrackingAnalysis"/>
+<use name="SimTracker/TrackAssociation"/>
+<use name="CommonTools/Utils"/>
+<use name="DataFormats/RecoCandidate"/>
+<use name="DataFormats/Common"/>
 <!--   <flags   EDM_PLUGIN="1"/> -->
 <flags EDM_PLUGIN="1"/>

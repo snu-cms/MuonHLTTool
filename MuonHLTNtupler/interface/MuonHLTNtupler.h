@@ -47,6 +47,14 @@
 #include "DataFormats/TrajectorySeed/interface/PropagationDirection.h"
 #include "DataFormats/TrajectoryState/interface/PTrajectoryStateOnDet.h"
 #include "DataFormats/TrajectoryState/interface/LocalTrajectoryParameters.h"
+#include "DataFormats/TrackingRecHit/interface/TrackingRecHit.h"
+
+//--- for SimHit association
+#include "SimDataFormats/TrackingHit/interface/PSimHit.h"
+#include "SimTracker/TrackerHitAssociation/interface/TrackerHitAssociator.h"
+#include "SimDataFormats/Associations/interface/TrackToTrackingParticleAssociator.h"
+#include "SimTracker/Common/interface/TrackingParticleSelector.h"
+#include "DataFormats/Common/interface/ValueMap.h"
 
 #include "TTree.h"
 #include "TString.h"
@@ -85,6 +93,13 @@ private:
 
   bool isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx);
 
+  TrackerHitAssociator::Config trackerHitAssociatorConfig_;
+  edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
+  // edm::EDGetTokenT<reco::RecoToSimCollection> associatorToken;
+  // edm::InputTag associator;
+  // edm::EDGetTokenT<reco::RecoToSimCollection> associatorToken;
+  edm::EDGetTokenT<TrackingParticleCollection> trackingParticleToken;
+
   edm::EDGetTokenT< std::vector<reco::Muon> >                t_offlineMuon_;
   edm::EDGetTokenT< reco::VertexCollection >                 t_offlineVertex_;
   edm::EDGetTokenT< edm::TriggerResults >                    t_triggerResults_;
@@ -115,7 +130,7 @@ private:
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter2IterL3FromL1MuonPixelSeeds_;
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter3IterL3FromL1MuonPixelSeeds_;
 
-  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIterL3OIMuonTrack_;
+  edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIterL3OIMuonTrack_;
   edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter0IterL3MuonTrack_;
   edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter2IterL3MuonTrack_;
   edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter3IterL3MuonTrack_;
@@ -693,6 +708,50 @@ private:
       vtxZ.push_back(vtx.z());
       vtxZerr.push_back(vtx.zError());
       nVtxs++;
+
+      return;
+    }
+  };
+
+  class hitTemplate {
+  private:
+    int nHits;
+    std::vector<bool> isValid;
+    std::vector<float> localx, localy, localz, globalx, globaly, globalz;
+    // std::vector<float> localxx, localyy, localxy;
+    // std::vector<float> globalcxx, globalcyx, globalcyy, globalczx, globalczy, globalczz, globalctx, globalcty, blobalctz, globalctt;
+  public:
+    void clear() {
+      nHits = 0;
+      isValid.clear();
+      localx.clear(); localy.clear(); localz.clear(); globalx.clear(); globaly.clear(); globalz.clear();
+      // localxx.clear(); localyy.clear(); localxy.clear();
+      // globalcxx.clear(); globalcyx.clear(); globalcyy.clear(); globalczx.clear(); globalczy.clear();
+      // globalczz.clear(); globalctx.clear(); globalcty.clear(); blobalctz.clear(); globalctt.clear();
+
+      return;
+    }
+
+    void fill(int idx, TrackingRecHit* rechit) {
+      isValid.push_back(rechit->isValid());
+      localx.push_back(rechit->localPosition().x());
+      localy.push_back(rechit->localPosition().y());
+      localz.push_back(rechit->localPosition().z());
+      globalx.push_back(rechit->globalPosition().x());
+      globaly.push_back(rechit->globalPosition().y());
+      globalz.push_back(rechit->globalPosition().z());
+
+      return;
+    }
+
+    void setBranch(TTree* tmpntpl, TString name) {
+      tmpntpl->Branch(name+"_isValid", &isValid);
+      tmpntpl->Branch(name+"_localX", &localx);
+      tmpntpl->Branch(name+"_localY", &localy);
+      tmpntpl->Branch(name+"_localZ", &localz);
+      tmpntpl->Branch(name+"_globalX", &globalx);
+      tmpntpl->Branch(name+"_globalY", &globaly);
+      tmpntpl->Branch(name+"_globalZ", &globalz);
 
       return;
     }
