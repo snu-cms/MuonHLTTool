@@ -17,8 +17,6 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT"):
     process.hltTPClusterProducer = _tpClusterProducer.clone(
       pixelClusterSrc = "hltSiPixelClusters",
       stripClusterSrc = "hltSiStripRawToClustersFacility"
-      # pixelSimLinkSrc = "hltSiPixelDigis",
-      # stripSimLinkSrc = "hltSiStripDigis"
     )
     process.hltTPClusterProducer.pixelSimLinkSrc = cms.InputTag("simSiPixelDigis","Pixel")
     process.hltTrackAssociatorByHits = SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi.quickTrackAssociatorByHits.clone()
@@ -26,8 +24,6 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT"):
     process.hltTrackAssociatorByHits.UseGrouped               = cms.bool( False )
     process.hltTrackAssociatorByHits.UseSplitting             = cms.bool( False )
     process.hltTrackAssociatorByHits.ThreeHitTracksAreSpecial = cms.bool( False )
-    # process.load("SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi")
-    # process.load("SimTracker.TrackerHitAssociation.tpClusterProducer_cfi")
     process.ntupler = ntuplerBase.clone()
 
     # -- set to the new process name
@@ -75,15 +71,13 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT"):
     process.ntupler.usePhase2Tracker = cms.bool(True)
     process.ntupler.phase2TrackerSimLinkSrc = cms.InputTag("simSiPixelDigis","Tracker")
 
-    # process.ntupler.associator = cms.untracked.InputTag("quickTrackAssociatorByHits")
     process.ntupler.associator = cms.untracked.InputTag("hltTrackAssociatorByHits")
-    # process.ntupler.associator = cms.untracked.InputTag("trackingParticleRecoTrackAsssociation")
     process.ntupler.trackingParticle = cms.untracked.InputTag("mix","MergedTrackTruth")
 
     process.TFileService = cms.Service("TFileService",
       fileName = cms.string("ntuple.root"),
       closeFileFast = cms.untracked.bool(False),
-      )
+    )
 
     process.mypath = cms.EndPath(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
 

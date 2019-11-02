@@ -55,6 +55,7 @@
 #include "SimDataFormats/Associations/interface/TrackToTrackingParticleAssociator.h"
 #include "SimTracker/Common/interface/TrackingParticleSelector.h"
 #include "DataFormats/Common/interface/ValueMap.h"
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingParticleFwd.h"
 
 #include "TTree.h"
 #include "TString.h"
@@ -95,9 +96,6 @@ private:
 
   TrackerHitAssociator::Config trackerHitAssociatorConfig_;
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
-  // edm::EDGetTokenT<reco::RecoToSimCollection> associatorToken;
-  // edm::InputTag associator;
-  // edm::EDGetTokenT<reco::RecoToSimCollection> associatorToken;
   edm::EDGetTokenT<TrackingParticleCollection> trackingParticleToken;
 
   edm::EDGetTokenT< std::vector<reco::Muon> >                t_offlineMuon_;
@@ -131,12 +129,12 @@ private:
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter3IterL3FromL1MuonPixelSeeds_;
 
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIterL3OIMuonTrack_;
-  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter0IterL3MuonTrack_;
-  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter2IterL3MuonTrack_;
-  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter3IterL3MuonTrack_;
-  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter0IterL3FromL1MuonTrack_;
-  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter2IterL3FromL1MuonTrack_;
-  edm::EDGetTokenT< std::vector<reco::Track> >               t_hltIter3IterL3FromL1MuonTrack_;
+  edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter0IterL3MuonTrack_;
+  edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter2IterL3MuonTrack_;
+  edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter3IterL3MuonTrack_;
+  edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter0IterL3FromL1MuonTrack_;
+  edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter2IterL3FromL1MuonTrack_;
+  edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter3IterL3FromL1MuonTrack_;
 
   edm::EDGetTokenT< LumiScalersCollection >                  t_lumiScaler_;
   edm::EDGetTokenT< LumiScalersCollection >                  t_offlineLumiScaler_;
@@ -613,6 +611,22 @@ private:
     std::vector<double> trkPhis;
     std::vector<int> trkCharges;
     std::vector<int> linkToL3s;
+    std::vector<float> bestMatchTP_charge;
+    std::vector<int> bestMatchTP_pdgId;
+    std::vector<double> bestMatchTP_energy;
+    std::vector<double> bestMatchTP_pt;
+    std::vector<double> bestMatchTP_eta;
+    std::vector<double> bestMatchTP_phi;
+    std::vector<double> bestMatchTP_parentVx;
+    std::vector<double> bestMatchTP_parentVy;
+    std::vector<double> bestMatchTP_parentVz;
+    std::vector<int> bestMatchTP_status;
+    std::vector<int> bestMatchTP_numberOfHits;
+    std::vector<int> bestMatchTP_numberOfTrackerHits;
+    std::vector<int> bestMatchTP_numberOfTrackerLayers;
+    std::vector<double> bestMatchTP_sharedFraction;
+    std::vector<int> matchedTPsize;
+
   public:
     void clear() {
       nTrks = 0;
@@ -621,6 +635,21 @@ private:
       trkPhis.clear();
       trkCharges.clear();
       linkToL3s.clear();
+      bestMatchTP_charge.clear();
+      bestMatchTP_pdgId.clear();
+      bestMatchTP_energy.clear();
+      bestMatchTP_pt.clear();
+      bestMatchTP_eta.clear();
+      bestMatchTP_phi.clear();
+      bestMatchTP_parentVx.clear();
+      bestMatchTP_parentVy.clear();
+      bestMatchTP_parentVz.clear();
+      bestMatchTP_status.clear();
+      bestMatchTP_numberOfHits.clear();
+      bestMatchTP_numberOfTrackerHits.clear();
+      bestMatchTP_numberOfTrackerLayers.clear();
+      bestMatchTP_sharedFraction.clear();
+      matchedTPsize.clear();
 
       return;
     }
@@ -632,6 +661,21 @@ private:
       tmpntpl->Branch(name+"_phi", &trkPhis);
       tmpntpl->Branch(name+"_charge", &trkCharges);
       tmpntpl->Branch(name+"_matchedL3", &linkToL3s);
+      tmpntpl->Branch(name+"_bestMatchTP_charge", &bestMatchTP_charge);
+      tmpntpl->Branch(name+"_bestMatchTP_pdgId", &bestMatchTP_pdgId);
+      tmpntpl->Branch(name+"_bestMatchTP_energy", &bestMatchTP_energy);
+      tmpntpl->Branch(name+"_bestMatchTP_pt", &bestMatchTP_pt);
+      tmpntpl->Branch(name+"_bestMatchTP_eta", &bestMatchTP_eta);
+      tmpntpl->Branch(name+"_bestMatchTP_phi", &bestMatchTP_phi);
+      tmpntpl->Branch(name+"_bestMatchTP_parentVx", &bestMatchTP_parentVx);
+      tmpntpl->Branch(name+"_bestMatchTP_parentVy", &bestMatchTP_parentVy);
+      tmpntpl->Branch(name+"_bestMatchTP_parentVz", &bestMatchTP_parentVz);
+      tmpntpl->Branch(name+"_bestMatchTP_status", &bestMatchTP_status);
+      tmpntpl->Branch(name+"_bestMatchTP_numberOfHits", &bestMatchTP_numberOfHits);
+      tmpntpl->Branch(name+"_bestMatchTP_numberOfTrackerHits", &bestMatchTP_numberOfTrackerHits);
+      tmpntpl->Branch(name+"_bestMatchTP_numberOfTrackerLayers", &bestMatchTP_numberOfTrackerLayers);
+      tmpntpl->Branch(name+"_bestMatchTP_sharedFraction", &bestMatchTP_sharedFraction);
+      tmpntpl->Branch(name+"_matchedTPsize", &matchedTPsize);
 
       return;
     }
@@ -646,8 +690,28 @@ private:
       return;
     }
 
+    void fillBestTP(const TrackingParticleRef TP) {
+      bestMatchTP_charge.push_back(TP->charge());
+      bestMatchTP_pdgId.push_back(TP->pdgId());
+      bestMatchTP_energy.push_back(TP->energy());
+      bestMatchTP_pt.push_back(TP->pt());
+      bestMatchTP_eta.push_back(TP->eta());
+      bestMatchTP_phi.push_back(TP->phi());
+      bestMatchTP_parentVx.push_back(TP->vx());
+      bestMatchTP_parentVy.push_back(TP->vy());
+      bestMatchTP_parentVz.push_back(TP->vz());
+      bestMatchTP_status.push_back(TP->status());
+      bestMatchTP_numberOfHits.push_back(TP->numberOfHits());
+      bestMatchTP_numberOfTrackerHits.push_back(TP->numberOfTrackerHits());
+      bestMatchTP_numberOfTrackerLayers.push_back(TP->numberOfTrackerLayers());
+
+      return;
+    }
+
     void linkIterL3(int linkNo) { linkToL3s.push_back(linkNo); }
     int matchedIDpassedL3(int idx) { return linkToL3s.at(idx); }
+    void fillBestTPsharedFrac(double frac) { bestMatchTP_sharedFraction.push_back(frac); }
+    void fillmatchedTPsize(int TPsize) { matchedTPsize.push_back(TPsize); }
   };
 
   class vtxTemplate {
@@ -777,4 +841,8 @@ private:
 
   vtxTemplate* VThltIterL3MuonTrimmedPixelVertices = new vtxTemplate();
   vtxTemplate* VThltIterL3FromL1MuonTrimmedPixelVertices = new vtxTemplate();
+
+  void fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
+    edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_, edm::Handle<TrackingParticleCollection>& TPCollection_,
+    std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack);
 };

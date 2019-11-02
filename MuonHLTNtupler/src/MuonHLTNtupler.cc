@@ -67,8 +67,6 @@ using namespace edm;
 MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
 trackerHitAssociatorConfig_(iConfig, consumesCollector()),
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
-// associatorToken(consumes<reco::RecoToSimCollection(iConfig.getUntrackedParameter<edm::InputTag>("associator"))>),
-// associator(iConfig.getUntrackedParameter<edm::InputTag>("associator")),
 trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackingParticle"))),
 t_offlineMuon_       ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"       )) ),
 t_offlineVertex_     ( consumes< reco::VertexCollection >                 (iConfig.getUntrackedParameter<edm::InputTag>("offlineVertex"     )) ),
@@ -100,12 +98,12 @@ t_hltIter2IterL3FromL1MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >    
 t_hltIter3IterL3FromL1MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonPixelSeeds")) ),
 
 t_hltIterL3OIMuonTrack_    ( consumes< edm::View<reco::Track> >                  (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OIMuonTrack"    )) ),
-t_hltIter0IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonTrack"    )) ),
-t_hltIter2IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3MuonTrack"    )) ),
-t_hltIter3IterL3MuonTrack_    ( consumes< std::vector<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3MuonTrack"    )) ),
-t_hltIter0IterL3FromL1MuonTrack_    ( consumes< std::vector<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3FromL1MuonTrack"    )) ),
-t_hltIter2IterL3FromL1MuonTrack_    ( consumes< std::vector<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonTrack"    )) ),
-t_hltIter3IterL3FromL1MuonTrack_    ( consumes< std::vector<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonTrack"    )) ),
+t_hltIter0IterL3MuonTrack_    ( consumes< edm::View<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonTrack"    )) ),
+t_hltIter2IterL3MuonTrack_    ( consumes< edm::View<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3MuonTrack"    )) ),
+t_hltIter3IterL3MuonTrack_    ( consumes< edm::View<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3MuonTrack"    )) ),
+t_hltIter0IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3FromL1MuonTrack"    )) ),
+t_hltIter2IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonTrack"    )) ),
+t_hltIter3IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonTrack"    )) ),
 
 
 t_lumiScaler_        ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("lumiScaler"        )) ),
@@ -113,9 +111,7 @@ t_offlineLumiScaler_ ( consumes< LumiScalersCollection >                  (iConf
 t_PUSummaryInfo_     ( consumes< std::vector<PileupSummaryInfo> >         (iConfig.getUntrackedParameter<edm::InputTag>("PUSummaryInfo"     )) ),
 t_genEventInfo_      ( consumes< GenEventInfoProduct >                    (iConfig.getUntrackedParameter<edm::InputTag>("genEventInfo"      )) ),
 t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) )
-{
-  // associatorToken = consumes<reco::RecoToSimCollection>(associator);
-}
+{}
 
 void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 {
@@ -207,7 +203,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   Fill_L1Muon(iEvent);
   Fill_IterL3(iEvent);
   Fill_Seed(iEvent);
-  // if( !isRealData_ ) Fill_GenParticle(iEvent);
+  if( !isRealData_ ) Fill_GenParticle(iEvent);
 
   ntuple_->Fill();
 }
@@ -1059,7 +1055,7 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
     {
       genParticle_ID_[_nGenParticle]     = parCand.pdgId();
       genParticle_status_[_nGenParticle] = parCand.status();
-      genParticle_mother_[_nGenParticle] = parCand.mother(0)->pdgId();
+      // genParticle_mother_[_nGenParticle] = parCand.mother(0)->pdgId();
 
       genParticle_pt_[_nGenParticle]  = parCand.pt();
       genParticle_eta_[_nGenParticle] = parCand.eta();
@@ -1095,27 +1091,14 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
 void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
 {
-  std::cout << "Fill iterL3 start" << std::endl;
   //////////////////////////
   // -- IterL3Muon -- //
   //////////////////////////
   edm::Handle< std::vector<reco::Muon> > h_iterL3Muon;
   edm::Handle<reco::TrackToTrackingParticleAssociator> theAssociator;
   iEvent.getByToken(associatorToken, theAssociator);
-  // edm::Handle<reco::RecoToSimCollection> recoToSimCollectionH;
-  // iEvent.getByToken(associatorToken,recoToSimCollectionH);
   edm::Handle<TrackingParticleCollection> TPCollection;
   iEvent.getByToken(trackingParticleToken, TPCollection);
-  TrackingParticleRefVector tmpTP;
-
-  for (unsigned i = 0; i < TPCollection->size(); i++) {
-    tmpTP.push_back(TrackingParticleRef(TPCollection,i));
-  }
-  const TrackingParticleRefVector* tmpTPptr = &tmpTP;
-  // const TrackingParticleRefVector* tmpTPptr = TPCollection.product();
-  TrackingParticleRefVector const& TPC = *tmpTPptr;
-
-  std::cout << "GetByToken done" << std::endl;
 
   if( iEvent.getByToken( t_iterL3Muon_, h_iterL3Muon) )
   {
@@ -1155,54 +1138,13 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   // -- IterL3OI -- //
   ////////////////////
 
-  edm::Handle< edm::View<reco::Track> > h_hltIterL3OIMuonTrack;
-  if( iEvent.getByToken( t_hltIterL3OIMuonTrack_, h_hltIterL3OIMuonTrack ) )
-  {
-    const edm::View<reco::Track>& _h_hltIterL3OIMuonTrack = *h_hltIterL3OIMuonTrack;
-    edm::RefToBaseVector<reco::Track> trackRefs;
-    for (edm::View<reco::Track>::size_type i = 0; i < _h_hltIterL3OIMuonTrack.size(); ++i) {
-      trackRefs.push_back(_h_hltIterL3OIMuonTrack.refAt(i));
-    }
-    auto recSimCollL = theAssociator->associateRecoToSim(trackRefs,TPC);
-    auto recSimCollP = &recSimCollL;
-    // auto recSimCollP = recoToSimCollectionH.product();
-    // auto recSimCollL = associationMapFilterValues(*recSimCollP,TPC);
-    // recSimCollP = &recSimCollL;
-    reco::RecoToSimCollection const& recSimColl = *recSimCollP;
-
-    for( edm::View<reco::Track>::size_type i=0; i< _h_hltIterL3OIMuonTrack.size(); ++i)
-    {
-      std::cout << i << "-th track" << std::endl;
-      TThltIterL3OIMuonTrack->fill(_h_hltIterL3OIMuonTrack.at(i));
-
-      int linkNo = -1;
-      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed).isMatched(_h_hltIterL3OIMuonTrack.at(i)) ) linkNo = idxL3passed;
-      }
-
-      TThltIterL3OIMuonTrack->linkIterL3(linkNo);
-
-      const PTrajectoryStateOnDet tmpseed = _h_hltIterL3OIMuonTrack.at(i).seedRef()->startingState();
-      tmpTSOD tsod(tmpseed);
-      hltIterL3OIMuonTrackMap.insert(make_pair(tsod,i));
-
-      // RefToBase<reco::Track> track(h_hltIterL3OIMuonTrack,i);
-      auto track = _h_hltIterL3OIMuonTrack.refAt(i);
-      // std::vector<std::pair<TrackingParticleRef, double>> TPmatch;
-      auto TPfound = recSimColl.find(track);
-      if (TPfound != recSimColl.end()) {
-        std::cout << "RecSimColl loop start" << std::endl;
-        // TPmatch = recSimColl[track];
-        const auto& TPmatch = TPfound->val;
-        std::cout << "TPfound val extracted" << std::endl;
-        // if(TPmatch.size() !=0 ) {
-        //   std::cout << "association qual = " << TPmatch.begin()->second << std::endl;
-        // }
-        std::cout << "shard frac = " << TPmatch[0].second << std::endl;
-      }
-      std::cout << "Next track" << std::endl;
-    }
-  }
+  fill_trackTemplate(iEvent,t_hltIterL3OIMuonTrack_,theAssociator,TPCollection,hltIterL3OIMuonTrackMap,TThltIterL3OIMuonTrack);
+  fill_trackTemplate(iEvent,t_hltIter0IterL3MuonTrack_,theAssociator,TPCollection,hltIter0IterL3MuonTrackMap,TThltIter0IterL3MuonTrack);
+  fill_trackTemplate(iEvent,t_hltIter2IterL3MuonTrack_,theAssociator,TPCollection,hltIter2IterL3MuonTrackMap,TThltIter2IterL3MuonTrack);
+  fill_trackTemplate(iEvent,t_hltIter3IterL3MuonTrack_,theAssociator,TPCollection,hltIter3IterL3MuonTrackMap,TThltIter3IterL3MuonTrack);
+  fill_trackTemplate(iEvent,t_hltIter0IterL3FromL1MuonTrack_,theAssociator,TPCollection,hltIter0IterL3FromL1MuonTrackMap,TThltIter0IterL3FromL1MuonTrack);
+  fill_trackTemplate(iEvent,t_hltIter2IterL3FromL1MuonTrack_,theAssociator,TPCollection,hltIter2IterL3FromL1MuonTrackMap,TThltIter2IterL3FromL1MuonTrack);
+  fill_trackTemplate(iEvent,t_hltIter3IterL3FromL1MuonTrack_,theAssociator,TPCollection,hltIter3IterL3FromL1MuonTrackMap,TThltIter3IterL3FromL1MuonTrack);
 
   edm::Handle< std::vector<reco::MuonTrackLinks> > h_iterL3OI;
   if( iEvent.getByToken( t_iterL3OI_, h_iterL3OI ) )
@@ -1239,64 +1181,6 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   //////////////////////////
   // -- IterL3IOFromL2 -- //
   //////////////////////////
-  edm::Handle< std::vector<reco::Track> > h_hltIter0IterL3MuonTrack;
-  if( iEvent.getByToken( t_hltIter0IterL3MuonTrack_, h_hltIter0IterL3MuonTrack ) )
-  {
-    for( unsigned int i=0; i<h_hltIter0IterL3MuonTrack->size(); i++)
-    {
-      TThltIter0IterL3MuonTrack->fill(h_hltIter0IterL3MuonTrack->at(i));
-
-      int linkNo = -1;
-      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter0IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
-      }
-
-      TThltIter0IterL3MuonTrack->linkIterL3(linkNo);
-
-      const PTrajectoryStateOnDet tmpseed = h_hltIter0IterL3MuonTrack->at(i).seedRef()->startingState();
-      tmpTSOD tsod(tmpseed);
-      hltIter0IterL3MuonTrackMap.insert(make_pair(tsod,i));
-    }
-  }
-  edm::Handle< std::vector<reco::Track> > h_hltIter2IterL3MuonTrack;
-  if( iEvent.getByToken( t_hltIter2IterL3MuonTrack_, h_hltIter2IterL3MuonTrack ) )
-  {
-    for( unsigned int i=0; i<h_hltIter2IterL3MuonTrack->size(); i++)
-    {
-      TThltIter2IterL3MuonTrack->fill(h_hltIter2IterL3MuonTrack->at(i));
-
-      int linkNo = -1;
-      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter2IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
-      }
-
-      TThltIter2IterL3MuonTrack->linkIterL3(linkNo);
-
-      const PTrajectoryStateOnDet tmpseed = h_hltIter2IterL3MuonTrack->at(i).seedRef()->startingState();
-      tmpTSOD tsod(tmpseed);
-      hltIter2IterL3MuonTrackMap.insert(make_pair(tsod,i));
-    }
-  }
-  edm::Handle< std::vector<reco::Track> > h_hltIter3IterL3MuonTrack;
-  if( iEvent.getByToken( t_hltIter3IterL3MuonTrack_, h_hltIter3IterL3MuonTrack ) )
-  {
-    for( unsigned int i=0; i<h_hltIter3IterL3MuonTrack->size(); i++)
-    {
-      TThltIter3IterL3MuonTrack->fill(h_hltIter3IterL3MuonTrack->at(i));
-
-      int linkNo = -1;
-      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter3IterL3MuonTrack->at(i)) ) linkNo = idxL3passed;
-      }
-
-      TThltIter3IterL3MuonTrack->linkIterL3(linkNo);
-
-      const PTrajectoryStateOnDet tmpseed = h_hltIter3IterL3MuonTrack->at(i).seedRef()->startingState();
-      tmpTSOD tsod(tmpseed);
-      hltIter3IterL3MuonTrackMap.insert(make_pair(tsod,i));
-    }
-  }
-
   edm::Handle< std::vector<reco::MuonTrackLinks> > h_iterL3IOFromL2;
   if( iEvent.getByToken( t_iterL3IOFromL2_, h_iterL3IOFromL2 ) )
   {
@@ -1367,64 +1251,6 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   //////////////////////////
   // -- IterL3IOFromL1 -- //
   //////////////////////////
-  edm::Handle< std::vector<reco::Track> > h_hltIter0IterL3FromL1MuonTrack;
-  if( iEvent.getByToken( t_hltIter0IterL3FromL1MuonTrack_, h_hltIter0IterL3FromL1MuonTrack ) )
-  {
-    for( unsigned int i=0; i<h_hltIter0IterL3FromL1MuonTrack->size(); i++)
-    {
-      TThltIter0IterL3FromL1MuonTrack->fill(h_hltIter0IterL3FromL1MuonTrack->at(i));
-
-      int linkNo = -1;
-      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter0IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
-      }
-
-      TThltIter0IterL3FromL1MuonTrack->linkIterL3(linkNo);
-
-      const PTrajectoryStateOnDet tmpseed = h_hltIter0IterL3FromL1MuonTrack->at(i).seedRef()->startingState();
-      tmpTSOD tsod(tmpseed);
-      hltIter0IterL3FromL1MuonTrackMap.insert(make_pair(tsod,i));
-    }
-  }
-  edm::Handle< std::vector<reco::Track> > h_hltIter2IterL3FromL1MuonTrack;
-  if( iEvent.getByToken( t_hltIter2IterL3FromL1MuonTrack_, h_hltIter2IterL3FromL1MuonTrack ) )
-  {
-    for( unsigned int i=0; i<h_hltIter2IterL3FromL1MuonTrack->size(); i++)
-    {
-      TThltIter2IterL3FromL1MuonTrack->fill(h_hltIter2IterL3FromL1MuonTrack->at(i));
-
-      int linkNo = -1;
-      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter2IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
-      }
-
-      TThltIter2IterL3FromL1MuonTrack->linkIterL3(linkNo);
-
-      const PTrajectoryStateOnDet tmpseed = h_hltIter2IterL3FromL1MuonTrack->at(i).seedRef()->startingState();
-      tmpTSOD tsod(tmpseed);
-      hltIter2IterL3FromL1MuonTrackMap.insert(make_pair(tsod,i));
-    }
-  }
-  edm::Handle< std::vector<reco::Track> > h_hltIter3IterL3FromL1MuonTrack;
-  if( iEvent.getByToken( t_hltIter3IterL3FromL1MuonTrack_, h_hltIter3IterL3FromL1MuonTrack ) )
-  {
-    for( unsigned int i=0; i<h_hltIter3IterL3FromL1MuonTrack->size(); i++)
-    {
-      TThltIter3IterL3FromL1MuonTrack->fill(h_hltIter3IterL3FromL1MuonTrack->at(i));
-
-      int linkNo = -1;
-      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
-        if ( iterL3IDpassed.at(idxL3passed).isMatched(h_hltIter3IterL3FromL1MuonTrack->at(i)) ) linkNo = idxL3passed;
-      }
-
-      TThltIter3IterL3FromL1MuonTrack->linkIterL3(linkNo);
-
-      const PTrajectoryStateOnDet tmpseed = h_hltIter3IterL3FromL1MuonTrack->at(i).seedRef()->startingState();
-      tmpTSOD tsod(tmpseed);
-      hltIter3IterL3FromL1MuonTrackMap.insert(make_pair(tsod,i));
-    }
-  }
-
   edm::Handle< std::vector<reco::Track> > h_iterL3IOFromL1;
   if( iEvent.getByToken( t_iterL3IOFromL1_, h_iterL3IOFromL1 ) )
   {
@@ -1640,6 +1466,42 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
   } // -- if getByToken is valid
 }
 
+void MuonHLTNtupler::fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
+  edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_, edm::Handle<TrackingParticleCollection>& TPCollection_,
+  std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack) {
+
+  edm::Handle<edm::View<reco::Track>> trkHandle;
+  if( iEvent.getByToken( theToken, trkHandle ) )
+  {
+    auto recSimColl = theAssociator_->associateRecoToSim(trkHandle,TPCollection_);
+
+    for( unsigned int i = 0; i < trkHandle->size(); i++ )
+    {
+      TTtrack->fill(trkHandle->at(i));
+
+      int linkNo = -1;
+      for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
+        if ( iterL3IDpassed.at(idxL3passed).isMatched(trkHandle->at(i)) ) linkNo = idxL3passed;
+      }
+      TTtrack->linkIterL3(linkNo);
+
+      const PTrajectoryStateOnDet tmpseed = trkHandle->at(i).seedRef()->startingState();
+      tmpTSOD tsod(tmpseed);
+      trkMap.insert(make_pair(tsod,i));
+
+      auto track = trkHandle->refAt(i);
+      auto TPfound = recSimColl.find(track);
+      if (TPfound != recSimColl.end()) {
+        const auto& TPmatch = TPfound->val;
+        TTtrack->fillBestTP(TPmatch[0].first);
+        TTtrack->fillBestTPsharedFrac(TPmatch[0].second);
+        TTtrack->fillmatchedTPsize(TPmatch.size());
+      } else {
+        TTtrack->fillmatchedTPsize(0);
+      }
+    }
+  }
+}
 // -- reference: https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/src/MuonSelectors.cc#L910-L938
 bool MuonHLTNtupler::isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx){
   if(!muon.isGlobalMuon()) return false;
