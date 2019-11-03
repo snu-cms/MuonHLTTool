@@ -57,6 +57,9 @@
 #include "DataFormats/Common/interface/ValueMap.h"
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingParticleFwd.h"
 
+#include "Geometry/Records/interface/TrackerDigiGeometryRecord.h"
+#include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
+
 #include "TTree.h"
 #include "TString.h"
 
@@ -87,7 +90,7 @@ private:
 
   //For Rerun (Fill_IterL3*)
   void Fill_IterL3(const edm::Event &iEvent);
-  void Fill_Seed(const edm::Event &iEvent);
+  void Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &iSetup);
 
   bool SavedTriggerCondition( std::string& pathName );
   bool SavedFilterCondition( std::string& filterName );
@@ -439,6 +442,12 @@ private:
     std::vector<int> dir_;
     std::vector<uint32_t> tsos_detId_;
     std::vector<float> tsos_pt_;
+    std::vector<float> tsos_pt_val_;
+    std::vector<float> tsos_eta_;
+    std::vector<float> tsos_phi_;
+    std::vector<float> tsos_glob_x_;
+    std::vector<float> tsos_glob_y_;
+    std::vector<float> tsos_glob_z_;
     std::vector<int> tsos_hasErr_;
     std::vector<float> tsos_err0_;
     std::vector<float> tsos_err1_;
@@ -473,6 +482,12 @@ private:
       dir_.clear();
       tsos_detId_.clear();
       tsos_pt_.clear();
+      tsos_pt_val_.clear();
+      tsos_eta_.clear();
+      tsos_phi_.clear();
+      tsos_glob_x_.clear();
+      tsos_glob_y_.clear();
+      tsos_glob_z_.clear();
       tsos_hasErr_.clear();
       tsos_err0_.clear();
       tsos_err1_.clear();
@@ -510,6 +525,12 @@ private:
       tmpntpl->Branch(name+"_dir",          &dir_);
       tmpntpl->Branch(name+"_tsos_detId",   &tsos_detId_);
       tmpntpl->Branch(name+"_tsos_pt",      &tsos_pt_);
+      tmpntpl->Branch(name+"_tsos_pt_val",      &tsos_pt_val_);
+      tmpntpl->Branch(name+"_tsos_eta",      &tsos_eta_);
+      tmpntpl->Branch(name+"_tsos_phi",      &tsos_phi_);
+      tmpntpl->Branch(name+"_tsos_glob_x",      &tsos_glob_x_);
+      tmpntpl->Branch(name+"_tsos_glob_y",      &tsos_glob_y_);
+      tmpntpl->Branch(name+"_tsos_glob_z",      &tsos_glob_z_);
       tmpntpl->Branch(name+"_tsos_hasErr",  &tsos_hasErr_);
       tmpntpl->Branch(name+"_tsos_err0",    &tsos_err0_);
       tmpntpl->Branch(name+"_tsos_err1",    &tsos_err1_);
@@ -541,10 +562,19 @@ private:
       return;
     }
 
-    void fill(TrajectorySeed seed) {
+    void fill(TrajectorySeed seed, edm::ESHandle<TrackerGeometry> tracker) {
+      GlobalVector p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
+      GlobalPoint x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
+
       dir_.push_back(seed.direction());
       tsos_detId_.push_back(seed.startingState().detId());
       tsos_pt_.push_back(seed.startingState().pt());
+      tsos_pt_val_.push_back(p.perp());
+      tsos_eta_.push_back(p.eta());
+      tsos_phi_.push_back(p.phi());
+      tsos_glob_x_.push_back(x.x());
+      tsos_glob_y_.push_back(x.y());
+      tsos_glob_z_.push_back(x.z());
       tsos_hasErr_.push_back(seed.startingState().hasError());
       if( seed.startingState().hasError() ) {
         tsos_err0_.push_back(seed.startingState().error(0));

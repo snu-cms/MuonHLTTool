@@ -22,5 +22,7 @@
 <use name="CommonTools/Utils"/>
 <use name="DataFormats/RecoCandidate"/>
 <use name="DataFormats/Common"/>
+<use name="Geometry/Records"/>
+<use name="Geometry/TrackerGeometryBuilder"/>
 <!--   <flags   EDM_PLUGIN="1"/> -->
 <flags EDM_PLUGIN="1"/>

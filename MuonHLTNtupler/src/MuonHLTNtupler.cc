@@ -53,6 +53,9 @@
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
 #include "CommonTools/Utils/interface/associationMapFilterValues.h"
 
+#include "Geometry/Records/interface/TrackerDigiGeometryRecord.h"
+#include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
+
 
 #include <map>
 #include <string>
@@ -202,7 +205,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   Fill_HLTMuon(iEvent);
   Fill_L1Muon(iEvent);
   Fill_IterL3(iEvent);
-  Fill_Seed(iEvent);
+  Fill_Seed(iEvent, iSetup);
   if( !isRealData_ ) Fill_GenParticle(iEvent);
 
   ntuple_->Fill();
@@ -1293,9 +1296,11 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent)
   } // -- if getByToken is valid
 }
 
-void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
+void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 {
   TrackerHitAssociator associate(iEvent, trackerHitAssociatorConfig_);
+  edm::ESHandle<TrackerGeometry> tracker;
+  iSetup.get<TrackerDigiGeometryRecord>().get(tracker);
   //////////////////////////
   // -- hltIterL3OISeedsFromL2Muons -- //
   //////////////////////////
@@ -1306,7 +1311,7 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
     {
       const auto& seed(h_hltIterL3OISeedsFromL2Muons->at(i));
 
-      SThltIterL3OISeedsFromL2Muons->fill(seed);
+      SThltIterL3OISeedsFromL2Muons->fill(seed, tracker);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
@@ -1336,7 +1341,7 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
     {
       const auto& seed(h_hltIter0IterL3MuonPixelSeedsFromPixelTracks->at(i));
 
-      SThltIter0IterL3MuonPixelSeedsFromPixelTracks->fill(seed);
+      SThltIter0IterL3MuonPixelSeedsFromPixelTracks->fill(seed, tracker);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
@@ -1365,7 +1370,7 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
     {
       const auto& seed(h_hltIter2IterL3MuonPixelSeeds->at(i));
 
-      SThltIter2IterL3MuonPixelSeeds->fill(seed);
+      SThltIter2IterL3MuonPixelSeeds->fill(seed, tracker);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
@@ -1387,7 +1392,7 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
     {
       const auto& seed(h_hltIter3IterL3MuonPixelSeeds->at(i));
 
-      SThltIter3IterL3MuonPixelSeeds->fill(seed);
+      SThltIter3IterL3MuonPixelSeeds->fill(seed, tracker);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
@@ -1409,7 +1414,7 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
     {
       const auto& seed(h_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->at(i));
 
-      SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->fill(seed);
+      SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->fill(seed, tracker);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
@@ -1431,7 +1436,7 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
     {
       const auto& seed(h_hltIter2IterL3FromL1MuonPixelSeeds->at(i));
 
-      SThltIter2IterL3FromL1MuonPixelSeeds->fill(seed);
+      SThltIter2IterL3FromL1MuonPixelSeeds->fill(seed, tracker);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
@@ -1453,7 +1458,7 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent)
     {
       const auto& seed(h_hltIter3IterL3FromL1MuonPixelSeeds->at(i));
 
-      SThltIter3IterL3FromL1MuonPixelSeeds->fill(seed);
+      SThltIter3IterL3FromL1MuonPixelSeeds->fill(seed, tracker);
 
       tmpTSOD seedTsod(seed.startingState());
       std::map<tmpTSOD,unsigned int>::const_iterator where = MuonIterSeedMap.find(seedTsod);
