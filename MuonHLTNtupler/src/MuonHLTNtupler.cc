@@ -68,6 +68,7 @@ using namespace edm;
 
 
 MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
+doSeed(iConfig.getParameter<bool>("doSeed")),
 trackerHitAssociatorConfig_(iConfig, consumesCollector()),
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
 trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackingParticle"))),
@@ -205,7 +206,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   Fill_HLTMuon(iEvent);
   Fill_L1Muon(iEvent);
   Fill_IterL3(iEvent);
-  Fill_Seed(iEvent, iSetup);
+  if( doSeed )  Fill_Seed(iEvent, iSetup);
   if( !isRealData_ ) Fill_GenParticle(iEvent);
 
   ntuple_->Fill();
@@ -1501,7 +1502,9 @@ void MuonHLTNtupler::fill_trackTemplate(const edm::Event &iEvent, edm::EDGetToke
         TTtrack->fillBestTP(TPmatch[0].first);
         TTtrack->fillBestTPsharedFrac(TPmatch[0].second);
         TTtrack->fillmatchedTPsize(TPmatch.size());
-      } else {
+      } else {  // sync vector size
+        TTtrack->fillDummyTP();
+        TTtrack->fillBestTPsharedFrac(-99999.);
         TTtrack->fillmatchedTPsize(0);
       }
     }

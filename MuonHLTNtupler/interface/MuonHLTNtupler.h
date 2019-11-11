@@ -97,6 +97,8 @@ private:
 
   bool isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx);
 
+  bool doSeed;
+
   TrackerHitAssociator::Config trackerHitAssociatorConfig_;
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
   edm::EDGetTokenT<TrackingParticleCollection> trackingParticleToken;
@@ -553,6 +555,7 @@ private:
       tmpntpl->Branch(name+"_tsos_dydz",    &tsos_dydz_);
       tmpntpl->Branch(name+"_tsos_px",      &tsos_px_);
       tmpntpl->Branch(name+"_tsos_py",      &tsos_py_);
+      tmpntpl->Branch(name+"_tsos_pz",      &tsos_pz_);
       tmpntpl->Branch(name+"_tsos_qbp",     &tsos_qbp_);
       tmpntpl->Branch(name+"_tsos_charge",  &tsos_charge_);
       tmpntpl->Branch(name+"_iterL3Matched", &iterL3Matched_);
@@ -592,6 +595,23 @@ private:
         tsos_err12_.push_back(seed.startingState().error(12));
         tsos_err13_.push_back(seed.startingState().error(13));
         tsos_err14_.push_back(seed.startingState().error(14));
+      }
+      else {  // sync vector size
+        tsos_err0_.push_back(-99999.);
+        tsos_err1_.push_back(-99999.);
+        tsos_err2_.push_back(-99999.);
+        tsos_err3_.push_back(-99999.);
+        tsos_err4_.push_back(-99999.);
+        tsos_err5_.push_back(-99999.);
+        tsos_err6_.push_back(-99999.);
+        tsos_err7_.push_back(-99999.);
+        tsos_err8_.push_back(-99999.);
+        tsos_err9_.push_back(-99999.);
+        tsos_err10_.push_back(-99999.);
+        tsos_err11_.push_back(-99999.);
+        tsos_err12_.push_back(-99999.);
+        tsos_err13_.push_back(-99999.);
+        tsos_err14_.push_back(-99999.);
       }
       tsos_x_.push_back(seed.startingState().parameters().position().x());
       tsos_y_.push_back(seed.startingState().parameters().position().y());
@@ -734,6 +754,24 @@ private:
       bestMatchTP_numberOfHits.push_back(TP->numberOfHits());
       bestMatchTP_numberOfTrackerHits.push_back(TP->numberOfTrackerHits());
       bestMatchTP_numberOfTrackerLayers.push_back(TP->numberOfTrackerLayers());
+
+      return;
+    }
+
+    void fillDummyTP() {
+      bestMatchTP_charge.push_back(-99999.);
+      bestMatchTP_pdgId.push_back(-99999);
+      bestMatchTP_energy.push_back(-99999.);
+      bestMatchTP_pt.push_back(-99999.);
+      bestMatchTP_eta.push_back(-99999.);
+      bestMatchTP_phi.push_back(-99999.);
+      bestMatchTP_parentVx.push_back(-99999.);
+      bestMatchTP_parentVy.push_back(-99999.);
+      bestMatchTP_parentVz.push_back(-99999.);
+      bestMatchTP_status.push_back(-99999);
+      bestMatchTP_numberOfHits.push_back(-99999);
+      bestMatchTP_numberOfTrackerHits.push_back(-99999);
+      bestMatchTP_numberOfTrackerLayers.push_back(-99999);
 
       return;
     }
