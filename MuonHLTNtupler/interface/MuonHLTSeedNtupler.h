@@ -510,6 +510,9 @@ private:
     }
 
     void fill_TP( trkTemplate* TTtrack, int index ) {
+      // no matched track: bestMatchTP_pdgId_ = -99999, matchedTPsize_ = -99999
+      // matched track found but no TPfound: bestMatchTP_pdgId_ = -99999, matchedTPsize_ = 0
+      // matched track found and TPfound: proper values are filled
       if( index < 0 )
         return;
 
@@ -539,13 +542,14 @@ private:
   trkTemplate* TThltIter2IterL3FromL1MuonTrack = new trkTemplate();
   trkTemplate* TThltIter3IterL3FromL1MuonTrack = new trkTemplate();
 
-  seedTemplate* SThltIterL3OISeedsFromL2Muons = new seedTemplate();
-  seedTemplate* SThltIter0IterL3MuonPixelSeedsFromPixelTracks = new seedTemplate();
-  seedTemplate* SThltIter2IterL3MuonPixelSeeds = new seedTemplate();
-  seedTemplate* SThltIter3IterL3MuonPixelSeeds = new seedTemplate();
-  seedTemplate* SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks = new seedTemplate();
-  seedTemplate* SThltIter2IterL3FromL1MuonPixelSeeds = new seedTemplate();
-  seedTemplate* SThltIter3IterL3FromL1MuonPixelSeeds = new seedTemplate();
+  seedTemplate* ST = new seedTemplate();
+  // seedTemplate* SThltIterL3OISeedsFromL2Muons = new seedTemplate();
+  // seedTemplate* SThltIter0IterL3MuonPixelSeedsFromPixelTracks = new seedTemplate();
+  // seedTemplate* SThltIter2IterL3MuonPixelSeeds = new seedTemplate();
+  // seedTemplate* SThltIter3IterL3MuonPixelSeeds = new seedTemplate();
+  // seedTemplate* SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks = new seedTemplate();
+  // seedTemplate* SThltIter2IterL3FromL1MuonPixelSeeds = new seedTemplate();
+  // seedTemplate* SThltIter3IterL3FromL1MuonPixelSeeds = new seedTemplate();
 
   void fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
     edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_, edm::Handle<TrackingParticleCollection>& TPCollection_,
@@ -553,6 +557,5 @@ private:
 
   void fill_seedTemplate(
   const edm::Event &, edm::EDGetTokenT<TrajectorySeedCollection>&,
-  edm::ESHandle<TrackerGeometry>&, seedTemplate*,
-  std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree* );
+  edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree* );
 };

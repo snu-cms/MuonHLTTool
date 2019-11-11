@@ -129,13 +129,14 @@ void MuonHLTSeedNtupler::Init()
   hltIter2IterL3FromL1MuonTrackMap.clear();
   hltIter3IterL3FromL1MuonTrackMap.clear();
 
-  SThltIterL3OISeedsFromL2Muons->clear();
-  SThltIter0IterL3MuonPixelSeedsFromPixelTracks->clear();
-  SThltIter2IterL3MuonPixelSeeds->clear();
-  SThltIter3IterL3MuonPixelSeeds->clear();
-  SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->clear();
-  SThltIter2IterL3FromL1MuonPixelSeeds->clear();
-  SThltIter3IterL3FromL1MuonPixelSeeds->clear();
+  ST->clear();
+  // SThltIterL3OISeedsFromL2Muons->clear();
+  // SThltIter0IterL3MuonPixelSeedsFromPixelTracks->clear();
+  // SThltIter2IterL3MuonPixelSeeds->clear();
+  // SThltIter3IterL3MuonPixelSeeds->clear();
+  // SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->clear();
+  // SThltIter2IterL3FromL1MuonPixelSeeds->clear();
+  // SThltIter3IterL3FromL1MuonPixelSeeds->clear();
 
   TThltIterL3OIMuonTrack->clear();
   TThltIter0IterL3MuonTrack->clear();
@@ -148,13 +149,21 @@ void MuonHLTSeedNtupler::Init()
 
 void MuonHLTSeedNtupler::Make_Branch()
 {
-  SThltIterL3OISeedsFromL2Muons->setBranch(NThltIterL3OI_);
-  SThltIter0IterL3MuonPixelSeedsFromPixelTracks->setBranch(NThltIter0_);
-  SThltIter2IterL3MuonPixelSeeds->setBranch(NThltIter2_);
-  SThltIter3IterL3MuonPixelSeeds->setBranch(NThltIter3_);
-  SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->setBranch(NThltIter0FromL1_);
-  SThltIter2IterL3FromL1MuonPixelSeeds->setBranch(NThltIter2FromL1_);
-  SThltIter3IterL3FromL1MuonPixelSeeds->setBranch(NThltIter3FromL1_);
+  ST->setBranch(NThltIterL3OI_);
+  ST->setBranch(NThltIter0_);
+  ST->setBranch(NThltIter2_);
+  ST->setBranch(NThltIter3_);
+  ST->setBranch(NThltIter0FromL1_);
+  ST->setBranch(NThltIter2FromL1_);
+  ST->setBranch(NThltIter3FromL1_);
+
+  // SThltIterL3OISeedsFromL2Muons->setBranch(NThltIterL3OI_);
+  // SThltIter0IterL3MuonPixelSeedsFromPixelTracks->setBranch(NThltIter0_);
+  // SThltIter2IterL3MuonPixelSeeds->setBranch(NThltIter2_);
+  // SThltIter3IterL3MuonPixelSeeds->setBranch(NThltIter3_);
+  // SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks->setBranch(NThltIter0FromL1_);
+  // SThltIter2IterL3FromL1MuonPixelSeeds->setBranch(NThltIter2FromL1_);
+  // SThltIter3IterL3FromL1MuonPixelSeeds->setBranch(NThltIter3FromL1_);
 }
 
 void MuonHLTSeedNtupler::Fill_IterL3TT(const edm::Event &iEvent)
@@ -187,14 +196,21 @@ void MuonHLTSeedNtupler::Fill_Seed(const edm::Event &iEvent, const edm::EventSet
   edm::ESHandle<TrackerGeometry> tracker;
   iSetup.get<TrackerDigiGeometryRecord>().get(tracker);
 
-  fill_seedTemplate(iEvent, t_hltIterL3OISeedsFromL2Muons_, tracker, SThltIterL3OISeedsFromL2Muons, hltIterL3OIMuonTrackMap, TThltIterL3OIMuonTrack, NThltIterL3OI_ );
-  fill_seedTemplate(iEvent, t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_, tracker, SThltIter0IterL3MuonPixelSeedsFromPixelTracks, hltIter0IterL3MuonTrackMap, TThltIter0IterL3MuonTrack, NThltIter0_ );
-  fill_seedTemplate(iEvent, t_hltIter2IterL3MuonPixelSeeds_, tracker, SThltIter2IterL3MuonPixelSeeds, hltIter2IterL3MuonTrackMap, TThltIter2IterL3MuonTrack, NThltIter2_ );
-  fill_seedTemplate(iEvent, t_hltIter3IterL3MuonPixelSeeds_, tracker, SThltIter3IterL3MuonPixelSeeds, hltIter3IterL3MuonTrackMap, TThltIter3IterL3MuonTrack, NThltIter3_ );
-  fill_seedTemplate(iEvent, t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_, tracker, SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks, hltIter0IterL3FromL1MuonTrackMap, TThltIter0IterL3FromL1MuonTrack, NThltIter0FromL1_ );
-  fill_seedTemplate(iEvent, t_hltIter2IterL3FromL1MuonPixelSeeds_, tracker, SThltIter2IterL3FromL1MuonPixelSeeds, hltIter2IterL3FromL1MuonTrackMap, TThltIter2IterL3FromL1MuonTrack, NThltIter2FromL1_ );
-  fill_seedTemplate(iEvent, t_hltIter3IterL3FromL1MuonPixelSeeds_, tracker, SThltIter3IterL3FromL1MuonPixelSeeds, hltIter3IterL3FromL1MuonTrackMap, TThltIter3IterL3FromL1MuonTrack, NThltIter3FromL1_ );
+  fill_seedTemplate(iEvent, t_hltIterL3OISeedsFromL2Muons_, tracker, hltIterL3OIMuonTrackMap, TThltIterL3OIMuonTrack, NThltIterL3OI_ );
+  fill_seedTemplate(iEvent, t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_, tracker, hltIter0IterL3MuonTrackMap, TThltIter0IterL3MuonTrack, NThltIter0_ );
+  fill_seedTemplate(iEvent, t_hltIter2IterL3MuonPixelSeeds_, tracker, hltIter2IterL3MuonTrackMap, TThltIter2IterL3MuonTrack, NThltIter2_ );
+  fill_seedTemplate(iEvent, t_hltIter3IterL3MuonPixelSeeds_, tracker, hltIter3IterL3MuonTrackMap, TThltIter3IterL3MuonTrack, NThltIter3_ );
+  fill_seedTemplate(iEvent, t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_, tracker, hltIter0IterL3FromL1MuonTrackMap, TThltIter0IterL3FromL1MuonTrack, NThltIter0FromL1_ );
+  fill_seedTemplate(iEvent, t_hltIter2IterL3FromL1MuonPixelSeeds_, tracker, hltIter2IterL3FromL1MuonTrackMap, TThltIter2IterL3FromL1MuonTrack, NThltIter2FromL1_ );
+  fill_seedTemplate(iEvent, t_hltIter3IterL3FromL1MuonPixelSeeds_, tracker, hltIter3IterL3FromL1MuonTrackMap, TThltIter3IterL3FromL1MuonTrack, NThltIter3FromL1_ );
 
+  // fill_seedTemplate(iEvent, t_hltIterL3OISeedsFromL2Muons_, tracker, SThltIterL3OISeedsFromL2Muons, hltIterL3OIMuonTrackMap, TThltIterL3OIMuonTrack, NThltIterL3OI_ );
+  // fill_seedTemplate(iEvent, t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_, tracker, SThltIter0IterL3MuonPixelSeedsFromPixelTracks, hltIter0IterL3MuonTrackMap, TThltIter0IterL3MuonTrack, NThltIter0_ );
+  // fill_seedTemplate(iEvent, t_hltIter2IterL3MuonPixelSeeds_, tracker, SThltIter2IterL3MuonPixelSeeds, hltIter2IterL3MuonTrackMap, TThltIter2IterL3MuonTrack, NThltIter2_ );
+  // fill_seedTemplate(iEvent, t_hltIter3IterL3MuonPixelSeeds_, tracker, SThltIter3IterL3MuonPixelSeeds, hltIter3IterL3MuonTrackMap, TThltIter3IterL3MuonTrack, NThltIter3_ );
+  // fill_seedTemplate(iEvent, t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_, tracker, SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks, hltIter0IterL3FromL1MuonTrackMap, TThltIter0IterL3FromL1MuonTrack, NThltIter0FromL1_ );
+  // fill_seedTemplate(iEvent, t_hltIter2IterL3FromL1MuonPixelSeeds_, tracker, SThltIter2IterL3FromL1MuonPixelSeeds, hltIter2IterL3FromL1MuonTrackMap, TThltIter2IterL3FromL1MuonTrack, NThltIter2FromL1_ );
+  // fill_seedTemplate(iEvent, t_hltIter3IterL3FromL1MuonPixelSeeds_, tracker, SThltIter3IterL3FromL1MuonPixelSeeds, hltIter3IterL3FromL1MuonTrackMap, TThltIter3IterL3FromL1MuonTrack, NThltIter3FromL1_ );
 }
 
 void MuonHLTSeedNtupler::fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
@@ -238,8 +254,7 @@ void MuonHLTSeedNtupler::fill_trackTemplate(const edm::Event &iEvent, edm::EDGet
 
 void MuonHLTSeedNtupler::fill_seedTemplate(
   const edm::Event &iEvent, edm::EDGetTokenT<TrajectorySeedCollection>& theToken,
-  edm::ESHandle<TrackerGeometry>& tracker, seedTemplate* ST,
-  std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack, TTree* NT ) {
+  edm::ESHandle<TrackerGeometry>& tracker, std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack, TTree* NT ) {
 
   edm::Handle<l1t::MuonBxCollection> h_L1Muon;
   bool hasL1 = iEvent.getByToken(t_L1Muon_, h_L1Muon);
@@ -252,6 +267,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
       const auto& seed(seedHandle->at(i));
 
       tmpTSOD seedTsod(seed.startingState());
+      ST->clear();
 
       // -- Track association
       ST->fill(seed, tracker);
