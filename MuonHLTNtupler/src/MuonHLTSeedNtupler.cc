@@ -311,10 +311,10 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
               dPhi_minDPhiL1SeedX = dPhi_L1SeedX;
             }
 
-            float dR_L1SeedP_AtVtx   = reco::deltaR( *ref_L1Mu, global_p);
-            float dPhi_L1SeedP_AtVtx = reco::deltaPhi( ref_L1Mu->phi(), global_p.phi());
-            float dR_L1SeedX_AtVtx   = reco::deltaR( *ref_L1Mu, global_x);
-            float dPhi_L1SeedX_AtVtx = reco::deltaPhi( ref_L1Mu->phi(), global_x.phi());
+            float dR_L1SeedP_AtVtx   = reco::deltaR( ref_L1Mu->etaAtVtx(), ref_L1Mu->phiAtVtx(), global_p.eta(), global_p.phi());
+            float dPhi_L1SeedP_AtVtx = reco::deltaPhi( ref_L1Mu->phiAtVtx(), global_p.phi());
+            float dR_L1SeedX_AtVtx   = reco::deltaR( ref_L1Mu->etaAtVtx(), ref_L1Mu->phiAtVtx(), global_x.eta(), global_x.phi());
+            float dPhi_L1SeedX_AtVtx = reco::deltaPhi( ref_L1Mu->phiAtVtx(), global_x.phi());
 
             if( dR_L1SeedP_AtVtx < dR_minDRL1SeedP_AtVtx ) {
               dR_minDRL1SeedP_AtVtx = dR_L1SeedP_AtVtx;
