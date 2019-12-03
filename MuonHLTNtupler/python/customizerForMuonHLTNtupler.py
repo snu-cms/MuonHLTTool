@@ -32,7 +32,8 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT"):
     process.ntupler.lumiScaler       = cms.untracked.InputTag("hltScalersRawToDigi",     "",     newProcessName)
 
     # process.ntupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis",        "Muon", newProcessName)
-    process.ntupler.L1Muon           = cms.untracked.InputTag("gmtStage2Digis",        "Muon", newProcessName) #for phaseII
+    # process.ntupler.L1Muon           = cms.untracked.InputTag("gmtStage2Digis",        "Muon", newProcessName) 
+    process.ntupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis",        "Muon", "HLT") #for phaseII w/o emulation
     process.ntupler.L2Muon           = cms.untracked.InputTag("hltL2MuonCandidates",     "",     newProcessName)
     process.ntupler.L3Muon           = cms.untracked.InputTag("hltIterL3MuonCandidates", "",     newProcessName)
     process.ntupler.TkMuon           = cms.untracked.InputTag("hltHighPtTkMuonCands",    "",     newProcessName)
@@ -82,6 +83,11 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT"):
       closeFileFast = cms.untracked.bool(False),
     )
 
+    # from MuonHLTTool.MuonHLTNtupler.WmuSkimmer import WmuSkimmer 
+    # process.WmuSkimmer = WmuSkimmer.clone()
+    # process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults::HLT") #HOTFIX : dummy triggerresult to avoid ordering error occur in skimming, as it is not stored in ntuple(PhaseII)
+
     process.mypath = cms.EndPath(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+    # process.mypath = cms.Path(process.WmuSkimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
 
     return process

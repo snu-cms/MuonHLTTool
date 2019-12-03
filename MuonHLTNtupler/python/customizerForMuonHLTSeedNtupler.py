@@ -64,6 +64,10 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
       closeFileFast = cms.untracked.bool(False),
     )
 
+    # from MuonHLTTool.MuonHLTNtupler.WmuSkimmer import WmuSkimmer 
+    # process.WmuSkimmer = WmuSkimmer.clone()
+
     process.myseedpath = cms.EndPath(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
+    # process.myseedpath = cms.Path(process.WmuSkimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler) #if skim needed
 
     return process
