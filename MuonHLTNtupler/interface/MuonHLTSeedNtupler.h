@@ -364,6 +364,10 @@ private:
     float dPhi_minDRL1SeedP_;
     float dR_minDPhiL1SeedX_;
     float dPhi_minDPhiL1SeedX_;
+    float dR_minDRL1SeedP_AtVtx_;
+    float dPhi_minDRL1SeedP_AtVtx_;
+    float dR_minDPhiL1SeedX_AtVtx_;
+    float dPhi_minDPhiL1SeedX_AtVtx_;
     int bestMatchTP_pdgId_;
     int matchedTPsize_;
   public:
@@ -406,6 +410,10 @@ private:
       dPhi_minDRL1SeedP_ = -99999.;
       dR_minDPhiL1SeedX_ = -99999.;
       dPhi_minDPhiL1SeedX_ = -99999.;
+      dR_minDRL1SeedP_AtVtx_ = -99999.;
+      dPhi_minDRL1SeedP_AtVtx_ = -99999.;
+      dR_minDPhiL1SeedX_AtVtx_ = -99999.;
+      dPhi_minDPhiL1SeedX_AtVtx_ = -99999.;
       bestMatchTP_pdgId_ = -99999;
       matchedTPsize_ = -99999;
 
@@ -451,6 +459,10 @@ private:
       tmpntpl->Branch("dPhi_minDRL1SeedP",   &dPhi_minDRL1SeedP_, "dPhi_minDRL1SeedP/F");
       tmpntpl->Branch("dR_minDPhiL1SeedX",   &dR_minDPhiL1SeedX_, "dR_minDPhiL1SeedX/F");
       tmpntpl->Branch("dPhi_minDPhiL1SeedX", &dPhi_minDPhiL1SeedX_, "dPhi_minDPhiL1SeedX/F");
+      tmpntpl->Branch("dR_minDRL1SeedP_AtVtx",     &dR_minDRL1SeedP_AtVtx_, "dR_minDRL1SeedP_AtVtx/F");
+      tmpntpl->Branch("dPhi_minDRL1SeedP_AtVtx",   &dPhi_minDRL1SeedP_AtVtx_, "dPhi_minDRL1SeedP_AtVtx/F");
+      tmpntpl->Branch("dR_minDPhiL1SeedX_AtVtx",   &dR_minDPhiL1SeedX_AtVtx_, "dR_minDPhiL1SeedX_AtVtx/F");
+      tmpntpl->Branch("dPhi_minDPhiL1SeedX_AtVtx", &dPhi_minDPhiL1SeedX_AtVtx_, "dPhi_minDPhiL1SeedX_AtVtx/F");
       tmpntpl->Branch("bestMatchTP_pdgId", &bestMatchTP_pdgId_, "bestMatchTP_pdgId/I");
       tmpntpl->Branch("matchedTPsize", &matchedTPsize_, "matchedTPsize/I");
 
@@ -499,12 +511,19 @@ private:
       return;
     }
 
-    void fill_L1vars( float dR_minDRL1SeedP, float dPhi_minDRL1SeedP,
-                      float dR_minDPhiL1SeedX , float dPhi_minDPhiL1SeedX ) {
-      dR_minDRL1SeedP_ = dR_minDRL1SeedP;
-      dPhi_minDRL1SeedP_ = dPhi_minDRL1SeedP;
-      dR_minDPhiL1SeedX_ = dR_minDPhiL1SeedX;
-      dPhi_minDPhiL1SeedX_ = dPhi_minDPhiL1SeedX;
+    void fill_L1vars( float dR_minDRL1SeedP,         float dPhi_minDRL1SeedP,
+                      float dR_minDPhiL1SeedX ,      float dPhi_minDPhiL1SeedX,
+                      float dR_minDRL1SeedP_AtVtx,   float dPhi_minDRL1SeedP_AtVtx,
+                      float dR_minDPhiL1SeedX_AtVtx, float dPhi_minDPhiL1SeedX_AtVtx ) {
+      dR_minDRL1SeedP_           = dR_minDRL1SeedP;
+      dPhi_minDRL1SeedP_         = dPhi_minDRL1SeedP;
+      dR_minDPhiL1SeedX_         = dR_minDPhiL1SeedX;
+      dPhi_minDPhiL1SeedX_       = dPhi_minDPhiL1SeedX;
+
+      dR_minDRL1SeedP_AtVtx_     = dR_minDRL1SeedP_AtVtx;
+      dPhi_minDRL1SeedP_AtVtx_   = dPhi_minDRL1SeedP_AtVtx;
+      dR_minDPhiL1SeedX_AtVtx_   = dR_minDPhiL1SeedX_AtVtx;
+      dPhi_minDPhiL1SeedX_AtVtx_ = dPhi_minDPhiL1SeedX_AtVtx;
 
       return;
     }

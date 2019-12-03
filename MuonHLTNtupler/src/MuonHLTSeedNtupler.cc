@@ -283,6 +283,10 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
         float dPhi_minDRL1SeedP = 99999.;
         float dR_minDPhiL1SeedX = 99999.;
         float dPhi_minDPhiL1SeedX = 99999.;
+        float dR_minDRL1SeedP_AtVtx = 99999.;
+        float dPhi_minDRL1SeedP_AtVtx = 99999.;
+        float dR_minDPhiL1SeedX_AtVtx = 99999.;
+        float dPhi_minDPhiL1SeedX_AtVtx = 99999.;
         for(int ibx = h_L1Muon->getFirstBX(); ibx<=h_L1Muon->getLastBX(); ++ibx)
         {
           if(ibx != 0) continue; // -- only take when ibx == 0 -- //
@@ -306,9 +310,28 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
               dR_minDPhiL1SeedX = dR_L1SeedX;
               dPhi_minDPhiL1SeedX = dPhi_L1SeedX;
             }
+
+            float dR_L1SeedP_AtVtx   = reco::deltaR( *ref_L1Mu, global_p);
+            float dPhi_L1SeedP_AtVtx = reco::deltaPhi( ref_L1Mu->phi(), global_p.phi());
+            float dR_L1SeedX_AtVtx   = reco::deltaR( *ref_L1Mu, global_x);
+            float dPhi_L1SeedX_AtVtx = reco::deltaPhi( ref_L1Mu->phi(), global_x.phi());
+
+            if( dR_L1SeedP_AtVtx < dR_minDRL1SeedP_AtVtx ) {
+              dR_minDRL1SeedP_AtVtx = dR_L1SeedP_AtVtx;
+              dPhi_minDRL1SeedP_AtVtx = dPhi_L1SeedP_AtVtx;
+            }
+            if( fabs(dPhi_L1SeedX_AtVtx) < fabs(dPhi_minDPhiL1SeedX_AtVtx) ) {
+              dR_minDPhiL1SeedX_AtVtx = dR_L1SeedX_AtVtx;
+              dPhi_minDPhiL1SeedX_AtVtx = dPhi_L1SeedX_AtVtx;
+            }
           }
         }
-        ST->fill_L1vars(dR_minDRL1SeedP, dPhi_minDRL1SeedP, dR_minDPhiL1SeedX, dPhi_minDPhiL1SeedX);
+        ST->fill_L1vars(
+          dR_minDRL1SeedP,         dPhi_minDRL1SeedP,
+          dR_minDPhiL1SeedX,       dPhi_minDPhiL1SeedX,
+          dR_minDRL1SeedP_AtVtx,   dPhi_minDRL1SeedP_AtVtx,
+          dR_minDPhiL1SeedX_AtVtx, dPhi_minDPhiL1SeedX_AtVtx
+        );
       }
       ST->fill_ntuple(NT);
     } // -- end of seed iteration

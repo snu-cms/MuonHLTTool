@@ -1322,11 +1322,11 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &
       SThltIterL3OISeedsFromL2Muons->linktmpL3((where2==hltIterL3OIMuonTrackMap.end()) ? -1 : hltIterL3OIMuonTrackMap[seedTsod]);
       SThltIterL3OISeedsFromL2Muons->matchingL3((where2==hltIterL3OIMuonTrackMap.end()) ? -1 : TThltIterL3OIMuonTrack->matchedIDpassedL3(hltIterL3OIMuonTrackMap[seedTsod]));
 
-      std::cout << "OI RecHit loop start" << std::endl;
+      // std::cout << "OI RecHit loop start" << std::endl;
       for (auto rechit = seed.recHits().first; rechit != seed.recHits().second; ++rechit) {
-        std::cout << "OI RecHit is valid : " << rechit->isValid() << std::endl;
+        // std::cout << "OI RecHit is valid : " << rechit->isValid() << std::endl;
         auto matched = associate.associateHit(*rechit);
-        std::cout << "OI Matched RecHit size = " << matched.size() << std::endl;
+        // std::cout << "OI Matched RecHit size = " << matched.size() << std::endl;
       }
     } // -- end of seed iteration
   } // -- if getByToken is valid
@@ -1352,11 +1352,11 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &
       SThltIter0IterL3MuonPixelSeedsFromPixelTracks->linktmpL3((where2==hltIter0IterL3MuonTrackMap.end()) ? -1 : hltIter0IterL3MuonTrackMap[seedTsod]);
       SThltIter0IterL3MuonPixelSeedsFromPixelTracks->matchingL3((where2==hltIter0IterL3MuonTrackMap.end()) ? -1 : TThltIter0IterL3MuonTrack->matchedIDpassedL3(hltIter0IterL3MuonTrackMap[seedTsod]));
 
-      std::cout << "IO RecHit loop start" << std::endl;
+      // std::cout << "IO RecHit loop start" << std::endl;
       for (auto rechit = seed.recHits().first; rechit != seed.recHits().second; ++rechit) {
-        std::cout << "IO RecHit is valid : " << rechit->isValid() << std::endl;
+        // std::cout << "IO RecHit is valid : " << rechit->isValid() << std::endl;
         auto matched = associate.associateHit(*rechit);
-        std::cout << "IO Matched RecHit size = " << matched.size() << std::endl;
+        // std::cout << "IO Matched RecHit size = " << matched.size() << std::endl;
       }
     } // -- end of seed iteration
   } // -- if getByToken is valid
