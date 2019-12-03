@@ -74,6 +74,7 @@ associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUnt
 trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackingParticle"))),
 
 t_L1Muon_            ( consumes< l1t::MuonBxCollection  >                 (iConfig.getUntrackedParameter<edm::InputTag>("L1Muon"            )) ),
+t_L2Muon_            ( consumes< reco::RecoChargedCandidateCollection >   (iConfig.getUntrackedParameter<edm::InputTag>("L2Muon"            )) ),
 
 t_hltIterL3OISeedsFromL2Muons_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OISeedsFromL2Muons")) ),
 t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonPixelSeedsFromPixelTracks")) ),
@@ -259,6 +260,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
   edm::Handle<l1t::MuonBxCollection> h_L1Muon;
   bool hasL1 = iEvent.getByToken(t_L1Muon_, h_L1Muon);
 
+  edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon;
+  bool hasL2 = iEvent.getByToken( t_L2Muon_, h_L2Muon );
+
   edm::Handle< TrajectorySeedCollection > seedHandle;
   if( iEvent.getByToken( theToken, seedHandle) )
   {
@@ -331,6 +335,35 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
           dR_minDPhiL1SeedX,       dPhi_minDPhiL1SeedX,
           dR_minDRL1SeedP_AtVtx,   dPhi_minDRL1SeedP_AtVtx,
           dR_minDPhiL1SeedX_AtVtx, dPhi_minDPhiL1SeedX_AtVtx
+        );
+      }
+      if( hasL2 ) {
+        float dR_minDRL2SeedP = 99999.;
+        float dPhi_minDRL2SeedP = 99999.;
+        float dR_minDPhiL2SeedX = 99999.;
+        float dPhi_minDPhiL2SeedX = 99999.;
+        for( unsigned int i_L2=0; i_L2<h_L2Muon->size(); i_L2++)
+        {
+          reco::RecoChargedCandidateRef ref_L2Mu(h_L2Muon, i_L2);
+
+          float dR_L2SeedP   = reco::deltaR( *ref_L2Mu, global_p);
+          float dPhi_L2SeedP = reco::deltaPhi( ref_L2Mu->phi(), global_p.phi());
+          float dR_L2SeedX   = reco::deltaR( *ref_L2Mu, global_x);
+          float dPhi_L2SeedX = reco::deltaPhi( ref_L2Mu->phi(), global_x.phi());
+
+          if( dR_L2SeedP < dR_minDRL2SeedP ) {
+            dR_minDRL2SeedP = dR_L2SeedP;
+            dPhi_minDRL2SeedP = dPhi_L2SeedP;
+          }
+          if( fabs(dPhi_L2SeedX) < fabs(dPhi_minDPhiL2SeedX) ) {
+            dR_minDPhiL2SeedX = dR_L2SeedX;
+            dPhi_minDPhiL2SeedX = dPhi_L2SeedX;
+          }
+        }
+
+        ST->fill_L2vars(
+          dR_minDRL2SeedP,         dPhi_minDRL2SeedP,
+          dR_minDPhiL2SeedX,       dPhi_minDPhiL2SeedX
         );
       }
       ST->fill_ntuple(NT);

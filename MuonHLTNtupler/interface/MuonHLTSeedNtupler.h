@@ -91,6 +91,7 @@ private:
   edm::EDGetTokenT<TrackingParticleCollection> trackingParticleToken;
 
   edm::EDGetTokenT< l1t::MuonBxCollection >                  t_L1Muon_;
+  edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L2Muon_;
 
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIterL3OISeedsFromL2Muons_;
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_;
@@ -368,6 +369,10 @@ private:
     float dPhi_minDRL1SeedP_AtVtx_;
     float dR_minDPhiL1SeedX_AtVtx_;
     float dPhi_minDPhiL1SeedX_AtVtx_;
+    float dR_minDRL2SeedP_;
+    float dPhi_minDRL2SeedP_;
+    float dR_minDPhiL2SeedX_;
+    float dPhi_minDPhiL2SeedX_;
     int bestMatchTP_pdgId_;
     int matchedTPsize_;
   public:
@@ -414,6 +419,10 @@ private:
       dPhi_minDRL1SeedP_AtVtx_ = -99999.;
       dR_minDPhiL1SeedX_AtVtx_ = -99999.;
       dPhi_minDPhiL1SeedX_AtVtx_ = -99999.;
+      dR_minDRL2SeedP_ = -99999.;
+      dPhi_minDRL2SeedP_ = -99999.;
+      dR_minDPhiL2SeedX_ = -99999.;
+      dPhi_minDPhiL2SeedX_ = -99999.;
       bestMatchTP_pdgId_ = -99999;
       matchedTPsize_ = -99999;
 
@@ -463,6 +472,10 @@ private:
       tmpntpl->Branch("dPhi_minDRL1SeedP_AtVtx",   &dPhi_minDRL1SeedP_AtVtx_, "dPhi_minDRL1SeedP_AtVtx/F");
       tmpntpl->Branch("dR_minDPhiL1SeedX_AtVtx",   &dR_minDPhiL1SeedX_AtVtx_, "dR_minDPhiL1SeedX_AtVtx/F");
       tmpntpl->Branch("dPhi_minDPhiL1SeedX_AtVtx", &dPhi_minDPhiL1SeedX_AtVtx_, "dPhi_minDPhiL1SeedX_AtVtx/F");
+      tmpntpl->Branch("dR_minDRL2SeedP",     &dR_minDRL2SeedP_, "dR_minDRL2SeedP/F");
+      tmpntpl->Branch("dPhi_minDRL2SeedP",   &dPhi_minDRL2SeedP_, "dPhi_minDRL2SeedP/F");
+      tmpntpl->Branch("dR_minDPhiL2SeedX",   &dR_minDPhiL2SeedX_, "dR_minDPhiL2SeedX/F");
+      tmpntpl->Branch("dPhi_minDPhiL2SeedX", &dPhi_minDPhiL2SeedX_, "dPhi_minDPhiL2SeedX/F");
       tmpntpl->Branch("bestMatchTP_pdgId", &bestMatchTP_pdgId_, "bestMatchTP_pdgId/I");
       tmpntpl->Branch("matchedTPsize", &matchedTPsize_, "matchedTPsize/I");
 
@@ -524,6 +537,16 @@ private:
       dPhi_minDRL1SeedP_AtVtx_   = dPhi_minDRL1SeedP_AtVtx;
       dR_minDPhiL1SeedX_AtVtx_   = dR_minDPhiL1SeedX_AtVtx;
       dPhi_minDPhiL1SeedX_AtVtx_ = dPhi_minDPhiL1SeedX_AtVtx;
+
+      return;
+    }
+
+    void fill_L2vars( float dR_minDRL2SeedP,         float dPhi_minDRL2SeedP,
+                      float dR_minDPhiL2SeedX ,      float dPhi_minDPhiL2SeedX ) {
+      dR_minDRL2SeedP_           = dR_minDRL2SeedP;
+      dPhi_minDRL2SeedP_         = dPhi_minDRL2SeedP;
+      dR_minDPhiL2SeedX_         = dR_minDPhiL2SeedX;
+      dPhi_minDPhiL2SeedX_       = dPhi_minDPhiL2SeedX;
 
       return;
     }

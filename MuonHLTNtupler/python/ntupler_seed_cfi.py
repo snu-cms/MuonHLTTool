@@ -3,6 +3,7 @@ import FWCore.ParameterSet.Config as cms
 seedNtuplerBase = cms.EDAnalyzer("MuonHLTSeedNtupler",
 
 	L1Muon = cms.untracked.InputTag("hltGmtStage2Digis",       "Muon", "MYHLT"), # -- if L1 emulator is used
+	L2Muon = cms.untracked.InputTag("hltL2MuonCandidates",     "",     "MYHLT"),
 
 	hltIterL3OISeedsFromL2Muons                       = cms.untracked.InputTag("hltIterL3OISeedsFromL2Muons",                         "", "MYHLT"),
 	hltIter0IterL3MuonPixelSeedsFromPixelTracks       = cms.untracked.InputTag("hltIter0IterL3MuonPixelSeedsFromPixelTracks",         "", "MYHLT"),
