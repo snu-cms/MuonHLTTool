@@ -83,12 +83,16 @@ private:
   void Init();
   void Make_Branch();
 
+  void Fill_Event(const edm::Event &iEvent);
   void Fill_IterL3TT(const edm::Event &iEvent);
   void Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &iSetup);
 
   // TrackerHitAssociator::Config trackerHitAssociatorConfig_;
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
   edm::EDGetTokenT<TrackingParticleCollection> trackingParticleToken;
+
+  edm::EDGetTokenT< reco::VertexCollection >                 t_offlineVertex_;
+  edm::EDGetTokenT< std::vector<PileupSummaryInfo> >         t_PUSummaryInfo_;
 
   edm::EDGetTokenT< l1t::MuonBxCollection >                  t_L1Muon_;
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L2Muon_;
@@ -109,6 +113,7 @@ private:
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter2IterL3FromL1MuonTrack_;
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter3IterL3FromL1MuonTrack_;
 
+  TTree *NTEvent_;
   TTree *NThltIterL3OI_;
   TTree *NThltIter0_;
   TTree *NThltIter2_;
@@ -116,6 +121,20 @@ private:
   TTree *NThltIter0FromL1_;
   TTree *NThltIter2FromL1_;
   TTree *NThltIter3FromL1_;
+
+  int runNum_       = -999;
+  int lumiBlockNum_ = -999;
+  unsigned long long eventNum_ = 0;
+  int nVertex_      = -999;
+  int truePU_       = -999;
+
+  int nhltIterL3OI_ = 0;
+  int nhltIter0_ = 0;
+  int nhltIter2_ = 0;
+  int nhltIter3_ = 0;
+  int nhltIter0FromL1_ = 0;
+  int nhltIter2FromL1_ = 0;
+  int nhltIter3FromL1_ = 0;
 
   class tmpTSOD {
   private:
@@ -327,6 +346,7 @@ private:
 
   class seedTemplate {
   private:
+    int truePU_;
     int dir_;
     uint32_t tsos_detId_;
     float tsos_pt_;
@@ -430,6 +450,7 @@ private:
     }
 
     void setBranch(TTree* tmpntpl) {
+      tmpntpl->Branch("truePU",          &truePU_, "truePU/I");
       tmpntpl->Branch("dir",          &dir_, "dir/I");
       tmpntpl->Branch("tsos_detId",   &tsos_detId_, "tsos_detId/i");
       tmpntpl->Branch("tsos_pt",      &tsos_pt_, "tsos_pt/F");
@@ -524,6 +545,11 @@ private:
       return;
     }
 
+    void fill_PU( int truePU) {
+      truePU_           = truePU;
+      return;
+    }
+
     void fill_L1vars( float dR_minDRL1SeedP,         float dPhi_minDRL1SeedP,
                       float dR_minDPhiL1SeedX ,      float dPhi_minDPhiL1SeedX,
                       float dR_minDRL1SeedP_AtVtx,   float dPhi_minDRL1SeedP_AtVtx,
@@ -599,5 +625,5 @@ private:
 
   void fill_seedTemplate(
   const edm::Event &, edm::EDGetTokenT<TrajectorySeedCollection>&,
-  edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree* );
+  edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree*, int &nSeed );
 };
