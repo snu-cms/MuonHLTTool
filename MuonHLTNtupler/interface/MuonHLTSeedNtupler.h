@@ -122,19 +122,19 @@ private:
   TTree *NThltIter2FromL1_;
   TTree *NThltIter3FromL1_;
 
-  int runNum_       = -999;
-  int lumiBlockNum_ = -999;
-  unsigned long long eventNum_ = 0;
-  int nVertex_      = -999;
-  int truePU_       = -999;
+  int runNum_;       
+  int lumiBlockNum_;
+  unsigned long long eventNum_;
+  int nVertex_;
+  int truePU_;
 
-  int nhltIterL3OI_ = 0;
-  int nhltIter0_ = 0;
-  int nhltIter2_ = 0;
-  int nhltIter3_ = 0;
-  int nhltIter0FromL1_ = 0;
-  int nhltIter2FromL1_ = 0;
-  int nhltIter3FromL1_ = 0;
+  int nhltIterL3OI_;
+  int nhltIter0_;
+  int nhltIter2_;
+  int nhltIter3_;
+  int nhltIter0FromL1_;
+  int nhltIter2FromL1_;
+  int nhltIter3FromL1_;
 
   class tmpTSOD {
   private:

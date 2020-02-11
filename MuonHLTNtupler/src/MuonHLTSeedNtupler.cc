@@ -129,6 +129,18 @@ void MuonHLTSeedNtupler::beginJob()
 
 void MuonHLTSeedNtupler::Init()
 {
+  runNum_       = -999;
+  lumiBlockNum_ = -999;
+  eventNum_     = 0;
+  nVertex_      = -999;
+  truePU_       = -999;
+  nhltIterL3OI_ = 0;
+  nhltIter0_ = 0;
+  nhltIter2_ = 0;
+  nhltIter3_ = 0;
+  nhltIter0FromL1_ = 0;
+  nhltIter2FromL1_ = 0;
+  nhltIter3FromL1_ = 0;
   hltIterL3OIMuonTrackMap.clear();
   hltIter0IterL3MuonTrackMap.clear();
   hltIter2IterL3MuonTrackMap.clear();
@@ -334,13 +346,12 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
   edm::Handle< TrajectorySeedCollection > seedHandle;
   if( iEvent.getByToken( theToken, seedHandle) )
   {
+    nSeed = seedHandle->size();
     for( auto i=0U; i<seedHandle->size(); ++i )
     {
       ST->fill_PU(
         truePU
       );
-
-      nSeed = seedHandle->size();
 
       const auto& seed(seedHandle->at(i));
 
