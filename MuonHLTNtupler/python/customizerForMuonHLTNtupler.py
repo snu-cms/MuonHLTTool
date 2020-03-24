@@ -83,11 +83,22 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT"):
       closeFileFast = cms.untracked.bool(False),
     )
 
-    # from MuonHLTTool.MuonHLTNtupler.WmuSkimmer import WmuSkimmer 
-    # process.WmuSkimmer = WmuSkimmer.clone()
-    # process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults::HLT") #HOTFIX : dummy triggerresult to avoid ordering error occur in skimming, as it is not stored in ntuple(PhaseII)
+    from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
+    process.Skimmer = DYmuSkimmer.clone()
+    process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults::HLT") # dummy to avoid ordering error occur in skimming, as it is not used at the moment
 
-    process.mypath = cms.EndPath(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
-    # process.mypath = cms.Path(process.WmuSkimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+    L1TRK_PROC  =  process.TTTracksFromTrackletEmulation
+    L1TRK_NAME  = "TTTracksFromTrackletEmulation"
+    L1TRK_LABEL = "Level1TTTracks"
+    process.TTTrackAssociatorFromPixelDigis.TTTracks = cms.VInputTag( cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks") )
+
+    process.ntupler.DebugMode = cms.bool(False)
+    process.ntupler.SaveAllTracks = cms.bool(True)
+    process.ntupler.SaveStubs = cms.bool(False)
+    process.ntupler.L1TrackInputTag = cms.InputTag(L1TRK_NAME, L1TRK_LABEL) # TTTrack input 
+    process.ntupler.MCTruthTrackInputTag = cms.InputTag("TTTrackAssociatorFromPixelDigis", L1TRK_LABEL)  ## MCTruth input
+    process.ntupler.L1StubInputTag = cms.InputTag("TTStubsFromPhase2TrackerDigis","StubAccepted")
+
+    process.mypath = cms.Path(process.Skimmer*process.offlineBeamSpot*L1TRK_PROC*process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
 
     return process

@@ -57,6 +57,8 @@
 #include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
 
 
+
+
 #include <map>
 #include <string>
 #include <iomanip>
@@ -69,6 +71,13 @@ using namespace edm;
 
 MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
 doSeed(iConfig.getParameter<bool>("doSeed")),
+DebugMode(iConfig.getParameter<bool>("DebugMode")),
+SaveAllTracks(iConfig.getParameter<bool>("SaveAllTracks")),
+SaveStubs(iConfig.getParameter<bool>("SaveStubs")),
+ttTrackToken_        ( consumes<std::vector<TTTrack<Ref_Phase2TrackerDigi_> > >(iConfig.getParameter<edm::InputTag>("L1TrackInputTag"     )) ),
+ttTrackMCTruthToken_ ( consumes< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > >(iConfig.getParameter<edm::InputTag>("MCTruthTrackInputTag"))),
+ttStubToken_         ( consumes< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > >(iConfig.getParameter<edm::InputTag>("L1StubInputTag"))),
+
 trackerHitAssociatorConfig_(iConfig, consumesCollector()),
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
 trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackingParticle"))),
@@ -200,6 +209,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   } // -- end of isMC -- //
 
   // -- fill each object
+  Fill_L1Track(iEvent, iSetup);
   Fill_Muon(iEvent);
   Fill_HLT(iEvent, 0); // -- original HLT objects saved in data taking
   // Fill_HLT(iEvent, 1); // -- rerun objects
@@ -217,11 +227,75 @@ void MuonHLTNtupler::beginJob()
   edm::Service<TFileService> fs;
   ntuple_ = fs->make<TTree>("ntuple","ntuple");
 
+  // initilize
+  m_trk_pt    = new std::vector<float>;
+  m_trk_eta   = new std::vector<float>;
+  m_trk_phi   = new std::vector<float>;
+  m_trk_z0    = new std::vector<float>;
+  m_trk_d0    = new std::vector<float>;
+  m_trk_chi2  = new std::vector<float>;
+  m_trk_bendchi2  = new std::vector<float>;
+  m_trk_nstub = new std::vector<int>;
+  m_trk_lhits = new std::vector<int>;
+  m_trk_dhits = new std::vector<int>;
+  m_trk_seed    = new std::vector<int>;
+  m_trk_phiSector    = new std::vector<unsigned int>;
+  m_trk_genuine       = new std::vector<int>;
+  m_trk_loose         = new std::vector<int>;
+  m_trk_unknown       = new std::vector<int>;
+  m_trk_combinatoric  = new std::vector<int>;
+  m_trk_fake          = new std::vector<int>;
+  m_trk_matchtp_pdgid = new std::vector<int>;
+  m_trk_matchtp_pt    = new std::vector<float>;
+  m_trk_matchtp_eta   = new std::vector<float>;
+  m_trk_matchtp_phi   = new std::vector<float>;
+  m_trk_matchtp_z0    = new std::vector<float>;
+  m_trk_matchtp_dxy   = new std::vector<float>;
+
+  m_stub_x = new std::vector<float>;
+  m_stub_y = new std::vector<float>;
+  m_stub_z = new std::vector<float>;
+  m_stub_isBarrel = new std::vector<int>;
+  m_stub_layer    = new std::vector<int>;
+
   Make_Branch();
 }
 
 void MuonHLTNtupler::Init()
 {
+  if (SaveAllTracks){
+  m_trk_pt->clear();
+  m_trk_eta->clear();
+  m_trk_phi->clear();
+  m_trk_d0->clear();
+  m_trk_z0->clear();
+  m_trk_chi2->clear();
+  m_trk_bendchi2->clear();
+  m_trk_nstub->clear();
+  m_trk_lhits->clear();
+  m_trk_dhits->clear();
+  m_trk_seed->clear();
+  m_trk_phiSector->clear();
+  m_trk_genuine->clear();
+  m_trk_loose->clear();
+  m_trk_unknown->clear();
+  m_trk_combinatoric->clear();
+  m_trk_fake->clear();
+  m_trk_matchtp_pdgid->clear();
+  m_trk_matchtp_pt->clear();
+  m_trk_matchtp_eta->clear();
+  m_trk_matchtp_phi->clear();
+  m_trk_matchtp_z0->clear();
+  m_trk_matchtp_dxy->clear();
+    
+  m_stub_x->clear();
+  m_stub_y->clear();
+  m_stub_z->clear();
+  m_stub_isBarrel->clear();
+  m_stub_layer->clear();
+  }
+
+
   isRealData_ = false;
 
   runNum_       = -999;
@@ -516,6 +590,38 @@ void MuonHLTNtupler::Init()
 
 void MuonHLTNtupler::Make_Branch()
 {
+  if (SaveAllTracks){
+  ntuple_->Branch("trk_pt",    &m_trk_pt);
+  ntuple_->Branch("trk_eta",   &m_trk_eta);
+  ntuple_->Branch("trk_phi",   &m_trk_phi);
+  ntuple_->Branch("trk_d0",    &m_trk_d0);
+  ntuple_->Branch("trk_z0",    &m_trk_z0);
+  ntuple_->Branch("trk_chi2",  &m_trk_chi2);
+  ntuple_->Branch("trk_bendchi2",  &m_trk_bendchi2);
+  ntuple_->Branch("trk_nstub", &m_trk_nstub);
+  ntuple_->Branch("trk_lhits", &m_trk_lhits);
+  ntuple_->Branch("trk_dhits", &m_trk_dhits);
+  ntuple_->Branch("trk_seed",    &m_trk_seed);
+  ntuple_->Branch("trk_phiSector", &m_trk_phiSector);
+  ntuple_->Branch("trk_genuine",      &m_trk_genuine);
+  ntuple_->Branch("trk_loose",        &m_trk_loose);
+  ntuple_->Branch("trk_unknown",      &m_trk_unknown);
+  ntuple_->Branch("trk_combinatoric", &m_trk_combinatoric);
+  ntuple_->Branch("trk_fake",         &m_trk_fake);
+  ntuple_->Branch("trk_matchtp_pdgid",&m_trk_matchtp_pdgid);
+  ntuple_->Branch("trk_matchtp_pt",   &m_trk_matchtp_pt);
+  ntuple_->Branch("trk_matchtp_eta",  &m_trk_matchtp_eta);
+  ntuple_->Branch("trk_matchtp_phi",  &m_trk_matchtp_phi);
+  ntuple_->Branch("trk_matchtp_z0",   &m_trk_matchtp_z0);
+  ntuple_->Branch("trk_matchtp_dxy",  &m_trk_matchtp_dxy);
+
+  ntuple_->Branch("stub_x", &m_stub_x);
+  ntuple_->Branch("stub_y", &m_stub_y);
+  ntuple_->Branch("stub_z", &m_stub_z);
+  ntuple_->Branch("stub_isBarrel",   &m_stub_isBarrel);
+  ntuple_->Branch("stub_layer",      &m_stub_layer);
+  }
+
   ntuple_->Branch("isRealData", &isRealData_, "isRealData/O"); // -- O: boolean -- //
   ntuple_->Branch("runNum",&runNum_,"runNum/I");
   ntuple_->Branch("lumiBlockNum",&lumiBlockNum_,"lumiBlockNum/I");
@@ -739,6 +845,202 @@ void MuonHLTNtupler::Make_Branch()
 
   VThltIterL3MuonTrimmedPixelVertices->setBranch(ntuple_,"hltIterL3MuonTrimmedPixelVertices");
   VThltIterL3FromL1MuonTrimmedPixelVertices->setBranch(ntuple_,"hltIterL3FromL1MuonTrimmedPixelVertices");
+}
+
+void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetup &iSetup)
+{
+  edm::Handle< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > TTTrackHandle;
+  iEvent.getByToken(ttTrackToken_, TTTrackHandle);
+
+  edm::Handle< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > > TTStubHandle;
+  if (SaveStubs) iEvent.getByToken(ttStubToken_, TTStubHandle);
+
+  edm::Handle< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > > MCTruthTTTrackHandle;
+  iEvent.getByToken(ttTrackMCTruthToken_, MCTruthTTTrackHandle);
+
+  edm::ESHandle<TrackerGeometry> tGeomHandle;
+  iSetup.get<TrackerDigiGeometryRecord>().get(tGeomHandle);
+  edm::ESHandle<TrackerTopology> tTopoHandle;
+  iSetup.get<TrackerTopologyRcd>().get(tTopoHandle);
+  
+  const TrackerTopology* const tTopo = tTopoHandle.product();
+  const TrackerGeometry* const theTrackerGeom = tGeomHandle.product();
+
+  if (SaveAllTracks){
+  if (DebugMode) {
+    cout << endl << "Loop over L1 tracks!" << endl;
+    // cout << endl << "Looking at " << L1Tk_nPar << "-parameter tracks!" << endl;
+  }
+
+  int this_l1track = 0;
+  std::vector< TTTrack< Ref_Phase2TrackerDigi_ > >::const_iterator iterL1Track;
+  for ( iterL1Track = TTTrackHandle->begin(); iterL1Track != TTTrackHandle->end(); iterL1Track++ ) {    
+    edm::Ptr< TTTrack< Ref_Phase2TrackerDigi_ > > l1track_ptr(TTTrackHandle, this_l1track);
+    this_l1track++;
+    
+    float tmp_trk_pt   = iterL1Track->momentum().perp();
+    float tmp_trk_eta  = iterL1Track->momentum().eta();
+    float tmp_trk_phi  = iterL1Track->momentum().phi();
+    float tmp_trk_z0   = iterL1Track->z0(); //cm
+
+    float tmp_trk_d0 = -999;
+    // if (L1Tk_nPar == 5) {
+    //   float tmp_trk_x0   = iterL1Track->POCA().x();
+    //   float tmp_trk_y0   = iterL1Track->POCA().y();
+    //   tmp_trk_d0 = -tmp_trk_x0*sin(tmp_trk_phi) + tmp_trk_y0*cos(tmp_trk_phi);
+    //   }
+
+    float tmp_trk_chi2 = iterL1Track->chi2();
+    float tmp_trk_bendchi2 = iterL1Track->stubPtConsistency();
+
+    std::vector< edm::Ref< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > >, TTStub< Ref_Phase2TrackerDigi_ > > > stubRefs = iterL1Track->getStubRefs();
+    int tmp_trk_nstub  = (int) stubRefs.size();
+
+    int tmp_trk_seed = 0;
+    // if (SaveTracklet) tmp_trk_seed = (int) iterL1Track->trackSeedType();
+    
+    unsigned int tmp_trk_phiSector = iterL1Track->phiSector();
+      
+      /*
+      int tmp_trk_nPSstub = 0;
+      if (SaveTracklet) {
+  for (int is=0; is<tmp_trk_nstub; is++) {
+
+    DetId detIdStub = theTrackerGeom->idToDet( (stubRefs.at(is)->clusterRef(0))->getDetId() )->geographicalId();
+    DetId stackDetid = tTopo->stack(detIdStub);
+
+    bool isPS = (theTrackerGeom->getDetectorType(stackDetid)==TrackerGeometry::ModuleType::Ph2PSP);
+    if (isPS) tmp_trk_nPSstub++;
+  }
+      }
+      */
+
+    // ----------------------------------------------------------------------------------------------
+    // loop over stubs on tracks
+
+    //float tmp_trk_bend_chi2 = 0;
+    int tmp_trk_dhits=0;
+    int tmp_trk_lhits=0;
+    
+    // loop over stubs
+    for (int is=0; is<tmp_trk_nstub; is++) {
+
+      //detID of stub
+      DetId detIdStub = theTrackerGeom->idToDet( (stubRefs.at(is)->clusterRef(0))->getDetId() )->geographicalId();
+      
+      MeasurementPoint coords = stubRefs.at(is)->clusterRef(0)->findAverageLocalCoordinatesCentered();
+      const GeomDet* theGeomDet = theTrackerGeom->idToDet(detIdStub);
+      Global3DPoint posStub = theGeomDet->surface().toGlobal( theGeomDet->topology().localPosition(coords) );
+      
+      double x=posStub.x();
+      double y=posStub.y();
+      double z=posStub.z();
+      
+      int isBarrel = 0;
+      int layer=-999999;
+      if ( detIdStub.subdetId()==StripSubdetector::TOB ) {
+        isBarrel = 1;
+        layer  = static_cast<int>(tTopo->layer(detIdStub));
+        if (DebugMode) cout << "   stub in layer " << layer << " at position x y z = " << x << " " << y << " " << z << endl;
+        tmp_trk_lhits+=pow(10,layer-1);
+      }
+      else if ( detIdStub.subdetId()==StripSubdetector::TID ) {
+        isBarrel = 0;
+        layer  = static_cast<int>(tTopo->layer(detIdStub));
+        if (DebugMode) cout << "   stub in disk " << layer << " at position x y z = " << x << " " << y << " " << z << endl;
+        tmp_trk_dhits+=pow(10,layer-1);
+      }
+
+      m_stub_x->push_back(x);
+      m_stub_y->push_back(y);
+      m_stub_z->push_back(z);
+      m_stub_isBarrel->push_back(isBarrel);
+      m_stub_layer->push_back(layer);        
+    }//end loop over stubs
+
+    int tmp_trk_genuine = 0;
+    int tmp_trk_loose = 0;
+    int tmp_trk_unknown = 0;
+    int tmp_trk_combinatoric = 0;
+    if (MCTruthTTTrackHandle->isLooselyGenuine(l1track_ptr)) tmp_trk_loose = 1;
+    if (MCTruthTTTrackHandle->isGenuine(l1track_ptr)) tmp_trk_genuine = 1;
+    if (MCTruthTTTrackHandle->isUnknown(l1track_ptr)) tmp_trk_unknown = 1;
+    if (MCTruthTTTrackHandle->isCombinatoric(l1track_ptr)) tmp_trk_combinatoric = 1;
+
+    if (DebugMode) {
+    cout << "L1 track, pt: " << tmp_trk_pt << " eta: " << tmp_trk_eta << " phi: " << tmp_trk_phi
+       << " z0: " << tmp_trk_z0 << " chi2: " << tmp_trk_chi2 << " nstub: " << tmp_trk_nstub;
+    if (tmp_trk_genuine) cout << " (is genuine)" << endl;
+    if (tmp_trk_unknown) cout << " (is unknown)" << endl;
+    if (tmp_trk_combinatoric) cout << " (is combinatoric)" << endl;
+    }
+
+  m_trk_pt ->push_back(tmp_trk_pt);
+  m_trk_eta->push_back(tmp_trk_eta);
+  m_trk_phi->push_back(tmp_trk_phi);
+  m_trk_z0 ->push_back(tmp_trk_z0);
+  m_trk_d0->push_back(tmp_trk_d0);
+  m_trk_chi2 ->push_back(tmp_trk_chi2);
+  m_trk_bendchi2 ->push_back(tmp_trk_bendchi2);
+  m_trk_nstub->push_back(tmp_trk_nstub);
+  // m_trk_dhits->push_back(tmp_trk_dhits);
+  // m_trk_lhits->push_back(tmp_trk_lhits);
+  m_trk_seed->push_back(tmp_trk_seed);
+  m_trk_phiSector->push_back(tmp_trk_phiSector);
+  m_trk_genuine->push_back(tmp_trk_genuine);
+  m_trk_loose->push_back(tmp_trk_loose);
+  m_trk_unknown->push_back(tmp_trk_unknown);
+  m_trk_combinatoric->push_back(tmp_trk_combinatoric);
+
+  // ----------------------------------------------------------------------------------------------
+  // for studying the fake rate
+  // ----------------------------------------------------------------------------------------------
+
+  edm::Ptr< TrackingParticle > my_tp = MCTruthTTTrackHandle->findTrackingParticlePtr(l1track_ptr);
+  
+  int myFake = 0;
+  
+  int myTP_pdgid = -999;
+  float myTP_pt = -999;
+  float myTP_eta = -999;
+  float myTP_phi = -999;
+  float myTP_z0 = -999;
+  float myTP_dxy = -999;
+  
+  if (my_tp.isNull()) myFake = 0;
+  else {
+  int tmp_eventid = my_tp->eventId().event();
+  
+  if (tmp_eventid > 0) myFake = 2;
+  else myFake = 1;
+  
+  myTP_pdgid = my_tp->pdgId();
+  myTP_pt = my_tp->p4().pt();
+  myTP_eta = my_tp->p4().eta();
+  myTP_phi = my_tp->p4().phi();
+  myTP_z0 = my_tp->vertex().z();
+
+  float myTP_x0 = my_tp->vertex().x();
+  float myTP_y0 = my_tp->vertex().y();
+  myTP_dxy = sqrt(myTP_x0*myTP_x0 + myTP_y0*myTP_y0);
+
+  if (DebugMode) {
+    cout << "TP matched to track has pt = " << my_tp->p4().pt() << " eta = " << my_tp->momentum().eta()
+         << " phi = " << my_tp->momentum().phi() << " z0 = " << my_tp->vertex().z()
+         << " pdgid = " <<  my_tp->pdgId() << " dxy = " << myTP_dxy << endl;
+        }
+      }
+
+  m_trk_fake->push_back(myFake);
+
+  m_trk_matchtp_pdgid->push_back(myTP_pdgid);
+  m_trk_matchtp_pt->push_back(myTP_pt);
+  m_trk_matchtp_eta->push_back(myTP_eta);
+  m_trk_matchtp_phi->push_back(myTP_phi);
+  m_trk_matchtp_z0->push_back(myTP_z0);
+  m_trk_matchtp_dxy->push_back(myTP_dxy);
+    }//l1 track loop
+  }//save all tracks
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)

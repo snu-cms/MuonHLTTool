@@ -12,6 +12,7 @@
 #include "FWCore/Framework/interface/EventSetup.h"
 
 #include "DataFormats/Common/interface/Handle.h"
+#include "DataFormats/Common/interface/Ref.h"
 #include "DataFormats/Common/interface/View.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
@@ -32,6 +33,10 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/Scalers/interface/LumiScalers.h"
+#include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
+#include "DataFormats/L1TrackTrigger/interface/TTCluster.h"
+#include "DataFormats/L1TrackTrigger/interface/TTStub.h"
+#include "DataFormats/L1TrackTrigger/interface/TTTrack.h"
 
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
@@ -59,6 +64,28 @@
 
 #include "Geometry/Records/interface/TrackerDigiGeometryRecord.h"
 #include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
+////////////////////////////
+// DETECTOR GEOMETRY HEADERS
+#include "MagneticField/Engine/interface/MagneticField.h"
+#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
+#include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
+#include "Geometry/Records/interface/TrackerDigiGeometryRecord.h"
+#include "Geometry/TrackerGeometryBuilder/interface/RectangularPixelTopology.h"
+#include "Geometry/CommonDetUnit/interface/GeomDetType.h"
+#include "Geometry/CommonDetUnit/interface/GeomDet.h"
+
+#include "Geometry/CommonTopologies/interface/PixelGeomDetUnit.h"
+#include "Geometry/CommonTopologies/interface/PixelGeomDetType.h"
+#include "Geometry/TrackerGeometryBuilder/interface/PixelTopologyBuilder.h"
+#include "Geometry/Records/interface/StackedTrackerGeometryRecord.h"
+
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingVertex.h"
+#include "SimDataFormats/TrackingHit/interface/PSimHitContainer.h"
+#include "SimDataFormats/TrackingHit/interface/PSimHit.h"
+#include "SimTracker/TrackTriggerAssociation/interface/TTClusterAssociationMap.h"
+#include "SimTracker/TrackTriggerAssociation/interface/TTStubAssociationMap.h"
+#include "SimTracker/TrackTriggerAssociation/interface/TTTrackAssociationMap.h"
 
 #include "TTree.h"
 #include "TString.h"
@@ -82,6 +109,7 @@ public:
 private:
   void Init();
   void Make_Branch();
+  void Fill_L1Track(const edm::Event &iEvent, const edm::EventSetup &iSetup);
   void Fill_HLT(const edm::Event &iEvent, bool isMYHLT);
   void Fill_Muon(const edm::Event &iEvent);
   void Fill_HLTMuon(const edm::Event &iEvent);
@@ -98,6 +126,13 @@ private:
   bool isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx);
 
   bool doSeed;
+  bool DebugMode;
+  bool SaveAllTracks;   // store in ntuples not only truth-matched tracks but ALL tracks
+  bool SaveStubs;       // option to save also stubs in the ntuples (makes them large...)
+
+  edm::EDGetTokenT< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > ttTrackToken_;
+  edm::EDGetTokenT< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > > ttTrackMCTruthToken_;
+  edm::EDGetTokenT< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > > ttStubToken_;
 
   TrackerHitAssociator::Config trackerHitAssociatorConfig_;
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
@@ -212,6 +247,37 @@ private:
   vector< double > vec_myHLTObj_pt_;
   vector< double > vec_myHLTObj_eta_;
   vector< double > vec_myHLTObj_phi_;
+
+  // all L1 tracks
+  vector<float>* m_trk_pt;
+  vector<float>* m_trk_eta;
+  vector<float>* m_trk_phi;
+  vector<float>* m_trk_d0;   // (filled if L1Tk_nPar==5, else 999)
+  vector<float>* m_trk_z0;
+  vector<float>* m_trk_chi2;
+  vector<float>* m_trk_bendchi2;
+  vector<int>*   m_trk_nstub;
+  vector<int>*   m_trk_lhits;
+  vector<int>*   m_trk_dhits;
+  vector<int>*   m_trk_seed;
+  vector<unsigned int>*   m_trk_phiSector;
+  vector<int>*   m_trk_genuine;
+  vector<int>*   m_trk_loose;
+  vector<int>*   m_trk_unknown;
+  vector<int>*   m_trk_combinatoric;
+  vector<int>*   m_trk_fake; //0 fake, 1 track from primary interaction, 2 secondary track
+  vector<int>*   m_trk_matchtp_pdgid;
+  vector<float>* m_trk_matchtp_pt;
+  vector<float>* m_trk_matchtp_eta;
+  vector<float>* m_trk_matchtp_phi;
+  vector<float>* m_trk_matchtp_z0;
+  vector<float>* m_trk_matchtp_dxy;
+
+  vector<float>* m_stub_x;
+  vector<float>* m_stub_y;
+  vector<float>* m_stub_z;
+  vector<int>*   m_stub_isBarrel; // stub is in barrel (1) or in disk (0)
+  vector<int>*   m_stub_layer;
 
   class tmpTSOD {
   private:
