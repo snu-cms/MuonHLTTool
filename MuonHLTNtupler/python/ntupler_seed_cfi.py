@@ -4,6 +4,7 @@ seedNtuplerBase = cms.EDAnalyzer("MuonHLTSeedNtupler",
 
 	offlineVertex = cms.untracked.InputTag("offlinePrimaryVertices"),
 	PUSummaryInfo = cms.untracked.InputTag("addPileupInfo"),
+	genParticle   = cms.untracked.InputTag("genParticles"),
 
 	L1Muon = cms.untracked.InputTag("hltGmtStage2Digis",       "Muon", "MYHLT"), # -- if L1 emulator is used
 	L2Muon = cms.untracked.InputTag("hltL2MuonCandidates",     "",     "MYHLT"),

@@ -93,7 +93,9 @@ t_hltIter2IterL3MuonTrack_    ( consumes< edm::View<reco::Track> >              
 t_hltIter3IterL3MuonTrack_    ( consumes< edm::View<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3MuonTrack"    )) ),
 t_hltIter0IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3FromL1MuonTrack"    )) ),
 t_hltIter2IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonTrack"    )) ),
-t_hltIter3IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonTrack"    )) )
+t_hltIter3IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonTrack"    )) ),
+
+t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) )
 
 {}
 
@@ -337,6 +339,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
     } // -- end of PU iteration -- //
   } // -- end of if ( token exists )
 
+  edm::Handle<reco::GenParticleCollection> h_genParticle;
+  bool hasGen = iEvent.getByToken(t_genParticle_, h_genParticle);
+
   edm::Handle<l1t::MuonBxCollection> h_L1Muon;
   bool hasL1 = iEvent.getByToken(t_L1Muon_, h_L1Muon);
 
@@ -364,9 +369,37 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
       int idxtmpL3 = (where==trkMap.end()) ? -1 : trkMap[seedTsod];
       ST->fill_TP(TTtrack, idxtmpL3 );
 
-      // -- L1 association
       GlobalVector global_p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
       GlobalPoint  global_x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
+
+      // -- GenParticle (muon) tag -- //
+      if( hasGen )
+      {
+        float gen_pt = -99999.;
+        float gen_eta = -99999.;
+        float gen_phi = -99999.;
+        float dR_GenSeed = 99999.;
+        for(auto genp = h_genParticle->begin(); genp != h_genParticle->end(); genp++)
+        {
+          if( fabs(genp->pdgId()) ==  13 && genp->status()==1 )
+          {
+            GlobalVector vec_seed_vtx( global_x.x() - genp->vx(), global_x.y() - genp->vy(), global_x.z() - genp->vz() );
+            if( reco::deltaR( *genp, vec_seed_vtx ) < dR_GenSeed ) {
+              dR_GenSeed = reco::deltaR( *genp, vec_seed_vtx );
+              gen_pt = genp->pt();
+              gen_eta = genp->eta();
+              gen_phi = genp->phi();
+            }
+          }
+        }
+        ST->fill_Genvars(
+          gen_pt,
+          gen_eta,
+          gen_phi
+        );
+      }
+
+      // -- L1, L2 association
       if( hasL1 ) {
         float dR_minDRL1SeedP = 99999.;
         float dPhi_minDRL1SeedP = 99999.;

@@ -113,6 +113,8 @@ private:
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter2IterL3FromL1MuonTrack_;
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter3IterL3FromL1MuonTrack_;
 
+  edm::EDGetTokenT< reco::GenParticleCollection >            t_genParticle_;
+
   TTree *NTEvent_;
   TTree *NThltIterL3OI_;
   TTree *NThltIter0_;
@@ -395,6 +397,9 @@ private:
     float dPhi_minDPhiL2SeedX_;
     int bestMatchTP_pdgId_;
     int matchedTPsize_;
+    float gen_pt_;
+    float gen_eta_;
+    float gen_phi_;
   public:
     void clear() {
       dir_ = -99999;
@@ -445,6 +450,9 @@ private:
       dPhi_minDPhiL2SeedX_ = -99999.;
       bestMatchTP_pdgId_ = -99999;
       matchedTPsize_ = -99999;
+      gen_pt_ = -99999.;
+      gen_eta_ = -99999.;
+      gen_phi_ = -99999.;
 
       return;
     }
@@ -499,6 +507,9 @@ private:
       tmpntpl->Branch("dPhi_minDPhiL2SeedX", &dPhi_minDPhiL2SeedX_, "dPhi_minDPhiL2SeedX/F");
       tmpntpl->Branch("bestMatchTP_pdgId", &bestMatchTP_pdgId_, "bestMatchTP_pdgId/I");
       tmpntpl->Branch("matchedTPsize", &matchedTPsize_, "matchedTPsize/I");
+      tmpntpl->Branch("gen_pt",      &gen_pt_, "gen_pt/F");
+      tmpntpl->Branch("gen_eta",     &gen_eta_, "gen_eta/F");
+      tmpntpl->Branch("gen_phi",     &gen_phi_, "gen_phi/F");
 
       return;
     }
@@ -547,6 +558,13 @@ private:
 
     void fill_PU( int truePU) {
       truePU_           = truePU;
+      return;
+    }
+
+    void fill_Genvars( float gen_pt, float gen_eta, float gen_phi ) {
+      gen_pt_  = gen_pt;
+      gen_eta_ = gen_eta;
+      gen_phi_ = gen_phi;
       return;
     }
 

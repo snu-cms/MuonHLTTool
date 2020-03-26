@@ -67,7 +67,10 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
     # from MuonHLTTool.MuonHLTNtupler.WmuSkimmer import WmuSkimmer 
     # process.WmuSkimmer = WmuSkimmer.clone()
 
-    process.myseedpath = cms.EndPath(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
+    from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
+    process.Skimmer = DYmuSkimmer.clone()
+
+    process.myseedpath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
     # process.myseedpath = cms.Path(process.WmuSkimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler) #if skim needed
 
     return process
