@@ -1,10 +1,13 @@
 # MuonHLT Ntupler
 
-## L1 Track
-	cmsrel CMSSW_11_1_0_pre4
-	cd CMSSW_11_1_0_pre4/src/
+## L1 Phase2
+	cmsrel CMSSW_11_1_0_pre6
+	cd CMSSW_11_1_0_pre6/src
 	cmsenv
-	git cms-checkout-topic cms-L1TK:L1TK-integration-CMSSW_11_1_0_pre4
+	git cms-init
+	git cms-merge-topic -u cms-L1TK:L1TK-integration-CMSSW_11_1_0_pre4
+	git cms-merge-topic -u cms-l1t-offline:l1t-phase2-v3.0.0-CMSSW_11_1_0_pre6
+	git cms-addpkg L1Trigger/L1TCommon
 ## Phase2 MuonHLT
 	git clone https://username@gitlab.cern.ch/cms-hlt/phase2.git
 	mkdir -p HLTrigger/PhaseII/test

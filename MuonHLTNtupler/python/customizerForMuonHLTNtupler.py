@@ -98,7 +98,8 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT"):
     process.ntupler.L1TrackInputTag = cms.InputTag(L1TRK_NAME, L1TRK_LABEL) # TTTrack input 
     process.ntupler.MCTruthTrackInputTag = cms.InputTag("TTTrackAssociatorFromPixelDigis", L1TRK_LABEL)  ## MCTruth input
     process.ntupler.L1StubInputTag = cms.InputTag("TTStubsFromPhase2TrackerDigis","StubAccepted")
-
-    process.mypath = cms.Path(process.Skimmer*process.offlineBeamSpot*L1TRK_PROC*process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+    process.ntupler.TkMuonToken = cms.InputTag("L1TkMuons","")
+    process.ntupler.l1TkPrimaryVertex = cms.InputTag("L1TkPrimaryVertex","")
+    process.mypath = cms.Path(process.Skimmer*process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
 
     return process

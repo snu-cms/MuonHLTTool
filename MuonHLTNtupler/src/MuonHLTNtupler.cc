@@ -77,6 +77,8 @@ SaveStubs(iConfig.getParameter<bool>("SaveStubs")),
 ttTrackToken_        ( consumes<std::vector<TTTrack<Ref_Phase2TrackerDigi_> > >(iConfig.getParameter<edm::InputTag>("L1TrackInputTag"     )) ),
 ttTrackMCTruthToken_ ( consumes< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > >(iConfig.getParameter<edm::InputTag>("MCTruthTrackInputTag"))),
 ttStubToken_         ( consumes< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > >(iConfig.getParameter<edm::InputTag>("L1StubInputTag"))),
+TkMuonToken_         ( consumes<l1t::TkMuonCollection>          (iConfig.getParameter<edm::InputTag>("TkMuonToken"))),
+l1TkPrimaryVertexToken_ (consumes< l1t::TkPrimaryVertexCollection> (iConfig.getParameter<edm::InputTag>("l1TkPrimaryVertex"))),
 
 trackerHitAssociatorConfig_(iConfig, consumesCollector()),
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
@@ -1041,6 +1043,25 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
   m_trk_matchtp_dxy->push_back(myTP_dxy);
     }//l1 track loop
   }//save all tracks
+
+  edm::Handle<l1t::TkMuonCollection> TkMuon;
+  iEvent.getByToken(TkMuonToken_,TkMuon);
+  for(auto Tkmu=TkMuon->begin(); Tkmu!=TkMuon->end(); ++Tkmu)
+  { 
+    // https://github.com/cms-sw/cmssw/blob/09b17fcfb3900782ab78ad6e0c76e1957c94ff71/DataFormats/L1TCorrelator/interface/TkMuon.h
+    // https://github.com/cms-sw/cmssw/blob/2ee90040994dde0e6a4fe686de614b09916bd80a/DataFormats/L1TrackTrigger/interface/TTTrack.h
+    // cout<< "phi"<<Tkmu->trkPtr()->phi()<<endl;
+    // cout<< "eta"<<Tkmu->trkPtr()->eta()<<endl;
+    // cout<< "z0"<<Tkmu->trkPtr()->z0()<<endl;
+  }
+
+  edm::Handle<std::vector<l1t::TkPrimaryVertex> > l1TkPrimaryVertex;
+  iEvent.getByToken(l1TkPrimaryVertexToken_,l1TkPrimaryVertex);
+  for(auto Tkvtx=l1TkPrimaryVertex->begin(); Tkvtx!=l1TkPrimaryVertex->end(); ++Tkvtx)
+  { 
+    // https://github.com/cms-sw/cmssw/blob/09b17fcfb3900782ab78ad6e0c76e1957c94ff71/DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h
+    // cout<< "zvertex"<<Tkvtx->zvertex()<<endl;
+  }  
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
