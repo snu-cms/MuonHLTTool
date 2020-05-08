@@ -33,6 +33,11 @@
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/Scalers/interface/LumiScalers.h"
 
+#include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
+#include "DataFormats/L1TrackTrigger/interface/TTCluster.h"
+#include "DataFormats/L1TrackTrigger/interface/TTStub.h"
+#include "DataFormats/L1TrackTrigger/interface/TTTrack.h"
+
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "HLTrigger/HLTcore/interface/HLTEventAnalyzerAOD.h"
@@ -59,6 +64,31 @@
 
 #include "Geometry/Records/interface/TrackerDigiGeometryRecord.h"
 #include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
+
+//--- DETECTOR GEOMETRY HEADERS
+#include "MagneticField/Engine/interface/MagneticField.h"
+#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
+#include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
+#include "Geometry/Records/interface/TrackerDigiGeometryRecord.h"
+#include "Geometry/TrackerGeometryBuilder/interface/RectangularPixelTopology.h"
+#include "Geometry/CommonDetUnit/interface/GeomDetType.h"
+#include "Geometry/CommonDetUnit/interface/GeomDet.h"
+
+#include "Geometry/CommonTopologies/interface/PixelGeomDetUnit.h"
+#include "Geometry/CommonTopologies/interface/PixelGeomDetType.h"
+#include "Geometry/TrackerGeometryBuilder/interface/PixelTopologyBuilder.h"
+#include "Geometry/Records/interface/StackedTrackerGeometryRecord.h"
+
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingVertex.h"
+#include "SimDataFormats/TrackingHit/interface/PSimHitContainer.h"
+#include "SimDataFormats/TrackingHit/interface/PSimHit.h"
+#include "SimTracker/TrackTriggerAssociation/interface/TTClusterAssociationMap.h"
+#include "SimTracker/TrackTriggerAssociation/interface/TTStubAssociationMap.h"
+#include "SimTracker/TrackTriggerAssociation/interface/TTTrackAssociationMap.h"
+#include "DataFormats/L1TCorrelator/interface/TkMuon.h"
+#include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
+#include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
 
 #include "TTree.h"
 #include "TString.h"
@@ -96,6 +126,9 @@ private:
 
   edm::EDGetTokenT< l1t::MuonBxCollection >                  t_L1Muon_;
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L2Muon_;
+
+  edm::EDGetTokenT<l1t::TkMuonCollection> t_L1TkMuon_;
+  edm::EDGetTokenT<l1t::TkPrimaryVertexCollection> t_L1TkPrimaryVertex_;
 
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIterL3OISeedsFromL2Muons_;
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_;
@@ -395,6 +428,8 @@ private:
     float dPhi_minDRL2SeedP_;
     float dR_minDPhiL2SeedX_;
     float dPhi_minDPhiL2SeedX_;
+    float dR_L1TkMuSeedP_;
+    float dPhi_L1TkMuSeedP_;
     int bestMatchTP_pdgId_;
     int matchedTPsize_;
     float gen_pt_;
@@ -402,6 +437,7 @@ private:
     float gen_phi_;
   public:
     void clear() {
+      truePU_ = -99999;
       dir_ = -99999;
       tsos_detId_ = 0;
       tsos_pt_ = -99999.;
@@ -448,6 +484,8 @@ private:
       dPhi_minDRL2SeedP_ = -99999.;
       dR_minDPhiL2SeedX_ = -99999.;
       dPhi_minDPhiL2SeedX_ = -99999.;
+      dR_L1TkMuSeedP_ = -99999.;
+      dPhi_L1TkMuSeedP_ = -99999.;
       bestMatchTP_pdgId_ = -99999;
       matchedTPsize_ = -99999;
       gen_pt_ = -99999.;
@@ -458,7 +496,7 @@ private:
     }
 
     void setBranch(TTree* tmpntpl) {
-      tmpntpl->Branch("truePU",          &truePU_, "truePU/I");
+      tmpntpl->Branch("truePU",       &truePU_, "truePU/I");
       tmpntpl->Branch("dir",          &dir_, "dir/I");
       tmpntpl->Branch("tsos_detId",   &tsos_detId_, "tsos_detId/i");
       tmpntpl->Branch("tsos_pt",      &tsos_pt_, "tsos_pt/F");
@@ -505,6 +543,8 @@ private:
       tmpntpl->Branch("dPhi_minDRL2SeedP",   &dPhi_minDRL2SeedP_, "dPhi_minDRL2SeedP/F");
       tmpntpl->Branch("dR_minDPhiL2SeedX",   &dR_minDPhiL2SeedX_, "dR_minDPhiL2SeedX/F");
       tmpntpl->Branch("dPhi_minDPhiL2SeedX", &dPhi_minDPhiL2SeedX_, "dPhi_minDPhiL2SeedX/F");
+      tmpntpl->Branch("dR_L1TkMuSeedP",     &dR_L1TkMuSeedP_,   "dR_L1TkMuSeedP/F");
+      tmpntpl->Branch("dPhi_L1TkMuSeedP",   &dPhi_L1TkMuSeedP_, "dPhi_L1TkMuSeedP/F");
       tmpntpl->Branch("bestMatchTP_pdgId", &bestMatchTP_pdgId_, "bestMatchTP_pdgId/I");
       tmpntpl->Branch("matchedTPsize", &matchedTPsize_, "matchedTPsize/I");
       tmpntpl->Branch("gen_pt",      &gen_pt_, "gen_pt/F");
@@ -556,8 +596,14 @@ private:
       return;
     }
 
-    void fill_PU( int truePU) {
+    void fill_PU( int truePU ) {
       truePU_           = truePU;
+      return;
+    }
+
+    void fill_L1TkMuvars( float dR_L1TkMuSeedP, float dPhi_L1TkMuSeedP ) {
+      dR_L1TkMuSeedP_   = dR_L1TkMuSeedP;
+      dPhi_L1TkMuSeedP_ = dPhi_L1TkMuSeedP;
       return;
     }
 
@@ -629,13 +675,6 @@ private:
   trkTemplate* TThltIter3IterL3FromL1MuonTrack = new trkTemplate();
 
   seedTemplate* ST = new seedTemplate();
-  // seedTemplate* SThltIterL3OISeedsFromL2Muons = new seedTemplate();
-  // seedTemplate* SThltIter0IterL3MuonPixelSeedsFromPixelTracks = new seedTemplate();
-  // seedTemplate* SThltIter2IterL3MuonPixelSeeds = new seedTemplate();
-  // seedTemplate* SThltIter3IterL3MuonPixelSeeds = new seedTemplate();
-  // seedTemplate* SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks = new seedTemplate();
-  // seedTemplate* SThltIter2IterL3FromL1MuonPixelSeeds = new seedTemplate();
-  // seedTemplate* SThltIter3IterL3FromL1MuonPixelSeeds = new seedTemplate();
 
   void fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
     edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_, edm::Handle<TrackingParticleCollection>& TPCollection_,
