@@ -62,9 +62,6 @@
 #include "DataFormats/Common/interface/ValueMap.h"
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingParticleFwd.h"
 
-#include "Geometry/Records/interface/TrackerDigiGeometryRecord.h"
-#include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
-
 //--- DETECTOR GEOMETRY HEADERS
 #include "MagneticField/Engine/interface/MagneticField.h"
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
@@ -90,12 +87,28 @@
 #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
 #include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
 
+// -- for L1TkMu propagation
+#include "TrackingTools/GeomPropagators/interface/Propagator.h"
+#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
+#include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
+#include "RecoTracker/TkDetLayers/interface/GeometricSearchTracker.h"
+#include "RecoTracker/TkDetLayers/interface/GeometricSearchTrackerBuilder.h"
+#include "Geometry/TrackerNumberingBuilder/interface/GeometricDet.h"
+#include "Geometry/Records/interface/IdealGeometryRecord.h"
+#include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
+#include "Geometry/Records/interface/TrackerTopologyRcd.h"
+
+
+
 #include "TTree.h"
 #include "TString.h"
 
 using namespace std;
 using namespace reco;
 using namespace edm;
+
+typedef pair<const DetLayer*, TrajectoryStateOnSurface> LayerTSOS;
+typedef pair<const DetLayer*, const TrackingRecHit*> LayerHit;
 
 class MuonHLTSeedNtupler : public edm::EDAnalyzer
 {
@@ -657,7 +670,6 @@ private:
     }
   };
 
-
   std::map<tmpTSOD,unsigned int> hltIterL3OIMuonTrackMap;
   std::map<tmpTSOD,unsigned int> hltIter0IterL3MuonTrackMap;
   std::map<tmpTSOD,unsigned int> hltIter2IterL3MuonTrackMap;
@@ -683,4 +695,33 @@ private:
   void fill_seedTemplate(
   const edm::Event &, edm::EDGetTokenT<TrajectorySeedCollection>&,
   edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree*, int &nSeed );
+
+  // HERE
+  TTree *t;
+  float l1tt_tsos_x_;
+  float l1tt_tsos_y_;
+  float l1tt_tsos_z_;
+  float hit_x_;
+  float hit_y_;
+  float hit_z_;
+
+  void testRun(
+    const edm::Event &, const edm::EventSetup&,
+    edm::EDGetTokenT<TrajectorySeedCollection>&
+  );
+
+  vector< LayerTSOS > getTsosOnPixels(
+    l1t::TkMuon,
+    edm::ESHandle<MagneticField>&,
+    const Propagator&,
+    GeometricSearchTracker*
+  );
+
+  vector< pair<LayerHit, LayerTSOS> > getHitTsosPairs(
+    TrajectorySeed,
+    edm::Handle<l1t::TkMuonCollection>,
+    edm::ESHandle<MagneticField>&,
+    const Propagator&,
+    GeometricSearchTracker*
+  );
 };
