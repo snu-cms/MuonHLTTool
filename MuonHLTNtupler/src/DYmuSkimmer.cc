@@ -55,18 +55,17 @@ bool DYmuSkimmer::filter(edm::Event& iEvent, const edm::EventSetup&) {
     reco::GenParticleCollection::const_iterator genp = h_gen_particle->begin();
     for (; genp != h_gen_particle->end(); genp++) {
       if(genp->pdgId() ==  13 && genp->isHardProcess()==1) {
-        const reco::Candidate* m = genp->mother();
-        if(m->pdgId()==23){
+        // const reco::Candidate* m = genp->mother();
+        // if(m->pdgId()==23){
           found0=true;
-        }
+        // }
       }
 
       if(genp->pdgId()==-13 && genp->isHardProcess()==1) {
-        const reco::Candidate* m2 = genp->mother();
-
-        if(m2->pdgId()==23){
+        // const reco::Candidate* m2 = genp->mother();
+        // if(m2->pdgId()==23){
           found1=true;
-        }
+        // }
       }
     }
   }
