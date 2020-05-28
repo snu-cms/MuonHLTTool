@@ -5,14 +5,8 @@ process = cms.Process("MYHLT", eras.Phase2C9_trigger)
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-# 'file:E8DA6362-6F55-3F4F-990C-13DEA99BC5BB.root'
-# 'root://cms-xrd-global.cern.ch//store/mc/PhaseIITDRSpring19DR/Muminus_Pt50-gun/GEN-SIM-DIGI-RAW/PU140_106X_upgrade2023_realistic_v3-v1/50000/16CB6275-9FF5-9445-A42D-19212CE2C065.root'
-# 'root://cms-xrd-global.cern.ch//store/mc/PhaseIITDRSpring19DR/Mu_FlatPt2to100-pythia8-gun/GEN-SIM-DIGI-RAW/PU200_106X_upgrade2023_realistic_v3-v2/70000/00251490-BA54-A943-8D8D-BECB717666B9.root'
-# 'root://cms-xrd-global.cern.ch//store/mc/PhaseIITDRSpring19DR/Mu_FlatPt2to100-pythia8-gun/GEN-SIM-DIGI-RAW/NoPU_106X_upgrade2023_realistic_v3-v1/60000/E0D5C6A5-B855-D14F-9124-0B2C9B28D0EA.root'
-    # 'file:/afs/cern.ch/work/h/hkwon/Wsample_temp/FF50003B-6AA8-EE41-B5AF-5E560495D184.root'
-    # 'root://cms-xrd-global.cern.ch//store/mc/PhaseIITDRSpring19DR/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/FlatPU0To200_pilot_106X_upgrade2023_realistic_v3-v2/20000/00AE94B9-2CA0-E846-8132-31808B2C66A3.root'
-    '/store/mc/PhaseIITDRSpring19DR/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/FlatPU0To200_pilot_106X_upgrade2023_realistic_v3-v2/20000/00AE94B9-2CA0-E846-8132-31808B2C66A3.root'
-    # '/store/mc/PhaseIITDRSpring19DR/TTbar_14TeV_TuneCP5_Pythia8/GEN-SIM-DIGI-RAW/PU200_106X_upgrade2023_realistic_v3_ext1-v3/60000/FFB5D0CA-208F-6040-A9BF-3F5354D0AA59.root'
+    # 'root://cms-xrd-global.cern.ch//store/mc/Phase2HLTTDRWinter20DIGI/DYJetsToLL_M-10to50_TuneCP5_14TeV-madgraphMLM-pythia8/GEN-SIM-DIGI-RAW/PU200_110X_mcRun4_realistic_v3-v2/20000/FC89EA5A-EB07-6141-BEC1-4361D78DC549.root'
+    "root://cms-xrd-global.cern.ch//store/mc/Phase2HLTTDRWinter20DIGI/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/PU200_pilot2_110X_mcRun4_realistic_v3-v2/270000/FB5CCEB0-775F-9D4D-B422-15DDE09B88A9.root"
 ),
     secondaryFileNames = cms.untracked.vstring()
 )
@@ -91908,7 +91902,7 @@ process.muons1stStep.inputCollectionLabels = cms.VInputTag(cms.InputTag("general
 
 # limit the number of events to be processed
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32( 100 )
+    input = cms.untracked.int32( -1 )
 )
 
 # enable TrigReport, TimeReport and MultiThreading
@@ -91968,14 +91962,27 @@ process.TTTracksEmulationWithTruth = cms.Path(process.offlineBeamSpot*process.TT
 process.load('SimCalorimetry.HcalTrigPrimProducers.hcaltpdigi_cff')
 process.load('CalibCalorimetry.CaloTPG.CaloTPGTranscoder_cfi')
 
-process.L1simulation_step = cms.Path(process.SimL1Emulator)
+# process.TFileService = cms.Service("TFileService",
+#   fileName = cms.string("test.root"),
+#   closeFileFast = cms.untracked.bool(False),
+# )
 
+process.L1simulation_step = cms.Path(process.SimL1Emulator)
 
 from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTNtupler import *
 process = customizerFuncForMuonHLTNtupler(process, "MYHLT")
 
 from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTSeedNtupler import *
 process = customizerFuncForMuonHLTSeedNtupler(process, "MYHLT")
+
+# process.Timing = cms.Service("Timing",
+#     summaryOnly = cms.untracked.bool(True),
+#     useJobReport = cms.untracked.bool(True)
+# )
+
+# process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
+#     ignoreTotal = cms.untracked.int32(1)
+# )
 
 process.schedule = cms.Schedule(process.TTTracksEmulationWithTruth, process.L1simulation_step, process.raw2digi_step, process.HLT_Mu50_v13, process.mypath, process.myseedpath)
 
