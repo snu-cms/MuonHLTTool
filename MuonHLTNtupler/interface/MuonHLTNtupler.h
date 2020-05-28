@@ -90,6 +90,7 @@
 #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
 #include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
 
+#include "MuonHLTTool/MuonHLTNtupler/interface/SeedMvaEstimator.h"
 
 #include "TTree.h"
 #include "TString.h"
@@ -121,7 +122,7 @@ private:
   void Fill_GenParticle(const edm::Event &iEvent);
 
   //For Rerun (Fill_IterL3*)
-  void Fill_IterL3(const edm::Event &iEvent);
+  void Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup &iSetup);
   void Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &iSetup);
 
   bool SavedTriggerCondition( std::string& pathName );
@@ -187,6 +188,8 @@ private:
   edm::EDGetTokenT< std::vector<PileupSummaryInfo> >         t_PUSummaryInfo_;
   edm::EDGetTokenT< GenEventInfoProduct >                    t_genEventInfo_;
   edm::EDGetTokenT< reco::GenParticleCollection >            t_genParticle_;
+
+  typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
 
   TTree *ntuple_;
   static const int arrSize_ = 5000;
@@ -400,6 +403,7 @@ private:
   int muon_stationMask_[arrSize_];
 
   std::map<tmpTSOD,unsigned int> MuonIterSeedMap;
+  std::map<tmpTSOD,unsigned int> MuonIterNoIdSeedMap;
   std::map<tmpTSOD,unsigned int> hltIterL3OIMuonTrackMap;
   std::map<tmpTSOD,unsigned int> hltIter0IterL3MuonTrackMap;
   std::map<tmpTSOD,unsigned int> hltIter2IterL3MuonTrackMap;
@@ -492,6 +496,7 @@ private:
   // -- iterL3 object before applying ID @ HLT
   int nIterL3MuonNoID_;
   double iterL3MuonNoID_pt_[arrSize_];
+  double iterL3MuonNoID_innerPt_[arrSize_];
   double iterL3MuonNoID_eta_[arrSize_];
   double iterL3MuonNoID_phi_[arrSize_];
   double iterL3MuonNoID_charge_[arrSize_];
@@ -722,6 +727,13 @@ private:
       trkCharge = trk_->charge();
     }
 
+    tmpTrk( double dummy = -99999. ) {
+      trkPt = dummy;
+      trkEta = dummy;
+      trkPhi = dummy;
+      trkCharge = dummy;
+    }
+
     tmpTrk(const reco::TrackRef trk_) { fill(trk_); }
   };
 
@@ -733,6 +745,7 @@ private:
     std::vector<double> trkPhis;
     std::vector<int> trkCharges;
     std::vector<int> linkToL3s;
+    std::vector<int> linkToL3NoIds;
     std::vector<float> bestMatchTP_charge;
     std::vector<int> bestMatchTP_pdgId;
     std::vector<double> bestMatchTP_energy;
@@ -748,7 +761,10 @@ private:
     std::vector<int> bestMatchTP_numberOfTrackerLayers;
     std::vector<double> bestMatchTP_sharedFraction;
     std::vector<int> matchedTPsize;
-
+    std::vector<float> mva0;
+    std::vector<float> mva1;
+    std::vector<float> mva2;
+    std::vector<float> mva3;
   public:
     void clear() {
       nTrks = 0;
@@ -757,6 +773,7 @@ private:
       trkPhis.clear();
       trkCharges.clear();
       linkToL3s.clear();
+      linkToL3NoIds.clear();
       bestMatchTP_charge.clear();
       bestMatchTP_pdgId.clear();
       bestMatchTP_energy.clear();
@@ -772,6 +789,10 @@ private:
       bestMatchTP_numberOfTrackerLayers.clear();
       bestMatchTP_sharedFraction.clear();
       matchedTPsize.clear();
+      mva0.clear();
+      mva1.clear();
+      mva2.clear();
+      mva3.clear();
 
       return;
     }
@@ -783,6 +804,7 @@ private:
       tmpntpl->Branch(name+"_phi", &trkPhis);
       tmpntpl->Branch(name+"_charge", &trkCharges);
       tmpntpl->Branch(name+"_matchedL3", &linkToL3s);
+      tmpntpl->Branch(name+"_matchedL3NoId", &linkToL3NoIds);
       tmpntpl->Branch(name+"_bestMatchTP_charge", &bestMatchTP_charge);
       tmpntpl->Branch(name+"_bestMatchTP_pdgId", &bestMatchTP_pdgId);
       tmpntpl->Branch(name+"_bestMatchTP_energy", &bestMatchTP_energy);
@@ -798,6 +820,10 @@ private:
       tmpntpl->Branch(name+"_bestMatchTP_numberOfTrackerLayers", &bestMatchTP_numberOfTrackerLayers);
       tmpntpl->Branch(name+"_bestMatchTP_sharedFraction", &bestMatchTP_sharedFraction);
       tmpntpl->Branch(name+"_matchedTPsize", &matchedTPsize);
+      tmpntpl->Branch(name+"_mva0", &mva0);
+      tmpntpl->Branch(name+"_mva1", &mva1);
+      tmpntpl->Branch(name+"_mva2", &mva2);
+      tmpntpl->Branch(name+"_mva3", &mva3);
 
       return;
     }
@@ -849,9 +875,123 @@ private:
     }
 
     void linkIterL3(int linkNo) { linkToL3s.push_back(linkNo); }
+    void linkIterL3NoId(int linkNo) { linkToL3NoIds.push_back(linkNo); }
     int matchedIDpassedL3(int idx) { return linkToL3s.at(idx); }
     void fillBestTPsharedFrac(double frac) { bestMatchTP_sharedFraction.push_back(frac); }
     void fillmatchedTPsize(int TPsize) { matchedTPsize.push_back(TPsize); }
+    void fillMva( float mva0_, float mva1_, float mva2_, float mva3_ ) {
+      // FIXME tmp solution
+      mva0.push_back( (mva0_ +0.5) );
+      mva1.push_back( (mva1_ +0.5) );
+      mva2.push_back( (mva2_ +0.5) );
+      mva3.push_back( (mva3_ +0.5) );
+    }
+  };
+
+  class tpTemplate {
+  private:
+    int nTP;
+    std::vector<float> charge;
+    std::vector<int> pdgId;
+    std::vector<double> energy;
+    std::vector<double> pt;
+    std::vector<double> eta;
+    std::vector<double> phi;
+    std::vector<double> parentVx;
+    std::vector<double> parentVy;
+    std::vector<double> parentVz;
+    std::vector<int> status;
+    std::vector<int> numberOfHits;
+    std::vector<int> numberOfTrackerHits;
+    std::vector<int> numberOfTrackerLayers;
+    std::vector<float> gen_charge;
+    std::vector<int> gen_pdgId;
+    std::vector<double> gen_pt;
+    std::vector<double> gen_eta;
+    std::vector<double> gen_phi;
+  public:
+    void clear() {
+      nTP = 0;
+      charge.clear();
+      pdgId.clear();
+      energy.clear();
+      pt.clear();
+      eta.clear();
+      phi.clear();
+      parentVx.clear();
+      parentVy.clear();
+      parentVz.clear();
+      status.clear();
+      numberOfHits.clear();
+      numberOfTrackerHits.clear();
+      numberOfTrackerLayers.clear();
+      gen_charge.clear();
+      gen_pdgId.clear();
+      gen_pt.clear();
+      gen_eta.clear();
+      gen_phi.clear();
+
+      return;
+    }
+
+    void setBranch(TTree* tmpntpl, TString name = "TP") {
+      tmpntpl->Branch("n"+name, &nTP);
+      tmpntpl->Branch(name+"_charge", &charge);
+      tmpntpl->Branch(name+"_pdgId", &pdgId);
+      tmpntpl->Branch(name+"_energy", &energy);
+      tmpntpl->Branch(name+"_pt", &pt);
+      tmpntpl->Branch(name+"_eta", &eta);
+      tmpntpl->Branch(name+"_phi", &phi);
+      tmpntpl->Branch(name+"_parentVx", &parentVx);
+      tmpntpl->Branch(name+"_parentVy", &parentVy);
+      tmpntpl->Branch(name+"_parentVz", &parentVz);
+      tmpntpl->Branch(name+"_status", &status);
+      tmpntpl->Branch(name+"_numberOfHits", &numberOfHits);
+      tmpntpl->Branch(name+"_numberOfTrackerHits", &numberOfTrackerHits);
+      tmpntpl->Branch(name+"_numberOfTrackerLayers", &numberOfTrackerLayers);
+      tmpntpl->Branch(name+"_gen_charge", &gen_charge);
+      tmpntpl->Branch(name+"_gen_pdgId", &gen_pdgId);
+      tmpntpl->Branch(name+"_gen_pt", &gen_pt);
+      tmpntpl->Branch(name+"_gen_eta", &gen_eta);
+      tmpntpl->Branch(name+"_gen_phi", &gen_phi);
+
+      return;
+    }
+
+    void fill(const TrackingParticle TP) {
+      charge.push_back(TP.charge());
+      pdgId.push_back(TP.pdgId());
+      energy.push_back(TP.energy());
+      pt.push_back(TP.pt());
+      eta.push_back(TP.eta());
+      phi.push_back(TP.phi());
+      parentVx.push_back(TP.vx());
+      parentVy.push_back(TP.vy());
+      parentVz.push_back(TP.vz());
+      status.push_back(TP.status());
+      numberOfHits.push_back(TP.numberOfHits());
+      numberOfTrackerHits.push_back(TP.numberOfTrackerHits());
+      numberOfTrackerLayers.push_back(TP.numberOfTrackerLayers());
+
+      if( TP.genParticles().empty() ) {
+        gen_charge.push_back( -99999. );
+        gen_pdgId.push_back( -99999. );
+        gen_pt.push_back( -99999. );
+        gen_eta.push_back( -99999. );
+        gen_phi.push_back( -99999. );
+      }
+      else {
+        gen_charge.push_back( (*TP.genParticles().begin())->charge() );
+        gen_pdgId.push_back( (*TP.genParticles().begin())->pdgId() );
+        gen_pt.push_back( (*TP.genParticles().begin())->pt() );
+        gen_eta.push_back( (*TP.genParticles().begin())->eta() );
+        gen_phi.push_back( (*TP.genParticles().begin())->phi() );
+      }
+
+      nTP++;
+
+      return;
+    }
   };
 
   class vtxTemplate {
@@ -962,6 +1102,7 @@ private:
   };
 
   std::vector<tmpTrk> iterL3IDpassed;
+  std::vector<tmpTrk> iterL3NoIDpassed;
 
   seedTemplate* SThltIterL3OISeedsFromL2Muons = new seedTemplate();
   seedTemplate* SThltIter0IterL3MuonPixelSeedsFromPixelTracks = new seedTemplate();
@@ -979,10 +1120,160 @@ private:
   trkTemplate* TThltIter2IterL3FromL1MuonTrack = new trkTemplate();
   trkTemplate* TThltIter3IterL3FromL1MuonTrack = new trkTemplate();
 
+  tpTemplate* TrkParticle = new tpTemplate();
+
   vtxTemplate* VThltIterL3MuonTrimmedPixelVertices = new vtxTemplate();
   vtxTemplate* VThltIterL3FromL1MuonTrimmedPixelVertices = new vtxTemplate();
 
-  void fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
-    edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_, edm::Handle<TrackingParticleCollection>& TPCollection_,
-    std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack);
+  void fill_trackTemplate(
+    const edm::Event &iEvent,
+    edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
+    edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_,
+    edm::Handle<TrackingParticleCollection>& TPCollection_,
+    edm::ESHandle<TrackerGeometry>& tracker,
+    pairSeedMvaEstimator pairMvaEstimator,
+    std::map<tmpTSOD,unsigned int>& trkMap,
+    trkTemplate* TTtrack
+  );
+
+  void Fill_TP( const edm::Event &iEvent, tpTemplate* TrkParticle );
+
+  // -- seed MVA -- //
+  edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_0_;
+  edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_1_;
+  edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_2_;
+  edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_3_;
+  edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_0_;
+  edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_1_;
+  edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_2_;
+  edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_3_;
+  edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_0_;
+  edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_1_;
+  edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_2_;
+  edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_3_;
+  edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_B_0_;
+  edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_B_1_;
+  edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_B_2_;
+  edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_B_3_;
+  edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_0_;
+  edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_1_;
+  edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_2_;
+  edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_3_;
+  edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_0_;
+  edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_1_;
+  edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_2_;
+  edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_3_;
+  edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_0_;
+  edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_1_;
+  edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_2_;
+  edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_3_;
+  edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_E_0_;
+  edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_E_1_;
+  edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_E_2_;
+  edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_E_3_;
+  edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_0_;
+  edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_1_;
+  edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_2_;
+  edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_3_;
+  edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_0_;
+  edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_1_;
+  edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_2_;
+  edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_3_;
+  edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_E_0_;
+  edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_E_1_;
+  edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_E_2_;
+  edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_E_3_;
+  edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_0_;
+  edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_1_;
+  edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_2_;
+  edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_3_;
+  edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_0_;
+  edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_1_;
+  edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_2_;
+  edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_3_;
+  edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_0_;
+  edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_1_;
+  edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_2_;
+  edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_3_;
+
+  std::vector<double> mvaScaleMeanHltIterL3OISeedsFromL2Muons_B_;
+  std::vector<double> mvaScaleMeanHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_;
+  std::vector<double> mvaScaleMeanHltIter2IterL3MuonPixelSeeds_B_;
+  std::vector<double> mvaScaleMeanHltIter3IterL3MuonPixelSeeds_B_;
+  std::vector<double> mvaScaleMeanHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_;
+  std::vector<double> mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_B_;
+  std::vector<double> mvaScaleMeanHltIter3IterL3FromL1MuonPixelSeeds_B_;
+  std::vector<double> mvaScaleStdHltIterL3OISeedsFromL2Muons_B_;
+  std::vector<double> mvaScaleStdHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_;
+  std::vector<double> mvaScaleStdHltIter2IterL3MuonPixelSeeds_B_;
+  std::vector<double> mvaScaleStdHltIter3IterL3MuonPixelSeeds_B_;
+  std::vector<double> mvaScaleStdHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_;
+  std::vector<double> mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_B_;
+  std::vector<double> mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_B_;
+
+  std::vector<double> mvaScaleMeanHltIterL3OISeedsFromL2Muons_E_;
+  std::vector<double> mvaScaleMeanHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_;
+  std::vector<double> mvaScaleMeanHltIter2IterL3MuonPixelSeeds_E_;
+  std::vector<double> mvaScaleMeanHltIter3IterL3MuonPixelSeeds_E_;
+  std::vector<double> mvaScaleMeanHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_;
+  std::vector<double> mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E_;
+  std::vector<double> mvaScaleMeanHltIter3IterL3FromL1MuonPixelSeeds_E_;
+  std::vector<double> mvaScaleStdHltIterL3OISeedsFromL2Muons_E_;
+  std::vector<double> mvaScaleStdHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_;
+  std::vector<double> mvaScaleStdHltIter2IterL3MuonPixelSeeds_E_;
+  std::vector<double> mvaScaleStdHltIter3IterL3MuonPixelSeeds_E_;
+  std::vector<double> mvaScaleStdHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_;
+  std::vector<double> mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_;
+  std::vector<double> mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_E_;
+
+  pairSeedMvaEstimator mvaHltIterL3OISeedsFromL2Muons_;
+  pairSeedMvaEstimator mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_;
+  pairSeedMvaEstimator mvaHltIter2IterL3MuonPixelSeeds_;
+  pairSeedMvaEstimator mvaHltIter3IterL3MuonPixelSeeds_;
+  pairSeedMvaEstimator mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
+  pairSeedMvaEstimator mvaHltIter2IterL3FromL1MuonPixelSeeds_;
+  pairSeedMvaEstimator mvaHltIter3IterL3FromL1MuonPixelSeeds_;
+
+  vector<float> getSeedMva(
+    pairSeedMvaEstimator pairMvaEstimator,
+    const TrajectorySeed& seed,
+    GlobalVector global_p,
+    GlobalPoint  global_x,
+    edm::Handle<l1t::MuonBxCollection> h_L1Muon,
+    edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon,
+    edm::Handle<l1t::TkMuonCollection> h_L1TkMu
+  ) {
+    vector<float> v_mva = {};
+
+    for(auto ic=0U; ic<pairMvaEstimator.size(); ++ic) {
+      if( fabs( global_p.eta() ) < 0.9 ) {
+        float mva = pairMvaEstimator.at(ic).first->computeMva(
+          seed,
+          global_p,
+          global_x,
+          h_L1Muon,
+          h_L2Muon,
+          h_L1TkMu
+        );
+        v_mva.push_back( mva );
+      }
+      else {
+        float mva = pairMvaEstimator.at(ic).second->computeMva(
+          seed,
+          global_p,
+          global_x,
+          h_L1Muon,
+          h_L2Muon,
+          h_L1TkMu
+        );
+        v_mva.push_back( mva );
+      }
+    }
+    if( v_mva.size() != 4 ) {
+      cout << "getSeedMva: v_mva.size() != 4" << endl;
+      return { -99999., -99999., -99999., -99999. };
+    }
+
+    return v_mva;
+  }
 };
