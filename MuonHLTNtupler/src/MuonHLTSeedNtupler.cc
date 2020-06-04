@@ -675,12 +675,7 @@ vector< pair<LayerHit, LayerTSOS> > MuonHLTSeedNtupler::getHitTsosPairs(
   return out;
 }
 
-void MuonHLTSeedNtupler::endJob() {
-  delete theSeeds;
-  delete theDoublets;
-  delete theTriplets;
-  delete theQuadruplets;
-}
+void MuonHLTSeedNtupler::endJob() {}
 void MuonHLTSeedNtupler::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}
 void MuonHLTSeedNtupler::endRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}
 
