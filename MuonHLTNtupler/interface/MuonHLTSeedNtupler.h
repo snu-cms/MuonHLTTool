@@ -170,7 +170,7 @@ private:
   TTree *NThltIter2FromL1_;
   TTree *NThltIter3FromL1_;
 
-  int runNum_;       
+  int runNum_;
   int lumiBlockNum_;
   unsigned long long eventNum_;
   int nVertex_;
@@ -449,7 +449,7 @@ private:
     float gen_eta_;
     float gen_phi_;
   public:
-    void clear() {
+    void clear_base() {
       truePU_ = -99999;
       dir_ = -99999;
       tsos_detId_ = 0;
@@ -508,7 +508,9 @@ private:
       return;
     }
 
-    void setBranch(TTree* tmpntpl) {
+    virtual void clear() { clear_base(); }
+
+    void setBranch_base(TTree* tmpntpl) {
       tmpntpl->Branch("truePU",       &truePU_, "truePU/I");
       tmpntpl->Branch("dir",          &dir_, "dir/I");
       tmpntpl->Branch("tsos_detId",   &tsos_detId_, "tsos_detId/i");
@@ -566,6 +568,8 @@ private:
 
       return;
     }
+
+    virtual void setBranch(TTree* tmpntpl) { setBranch_base(tmpntpl); }
 
     void fill(TrajectorySeed seed, edm::ESHandle<TrackerGeometry> tracker) {
       GlobalVector p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
@@ -686,7 +690,7 @@ private:
   trkTemplate* TThltIter2IterL3FromL1MuonTrack = new trkTemplate();
   trkTemplate* TThltIter3IterL3FromL1MuonTrack = new trkTemplate();
 
-  seedTemplate* ST = new seedTemplate();
+  seedL1TSOSTemplate* theSeeds;
 
   void fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
     edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_, edm::Handle<TrackingParticleCollection>& TPCollection_,
@@ -697,13 +701,166 @@ private:
   edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree*, int &nSeed );
 
   // HERE
-  TTree *t;
-  float l1tt_tsos_x_;
-  float l1tt_tsos_y_;
-  float l1tt_tsos_z_;
-  float hit_x_;
-  float hit_y_;
-  float hit_z_;
+
+  class seedL1TSOSTemplate : public seedTemplate {
+  private:
+    double l1x1_;
+    double l1y1_;
+    double l1z1_;
+    double l1x2_;
+    double l1y2_;
+    double l1z2_;
+    double hitx1_;
+    double hity1_;
+    double hitz1_;
+    double hitx2_;
+    double hity2_;
+    double hitz2_;
+    double l1x3_;
+    double l1y3_;
+    double l1z3_;
+    double hitx3_;
+    double hity3_;
+    double hitz3_;
+    double l1x4_;
+    double l1y4_;
+    double l1z4_;
+    double hitx4_;
+    double hity4_;
+    double hitz4_;
+    int nHits_;
+
+  public:
+    void clearL1Hit_12() {
+      l1x1_ = -99999.;
+      l1y1_ = -99999.;
+      l1z1_ = -99999.;
+      l1x2_ = -99999.;
+      l1y2_ = -99999.;
+      l1z2_ = -99999.;
+      hitx1_ = -99999.;
+      hity1_ = -99999.;
+      hitz1_ = -99999.;
+      hitx2_ = -99999.;
+      hity2_ = -99999.;
+      hitz2_ = -99999.;
+      nHits_ = -99999;
+    }
+
+    void clearL1Hit_3() {
+      l1x3_ = -99999.;
+      l1y3_ = -99999.;
+      l1z3_ = -99999.;
+      hitx3_ = -99999.;
+      hity3_ = -99999.;
+      hitz3_ = -99999.;
+    }
+
+    void clearL1Hit_4() {
+      l1x4_ = -99999.;
+      l1y4_ = -99999.;
+      l1z4_ = -99999.;
+      hitx4_ = -99999.;
+      hity4_ = -99999.;
+      hitz4_ = -99999.;
+    }
+
+    virtual void clear() {
+      clear_base();
+      clearL1Hit_12();
+      clearL1Hit_3();
+      clearL1Hit_4();
+    }
+
+    void setBranch_12(TTree* tmpntpl) {
+      tmpntpl->Branch("l1x1", &l1x1_, "l1x1/F");
+      tmpntpl->Branch("l1y1", &l1y1_, "l1y1/F");
+      tmpntpl->Branch("l1z1", &l1z1_, "l1z1/F");
+      tmpntpl->Branch("hitx1", &hitx1_, "hitx1/F");
+      tmpntpl->Branch("hity1", &hity1_, "hity1/F");
+      tmpntpl->Branch("hitz1", &hitz1_, "hitz1/F");
+      tmpntpl->Branch("l1x2", &l1x2_, "l1x2F");
+      tmpntpl->Branch("l1y2", &l1y2_, "l1y2F");
+      tmpntpl->Branch("l1z2", &l1z2_, "l1z2F");
+      tmpntpl->Branch("hitx2", &hitx2_, "hitx2/F");
+      tmpntpl->Branch("hity2", &hity2_, "hity2/F");
+      tmpntpl->Branch("hitz2", &hitz2_, "hitz2/F");
+      tmpntpl->Branch("nHits", &nHits_, "nHits/I");
+    }
+
+    void setBranch_3(TTree* tmpntpl) {
+      tmpntpl->Branch("l1x3", &l1x3_, "l1x1/F");
+      tmpntpl->Branch("l1y3", &l1x3_, "l1y1/F");
+      tmpntpl->Branch("l1z3", &l1x3_, "l1z1/F");
+      tmpntpl->Branch("hitx3", &hitx3_, "hitx2/F");
+      tmpntpl->Branch("hity3", &hity3_, "hity2/F");
+      tmpntpl->Branch("hitz3", &hitz3_, "hitz2/F");
+    }
+
+    void setBranch_4(TTree* tmpntpl) {
+      tmpntpl->Branch("l1x4", &l1x4_, "l1x4/F");
+      tmpntpl->Branch("l1y4", &l1x4_, "l1y4/F");
+      tmpntpl->Branch("l1z4", &l1x4_, "l1z4/F");
+      tmpntpl->Branch("hitx4", &hitx4_, "hitx4/F");
+      tmpntpl->Branch("hity4", &hity4_, "hity4/F");
+      tmpntpl->Branch("hitz4", &hitz4_, "hitz4/F");
+    }
+
+    virtual void setBranch(TTree* tmpntpl) {
+      setBranch_base(tmpntpl);
+      setBranch_12(tmpntpl);
+      setBranch_3(tmpntpl);
+      setBranch_4(tmpntpl);
+    }
+
+    void fill_12(pair<LayerHit, LayerTSOS> firstHit, pair<LayerHit, LayerTSOS> secondHit, int nHits) {
+      auto hit1   = firstHit.first.second;
+      auto tsos1  = firstHit.second.second;
+
+      l1x1_ = tsos1.globalPosition().x();
+      l1y1_ = tsos1.globalPosition().y();
+      l1z1_ = tsos1.globalPosition().z();
+      hitx1_ = hit1->globalPosition().x();
+      hity1_ = hit1->globalPosition().y();
+      hitz1_ = hit1->globalPosition().z();
+
+      auto hit2   = secondHit.first.second;
+      auto tsos2  = secondHit.second.second;
+
+      l1x2_ = tsos2.globalPosition().x();
+      l1y2_ = tsos2.globalPosition().y();
+      l1z2_ = tsos2.globalPosition().z();
+      hitx2_ = hit2->globalPosition().x();
+      hity2_ = hit2->globalPosition().y();
+      hitz2_ = hit2->globalPosition().z();
+
+      nHits_ = nHits;
+    }
+
+    void fill_3(pair<LayerHit, LayerTSOS> thirdHit) {
+      auto hit3   = thirdHit.first.second;
+      auto tsos3  = thirdHit.second.second;
+
+      l1x3_ = tsos3.globalPosition().x();
+      l1y3_ = tsos3.globalPosition().y();
+      l1z3_ = tsos3.globalPosition().z();
+      hitx3_ = hit3->globalPosition().x();
+      hity3_ = hit3->globalPosition().y();
+      hitz3_ = hit3->globalPosition().z();
+    }
+
+    void fill_4(pair<LayerHit, LayerTSOS> fourthHit) {
+      auto hit4   = fourthHit.first.second;
+      auto tsos4  = fourthHit.second.second;
+
+      l1x4_ = tsos4.globalPosition().x();
+      l1y4_ = tsos4.globalPosition().y();
+      l1z4_ = tsos4.globalPosition().z();
+      hitx4_ = hit4->globalPosition().x();
+      hity4_ = hit4->globalPosition().y();
+      hitz4_ = hit4->globalPosition().z();
+    }
+  };
 
   void testRun(
     const edm::Event &, const edm::EventSetup&,
