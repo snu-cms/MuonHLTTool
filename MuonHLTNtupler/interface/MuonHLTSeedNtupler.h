@@ -690,15 +690,13 @@ private:
   trkTemplate* TThltIter2IterL3FromL1MuonTrack = new trkTemplate();
   trkTemplate* TThltIter3IterL3FromL1MuonTrack = new trkTemplate();
 
-  seedL1TSOSTemplate* theSeeds;
-
   void fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
     edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_, edm::Handle<TrackingParticleCollection>& TPCollection_,
     std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack);
 
   void fill_seedTemplate(
   const edm::Event &, edm::EDGetTokenT<TrajectorySeedCollection>&,
-  edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree*, int &nSeed );
+  edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree*, int &nSeed, const edm::EventSetup &iSetup );
 
   // HERE
 
@@ -861,6 +859,8 @@ private:
       hitz4_ = hit4->globalPosition().z();
     }
   };
+
+  seedL1TSOSTemplate* theSeeds;
 
   void testRun(
     const edm::Event &, const edm::EventSetup&,

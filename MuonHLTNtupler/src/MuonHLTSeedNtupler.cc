@@ -104,15 +104,14 @@ t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConf
 
 void MuonHLTSeedNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 {
-  testRun(iEvent, iSetup, t_hltIter2IterL3FromL1MuonPixelSeeds_);
 
-  // Init();
+  Init();
 
   // -- fill each object
-  // Fill_Event(iEvent);
-  // Fill_IterL3TT(iEvent);
-  // Fill_Seed(iEvent, iSetup);
-  // NTEvent_->Fill();
+  Fill_Event(iEvent);
+  Fill_IterL3TT(iEvent);
+  Fill_Seed(iEvent, iSetup);
+  NTEvent_->Fill();
 }
 
 void MuonHLTSeedNtupler::beginJob()
@@ -134,15 +133,6 @@ void MuonHLTSeedNtupler::beginJob()
   theSeeds = new seedL1TSOSTemplate();
 
   Make_Branch();
-
-  // HERE
-  t = fs->make<TTree>("t","t");
-  t->Branch("l1tt_tsos_x",  &l1tt_tsos_x_, "l1tt_tsos_x/F");
-  t->Branch("l1tt_tsos_y",  &l1tt_tsos_y_, "l1tt_tsos_y/F");
-  t->Branch("l1tt_tsos_z",  &l1tt_tsos_z_, "l1tt_tsos_z/F");
-  t->Branch("hit_x",  &hit_x_, "hit_x/F");
-  t->Branch("hit_y",  &hit_y_, "hit_y/F");
-  t->Branch("hit_z",  &hit_z_, "hit_z/F");
 }
 
 void MuonHLTSeedNtupler::Init()
@@ -257,13 +247,13 @@ void MuonHLTSeedNtupler::Fill_Seed(const edm::Event &iEvent, const edm::EventSet
   edm::ESHandle<TrackerGeometry> tracker;
   iSetup.get<TrackerDigiGeometryRecord>().get(tracker);
 
-  fill_seedTemplate(iEvent, t_hltIterL3OISeedsFromL2Muons_, tracker, hltIterL3OIMuonTrackMap, TThltIterL3OIMuonTrack, NThltIterL3OI_, nhltIterL3OI_);
-  fill_seedTemplate(iEvent, t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_, tracker, hltIter0IterL3MuonTrackMap, TThltIter0IterL3MuonTrack, NThltIter0_, nhltIter0_);
-  fill_seedTemplate(iEvent, t_hltIter2IterL3MuonPixelSeeds_, tracker, hltIter2IterL3MuonTrackMap, TThltIter2IterL3MuonTrack, NThltIter2_, nhltIter2_);
-  fill_seedTemplate(iEvent, t_hltIter3IterL3MuonPixelSeeds_, tracker, hltIter3IterL3MuonTrackMap, TThltIter3IterL3MuonTrack, NThltIter3_, nhltIter3_);
-  fill_seedTemplate(iEvent, t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_, tracker, hltIter0IterL3FromL1MuonTrackMap, TThltIter0IterL3FromL1MuonTrack, NThltIter0FromL1_, nhltIter0FromL1_);
-  fill_seedTemplate(iEvent, t_hltIter2IterL3FromL1MuonPixelSeeds_, tracker, hltIter2IterL3FromL1MuonTrackMap, TThltIter2IterL3FromL1MuonTrack, NThltIter2FromL1_, nhltIter2FromL1_);
-  fill_seedTemplate(iEvent, t_hltIter3IterL3FromL1MuonPixelSeeds_, tracker, hltIter3IterL3FromL1MuonTrackMap, TThltIter3IterL3FromL1MuonTrack, NThltIter3FromL1_, nhltIter3FromL1_);
+  fill_seedTemplate(iEvent, t_hltIterL3OISeedsFromL2Muons_, tracker, hltIterL3OIMuonTrackMap, TThltIterL3OIMuonTrack, NThltIterL3OI_, nhltIterL3OI_, iSetup);
+  fill_seedTemplate(iEvent, t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_, tracker, hltIter0IterL3MuonTrackMap, TThltIter0IterL3MuonTrack, NThltIter0_, nhltIter0_, iSetup);
+  fill_seedTemplate(iEvent, t_hltIter2IterL3MuonPixelSeeds_, tracker, hltIter2IterL3MuonTrackMap, TThltIter2IterL3MuonTrack, NThltIter2_, nhltIter2_, iSetup);
+  fill_seedTemplate(iEvent, t_hltIter3IterL3MuonPixelSeeds_, tracker, hltIter3IterL3MuonTrackMap, TThltIter3IterL3MuonTrack, NThltIter3_, nhltIter3_, iSetup);
+  fill_seedTemplate(iEvent, t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_, tracker, hltIter0IterL3FromL1MuonTrackMap, TThltIter0IterL3FromL1MuonTrack, NThltIter0FromL1_, nhltIter0FromL1_, iSetup);
+  fill_seedTemplate(iEvent, t_hltIter2IterL3FromL1MuonPixelSeeds_, tracker, hltIter2IterL3FromL1MuonTrackMap, TThltIter2IterL3FromL1MuonTrack, NThltIter2FromL1_, nhltIter2FromL1_, iSetup);
+  fill_seedTemplate(iEvent, t_hltIter3IterL3FromL1MuonPixelSeeds_, tracker, hltIter3IterL3FromL1MuonTrackMap, TThltIter3IterL3FromL1MuonTrack, NThltIter3FromL1_, nhltIter3FromL1_, iSetup);
 }
 
 void MuonHLTSeedNtupler::fill_trackTemplate(const edm::Event &iEvent, edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
@@ -307,7 +297,7 @@ void MuonHLTSeedNtupler::fill_trackTemplate(const edm::Event &iEvent, edm::EDGet
 
 void MuonHLTSeedNtupler::fill_seedTemplate(
   const edm::Event &iEvent, edm::EDGetTokenT<TrajectorySeedCollection>& theToken,
-  edm::ESHandle<TrackerGeometry>& tracker, std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack, TTree* NT, int &nSeed ) {
+  edm::ESHandle<TrackerGeometry>& tracker, std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack, TTree* NT, int &nSeed, const edm::EventSetup &iSetup ) {
 
   edm::Handle<reco::GenParticleCollection> h_genParticle;
   bool hasGen = iEvent.getByToken(t_genParticle_, h_genParticle);
@@ -511,7 +501,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
       bool found = ( hitTsosPairs.size()>0 );
 
       if (found) {
-        if ( hitTsosPairs.size() < 3 ) theSeeds->fill_12( hitTsosPairs.at(0), hitTsosPairs.at(1) );
+        if ( hitTsosPairs.size() < 3 ) theSeeds->fill_12( hitTsosPairs.at(0), hitTsosPairs.at(1), nSeed );
         if ( hitTsosPairs.size() == 3 ) theSeeds->fill_3( hitTsosPairs.at(2) );
         if ( hitTsosPairs.size() == 4 ) theSeeds->fill_4( hitTsosPairs.at(3) );
       }

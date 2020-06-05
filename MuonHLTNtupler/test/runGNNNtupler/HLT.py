@@ -72178,7 +72178,7 @@ process.preDuplicateMergingGeneralTracks = cms.EDProducer("TrackListMerger",
     ShareFrac = cms.double(0.19),
     TrackProducers = cms.VInputTag(cms.InputTag("earlyGeneralTracks"),
                                    ),
-                                   #cms.InputTag("muonSeededTracksInOut"), 
+                                   #cms.InputTag("muonSeededTracksInOut"),
                                    #cms.InputTag("muonSeededTracksOutIn")),
     allowFirstHitShare = cms.bool(True),
     copyExtras = cms.untracked.bool(True),
@@ -72190,13 +72190,13 @@ process.preDuplicateMergingGeneralTracks = cms.EDProducer("TrackListMerger",
     ),
     makeReKeyedSeeds = cms.untracked.bool(False),
     mvaValueTags = cms.VInputTag(cms.InputTag("earlyGeneralTracks","MVAVals"),
-                                 #cms.InputTag("muonSeededTracksInOutSelector","MVAVals"), 
+                                 #cms.InputTag("muonSeededTracksInOutSelector","MVAVals"),
                                  #cms.InputTag("muonSeededTracksOutInSelector","MVAVals")),
                                  ),
     newQuality = cms.string('confirmed'),
     selectedTrackQuals = cms.VInputTag(
-        cms.InputTag("muonSeededTracksInOutSelector","muonSeededTracksInOutHighPurity"), 
-        #cms.InputTag("muonSeededTracksInOutSelector","muonSeededTracksInOutHighPurity"), 
+        cms.InputTag("muonSeededTracksInOutSelector","muonSeededTracksInOutHighPurity"),
+        #cms.InputTag("muonSeededTracksInOutSelector","muonSeededTracksInOutHighPurity"),
         #cms.InputTag("muonSeededTracksOutInSelector","muonSeededTracksOutInHighPurity")),
         ),
     setsToMerge = cms.VPSet(cms.PSet(
@@ -91898,10 +91898,10 @@ process.globalreco_tracking = cms.Sequence(process.offlineBeamSpot+
 
 process.globalMuons.MuonCollectionLabel = cms.InputTag("hltL2Muons","UpdatedAtVtx")
 
-process.muons1stStep.inputCollectionLabels = cms.VInputTag(cms.InputTag("generalTracks"), 
-                                                           cms.InputTag("globalMuons"), 
-                                                           cms.InputTag("hltL2Muons","UpdatedAtVtx"), 
-                                                           cms.InputTag("tevMuons","firstHit"), 
+process.muons1stStep.inputCollectionLabels = cms.VInputTag(cms.InputTag("generalTracks"),
+                                                           cms.InputTag("globalMuons"),
+                                                           cms.InputTag("hltL2Muons","UpdatedAtVtx"),
+                                                           cms.InputTag("tevMuons","firstHit"),
                                                            cms.InputTag("tevMuons","picky"),
                                                            cms.InputTag("tevMuons","dyt")
 )
@@ -91927,11 +91927,11 @@ modifyHLTforEras(process)
 # from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTSeedNtupler import *
 # process = customizerFuncForMuonHLTSeedNtupler(process, "MYHLT")
 # GEOMETRY = "D41"
-# if GEOMETRY == "D41": 
+# if GEOMETRY == "D41":
 #     print "using geometry " + GEOMETRY + " (tilted)"
 #     process.load('Configuration.Geometry.GeometryExtended2026D41Reco_cff')
 #     process.load('Configuration.Geometry.GeometryExtended2026D41_cff')
-# elif GEOMETRY == "D49": 
+# elif GEOMETRY == "D49":
 #     print "using geometry " + GEOMETRY + " (tilted)"
 #     process.load('Configuration.Geometry.GeometryExtended2026D49Reco_cff')
 #     process.load('Configuration.Geometry.GeometryExtended2026D49_cff')
@@ -91954,7 +91954,7 @@ from SimTracker.TrackTriggerAssociation.TTClusterAssociation_cfi import * ###
 TTClusterAssociatorFromPixelDigis.digiSimLinks = cms.InputTag("simSiPixelDigis","Tracker") ###
 
 process.TTClusterStub = cms.Path(process.TrackTriggerClustersStubs)
-process.TTClusterStubTruth = cms.Path(process.TrackTriggerAssociatorClustersStubs) 
+process.TTClusterStubTruth = cms.Path(process.TrackTriggerAssociatorClustersStubs)
 
 process.load("L1Trigger.TrackFindingTracklet.Tracklet_cfi") #####
 
@@ -91967,11 +91967,6 @@ process.TTTracksEmulationWithTruth = cms.Path(process.offlineBeamSpot*process.TT
 
 process.load('SimCalorimetry.HcalTrigPrimProducers.hcaltpdigi_cff')
 process.load('CalibCalorimetry.CaloTPG.CaloTPGTranscoder_cfi')
-
-process.TFileService = cms.Service("TFileService",
-  fileName = cms.string("test.root"),
-  closeFileFast = cms.untracked.bool(False),
-)
 
 process.L1simulation_step = cms.Path(process.SimL1Emulator)
 
