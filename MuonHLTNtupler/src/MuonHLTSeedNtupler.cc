@@ -501,9 +501,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
       bool found = ( hitTsosPairs.size()>0 );
 
       if (found) {
-        if ( hitTsosPairs.size() < 3 ) theSeeds->fill_12( hitTsosPairs.at(0), hitTsosPairs.at(1), nSeed );
-        if ( hitTsosPairs.size() == 3 ) theSeeds->fill_3( hitTsosPairs.at(2) );
-        if ( hitTsosPairs.size() == 4 ) theSeeds->fill_4( hitTsosPairs.at(3) );
+        if ( hitTsosPairs.size() > 1 ) theSeeds->fill_12( hitTsosPairs.at(0), hitTsosPairs.at(1), hitTsosPairs.size() );
+        if ( hitTsosPairs.size() > 2 ) theSeeds->fill_3( hitTsosPairs.at(2) );
+        if ( hitTsosPairs.size() > 3 ) theSeeds->fill_4( hitTsosPairs.at(3) );
       }
 
       theSeeds->fill_ntuple(NT);

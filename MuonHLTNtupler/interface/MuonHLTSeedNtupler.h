@@ -702,30 +702,30 @@ private:
 
   class seedL1TSOSTemplate : public seedTemplate {
   private:
-    double l1x1_;
-    double l1y1_;
-    double l1z1_;
-    double l1x2_;
-    double l1y2_;
-    double l1z2_;
-    double hitx1_;
-    double hity1_;
-    double hitz1_;
-    double hitx2_;
-    double hity2_;
-    double hitz2_;
-    double l1x3_;
-    double l1y3_;
-    double l1z3_;
-    double hitx3_;
-    double hity3_;
-    double hitz3_;
-    double l1x4_;
-    double l1y4_;
-    double l1z4_;
-    double hitx4_;
-    double hity4_;
-    double hitz4_;
+    float l1x1_;
+    float l1y1_;
+    float l1z1_;
+    float l1x2_;
+    float l1y2_;
+    float l1z2_;
+    float hitx1_;
+    float hity1_;
+    float hitz1_;
+    float hitx2_;
+    float hity2_;
+    float hitz2_;
+    float l1x3_;
+    float l1y3_;
+    float l1z3_;
+    float hitx3_;
+    float hity3_;
+    float hitz3_;
+    float l1x4_;
+    float l1y4_;
+    float l1z4_;
+    float hitx4_;
+    float hity4_;
+    float hitz4_;
     int nHits_;
 
   public:
@@ -787,18 +787,18 @@ private:
     }
 
     void setBranch_3(TTree* tmpntpl) {
-      tmpntpl->Branch("l1x3", &l1x3_, "l1x1/F");
-      tmpntpl->Branch("l1y3", &l1x3_, "l1y1/F");
-      tmpntpl->Branch("l1z3", &l1x3_, "l1z1/F");
-      tmpntpl->Branch("hitx3", &hitx3_, "hitx2/F");
-      tmpntpl->Branch("hity3", &hity3_, "hity2/F");
-      tmpntpl->Branch("hitz3", &hitz3_, "hitz2/F");
+      tmpntpl->Branch("l1x3", &l1x3_, "l1x3/F");
+      tmpntpl->Branch("l1y3", &l1y3_, "l1y3/F");
+      tmpntpl->Branch("l1z3", &l1z3_, "l1z3/F");
+      tmpntpl->Branch("hitx3", &hitx3_, "hitx3/F");
+      tmpntpl->Branch("hity3", &hity3_, "hity3/F");
+      tmpntpl->Branch("hitz3", &hitz3_, "hitz3/F");
     }
 
     void setBranch_4(TTree* tmpntpl) {
       tmpntpl->Branch("l1x4", &l1x4_, "l1x4/F");
-      tmpntpl->Branch("l1y4", &l1x4_, "l1y4/F");
-      tmpntpl->Branch("l1z4", &l1x4_, "l1z4/F");
+      tmpntpl->Branch("l1y4", &l1y4_, "l1y4/F");
+      tmpntpl->Branch("l1z4", &l1z4_, "l1z4/F");
       tmpntpl->Branch("hitx4", &hitx4_, "hitx4/F");
       tmpntpl->Branch("hity4", &hity4_, "hity4/F");
       tmpntpl->Branch("hitz4", &hitz4_, "hitz4/F");
