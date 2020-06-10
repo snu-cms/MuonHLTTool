@@ -449,6 +449,8 @@ private:
     float gen_eta_;
     float gen_phi_;
   public:
+    virtual ~seedTemplate() {}
+
     void clear_base() {
       truePU_ = -99999;
       dir_ = -99999;
@@ -696,7 +698,7 @@ private:
 
   void fill_seedTemplate(
   const edm::Event &, edm::EDGetTokenT<TrajectorySeedCollection>&,
-  edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree*, int &nSeed, const edm::EventSetup &iSetup );
+  edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree*, int &nSeed, edm::ESHandle<MagneticField> magfieldH, const edm::EventSetup &iSetup, GeometricSearchTracker* geomTracker );
 
   // HERE
 
@@ -729,6 +731,8 @@ private:
     int nHits_;
 
   public:
+    ~seedL1TSOSTemplate() {}
+
     void clearL1Hit_12() {
       l1x1_ = -99999.;
       l1y1_ = -99999.;
@@ -763,7 +767,7 @@ private:
       hitz4_ = -99999.;
     }
 
-    virtual void clear() {
+    void clear() {
       clear_base();
       clearL1Hit_12();
       clearL1Hit_3();
@@ -804,7 +808,7 @@ private:
       tmpntpl->Branch("hitz4", &hitz4_, "hitz4/F");
     }
 
-    virtual void setBranch(TTree* tmpntpl) {
+    void setBranch(TTree* tmpntpl) {
       setBranch_base(tmpntpl);
       setBranch_12(tmpntpl);
       setBranch_3(tmpntpl);
