@@ -137,6 +137,8 @@ private:
   edm::EDGetTokenT< reco::VertexCollection >                 t_offlineVertex_;
   edm::EDGetTokenT< std::vector<PileupSummaryInfo> >         t_PUSummaryInfo_;
 
+  edm::EDGetTokenT< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > ttTrackToken_;
+
   edm::EDGetTokenT< l1t::MuonBxCollection >                  t_L1Muon_;
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L2Muon_;
 
@@ -872,7 +874,7 @@ private:
   );
 
   vector< LayerTSOS > getTsosOnPixels(
-    l1t::TkMuon,
+    TTTrack<Ref_Phase2TrackerDigi_>,
     edm::ESHandle<MagneticField>&,
     const Propagator&,
     GeometricSearchTracker*
@@ -880,7 +882,7 @@ private:
 
   vector< pair<LayerHit, LayerTSOS> > getHitTsosPairs(
     TrajectorySeed,
-    edm::Handle<l1t::TkMuonCollection>,
+    edm::Handle< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > >,
     edm::ESHandle<MagneticField>&,
     const Propagator&,
     GeometricSearchTracker*

@@ -28,8 +28,11 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
 
     # process.seedNtupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis",        "Muon", newProcessName)
     # process.seedNtupler.L1Muon           = cms.untracked.InputTag("gmtStage2Digis",        "Muon", newProcessName)
-    process.seedNtupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis",        "Muon", "HLT") #for phaseII w/o emulation
+    # process.ntupler.L1Muon           = cms.untracked.InputTag("simGmtStage2Digis","",newProcessName)
+    process.seedNtupler.L1Muon           = cms.untracked.InputTag("simGmtStage2Digis",        "Muon", "HLT") #for phaseII w/o emulation
     process.seedNtupler.L2Muon           = cms.untracked.InputTag("hltL2MuonCandidates",     "",     newProcessName)
+
+    process.seedNtupler.L1TrackInputTag = cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks") # TTTrack input 
 
     process.seedNtupler.L1TkMuon                                          = cms.untracked.InputTag("L1TkMuons", "", newProcessName)
     process.seedNtupler.L1TkPrimaryVertex                                 = cms.untracked.InputTag("L1TkPrimaryVertex", "", newProcessName)
@@ -41,7 +44,7 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
     process.seedNtupler.hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks = cms.untracked.InputTag("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks",   "", newProcessName)
     process.seedNtupler.hltIter2IterL3FromL1MuonPixelSeeds                = cms.untracked.InputTag("hltIter2IterL3FromL1MuonPixelSeeds",                  "", newProcessName)
     process.seedNtupler.hltIter3IterL3FromL1MuonPixelSeeds                = cms.untracked.InputTag("hltIter3IterL3FromL1MuonPixelSeeds",                  "", newProcessName)
-    
+
     process.seedNtupler.hltIterL3OIMuonTrack                              = cms.untracked.InputTag("hltIterL3OIMuonTrackSelectionHighPurity",             "", newProcessName)
     process.seedNtupler.hltIter0IterL3MuonTrack                           = cms.untracked.InputTag("hltIter0IterL3MuonTrackSelectionHighPurity",          "", newProcessName)
     process.seedNtupler.hltIter2IterL3MuonTrack                           = cms.untracked.InputTag("hltIter2IterL3MuonTrackSelectionHighPurity",          "", newProcessName)
@@ -67,10 +70,10 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
       closeFileFast = cms.untracked.bool(False),
     )
 
-    # from MuonHLTTool.MuonHLTNtupler.WmuSkimmer import WmuSkimmer 
+    # from MuonHLTTool.MuonHLTNtupler.WmuSkimmer import WmuSkimmer
     # process.WmuSkimmer = WmuSkimmer.clone()
 
-    from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
+    from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer
     process.Skimmer = DYmuSkimmer.clone()
 
     process.myseedpath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)

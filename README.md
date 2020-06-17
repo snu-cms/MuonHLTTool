@@ -6,7 +6,7 @@
 	cmsenv
 	git cms-init
 	git cms-merge-topic -u cms-L1TK:L1TK-integration-CMSSW_11_1_0_pre4
-	git cms-merge-topic -u cms-l1t-offline:l1t-phase2-v3.0.0-CMSSW_11_1_0_pre6
+	git cms-merge-topic -u cms-l1t-offline:l1t-phase2-v3.0.2
 	git cms-addpkg L1Trigger/L1TCommon
 ## Phase2 MuonHLT
 	git clone https://username@gitlab.cern.ch/cms-hlt/phase2.git
@@ -16,6 +16,3 @@
 	git clone -b SeedingStudy git@github.com:snu-cms/MuonHLTTool.git
 ## Run
 	cmsRun HLTrigger/PhaseII/test/HLT.py
-
-
-

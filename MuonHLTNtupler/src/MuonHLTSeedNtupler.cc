@@ -76,6 +76,8 @@ trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedP
 t_offlineVertex_     ( consumes< reco::VertexCollection >                 (iConfig.getUntrackedParameter<edm::InputTag>("offlineVertex"     )) ),
 t_PUSummaryInfo_     ( consumes< std::vector<PileupSummaryInfo> >         (iConfig.getUntrackedParameter<edm::InputTag>("PUSummaryInfo"     )) ),
 
+ttTrackToken_        ( consumes<std::vector<TTTrack<Ref_Phase2TrackerDigi_> > >(iConfig.getParameter<edm::InputTag>("L1TrackInputTag"     )) ),
+
 t_L1Muon_            ( consumes< l1t::MuonBxCollection  >                 (iConfig.getUntrackedParameter<edm::InputTag>("L1Muon"            )) ),
 t_L2Muon_            ( consumes< reco::RecoChargedCandidateCollection >   (iConfig.getUntrackedParameter<edm::InputTag>("L2Muon"            )) ),
 
@@ -328,6 +330,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
   edm::Handle<l1t::TkMuonCollection> h_L1TkMu;
   bool hasL1TkMu = iEvent.getByToken(t_L1TkMuon_, h_L1TkMu);
 
+  edm::Handle< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > TTTrackHandle;
+  bool hasL1TTTrack = iEvent.getByToken(ttTrackToken_, TTTrackHandle);
+
   edm::Handle< TrajectorySeedCollection > seedHandle;
 
   edm::ESHandle<Propagator> propagatorAlongH;
@@ -494,7 +499,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
       // HERE
       vector< pair<LayerHit, LayerTSOS> > hitTsosPairs = getHitTsosPairs(
         seed,
-        h_L1TkMu,
+        TTTrackHandle,
         magfieldH,
         *(propagatorAlong.get()),
         geomTracker
@@ -523,7 +528,7 @@ void MuonHLTSeedNtupler::testRun(
 }
 
 vector< LayerTSOS > MuonHLTSeedNtupler::getTsosOnPixels(
-  l1t::TkMuon L1TkMu,
+  TTTrack<Ref_Phase2TrackerDigi_> l1tk,
   edm::ESHandle<MagneticField>& magfieldH,
   const Propagator& propagatorAlong,
   GeometricSearchTracker* geomTracker
@@ -536,10 +541,10 @@ vector< LayerTSOS > MuonHLTSeedNtupler::getTsosOnPixels(
 
   // -- L1TkMu selection
   // if( L1TkMu->muRef().isNull() )  continue;
-  if( L1TkMu.trkPtr().isNull() )  return v_tsos;
+  // if( L1TkMu.trkPtr().isNull() )  return v_tsos;
   // FIXME this is random choice
 
-  auto l1tk = *(L1TkMu.trkPtr());
+  // auto l1tk = *(L1TkMu.trkPtr());
   int chargeTk = l1tk.rInv() > 0. ? 1 : -1;
   GlobalPoint  gpos = l1tk.POCA();
   GlobalVector gmom = l1tk.momentum();
@@ -598,7 +603,7 @@ vector< LayerTSOS > MuonHLTSeedNtupler::getTsosOnPixels(
 // -- hit, TSOS pairs for each L1TkMu
 vector< pair<LayerHit, LayerTSOS> > MuonHLTSeedNtupler::getHitTsosPairs(
   TrajectorySeed seed,
-  edm::Handle<l1t::TkMuonCollection> h_L1TkMu,
+  edm::Handle< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > TTTrackHandle,
   edm::ESHandle<MagneticField>& magfieldH,
   const Propagator& propagatorAlong,
   GeometricSearchTracker* geomTracker
@@ -609,10 +614,10 @@ vector< pair<LayerHit, LayerTSOS> > MuonHLTSeedNtupler::getHitTsosPairs(
   float av_dr_min = 20.;
 
   // -- loop on L1TkMu
-  for(auto L1TkMu=h_L1TkMu->begin(); L1TkMu!=h_L1TkMu->end(); ++L1TkMu) {
+  for(auto l1tk=TTTrackHandle->begin(); l1tk!=TTTrackHandle->end(); ++l1tk) {
 
     vector< LayerTSOS > v_tsos = getTsosOnPixels(
-      *L1TkMu,
+      *l1tk,
       magfieldH,
       propagatorAlong,
       geomTracker
