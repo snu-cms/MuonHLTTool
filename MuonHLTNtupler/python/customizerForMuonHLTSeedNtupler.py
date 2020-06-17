@@ -32,7 +32,7 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
     process.seedNtupler.L1Muon           = cms.untracked.InputTag("simGmtStage2Digis",        "Muon", "HLT") #for phaseII w/o emulation
     process.seedNtupler.L2Muon           = cms.untracked.InputTag("hltL2MuonCandidates",     "",     newProcessName)
 
-    process.seedNtupler.L1TrackInputTag = cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks") # TTTrack input 
+    process.seedNtupler.L1TrackInputTag = cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks") # TTTrack input
 
     process.seedNtupler.L1TkMuon                                          = cms.untracked.InputTag("L1TkMuons", "", newProcessName)
     process.seedNtupler.L1TkPrimaryVertex                                 = cms.untracked.InputTag("L1TkPrimaryVertex", "", newProcessName)
@@ -73,10 +73,7 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
     # from MuonHLTTool.MuonHLTNtupler.WmuSkimmer import WmuSkimmer
     # process.WmuSkimmer = WmuSkimmer.clone()
 
-    from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer
-    process.Skimmer = DYmuSkimmer.clone()
-
-    process.myseedpath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
+    process.myseedpath = cms.Path(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
     # process.myseedpath = cms.Path(process.WmuSkimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler) #if skim needed
 
     return process

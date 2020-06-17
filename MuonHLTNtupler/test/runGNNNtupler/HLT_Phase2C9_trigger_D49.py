@@ -29,11 +29,6 @@ process.load('Configuration.StandardSequences.Reconstruction_cff')
 # process.load('DQMOffline.Configuration.DQMOfflineMC_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
-process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100),
-    output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
-)
-
 # Input source
 process.source = cms.Source("PoolSource",
     #fileNames = cms.untracked.vstring('root://xrootd-cms.infn.it//store/relval/CMSSW_11_0_0_pre11/RelValZMM_14/GEN-SIM-DIGI-RAW/110X_mcRun4_realistic_v2_2026D41noPU-v1/10000/EE56DFF6-6AEB-BD4C-97C0-CE2D32452D25.root'),
@@ -4978,8 +4973,8 @@ process.L1simulation_step = cms.Path(process.SimL1Emulator)
 
 process.source.fileNames = cms.untracked.vstring(
     # "root://cms-xrd-global.cern.ch//store/mc/Phase2HLTTDRWinter20DIGI/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/PU200_pilot2_110X_mcRun4_realistic_v3-v2/270000/FB5CCEB0-775F-9D4D-B422-15DDE09B88A9.root"
-    # "file:/eos/cms/store/mc/Phase2HLTTDRWinter20DIGI/TT_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW/PU200_110X_mcRun4_realistic_v3-v2/110000/0A86D9A3-925B-1A47-963C-097E662902C1.root"
-    "file:/eos/user/m/moh/TestSamples/DYToLL_M-50_TuneCP5_14TeV-pythia8__Phase2HLTTDRWinter20DIGI-PU200_pilot_110X_mcRun4_realistic_v3-v2__GEN-SIM-DIGI-RAW/4043F7D2-1BF4-FE40-82D9-10786D005454.root"
+    "file:/eos/cms/store/mc/Phase2HLTTDRWinter20DIGI/TT_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW/PU200_110X_mcRun4_realistic_v3-v2/110000/0A86D9A3-925B-1A47-963C-097E662902C1.root"
+    #"file:/eos/user/m/moh/TestSamples/DYToLL_M-50_TuneCP5_14TeV-pythia8__Phase2HLTTDRWinter20DIGI-PU200_pilot_110X_mcRun4_realistic_v3-v2__GEN-SIM-DIGI-RAW/4043F7D2-1BF4-FE40-82D9-10786D005454.root"
 )
 # process.source.skipEvents=cms.untracked.uint32(2)
 
@@ -5005,15 +5000,6 @@ if 'MessageLogger' in process.__dict__:
 process.load( "DQMServices.Core.DQMStore_cfi" )
 process.DQMStore.enableMultiThread = True
 
-
-# -- Delete predefined paths and endpaths -- #
-del process.me0RecHits
-del process.me0Segments
-
-for obj in process.paths_():
-    delattr(process,obj)
-for obj in process.endpaths_():
-    delattr(process,obj)
 # -- #
 
 # -- Redefine final paths and endpaths -- #
