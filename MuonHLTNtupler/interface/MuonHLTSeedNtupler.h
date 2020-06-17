@@ -781,9 +781,9 @@ private:
       tmpntpl->Branch("hitx1", &hitx1_, "hitx1/F");
       tmpntpl->Branch("hity1", &hity1_, "hity1/F");
       tmpntpl->Branch("hitz1", &hitz1_, "hitz1/F");
-      tmpntpl->Branch("l1x2", &l1x2_, "l1x2F");
-      tmpntpl->Branch("l1y2", &l1y2_, "l1y2F");
-      tmpntpl->Branch("l1z2", &l1z2_, "l1z2F");
+      tmpntpl->Branch("l1x2", &l1x2_, "l1x2/F");
+      tmpntpl->Branch("l1y2", &l1y2_, "l1y2/F");
+      tmpntpl->Branch("l1z2", &l1z2_, "l1z2/F");
       tmpntpl->Branch("hitx2", &hitx2_, "hitx2/F");
       tmpntpl->Branch("hity2", &hity2_, "hity2/F");
       tmpntpl->Branch("hitz2", &hitz2_, "hitz2/F");
