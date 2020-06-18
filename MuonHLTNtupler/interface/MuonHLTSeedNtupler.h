@@ -91,7 +91,7 @@
 #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
 #include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
 
-#include "MuonHLTTool/MuonHLTNtupler/interface/SeedMvaEstimator.h"
+#include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
 
 #include "TTree.h"
 #include "TString.h"

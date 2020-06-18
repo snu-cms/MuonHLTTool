@@ -4,9 +4,9 @@
 # process = customizerFuncForMuonHLTSeedNtupler(process, "MYHLT")
 
 import FWCore.ParameterSet.Config as cms
-from MuonHLTTool.MuonHLTNtupler.mvaScale import *
+from HLTrigger.MuonHLTSeedMVAClassifier.mvaScale import *
 
-def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
+def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYSkim = False):
     if hasattr(process, "DQMOutput"):
         del process.DQMOutput
 
@@ -29,7 +29,8 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
 
     # process.seedNtupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis",        "Muon", newProcessName)
     # process.seedNtupler.L1Muon           = cms.untracked.InputTag("gmtStage2Digis",        "Muon", newProcessName)
-    process.seedNtupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis",        "Muon", "HLT") #for phaseII w/o emulation
+    # process.seedNtupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis",        "Muon", "HLT") #for phaseII w/o emulation
+    process.seedNtupler.L1Muon           = cms.untracked.InputTag("simGmtStage2Digis","",newProcessName), # Phase II sim emul
     process.seedNtupler.L2Muon           = cms.untracked.InputTag("hltL2MuonCandidates",     "",     newProcessName)
 
     process.seedNtupler.L1TkMuon                                          = cms.untracked.InputTag("L1TkMuons", "", newProcessName)
@@ -63,62 +64,62 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
     process.seedNtupler.associator = cms.untracked.InputTag("hltTrackAssociatorByHits")
     process.seedNtupler.trackingParticle = cms.untracked.InputTag("mix","MergedTrackTruth")
 
-    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_B_0                       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIterL3OI_0.xml")
-    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_B_1                       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIterL3OI_1.xml")
-    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_B_2                       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIterL3OI_2.xml")
-    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_B_3                       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIterL3OI_3.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_0       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter0_0.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_1       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter0_1.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_2       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter0_2.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_3       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter0_3.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B_0                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter2_0.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B_1                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter2_1.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B_2                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter2_2.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B_3                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter2_3.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_B_0                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter3_0.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_B_1                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter3_1.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_B_2                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter3_2.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_B_3                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter3_3.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_0 = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter0FromL1_0.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_1 = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter0FromL1_1.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_2 = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter0FromL1_2.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_3 = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter0FromL1_3.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_0                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter2FromL1_0.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_1                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter2FromL1_1.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_2                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter2FromL1_2.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_3                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter2FromL1_3.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_0                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter3FromL1_0.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_1                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter3FromL1_1.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_2                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter3FromL1_2.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_3                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Barrel_hltIter3FromL1_3.xml")
-    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_E_0                       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIterL3OI_0.xml")
-    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_E_1                       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIterL3OI_1.xml")
-    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_E_2                       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIterL3OI_2.xml")
-    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_E_3                       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIterL3OI_3.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_0       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter0_0.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_1       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter0_1.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_2       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter0_2.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_3       = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter0_3.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E_0                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter2_0.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E_1                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter2_1.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E_2                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter2_2.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E_3                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter2_3.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_E_0                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter3_0.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_E_1                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter3_1.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_E_2                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter3_2.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_E_3                      = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter3_3.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_0 = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter0FromL1_0.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_1 = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter0FromL1_1.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_2 = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter0FromL1_2.xml")
-    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_3 = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter0FromL1_3.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_0                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter2FromL1_0.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_1                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter2FromL1_1.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_2                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter2FromL1_2.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_3                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter2FromL1_3.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_0                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter3FromL1_0.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_1                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter3FromL1_1.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_2                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter3FromL1_2.xml")
-    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_3                = cms.FileInPath("MuonHLTTool/MuonHLTNtupler/data/PU180to200Endcap_hltIter3FromL1_3.xml")
+    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_B_0                       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIterL3OI_0.xml")
+    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_B_1                       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIterL3OI_1.xml")
+    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_B_2                       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIterL3OI_2.xml")
+    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_B_3                       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIterL3OI_3.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_0       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter0_0.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_1       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter0_1.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_2       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter0_2.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_3       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter0_3.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B_0                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter2_0.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B_1                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter2_1.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B_2                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter2_2.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B_3                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter2_3.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_B_0                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter3_0.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_B_1                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter3_1.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_B_2                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter3_2.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_B_3                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter3_3.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter0FromL1_0.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter0FromL1_1.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter0FromL1_2.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter0FromL1_3.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_0                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter2FromL1_0.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_1                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter2FromL1_1.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_2                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter2FromL1_2.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_3                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter2FromL1_3.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_0                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter3FromL1_0.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_1                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter3FromL1_1.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_2                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter3FromL1_2.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_3                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Barrel_hltIter3FromL1_3.xml")
+    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_E_0                       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIterL3OI_0.xml")
+    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_E_1                       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIterL3OI_1.xml")
+    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_E_2                       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIterL3OI_2.xml")
+    process.seedNtupler.mvaFileHltIterL3OISeedsFromL2Muons_E_3                       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIterL3OI_3.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_0       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter0_0.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_1       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter0_1.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_2       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter0_2.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_3       = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter0_3.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E_0                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter2_0.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E_1                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter2_1.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E_2                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter2_2.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E_3                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter2_3.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_E_0                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter3_0.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_E_1                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter3_1.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_E_2                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter3_2.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3MuonPixelSeeds_E_3                      = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter3_3.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter0FromL1_0.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter0FromL1_1.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter0FromL1_2.xml")
+    process.seedNtupler.mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter0FromL1_3.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_0                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter2FromL1_0.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_1                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter2FromL1_1.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_2                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter2FromL1_2.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_3                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter2FromL1_3.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_0                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter3FromL1_0.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_1                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter3FromL1_1.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_2                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter3FromL1_2.xml")
+    process.seedNtupler.mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_3                = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU180to200Endcap_hltIter3FromL1_3.xml")
 
 
     process.seedNtupler.mvaScaleMeanHltIterL3OISeedsFromL2Muons_B                       = cms.vdouble(PU180to200Barrel_hltIterL3OI_ScaleMean)
@@ -159,10 +160,13 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT"):
     # from MuonHLTTool.MuonHLTNtupler.WmuSkimmer import WmuSkimmer 
     # process.WmuSkimmer = WmuSkimmer.clone()
 
-    from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
-    process.Skimmer = DYmuSkimmer.clone()
+    if doDYSkim:
+        from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
+        process.Skimmer = DYmuSkimmer.clone()
+        process.myseedpath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
+        # process.myseedpath = cms.Path(process.WmuSkimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler) #if skim needed
 
-    process.myseedpath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
-    # process.myseedpath = cms.Path(process.WmuSkimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler) #if skim needed
+    else:
+        process.myseedpath = cms.Path(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
 
     return process
