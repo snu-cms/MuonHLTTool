@@ -92,6 +92,8 @@
 
 #include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
 
+#include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTobjCorrelator.h"
+
 #include "TTree.h"
 #include "TString.h"
 
@@ -263,6 +265,11 @@ private:
   vector<float>* m_trk_phi;
   vector<float>* m_trk_d0;   // (filled if L1Tk_nPar==5, else 999)
   vector<float>* m_trk_z0;
+  std::vector<float> m_trk_rInv;
+  std::vector<float> m_trk_tanL;
+  std::vector<float> m_trk_MVA1;
+  std::vector<float> m_trk_MVA2;
+  std::vector<float> m_trk_MVA3;
   vector<float>* m_trk_chi2;
   vector<float>* m_trk_bendchi2;
   vector<int>*   m_trk_nstub;
@@ -287,6 +294,33 @@ private:
   vector<float>* m_stub_z;
   vector<int>*   m_stub_isBarrel; // stub is in barrel (1) or in disk (0)
   vector<int>*   m_stub_layer;
+
+  // l1TkMuon
+  std::vector<float> mL1TkMu_pt;
+  std::vector<float> mL1TkMu_eta;
+  std::vector<float> mL1TkMu_phi;
+  std::vector<float> mL1TkMu_trkIsol;
+  std::vector<float> mL1TkMu_trkzVtx;
+  std::vector<float> mL1TkMu_dR;
+
+  std::vector<int> mL1TkMu_nTracksMatched;
+  std::vector<float> mL1TkMu_trackCurvature;
+
+  std::vector<unsigned int> mL1TkMu_quality;
+  std::vector<unsigned int> mL1TkMu_pattern;
+  std::vector<unsigned int> mL1TkMu_muonDetector;
+
+  std::vector<int> mL1TkMu_TTTpointer;
+
+  std::vector<float> mL1TkMu_muRefHwPt;
+  std::vector<int> mL1TkMu_muRefHwDXY;
+  std::vector<float> mL1TkMu_muRefHwEta;
+  std::vector<float> mL1TkMu_muRefHwPhi;
+  std::vector<int> mL1TkMu_muRefHwSign;
+  std::vector<int> mL1TkMu_muRefHwSignValid;
+  std::vector<int> mL1TkMu_muRefHwQual;
+
+  std::map<MuonHLTobjCorrelator::L1TTTrack,unsigned int> mTTTrackMap;
 
   class tmpTSOD {
   private:
@@ -435,6 +469,8 @@ private:
   double L1Muon_phi_[arrSize_];
   double L1Muon_charge_[arrSize_];
   double L1Muon_quality_[arrSize_];
+  double L1Muon_etaAtVtx_[arrSize_];
+  double L1Muon_phiAtVtx_[arrSize_];
 
   // -- Tracker muon
   int nTkMuon_;

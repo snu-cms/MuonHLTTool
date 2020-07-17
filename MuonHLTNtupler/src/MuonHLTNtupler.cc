@@ -431,6 +431,11 @@ void MuonHLTNtupler::Init()
   m_trk_phi->clear();
   m_trk_d0->clear();
   m_trk_z0->clear();
+  m_trk_rInv.clear();
+  m_trk_tanL.clear();
+  m_trk_MVA1.clear();
+  m_trk_MVA2.clear();
+  m_trk_MVA3.clear();
   m_trk_chi2->clear();
   m_trk_bendchi2->clear();
   m_trk_nstub->clear();
@@ -449,12 +454,39 @@ void MuonHLTNtupler::Init()
   m_trk_matchtp_phi->clear();
   m_trk_matchtp_z0->clear();
   m_trk_matchtp_dxy->clear();
-    
+
   m_stub_x->clear();
   m_stub_y->clear();
   m_stub_z->clear();
   m_stub_isBarrel->clear();
   m_stub_layer->clear();
+
+  // l1TkMuon
+  mL1TkMu_pt.clear();
+  mL1TkMu_eta.clear();
+  mL1TkMu_phi.clear();
+  mL1TkMu_trkIsol.clear();
+  mL1TkMu_trkzVtx.clear();
+  mL1TkMu_dR.clear();
+
+  mL1TkMu_nTracksMatched.clear();
+  mL1TkMu_trackCurvature.clear();
+
+  mL1TkMu_quality.clear();
+  mL1TkMu_pattern.clear();
+  mL1TkMu_muonDetector.clear();
+
+  mL1TkMu_TTTpointer.clear();
+
+  mL1TkMu_muRefHwPt.clear();
+  mL1TkMu_muRefHwDXY.clear();
+  mL1TkMu_muRefHwEta.clear();
+  mL1TkMu_muRefHwPhi.clear();
+  mL1TkMu_muRefHwSign.clear();
+  mL1TkMu_muRefHwSignValid.clear();
+  mL1TkMu_muRefHwQual.clear();
+
+  mTTTrackMap.clear();
   }
 
 
@@ -642,6 +674,8 @@ void MuonHLTNtupler::Init()
     L1Muon_phi_[i] = -999;
     L1Muon_charge_[i] = -999;
     L1Muon_quality_[i] = -999;
+    L1Muon_etaAtVtx_[i] = -999;
+    L1Muon_phiAtVtx_[i] = -999;
   }
 
   nIterL3OI_ = 0;
@@ -763,6 +797,12 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("trk_phi",   &m_trk_phi);
   ntuple_->Branch("trk_d0",    &m_trk_d0);
   ntuple_->Branch("trk_z0",    &m_trk_z0);
+  ntuple_->Branch("trk_rInv", &m_trk_rInv);
+  ntuple_->Branch("trk_tanL", &m_trk_tanL);
+  ntuple_->Branch("trk_MVA1", &m_trk_MVA1);
+  ntuple_->Branch("trk_MVA2", &m_trk_MVA2);
+  ntuple_->Branch("trk_MVA3", &m_trk_MVA3);
+
   ntuple_->Branch("trk_chi2",  &m_trk_chi2);
   ntuple_->Branch("trk_bendchi2",  &m_trk_bendchi2);
   ntuple_->Branch("trk_nstub", &m_trk_nstub);
@@ -787,6 +827,31 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("stub_z", &m_stub_z);
   ntuple_->Branch("stub_isBarrel",   &m_stub_isBarrel);
   ntuple_->Branch("stub_layer",      &m_stub_layer);
+
+  ntuple_->Branch("L1TkMu_pt", &mL1TkMu_pt);
+  ntuple_->Branch("L1TkMu_eta", &mL1TkMu_eta);
+  ntuple_->Branch("L1TkMu_phi", &mL1TkMu_phi);
+
+  ntuple_->Branch("L1TkMu_trkIsol", &mL1TkMu_trkIsol);
+  ntuple_->Branch("L1TkMu_trkzVtx", &mL1TkMu_trkzVtx);
+  ntuple_->Branch("L1TkMu_dR", &mL1TkMu_dR);
+
+  ntuple_->Branch("L1TkMu_nTracksMatched", &mL1TkMu_nTracksMatched);
+  ntuple_->Branch("L1TkMu_trackCurvature", &mL1TkMu_trackCurvature);
+
+  ntuple_->Branch("L1TkMu_quality", &mL1TkMu_quality);
+  ntuple_->Branch("L1TkMu_pattern", &mL1TkMu_pattern);
+  ntuple_->Branch("L1TkMu_muonDetector", &mL1TkMu_muonDetector);
+
+  ntuple_->Branch("L1TkMu_TTTpointer", &mL1TkMu_TTTpointer);
+
+  ntuple_->Branch("L1TkMu_muRefHwPt", &mL1TkMu_muRefHwPt);
+  ntuple_->Branch("L1TkMu_muRefHwDXY", &mL1TkMu_muRefHwDXY);
+  ntuple_->Branch("L1TkMu_muRefHwEta", &mL1TkMu_muRefHwEta);
+  ntuple_->Branch("L1TkMu_muRefHwPhi", &mL1TkMu_muRefHwPhi);
+  ntuple_->Branch("L1TkMu_muRefHwSign", &mL1TkMu_muRefHwSign);
+  ntuple_->Branch("L1TkMu_muRefHwSignValid", &mL1TkMu_muRefHwSignValid);
+  ntuple_->Branch("L1TkMu_muRefHwQual", &mL1TkMu_muRefHwQual);
   }
 
   ntuple_->Branch("isRealData", &isRealData_, "isRealData/O"); // -- O: boolean -- //
@@ -926,6 +991,8 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("L1Muon_phi", &L1Muon_phi_, "L1Muon_phi[nL1Muon]/D");
   ntuple_->Branch("L1Muon_charge", &L1Muon_charge_, "L1Muon_charge[nL1Muon]/D");
   ntuple_->Branch("L1Muon_quality", &L1Muon_quality_, "L1Muon_quality[nL1Muon]/D");
+  ntuple_->Branch("L1Muon_etaAtVtx", &L1Muon_etaAtVtx_, "L1Muon_etaAtVtx[nL1Muon]/D");
+  ntuple_->Branch("L1Muon_phiAtVtx", &L1Muon_phiAtVtx_, "L1Muon_phiAtVtx[nL1Muon]/D");
 
   ntuple_->Branch("nIterL3OI", &nIterL3OI_, "nIterL3OI/I");
   ntuple_->Branch("iterL3OI_inner_pt", &iterL3OI_inner_pt_, "iterL3OI_inner_pt[nIterL3OI]/D");
@@ -1032,7 +1099,7 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
   iSetup.get<TrackerDigiGeometryRecord>().get(tGeomHandle);
   edm::ESHandle<TrackerTopology> tTopoHandle;
   iSetup.get<TrackerTopologyRcd>().get(tTopoHandle);
-  
+
   const TrackerTopology* const tTopo = tTopoHandle.product();
   const TrackerGeometry* const theTrackerGeom = tGeomHandle.product();
 
@@ -1044,16 +1111,22 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
 
   int this_l1track = 0;
   std::vector< TTTrack< Ref_Phase2TrackerDigi_ > >::const_iterator iterL1Track;
-  for ( iterL1Track = TTTrackHandle->begin(); iterL1Track != TTTrackHandle->end(); iterL1Track++ ) {    
+  for ( iterL1Track = TTTrackHandle->begin(); iterL1Track != TTTrackHandle->end(); iterL1Track++ ) {
     edm::Ptr< TTTrack< Ref_Phase2TrackerDigi_ > > l1track_ptr(TTTrackHandle, this_l1track);
-    this_l1track++;
-    
+
     float tmp_trk_pt   = iterL1Track->momentum().perp();
     float tmp_trk_eta  = iterL1Track->momentum().eta();
     float tmp_trk_phi  = iterL1Track->momentum().phi();
     float tmp_trk_z0   = iterL1Track->z0(); //cm
 
-    float tmp_trk_d0 = -999;
+    float tmp_trk_rInv = static_cast<float>(iterL1Track->rInv());
+    float tmp_trk_tanL = static_cast<float>(iterL1Track->tanL());
+    float tmp_trk_MVA1 = static_cast<float>(iterL1Track->trkMVA1());
+    float tmp_trk_MVA2 = static_cast<float>(iterL1Track->trkMVA2());
+    float tmp_trk_MVA3 = static_cast<float>(iterL1Track->trkMVA3());
+
+    float tmp_trk_d0 = static_cast<float>(iterL1Track->d0());
+
     // if (L1Tk_nPar == 5) {
     //   float tmp_trk_x0   = iterL1Track->POCA().x();
     //   float tmp_trk_y0   = iterL1Track->POCA().y();
@@ -1068,9 +1141,9 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
 
     int tmp_trk_seed = 0;
     // if (SaveTracklet) tmp_trk_seed = (int) iterL1Track->trackSeedType();
-    
+
     unsigned int tmp_trk_phiSector = iterL1Track->phiSector();
-      
+
       /*
       int tmp_trk_nPSstub = 0;
       if (SaveTracklet) {
@@ -1091,21 +1164,21 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
     //float tmp_trk_bend_chi2 = 0;
     int tmp_trk_dhits=0;
     int tmp_trk_lhits=0;
-    
+
     // loop over stubs
     for (int is=0; is<tmp_trk_nstub; is++) {
 
       //detID of stub
       DetId detIdStub = theTrackerGeom->idToDet( (stubRefs.at(is)->clusterRef(0))->getDetId() )->geographicalId();
-      
+
       MeasurementPoint coords = stubRefs.at(is)->clusterRef(0)->findAverageLocalCoordinatesCentered();
       const GeomDet* theGeomDet = theTrackerGeom->idToDet(detIdStub);
       Global3DPoint posStub = theGeomDet->surface().toGlobal( theGeomDet->topology().localPosition(coords) );
-      
+
       double x=posStub.x();
       double y=posStub.y();
       double z=posStub.z();
-      
+
       int isBarrel = 0;
       int layer=-999999;
       if ( detIdStub.subdetId()==StripSubdetector::TOB ) {
@@ -1125,7 +1198,7 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
       m_stub_y->push_back(y);
       m_stub_z->push_back(z);
       m_stub_isBarrel->push_back(isBarrel);
-      m_stub_layer->push_back(layer);        
+      m_stub_layer->push_back(layer);
     }//end loop over stubs
 
     int tmp_trk_genuine = 0;
@@ -1150,6 +1223,11 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
   m_trk_phi->push_back(tmp_trk_phi);
   m_trk_z0 ->push_back(tmp_trk_z0);
   m_trk_d0->push_back(tmp_trk_d0);
+  m_trk_rInv.push_back(tmp_trk_rInv);
+  m_trk_tanL.push_back(tmp_trk_tanL);
+  m_trk_MVA1.push_back(tmp_trk_MVA1);
+  m_trk_MVA2.push_back(tmp_trk_MVA2);
+  m_trk_MVA3.push_back(tmp_trk_MVA3);
   m_trk_chi2 ->push_back(tmp_trk_chi2);
   m_trk_bendchi2 ->push_back(tmp_trk_bendchi2);
   m_trk_nstub->push_back(tmp_trk_nstub);
@@ -1162,28 +1240,32 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
   m_trk_unknown->push_back(tmp_trk_unknown);
   m_trk_combinatoric->push_back(tmp_trk_combinatoric);
 
+  MuonHLTobjCorrelator::L1TTTrack theTrack( *iterL1Track );
+
+  mTTTrackMap.insert( make_pair(theTrack, static_cast<unsigned int>(this_l1track)) );
+
   // ----------------------------------------------------------------------------------------------
   // for studying the fake rate
   // ----------------------------------------------------------------------------------------------
 
   edm::Ptr< TrackingParticle > my_tp = MCTruthTTTrackHandle->findTrackingParticlePtr(l1track_ptr);
-  
+
   int myFake = 0;
-  
+
   int myTP_pdgid = -999;
   float myTP_pt = -999;
   float myTP_eta = -999;
   float myTP_phi = -999;
   float myTP_z0 = -999;
   float myTP_dxy = -999;
-  
+
   if (my_tp.isNull()) myFake = 0;
   else {
   int tmp_eventid = my_tp->eventId().event();
-  
+
   if (tmp_eventid > 0) myFake = 2;
   else myFake = 1;
-  
+
   myTP_pdgid = my_tp->pdgId();
   myTP_pt = my_tp->p4().pt();
   myTP_eta = my_tp->p4().eta();
@@ -1209,27 +1291,63 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
   m_trk_matchtp_phi->push_back(myTP_phi);
   m_trk_matchtp_z0->push_back(myTP_z0);
   m_trk_matchtp_dxy->push_back(myTP_dxy);
+
+  this_l1track++;
     }//l1 track loop
   }//save all tracks
 
   edm::Handle<l1t::TkMuonCollection> TkMuon;
   iEvent.getByToken(TkMuonToken_,TkMuon);
   for(auto Tkmu=TkMuon->begin(); Tkmu!=TkMuon->end(); ++Tkmu)
-  { 
+  {
     // https://github.com/cms-sw/cmssw/blob/09b17fcfb3900782ab78ad6e0c76e1957c94ff71/DataFormats/L1TCorrelator/interface/TkMuon.h
     // https://github.com/cms-sw/cmssw/blob/2ee90040994dde0e6a4fe686de614b09916bd80a/DataFormats/L1TrackTrigger/interface/TTTrack.h
     // cout<< "phi"<<Tkmu->trkPtr()->phi()<<endl;
     // cout<< "eta"<<Tkmu->trkPtr()->eta()<<endl;
     // cout<< "z0"<<Tkmu->trkPtr()->z0()<<endl;
+
+    // l1TkMuon
+    mL1TkMu_pt.push_back( Tkmu->pt() );
+    mL1TkMu_eta.push_back( Tkmu->eta() );
+    mL1TkMu_phi.push_back( Tkmu->phi() );
+
+    mL1TkMu_trkIsol.push_back( Tkmu->trkIsol() );
+    mL1TkMu_trkzVtx.push_back( Tkmu->trkzVtx() );
+    mL1TkMu_dR.push_back( Tkmu->dR() );
+
+    mL1TkMu_nTracksMatched.push_back( Tkmu->nTracksMatched() );
+    mL1TkMu_trackCurvature.push_back( Tkmu->trackCurvature() );
+
+    mL1TkMu_quality.push_back( Tkmu->quality() );
+    mL1TkMu_pattern.push_back( Tkmu->pattern() );
+    mL1TkMu_muonDetector.push_back( Tkmu->muonDetector() );
+
+    if (Tkmu->muRef().isNonnull()) {
+      auto regionalCandidate = Tkmu->muRef().get();
+      mL1TkMu_muRefHwPt.push_back( static_cast<float>(regionalCandidate->hwPt())*0.5 );
+      mL1TkMu_muRefHwDXY.push_back( regionalCandidate->hwDXY() ); // 4 bit information, don't know how to decode
+      mL1TkMu_muRefHwEta.push_back( static_cast<float>(regionalCandidate->hwEta())*0.010875 );
+      mL1TkMu_muRefHwPhi.push_back( static_cast<float>(regionalCandidate->hwPhi())*2.*M_PI/576. );
+      mL1TkMu_muRefHwSign.push_back( ( regionalCandidate->hwSign()%2==0 ) ? 1 : -1 );
+      mL1TkMu_muRefHwSignValid.push_back( regionalCandidate->hwSignValid() );
+      mL1TkMu_muRefHwQual.push_back( regionalCandidate->hwQual() );
+    }
+
+    auto theTTTrack = Tkmu->trkPtr();
+    MuonHLTobjCorrelator::L1TTTrack theTTTrackTmp( *theTTTrack );
+
+    std::map<MuonHLTobjCorrelator::L1TTTrack,unsigned int>::const_iterator where = mTTTrackMap.find(theTTTrackTmp);
+    int linkNo = (where==mTTTrackMap.end()) ? -1 : static_cast<int>(mTTTrackMap[theTTTrackTmp]);
+    mL1TkMu_TTTpointer.push_back( linkNo );
   }
 
   edm::Handle<std::vector<l1t::TkPrimaryVertex> > l1TkPrimaryVertex;
   iEvent.getByToken(l1TkPrimaryVertexToken_,l1TkPrimaryVertex);
   for(auto Tkvtx=l1TkPrimaryVertex->begin(); Tkvtx!=l1TkPrimaryVertex->end(); ++Tkvtx)
-  { 
+  {
     // https://github.com/cms-sw/cmssw/blob/09b17fcfb3900782ab78ad6e0c76e1957c94ff71/DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h
     // cout<< "zvertex"<<Tkvtx->zvertex()<<endl;
-  }  
+  }
 }
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
@@ -1523,6 +1641,9 @@ void MuonHLTNtupler::Fill_L1Muon(const edm::Event &iEvent)
         L1Muon_charge_[_nL1Muon]  = ref_L1Mu->charge();
         L1Muon_quality_[_nL1Muon] = ref_L1Mu->hwQual();
 
+        L1Muon_etaAtVtx_[_nL1Muon] = ref_L1Mu->etaAtVtx();
+        L1Muon_phiAtVtx_[_nL1Muon] = ref_L1Mu->phiAtVtx();
+
         _nL1Muon++;
       }
     }
@@ -1789,7 +1910,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
         // MuonIterNoIdSeedMap.insert(make_pair(tsod,i));
       }
       else {
-        cout << "IterL3MuonNoID: innerTrk.isNonnull(): this should never happen" << endl;
+        // cout << "IterL3MuonNoID: innerTrk.isNonnull(): this should never happen" << endl;
         tmpTrk trkTmp( -99999. );  // dummy tmpTrk
         iterL3NoIDpassed.push_back(trkTmp);
       }
