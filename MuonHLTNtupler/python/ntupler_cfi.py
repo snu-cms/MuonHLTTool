@@ -30,6 +30,7 @@ ntuplerBase = cms.EDAnalyzer("MuonHLTNtupler",
 	hltIterL3MuonTrimmedPixelVertices                 = cms.untracked.InputTag("hltIterL3MuonTrimmedPixelVertices",                   "", "MYHLT"),
 	hltIterL3FromL1MuonTrimmedPixelVertices           = cms.untracked.InputTag("hltIterL3FromL1MuonTrimmedPixelVertices",             "", "MYHLT"),
 
+	doMVA  = cms.bool(True),
 	doSeed = cms.bool(True),
 
 	hltIterL3OISeedsFromL2Muons                       = cms.untracked.InputTag("hltIterL3OISeedsFromL2Muons",                         "", "MYHLT"),

@@ -70,6 +70,7 @@ using namespace edm;
 
 
 MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
+doMVA(iConfig.getParameter<bool>("doMVA")),
 doSeed(iConfig.getParameter<bool>("doSeed")),
 DebugMode(iConfig.getParameter<bool>("DebugMode")),
 SaveAllTracks(iConfig.getParameter<bool>("SaveAllTracks")),
@@ -1332,6 +1333,15 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
       mL1TkMu_muRefHwSignValid.push_back( regionalCandidate->hwSignValid() );
       mL1TkMu_muRefHwQual.push_back( regionalCandidate->hwQual() );
     }
+    else {
+      mL1TkMu_muRefHwPt.push_back( -99999. );
+      mL1TkMu_muRefHwDXY.push_back( -99999 );
+      mL1TkMu_muRefHwEta.push_back( -99999. );
+      mL1TkMu_muRefHwPhi.push_back( -99999. );
+      mL1TkMu_muRefHwSign.push_back( -99999 );
+      mL1TkMu_muRefHwSignValid.push_back( -99999 );
+      mL1TkMu_muRefHwQual.push_back( -99999 );
+    }
 
     auto theTTTrack = Tkmu->trkPtr();
     MuonHLTobjCorrelator::L1TTTrack theTTTrackTmp( *theTTTrack );
@@ -2181,7 +2191,7 @@ void MuonHLTNtupler::fill_trackTemplate(
         TTtrack->fillmatchedTPsize(0);
       }
 
-      if( hasL1 && hasL2 && hasL1TkMu ) {
+      if( doMVA && hasL1 && hasL2 && hasL1TkMu ) {
         const TrajectorySeed seed = *(trkHandle->at(i).seedRef());
         GlobalVector global_p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
         GlobalPoint  global_x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
