@@ -2208,7 +2208,7 @@ void MuonHLTNtupler::fill_trackTemplate(
         TTtrack->fillMva( mva[0], mva[1], mva[2], mva[3] );
       }
       else {
-        cout << "fill_trackTemplate: !(hasL1 && hasL2 && hasL1TkMu)" << endl;
+        // cout << "fill_trackTemplate: !(hasL1 && hasL2 && hasL1TkMu)" << endl;
         TTtrack->fillMva( -99999., -99999., -99999., -99999. );
       }
     }
