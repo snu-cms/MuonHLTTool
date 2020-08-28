@@ -4,7 +4,7 @@
 # process = customizerFuncForMuonHLTSeedNtupler(process, "MYHLT")
 
 import FWCore.ParameterSet.Config as cms
-from HLTrigger.MuonHLTSeedMVAClassifier.mvaScale import *
+# from HLTrigger.MuonHLTSeedMVAClassifier.mvaScale import *
 
 def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYSkim = False):
     if hasattr(process, "DQMOutput"):
