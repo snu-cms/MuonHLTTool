@@ -1,4 +1,4 @@
-# hltGetConfiguration /dev/CMSSW_11_0_0/GRun --globaltag 110X_mcRun3_2021_realistic_v6 --path HLTriggerFirstPath,HLT_Mu50_v*,HLTriggerFinalPath,HLTAnalyzerEndpath --input=file:/eos/cms/store/mc/Run3Winter20DRPremixMiniAOD/DYToLL_M-50_TuneCP5_14TeV-pythia8_HCAL/GEN-SIM-DIGI-RAW/110X_mcRun3_2021_realistic_v6-v1/20005/42D3D2A4-DD74-9946-94A2-4F577A18C425.root --process MYHLT --full --offline --mc --eras Run3 --prescale none --max-events 100 --output none
+# hltGetConfiguration /dev/CMSSW_11_0_0/GRun --globaltag 110X_mcRun3_2021_realistic_v6 --path HLTriggerFirstPath,HLT_Mu50_v*,HLTriggerFinalPath --input=file:/eos/cms/store/mc/Run3Winter20DRPremixMiniAOD/DYToLL_M-50_TuneCP5_14TeV-pythia8_HCAL/GEN-SIM-DIGI-RAW/110X_mcRun3_2021_realistic_v6-v1/20005/42D3D2A4-DD74-9946-94A2-4F577A18C425.root --process MYHLT --full --offline --mc --eras Run3 --prescale none --max-events 100 --output none
 
 # /dev/CMSSW_11_0_0/GRun/V13 (CMSSW_11_0_0)
 
@@ -9936,30 +9936,6 @@ process.hltTriggerSummaryAOD = cms.EDProducer( "TriggerSummaryProducerAOD",
 process.hltTriggerSummaryRAW = cms.EDProducer( "TriggerSummaryProducerRAW",
     processName = cms.string( "@" )
 )
-process.hltPreHLTAnalyzerEndpath = cms.EDFilter( "HLTPrescaler",
-    L1GtReadoutRecordTag = cms.InputTag( "hltGtStage2Digis" ),
-    offset = cms.uint32( 0 )
-)
-process.hltL1TGlobalSummary = cms.EDAnalyzer( "L1TGlobalSummary",
-    ExtInputTag = cms.InputTag( "hltGtStage2Digis" ),
-    MaxBx = cms.int32( 0 ),
-    DumpRecord = cms.bool( False ),
-    psFileName = cms.string( "prescale_L1TGlobal.csv" ),
-    ReadPrescalesFromFile = cms.bool( False ),
-    AlgInputTag = cms.InputTag( "hltGtStage2Digis" ),
-    MinBx = cms.int32( 0 ),
-    psColumn = cms.int32( 0 ),
-    DumpTrigSummary = cms.bool( True ),
-    DumpTrigResults = cms.bool( False )
-)
-process.hltTrigReport = cms.EDAnalyzer( "HLTrigReport",
-    ReferencePath = cms.untracked.string( "HLTriggerFinalPath" ),
-    ReferenceRate = cms.untracked.double( 100.0 ),
-    serviceBy = cms.untracked.string( "never" ),
-    resetBy = cms.untracked.string( "never" ),
-    reportBy = cms.untracked.string( "job" ),
-    HLTriggerResults = cms.InputTag( 'TriggerResults','','@currentProcess' )
-)
 
 process.HLTL1UnpackerSequence = cms.Sequence( process.hltGtStage2Digis + process.hltGtStage2ObjectMap )
 process.HLTBeamSpot = cms.Sequence( process.hltScalersRawToDigi + process.hltOnlineBeamSpot )
@@ -9993,10 +9969,9 @@ process.HLTEndSequence = cms.Sequence( process.hltBoolEnd )
 process.HLTriggerFirstPath = cms.Path( process.hltGetConditions + process.hltGetRaw + process.hltBoolFalse )
 process.HLT_Mu50_v13 = cms.Path( process.HLTBeginSequence + process.hltL1sSingleMu22or25 + process.hltPreMu50 + process.hltL1fL1sMu22or25L1Filtered0 + process.HLTL2muonrecoSequence + cms.ignore(process.hltL2fL1sMu22or25L1f0L2Filtered10Q) + process.HLTL3muonrecoSequence + cms.ignore(process.hltL1fForIterL3L1fL1sMu22or25L1Filtered0) + process.hltL3fL1sMu22Or25L1f0L2f10QL3Filtered50Q + process.HLTEndSequence )
 process.HLTriggerFinalPath = cms.Path( process.hltGtStage2Digis + process.hltScalersRawToDigi + process.hltFEDSelector + process.hltTriggerSummaryAOD + process.hltTriggerSummaryRAW + process.hltBoolFalse )
-process.HLTAnalyzerEndpath = cms.EndPath( process.hltGtStage2Digis + process.hltPreHLTAnalyzerEndpath + process.hltL1TGlobalSummary + process.hltTrigReport )
 
 
-process.HLTSchedule = cms.Schedule( *(process.HLTriggerFirstPath, process.HLT_Mu50_v13, process.HLTriggerFinalPath, process.HLTAnalyzerEndpath ))
+process.HLTSchedule = cms.Schedule( *(process.HLTriggerFirstPath, process.HLT_Mu50_v13, process.HLTriggerFinalPath ))
 
 
 process.source = cms.Source( "PoolSource",
@@ -10075,3 +10050,4 @@ process = customizerFuncForMuonHLTNtupler(process, "MYHLT", skimDY)
 from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTSeedNtupler import *
 process = customizerFuncForMuonHLTSeedNtupler(process, "MYHLT", skimDY)
 # -- #
+
