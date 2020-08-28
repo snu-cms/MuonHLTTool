@@ -395,6 +395,7 @@ void MuonHLTNtupler::beginJob()
   ntuple_ = fs->make<TTree>("ntuple","ntuple");
 
   // initilize
+  /*
   m_trk_pt    = new std::vector<float>;
   m_trk_eta   = new std::vector<float>;
   m_trk_phi   = new std::vector<float>;
@@ -424,6 +425,7 @@ void MuonHLTNtupler::beginJob()
   m_stub_z = new std::vector<float>;
   m_stub_isBarrel = new std::vector<int>;
   m_stub_layer    = new std::vector<int>;
+  */
 
   Make_Branch();
 }
@@ -796,6 +798,7 @@ void MuonHLTNtupler::Init()
 
 void MuonHLTNtupler::Make_Branch()
 {
+  /*
   if (SaveAllTracks){
   ntuple_->Branch("trk_pt",    &m_trk_pt);
   ntuple_->Branch("trk_eta",   &m_trk_eta);
@@ -858,6 +861,7 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("L1TkMu_muRefHwSignValid", &mL1TkMu_muRefHwSignValid);
   ntuple_->Branch("L1TkMu_muRefHwQual", &mL1TkMu_muRefHwQual);
   }
+  */
 
   ntuple_->Branch("isRealData", &isRealData_, "isRealData/O"); // -- O: boolean -- //
   ntuple_->Branch("runNum",&runNum_,"runNum/I");
@@ -2191,6 +2195,7 @@ void MuonHLTNtupler::fill_trackTemplate(
         TTtrack->fillmatchedTPsize(0);
       }
 
+      /*
       if( doMVA && hasL1 && hasL2 && hasL1TkMu ) {
         const TrajectorySeed seed = *(trkHandle->at(i).seedRef());
         GlobalVector global_p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
@@ -2212,6 +2217,7 @@ void MuonHLTNtupler::fill_trackTemplate(
         TTtrack->fillMva( -99999., -99999., -99999., -99999. );
       }
     }
+    */
   }
 }
 

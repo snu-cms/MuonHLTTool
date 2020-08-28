@@ -1273,6 +1273,7 @@ private:
   // pairSeedMvaEstimator mvaHltIter2IterL3FromL1MuonPixelSeeds_;
   // pairSeedMvaEstimator mvaHltIter3IterL3FromL1MuonPixelSeeds_;
 
+  /*
   vector<float> getSeedMva(
     pairSeedMvaEstimator pairMvaEstimator,
     const TrajectorySeed& seed,
@@ -1315,4 +1316,5 @@ private:
 
     return v_mva;
   }
+  */
 };
