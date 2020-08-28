@@ -804,8 +804,8 @@ private:
     std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack);
 
   void fill_seedTemplate(
-    const edm::Event &,e
-    dm::EDGetTokenT<TrajectorySeedCollection>&,
+    const edm::Event &,
+    edm::EDGetTokenT<TrajectorySeedCollection>&,
     // pairSeedMvaEstimator,
     edm::ESHandle<TrackerGeometry>&,
     std::map<tmpTSOD,unsigned int>&,

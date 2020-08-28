@@ -92,7 +92,7 @@
 
 // #include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
 
-#include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTobjCorrelator.h"
+// #include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTobjCorrelator.h"
 
 #include "TTree.h"
 #include "TString.h"

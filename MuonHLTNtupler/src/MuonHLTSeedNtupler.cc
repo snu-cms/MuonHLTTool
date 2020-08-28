@@ -481,7 +481,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
   // pairSeedMvaEstimator pairMvaEstimator,
   edm::ESHandle<TrackerGeometry>& tracker,
   std::map<tmpTSOD,unsigned int>& trkMap,
-  trkTemplate* TTtrack, =
+  trkTemplate* TTtrack,
   TTree* NT,
   int &nSeed
 ) {
