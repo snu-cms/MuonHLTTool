@@ -42,7 +42,7 @@ config.Site.whitelist = ['T2_CH_CERN','T2_FR_*']
     """
 
     datasets = [
-        ("DYToLL_M50_PU200_110X",     "/DYToLL_M-50_TuneCP5_14TeV-pythia8_HCAL/Run3Winter20DRPremixMiniAOD-110X_mcRun3_2021_realistic_v6-v1/GEN-SIM-DIGI-RAW")
+        ("DYToLL_M50_110X", "/DYToLL_M-50_TuneCP5_14TeV-pythia8_HCAL/Run3Winter20DRPremixMiniAOD-110X_mcRun3_2021_realistic_v6-v1/GEN-SIM-DIGI-RAW")
     ]
 
     HLT_menus = [
