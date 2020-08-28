@@ -27,6 +27,7 @@ config.JobType.psetName = '%(menu)s'
 
 config.Data.inputDataset = '%(datasetPath)s'
 # config.Data.useParent = True
+config.Data.allowNonValidInputDataset = True
 
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'Automatic'
@@ -41,42 +42,17 @@ config.Site.whitelist = ['T2_CH_CERN','T2_FR_*']
     """
 
     datasets = [
-        # ("DYToLL_M50_PU200_110X",     "/DYToLL_M-50_TuneCP5_14TeV-pythia8/Phase2HLTTDRWinter20DIGI-PU200_pilot_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("DYToLL_M10to50_PU200_110X", "/DYJetsToLL_M-10to50_TuneCP5_14TeV-madgraphMLM-pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("WToLNu",                    "/WJetsToLNu_TuneCP5_14TeV-amcatnloFXFX-pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-
-        # ("TTToSemiLep",               "/TTToSemiLepton_TuneCP5_14TeV-powheg-pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("TTTo2L2Nu",                 "/TTTo2L2Nu_TuneCP5_14TeV-powheg-pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("TT",                        "/TT_TuneCP5_14TeV-powheg-pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-
-        # ("QCD_Pt30to50",   "/QCD_Pt_30to50_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt50to80",   "/QCD_Pt_50to80_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt80to120",  "/QCD_Pt_80to120_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt120to170", "/QCD_Pt_120to170_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt170to300", "/QCD_Pt_170to300_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt300to470", "/QCD_Pt_300to470_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt470to600", "/QCD_Pt_470to600_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt600toInf", "/QCD_Pt_600oInf_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-
-        # ("QCD_Pt15to20_MuEn",   "/QCD_Pt-15to20_MuEnrichedPt5_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v3/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt20to30_MuEn",   "/QCD_Pt-20to30_MuEnrichedPt5_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v3/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt30to50_MuEn",   "/QCD_Pt-30to50_MuEnrichedPt5_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt50to80_MuEn",   "/QCD_Pt-50to80_MuEnrichedPt5_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt80to120_MuEn",  "/QCD_Pt-80to120_MuEnrichedPt5_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt120to170_MuEn", "/QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt170to300_MuEn", "/QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v2/GEN-SIM-DIGI-RAW"),
-        # ("QCD_Pt300toInf_MuEn", "/QCD_Pt-300toInf_MuEnrichedPt5_TuneCP5_14TeV_pythia8/Phase2HLTTDRWinter20DIGI-PU200_110X_mcRun4_realistic_v3-v3/GEN-SIM-DIGI-RAW")
+        ("DYToLL_M50_PU200_110X",     "/DYToLL_M-50_TuneCP5_14TeV-pythia8_HCAL/Run3Winter20DRPremixMiniAOD-110X_mcRun3_2021_realistic_v6-v1/GEN-SIM-DIGI-RAW")
     ]
 
     HLT_menus = [
-        "HLT_MC_Mu.py",
+        "HLT_MC_Run3.py",
     ]
 
     # proxy = '"/tmp/x509up_u95096"'
 
     for menu in HLT_menus:
-        # menuTag = menu.replace(".py", "").replace("HLT_Phase2D49_", "")
-        menuTag = "HLT2018"
+        menuTag = 'HLTRun3'  # menu.replace(".py", "").replace("HLT_MC_", "")
 
         for datasetTag, datasetPath in datasets:
 
