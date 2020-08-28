@@ -192,13 +192,11 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     # process.ntupler.TkMuonToken = cms.InputTag("L1TkMuons","")
     # process.ntupler.l1TkPrimaryVertex = cms.InputTag("L1TkPrimaryVertex","")
 
-    # if doDYSkim:
-    #     from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
-    #     process.Skimmer = DYmuSkimmer.clone()
-    #     process.mypath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
-    # else:
-    #     process.mypath = cms.Path(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
-
-    process.mypath = cms.EndPath(process.ntupler)
+    if doDYSkim:
+        from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
+        process.Skimmer = DYmuSkimmer.clone()
+        process.mypath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+    else:
+        process.mypath = cms.Path(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
 
     return process
