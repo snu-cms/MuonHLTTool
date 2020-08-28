@@ -2148,14 +2148,14 @@ void MuonHLTNtupler::fill_trackTemplate(
   trkTemplate* TTtrack
 ) {
 
-  edm::Handle<l1t::MuonBxCollection> h_L1Muon;
-  bool hasL1 = iEvent.getByToken( t_L1Muon_, h_L1Muon);
+  // edm::Handle<l1t::MuonBxCollection> h_L1Muon;
+  // bool hasL1 = iEvent.getByToken( t_L1Muon_, h_L1Muon);
 
-  edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon;
-  bool hasL2 = iEvent.getByToken( t_L2Muon_, h_L2Muon );
+  // edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon;
+  // bool hasL2 = iEvent.getByToken( t_L2Muon_, h_L2Muon );
 
-  edm::Handle<l1t::TkMuonCollection> h_L1TkMu;
-  bool hasL1TkMu = iEvent.getByToken( TkMuonToken_, h_L1TkMu);
+  // edm::Handle<l1t::TkMuonCollection> h_L1TkMu;
+  // bool hasL1TkMu = iEvent.getByToken( TkMuonToken_, h_L1TkMu);
 
   edm::Handle<edm::View<reco::Track>> trkHandle;
   if( iEvent.getByToken( theToken, trkHandle ) )
@@ -2216,8 +2216,8 @@ void MuonHLTNtupler::fill_trackTemplate(
         // cout << "fill_trackTemplate: !(hasL1 && hasL2 && hasL1TkMu)" << endl;
         TTtrack->fillMva( -99999., -99999., -99999., -99999. );
       }
+      */
     }
-    */
   }
 }
 
