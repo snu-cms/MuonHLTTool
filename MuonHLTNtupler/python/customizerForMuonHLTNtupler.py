@@ -195,8 +195,8 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     if doDYSkim:
         from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
         process.Skimmer = DYmuSkimmer.clone()
-        process.mypath = cms.Path(process.Skimmer*process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+        process.mypath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
     else:
-        process.mypath = cms.Path(process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+        process.mypath = cms.Path(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
 
     return process
