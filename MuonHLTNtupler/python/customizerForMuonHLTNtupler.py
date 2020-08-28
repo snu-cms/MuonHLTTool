@@ -19,7 +19,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
       pixelClusterSrc = "hltSiPixelClusters",
       stripClusterSrc = "hltSiStripRawToClustersFacility"
     )
-    process.hltTPClusterProducer.pixelSimLinkSrc = cms.InputTag("simSiPixelDigis","Pixel")
+    # process.hltTPClusterProducer.pixelSimLinkSrc = cms.InputTag("simSiPixelDigis","Pixel")
     process.hltTrackAssociatorByHits = SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi.quickTrackAssociatorByHits.clone()
     process.hltTrackAssociatorByHits.cluster2TPSrc            = cms.InputTag("hltTPClusterProducer")
     process.hltTrackAssociatorByHits.UseGrouped               = cms.bool( False )
@@ -69,14 +69,14 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     process.ntupler.hltIter2IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter2IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
     process.ntupler.hltIter3IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter3IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
 
-    process.ntupler.associatePixel = cms.bool(True)
-    process.ntupler.associateRecoTracks = cms.bool(False)
-    process.ntupler.associateStrip = cms.bool(True)
-    process.ntupler.pixelSimLinkSrc = cms.InputTag("simSiPixelDigis","Pixel")
-    process.ntupler.stripSimLinkSrc = cms.InputTag("simSiStripDigis")
-    process.ntupler.ROUList = cms.vstring('g4SimHitsTrackerHitsPixelBarrelLowTof', 'g4SimHitsTrackerHitsPixelBarrelHighTof', 'g4SimHitsTrackerHitsPixelEndcapLowTof', 'g4SimHitsTrackerHitsPixelEndcapHighTof')
-    process.ntupler.usePhase2Tracker = cms.bool(True)
-    process.ntupler.phase2TrackerSimLinkSrc = cms.InputTag("simSiPixelDigis","Tracker")
+    # process.ntupler.associatePixel = cms.bool(True)
+    # process.ntupler.associateRecoTracks = cms.bool(False)
+    # process.ntupler.associateStrip = cms.bool(True)
+    # process.ntupler.pixelSimLinkSrc = cms.InputTag("simSiPixelDigis","Pixel")
+    # process.ntupler.stripSimLinkSrc = cms.InputTag("simSiStripDigis")
+    # process.ntupler.ROUList = cms.vstring('g4SimHitsTrackerHitsPixelBarrelLowTof', 'g4SimHitsTrackerHitsPixelBarrelHighTof', 'g4SimHitsTrackerHitsPixelEndcapLowTof', 'g4SimHitsTrackerHitsPixelEndcapHighTof')
+    # process.ntupler.usePhase2Tracker = cms.bool(True)
+    # process.ntupler.phase2TrackerSimLinkSrc = cms.InputTag("simSiPixelDigis","Tracker")
 
     process.ntupler.associator = cms.untracked.InputTag("hltTrackAssociatorByHits")
     process.ntupler.trackingParticle = cms.untracked.InputTag("mix","MergedTrackTruth")

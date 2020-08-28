@@ -18,7 +18,7 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYS
       pixelClusterSrc = "hltSiPixelClusters",
       stripClusterSrc = "hltSiStripRawToClustersFacility"
     )
-    process.hltTPClusterProducer.pixelSimLinkSrc = cms.InputTag("simSiPixelDigis","Pixel")
+    # process.hltTPClusterProducer.pixelSimLinkSrc = cms.InputTag("simSiPixelDigis","Pixel")
     process.hltTrackAssociatorByHits = SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi.quickTrackAssociatorByHits.clone()
     process.hltTrackAssociatorByHits.cluster2TPSrc            = cms.InputTag("hltTPClusterProducer")
     process.hltTrackAssociatorByHits.UseGrouped               = cms.bool( False )
