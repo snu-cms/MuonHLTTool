@@ -81,7 +81,7 @@ DebugMode(iConfig.getParameter<bool>("DebugMode")),
 // TkMuonToken_         ( consumes<l1t::TkMuonCollection>          (iConfig.getParameter<edm::InputTag>("TkMuonToken"))),
 // l1TkPrimaryVertexToken_ (consumes< l1t::TkPrimaryVertexCollection> (iConfig.getParameter<edm::InputTag>("l1TkPrimaryVertex"))),
 
-trackerHitAssociatorConfig_(iConfig, consumesCollector()),
+// trackerHitAssociatorConfig_(iConfig, consumesCollector()),
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
 trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackingParticle"))),
 t_offlineMuon_       ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"       )) ),

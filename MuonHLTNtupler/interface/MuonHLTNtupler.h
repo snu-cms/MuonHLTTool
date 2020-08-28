@@ -144,7 +144,7 @@ private:
   // edm::EDGetTokenT<l1t::TkMuonCollection> TkMuonToken_;
   // edm::EDGetTokenT<l1t::TkPrimaryVertexCollection> l1TkPrimaryVertexToken_;
 
-  TrackerHitAssociator::Config trackerHitAssociatorConfig_;
+  // TrackerHitAssociator::Config trackerHitAssociatorConfig_;
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
   edm::EDGetTokenT<TrackingParticleCollection> trackingParticleToken;
 
