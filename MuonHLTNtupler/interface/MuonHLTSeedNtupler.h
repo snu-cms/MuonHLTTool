@@ -76,7 +76,7 @@
 #include "Geometry/CommonDetUnit/interface/GeomDet.h"
 
 // #include "Geometry/CommonTopologies/interface/PixelGeomDetUnit.h"
-#include "Geometry/CommonTopologies/interface/PixelGeomDetType.h"
+// #include "Geometry/CommonTopologies/interface/PixelGeomDetType.h"
 #include "Geometry/TrackerGeometryBuilder/interface/PixelTopologyBuilder.h"
 #include "Geometry/Records/interface/StackedTrackerGeometryRecord.h"
 
