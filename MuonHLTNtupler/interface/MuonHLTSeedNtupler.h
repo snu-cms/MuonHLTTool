@@ -34,10 +34,10 @@
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/Scalers/interface/LumiScalers.h"
 
-#include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
-#include "DataFormats/L1TrackTrigger/interface/TTCluster.h"
-#include "DataFormats/L1TrackTrigger/interface/TTStub.h"
-#include "DataFormats/L1TrackTrigger/interface/TTTrack.h"
+// #include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
+// #include "DataFormats/L1TrackTrigger/interface/TTCluster.h"
+// #include "DataFormats/L1TrackTrigger/interface/TTStub.h"
+// #include "DataFormats/L1TrackTrigger/interface/TTTrack.h"
 
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
@@ -84,14 +84,14 @@
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingVertex.h"
 #include "SimDataFormats/TrackingHit/interface/PSimHitContainer.h"
 #include "SimDataFormats/TrackingHit/interface/PSimHit.h"
-#include "SimTracker/TrackTriggerAssociation/interface/TTClusterAssociationMap.h"
-#include "SimTracker/TrackTriggerAssociation/interface/TTStubAssociationMap.h"
-#include "SimTracker/TrackTriggerAssociation/interface/TTTrackAssociationMap.h"
-#include "DataFormats/L1TCorrelator/interface/TkMuon.h"
-#include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
-#include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
+// #include "SimTracker/TrackTriggerAssociation/interface/TTClusterAssociationMap.h"
+// #include "SimTracker/TrackTriggerAssociation/interface/TTStubAssociationMap.h"
+// #include "SimTracker/TrackTriggerAssociation/interface/TTTrackAssociationMap.h"
+// #include "DataFormats/L1TCorrelator/interface/TkMuon.h"
+// #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
+// #include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
 
-#include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
+// #include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
 
 #include "TTree.h"
 #include "TString.h"
@@ -130,8 +130,8 @@ private:
   edm::EDGetTokenT< l1t::MuonBxCollection >                  t_L1Muon_;
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L2Muon_;
 
-  edm::EDGetTokenT<l1t::TkMuonCollection>                    t_L1TkMuon_;
-  edm::EDGetTokenT<l1t::TkPrimaryVertexCollection>           t_L1TkPrimaryVertex_;
+  // edm::EDGetTokenT<l1t::TkMuonCollection>                    t_L1TkMuon_;
+  // edm::EDGetTokenT<l1t::TkPrimaryVertexCollection>           t_L1TkPrimaryVertex_;
 
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIterL3OISeedsFromL2Muons_;
   edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_;
@@ -151,6 +151,7 @@ private:
 
   edm::EDGetTokenT< reco::GenParticleCollection >            t_genParticle_;
 
+  /*
   edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_0_;
   edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_1_;
   edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_2_;
@@ -247,6 +248,7 @@ private:
   pairSeedMvaEstimator mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
   pairSeedMvaEstimator mvaHltIter2IterL3FromL1MuonPixelSeeds_;
   pairSeedMvaEstimator mvaHltIter3IterL3FromL1MuonPixelSeeds_;
+  */
 
   TTree *NTEvent_;
   TTree *NThltIterL3OI_;
@@ -802,6 +804,13 @@ private:
     std::map<tmpTSOD,unsigned int>& trkMap, trkTemplate* TTtrack);
 
   void fill_seedTemplate(
-  const edm::Event &, edm::EDGetTokenT<TrajectorySeedCollection>&, pairSeedMvaEstimator,
-  edm::ESHandle<TrackerGeometry>&, std::map<tmpTSOD,unsigned int>&, trkTemplate*, TTree*, int &nSeed );
+    const edm::Event &,e
+    dm::EDGetTokenT<TrajectorySeedCollection>&,
+    // pairSeedMvaEstimator,
+    edm::ESHandle<TrackerGeometry>&,
+    std::map<tmpTSOD,unsigned int>&,
+    trkTemplate*,
+    TTree*,
+    int &nSeed
+  );
 };

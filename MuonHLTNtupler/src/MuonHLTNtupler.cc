@@ -73,13 +73,13 @@ MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
 doMVA(iConfig.getParameter<bool>("doMVA")),
 doSeed(iConfig.getParameter<bool>("doSeed")),
 DebugMode(iConfig.getParameter<bool>("DebugMode")),
-SaveAllTracks(iConfig.getParameter<bool>("SaveAllTracks")),
-SaveStubs(iConfig.getParameter<bool>("SaveStubs")),
-ttTrackToken_        ( consumes<std::vector<TTTrack<Ref_Phase2TrackerDigi_> > >(iConfig.getParameter<edm::InputTag>("L1TrackInputTag"     )) ),
-ttTrackMCTruthToken_ ( consumes< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > >(iConfig.getParameter<edm::InputTag>("MCTruthTrackInputTag"))),
-ttStubToken_         ( consumes< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > >(iConfig.getParameter<edm::InputTag>("L1StubInputTag"))),
-TkMuonToken_         ( consumes<l1t::TkMuonCollection>          (iConfig.getParameter<edm::InputTag>("TkMuonToken"))),
-l1TkPrimaryVertexToken_ (consumes< l1t::TkPrimaryVertexCollection> (iConfig.getParameter<edm::InputTag>("l1TkPrimaryVertex"))),
+// SaveAllTracks(iConfig.getParameter<bool>("SaveAllTracks")),
+// SaveStubs(iConfig.getParameter<bool>("SaveStubs")),
+// ttTrackToken_        ( consumes<std::vector<TTTrack<Ref_Phase2TrackerDigi_> > >(iConfig.getParameter<edm::InputTag>("L1TrackInputTag"     )) ),
+// ttTrackMCTruthToken_ ( consumes< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > >(iConfig.getParameter<edm::InputTag>("MCTruthTrackInputTag"))),
+// ttStubToken_         ( consumes< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > >(iConfig.getParameter<edm::InputTag>("L1StubInputTag"))),
+// TkMuonToken_         ( consumes<l1t::TkMuonCollection>          (iConfig.getParameter<edm::InputTag>("TkMuonToken"))),
+// l1TkPrimaryVertexToken_ (consumes< l1t::TkPrimaryVertexCollection> (iConfig.getParameter<edm::InputTag>("l1TkPrimaryVertex"))),
 
 trackerHitAssociatorConfig_(iConfig, consumesCollector()),
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
@@ -128,6 +128,7 @@ t_PUSummaryInfo_     ( consumes< std::vector<PileupSummaryInfo> >         (iConf
 t_genEventInfo_      ( consumes< GenEventInfoProduct >                    (iConfig.getUntrackedParameter<edm::InputTag>("genEventInfo"      )) ),
 t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) )
 {
+  /*
   mvaFileHltIterL3OISeedsFromL2Muons_B_0_                       = iConfig.getParameter<edm::FileInPath>("mvaFileHltIterL3OISeedsFromL2Muons_B_0");
   mvaFileHltIterL3OISeedsFromL2Muons_B_1_                       = iConfig.getParameter<edm::FileInPath>("mvaFileHltIterL3OISeedsFromL2Muons_B_1");
   mvaFileHltIterL3OISeedsFromL2Muons_B_2_                       = iConfig.getParameter<edm::FileInPath>("mvaFileHltIterL3OISeedsFromL2Muons_B_2");
@@ -213,6 +214,7 @@ t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConf
   mvaScaleStdHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_ =  iConfig.getParameter<std::vector<double>>("mvaScaleStdHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E");
   mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_ =                 iConfig.getParameter<std::vector<double>>("mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E");
   mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_E_ =                 iConfig.getParameter<std::vector<double>>("mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_E");
+  */
 }
 
 void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
@@ -298,7 +300,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   } // -- end of isMC -- //
 
   // -- fill each object
-  Fill_L1Track(iEvent, iSetup);
+  // Fill_L1Track(iEvent, iSetup);
   Fill_Muon(iEvent);
   Fill_HLT(iEvent, 0); // -- original HLT objects saved in data taking
   // Fill_HLT(iEvent, 1); // -- rerun objects
@@ -316,6 +318,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
 
 void MuonHLTNtupler::beginJob()
 {
+  /*
   mvaHltIterL3OISeedsFromL2Muons_ = {
     make_pair( new SeedMvaEstimator(mvaFileHltIterL3OISeedsFromL2Muons_B_0_, mvaScaleMeanHltIterL3OISeedsFromL2Muons_B_, mvaScaleStdHltIterL3OISeedsFromL2Muons_B_),
                new SeedMvaEstimator(mvaFileHltIterL3OISeedsFromL2Muons_E_0_, mvaScaleMeanHltIterL3OISeedsFromL2Muons_E_, mvaScaleStdHltIterL3OISeedsFromL2Muons_E_) ),
@@ -386,6 +389,7 @@ void MuonHLTNtupler::beginJob()
     make_pair( new SeedMvaEstimator(mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_3_, mvaScaleMeanHltIter3IterL3FromL1MuonPixelSeeds_B_, mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_B_),
                new SeedMvaEstimator(mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_3_, mvaScaleMeanHltIter3IterL3FromL1MuonPixelSeeds_E_, mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_E_) )
   };
+  */
 
   edm::Service<TFileService> fs;
   ntuple_ = fs->make<TTree>("ntuple","ntuple");
@@ -426,69 +430,69 @@ void MuonHLTNtupler::beginJob()
 
 void MuonHLTNtupler::Init()
 {
-  if (SaveAllTracks){
-  m_trk_pt->clear();
-  m_trk_eta->clear();
-  m_trk_phi->clear();
-  m_trk_d0->clear();
-  m_trk_z0->clear();
-  m_trk_rInv.clear();
-  m_trk_tanL.clear();
-  m_trk_MVA1.clear();
-  m_trk_MVA2.clear();
-  m_trk_MVA3.clear();
-  m_trk_chi2->clear();
-  m_trk_bendchi2->clear();
-  m_trk_nstub->clear();
-  m_trk_lhits->clear();
-  m_trk_dhits->clear();
-  m_trk_seed->clear();
-  m_trk_phiSector->clear();
-  m_trk_genuine->clear();
-  m_trk_loose->clear();
-  m_trk_unknown->clear();
-  m_trk_combinatoric->clear();
-  m_trk_fake->clear();
-  m_trk_matchtp_pdgid->clear();
-  m_trk_matchtp_pt->clear();
-  m_trk_matchtp_eta->clear();
-  m_trk_matchtp_phi->clear();
-  m_trk_matchtp_z0->clear();
-  m_trk_matchtp_dxy->clear();
+  // if (SaveAllTracks){
+  // m_trk_pt->clear();
+  // m_trk_eta->clear();
+  // m_trk_phi->clear();
+  // m_trk_d0->clear();
+  // m_trk_z0->clear();
+  // m_trk_rInv.clear();
+  // m_trk_tanL.clear();
+  // m_trk_MVA1.clear();
+  // m_trk_MVA2.clear();
+  // m_trk_MVA3.clear();
+  // m_trk_chi2->clear();
+  // m_trk_bendchi2->clear();
+  // m_trk_nstub->clear();
+  // m_trk_lhits->clear();
+  // m_trk_dhits->clear();
+  // m_trk_seed->clear();
+  // m_trk_phiSector->clear();
+  // m_trk_genuine->clear();
+  // m_trk_loose->clear();
+  // m_trk_unknown->clear();
+  // m_trk_combinatoric->clear();
+  // m_trk_fake->clear();
+  // m_trk_matchtp_pdgid->clear();
+  // m_trk_matchtp_pt->clear();
+  // m_trk_matchtp_eta->clear();
+  // m_trk_matchtp_phi->clear();
+  // m_trk_matchtp_z0->clear();
+  // m_trk_matchtp_dxy->clear();
 
-  m_stub_x->clear();
-  m_stub_y->clear();
-  m_stub_z->clear();
-  m_stub_isBarrel->clear();
-  m_stub_layer->clear();
+  // m_stub_x->clear();
+  // m_stub_y->clear();
+  // m_stub_z->clear();
+  // m_stub_isBarrel->clear();
+  // m_stub_layer->clear();
 
-  // l1TkMuon
-  mL1TkMu_pt.clear();
-  mL1TkMu_eta.clear();
-  mL1TkMu_phi.clear();
-  mL1TkMu_trkIsol.clear();
-  mL1TkMu_trkzVtx.clear();
-  mL1TkMu_dR.clear();
+  // // l1TkMuon
+  // mL1TkMu_pt.clear();
+  // mL1TkMu_eta.clear();
+  // mL1TkMu_phi.clear();
+  // mL1TkMu_trkIsol.clear();
+  // mL1TkMu_trkzVtx.clear();
+  // mL1TkMu_dR.clear();
 
-  mL1TkMu_nTracksMatched.clear();
-  mL1TkMu_trackCurvature.clear();
+  // mL1TkMu_nTracksMatched.clear();
+  // mL1TkMu_trackCurvature.clear();
 
-  mL1TkMu_quality.clear();
-  mL1TkMu_pattern.clear();
-  mL1TkMu_muonDetector.clear();
+  // mL1TkMu_quality.clear();
+  // mL1TkMu_pattern.clear();
+  // mL1TkMu_muonDetector.clear();
 
-  mL1TkMu_TTTpointer.clear();
+  // mL1TkMu_TTTpointer.clear();
 
-  mL1TkMu_muRefHwPt.clear();
-  mL1TkMu_muRefHwDXY.clear();
-  mL1TkMu_muRefHwEta.clear();
-  mL1TkMu_muRefHwPhi.clear();
-  mL1TkMu_muRefHwSign.clear();
-  mL1TkMu_muRefHwSignValid.clear();
-  mL1TkMu_muRefHwQual.clear();
+  // mL1TkMu_muRefHwPt.clear();
+  // mL1TkMu_muRefHwDXY.clear();
+  // mL1TkMu_muRefHwEta.clear();
+  // mL1TkMu_muRefHwPhi.clear();
+  // mL1TkMu_muRefHwSign.clear();
+  // mL1TkMu_muRefHwSignValid.clear();
+  // mL1TkMu_muRefHwQual.clear();
 
-  mTTTrackMap.clear();
-  }
+  // mTTTrackMap.clear();
+  // }
 
 
   isRealData_ = false;
@@ -1085,6 +1089,7 @@ void MuonHLTNtupler::Make_Branch()
   VThltIterL3FromL1MuonTrimmedPixelVertices->setBranch(ntuple_,"hltIterL3FromL1MuonTrimmedPixelVertices");
 }
 
+/*
 void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 {
   edm::Handle< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > TTTrackHandle;
@@ -1144,20 +1149,6 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
     // if (SaveTracklet) tmp_trk_seed = (int) iterL1Track->trackSeedType();
 
     unsigned int tmp_trk_phiSector = iterL1Track->phiSector();
-
-      /*
-      int tmp_trk_nPSstub = 0;
-      if (SaveTracklet) {
-  for (int is=0; is<tmp_trk_nstub; is++) {
-
-    DetId detIdStub = theTrackerGeom->idToDet( (stubRefs.at(is)->clusterRef(0))->getDetId() )->geographicalId();
-    DetId stackDetid = tTopo->stack(detIdStub);
-
-    bool isPS = (theTrackerGeom->getDetectorType(stackDetid)==TrackerGeometry::ModuleType::Ph2PSP);
-    if (isPS) tmp_trk_nPSstub++;
-  }
-      }
-      */
 
     // ----------------------------------------------------------------------------------------------
     // loop over stubs on tracks
@@ -1359,6 +1350,7 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
     // cout<< "zvertex"<<Tkvtx->zvertex()<<endl;
   }
 }
+*/
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
 {
@@ -1937,13 +1929,21 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
   edm::ESHandle<TrackerGeometry> tracker;
   iSetup.get<TrackerDigiGeometryRecord>().get(tracker);
 
-  fill_trackTemplate(iEvent, t_hltIterL3OIMuonTrack_,          theAssociator, TPCollection, tracker, mvaHltIterL3OISeedsFromL2Muons_,                       hltIterL3OIMuonTrackMap,         TThltIterL3OIMuonTrack);
-  fill_trackTemplate(iEvent, t_hltIter0IterL3MuonTrack_,       theAssociator, TPCollection, tracker, mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_,       hltIter0IterL3MuonTrackMap,      TThltIter0IterL3MuonTrack);
-  fill_trackTemplate(iEvent, t_hltIter2IterL3MuonTrack_,       theAssociator, TPCollection, tracker, mvaHltIter2IterL3MuonPixelSeeds_,                      hltIter2IterL3MuonTrackMap,      TThltIter2IterL3MuonTrack);
-  fill_trackTemplate(iEvent, t_hltIter3IterL3MuonTrack_,       theAssociator, TPCollection, tracker, mvaHltIter3IterL3MuonPixelSeeds_,                      hltIter3IterL3MuonTrackMap,      TThltIter3IterL3MuonTrack);
-  fill_trackTemplate(iEvent, t_hltIter0IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_, hltIter0IterL3FromL1MuonTrackMap,TThltIter0IterL3FromL1MuonTrack);
-  fill_trackTemplate(iEvent, t_hltIter2IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, mvaHltIter2IterL3FromL1MuonPixelSeeds_,                hltIter2IterL3FromL1MuonTrackMap,TThltIter2IterL3FromL1MuonTrack);
-  fill_trackTemplate(iEvent, t_hltIter3IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, mvaHltIter3IterL3FromL1MuonPixelSeeds_,                hltIter3IterL3FromL1MuonTrackMap,TThltIter3IterL3FromL1MuonTrack);
+  fill_trackTemplate(iEvent, t_hltIterL3OIMuonTrack_,          theAssociator, TPCollection, tracker,                       hltIterL3OIMuonTrackMap,         TThltIterL3OIMuonTrack);
+  fill_trackTemplate(iEvent, t_hltIter0IterL3MuonTrack_,       theAssociator, TPCollection, tracker,       hltIter0IterL3MuonTrackMap,      TThltIter0IterL3MuonTrack);
+  fill_trackTemplate(iEvent, t_hltIter2IterL3MuonTrack_,       theAssociator, TPCollection, tracker,                      hltIter2IterL3MuonTrackMap,      TThltIter2IterL3MuonTrack);
+  fill_trackTemplate(iEvent, t_hltIter3IterL3MuonTrack_,       theAssociator, TPCollection, tracker,                      hltIter3IterL3MuonTrackMap,      TThltIter3IterL3MuonTrack);
+  fill_trackTemplate(iEvent, t_hltIter0IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, hltIter0IterL3FromL1MuonTrackMap,TThltIter0IterL3FromL1MuonTrack);
+  fill_trackTemplate(iEvent, t_hltIter2IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker,                hltIter2IterL3FromL1MuonTrackMap,TThltIter2IterL3FromL1MuonTrack);
+  fill_trackTemplate(iEvent, t_hltIter3IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker,                hltIter3IterL3FromL1MuonTrackMap,TThltIter3IterL3FromL1MuonTrack);
+
+  // fill_trackTemplate(iEvent, t_hltIterL3OIMuonTrack_,          theAssociator, TPCollection, tracker, mvaHltIterL3OISeedsFromL2Muons_,                       hltIterL3OIMuonTrackMap,         TThltIterL3OIMuonTrack);
+  // fill_trackTemplate(iEvent, t_hltIter0IterL3MuonTrack_,       theAssociator, TPCollection, tracker, mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_,       hltIter0IterL3MuonTrackMap,      TThltIter0IterL3MuonTrack);
+  // fill_trackTemplate(iEvent, t_hltIter2IterL3MuonTrack_,       theAssociator, TPCollection, tracker, mvaHltIter2IterL3MuonPixelSeeds_,                      hltIter2IterL3MuonTrackMap,      TThltIter2IterL3MuonTrack);
+  // fill_trackTemplate(iEvent, t_hltIter3IterL3MuonTrack_,       theAssociator, TPCollection, tracker, mvaHltIter3IterL3MuonPixelSeeds_,                      hltIter3IterL3MuonTrackMap,      TThltIter3IterL3MuonTrack);
+  // fill_trackTemplate(iEvent, t_hltIter0IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_, hltIter0IterL3FromL1MuonTrackMap,TThltIter0IterL3FromL1MuonTrack);
+  // fill_trackTemplate(iEvent, t_hltIter2IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, mvaHltIter2IterL3FromL1MuonPixelSeeds_,                hltIter2IterL3FromL1MuonTrackMap,TThltIter2IterL3FromL1MuonTrack);
+  // fill_trackTemplate(iEvent, t_hltIter3IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, mvaHltIter3IterL3FromL1MuonPixelSeeds_,                hltIter3IterL3FromL1MuonTrackMap,TThltIter3IterL3FromL1MuonTrack);
 }
 
 void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &iSetup)
@@ -2139,7 +2139,7 @@ void MuonHLTNtupler::fill_trackTemplate(
   edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_,
   edm::Handle<TrackingParticleCollection>& TPCollection_,
   edm::ESHandle<TrackerGeometry>& tracker,
-  pairSeedMvaEstimator pairMvaEstimator,
+  // pairSeedMvaEstimator pairMvaEstimator,
   std::map<tmpTSOD,unsigned int>& trkMap,
   trkTemplate* TTtrack
 ) {
@@ -2246,22 +2246,22 @@ bool MuonHLTNtupler::isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex&
 }
 
 void MuonHLTNtupler::endJob() {
-  for( int i=0; i<4; ++i ) {
-    delete mvaHltIterL3OISeedsFromL2Muons_.at(i).first;
-    delete mvaHltIterL3OISeedsFromL2Muons_.at(i).second;
-    delete mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_.at(i).first;
-    delete mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_.at(i).second;
-    delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).first;
-    delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).second;
-    delete mvaHltIter3IterL3MuonPixelSeeds_.at(i).first;
-    delete mvaHltIter3IterL3MuonPixelSeeds_.at(i).second;
-    delete mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_.at(i).first;
-    delete mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_.at(i).second;
-    delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).first;
-    delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).second;
-    delete mvaHltIter3IterL3FromL1MuonPixelSeeds_.at(i).first;
-    delete mvaHltIter3IterL3FromL1MuonPixelSeeds_.at(i).second;
-  }
+  // for( int i=0; i<4; ++i ) {
+  //   delete mvaHltIterL3OISeedsFromL2Muons_.at(i).first;
+  //   delete mvaHltIterL3OISeedsFromL2Muons_.at(i).second;
+  //   delete mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_.at(i).first;
+  //   delete mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_.at(i).second;
+  //   delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).first;
+  //   delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).second;
+  //   delete mvaHltIter3IterL3MuonPixelSeeds_.at(i).first;
+  //   delete mvaHltIter3IterL3MuonPixelSeeds_.at(i).second;
+  //   delete mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_.at(i).first;
+  //   delete mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_.at(i).second;
+  //   delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).first;
+  //   delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).second;
+  //   delete mvaHltIter3IterL3FromL1MuonPixelSeeds_.at(i).first;
+  //   delete mvaHltIter3IterL3FromL1MuonPixelSeeds_.at(i).second;
+  // }
 }
 
 void MuonHLTNtupler::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}

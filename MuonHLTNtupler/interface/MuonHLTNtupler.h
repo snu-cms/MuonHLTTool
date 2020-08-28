@@ -33,10 +33,10 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/Scalers/interface/LumiScalers.h"
-#include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
-#include "DataFormats/L1TrackTrigger/interface/TTCluster.h"
-#include "DataFormats/L1TrackTrigger/interface/TTStub.h"
-#include "DataFormats/L1TrackTrigger/interface/TTTrack.h"
+// #include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
+// #include "DataFormats/L1TrackTrigger/interface/TTCluster.h"
+// #include "DataFormats/L1TrackTrigger/interface/TTStub.h"
+// #include "DataFormats/L1TrackTrigger/interface/TTTrack.h"
 
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
@@ -83,14 +83,14 @@
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingVertex.h"
 #include "SimDataFormats/TrackingHit/interface/PSimHitContainer.h"
 #include "SimDataFormats/TrackingHit/interface/PSimHit.h"
-#include "SimTracker/TrackTriggerAssociation/interface/TTClusterAssociationMap.h"
-#include "SimTracker/TrackTriggerAssociation/interface/TTStubAssociationMap.h"
-#include "SimTracker/TrackTriggerAssociation/interface/TTTrackAssociationMap.h"
-#include "DataFormats/L1TCorrelator/interface/TkMuon.h"
-#include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
-#include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
+// #include "SimTracker/TrackTriggerAssociation/interface/TTClusterAssociationMap.h"
+// #include "SimTracker/TrackTriggerAssociation/interface/TTStubAssociationMap.h"
+// #include "SimTracker/TrackTriggerAssociation/interface/TTTrackAssociationMap.h"
+// #include "DataFormats/L1TCorrelator/interface/TkMuon.h"
+// #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
+// #include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
 
-#include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
+// #include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
 
 #include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTobjCorrelator.h"
 
@@ -116,7 +116,7 @@ public:
 private:
   void Init();
   void Make_Branch();
-  void Fill_L1Track(const edm::Event &iEvent, const edm::EventSetup &iSetup);
+  // void Fill_L1Track(const edm::Event &iEvent, const edm::EventSetup &iSetup);
   void Fill_HLT(const edm::Event &iEvent, bool isMYHLT);
   void Fill_Muon(const edm::Event &iEvent);
   void Fill_HLTMuon(const edm::Event &iEvent);
@@ -135,14 +135,14 @@ private:
   bool doMVA;
   bool doSeed;
   bool DebugMode;
-  bool SaveAllTracks;   // store in ntuples not only truth-matched tracks but ALL tracks
-  bool SaveStubs;       // option to save also stubs in the ntuples (makes them large...)
+  // bool SaveAllTracks;   // store in ntuples not only truth-matched tracks but ALL tracks
+  // bool SaveStubs;       // option to save also stubs in the ntuples (makes them large...)
 
-  edm::EDGetTokenT< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > ttTrackToken_;
-  edm::EDGetTokenT< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > > ttTrackMCTruthToken_;
-  edm::EDGetTokenT< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > > ttStubToken_;
-  edm::EDGetTokenT<l1t::TkMuonCollection> TkMuonToken_;
-  edm::EDGetTokenT<l1t::TkPrimaryVertexCollection> l1TkPrimaryVertexToken_;
+  // edm::EDGetTokenT< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > ttTrackToken_;
+  // edm::EDGetTokenT< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > > ttTrackMCTruthToken_;
+  // edm::EDGetTokenT< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > > ttStubToken_;
+  // edm::EDGetTokenT<l1t::TkMuonCollection> TkMuonToken_;
+  // edm::EDGetTokenT<l1t::TkPrimaryVertexCollection> l1TkPrimaryVertexToken_;
 
   TrackerHitAssociator::Config trackerHitAssociatorConfig_;
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
@@ -192,7 +192,7 @@ private:
   edm::EDGetTokenT< GenEventInfoProduct >                    t_genEventInfo_;
   edm::EDGetTokenT< reco::GenParticleCollection >            t_genParticle_;
 
-  typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
+  // typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
 
   TTree *ntuple_;
   static const int arrSize_ = 5000;
@@ -261,67 +261,67 @@ private:
   vector< double > vec_myHLTObj_phi_;
 
   // all L1 tracks
-  vector<float>* m_trk_pt;
-  vector<float>* m_trk_eta;
-  vector<float>* m_trk_phi;
-  vector<float>* m_trk_d0;   // (filled if L1Tk_nPar==5, else 999)
-  vector<float>* m_trk_z0;
-  std::vector<float> m_trk_rInv;
-  std::vector<float> m_trk_tanL;
-  std::vector<float> m_trk_MVA1;
-  std::vector<float> m_trk_MVA2;
-  std::vector<float> m_trk_MVA3;
-  vector<float>* m_trk_chi2;
-  vector<float>* m_trk_bendchi2;
-  vector<int>*   m_trk_nstub;
-  vector<int>*   m_trk_lhits;
-  vector<int>*   m_trk_dhits;
-  vector<int>*   m_trk_seed;
-  vector<unsigned int>*   m_trk_phiSector;
-  vector<int>*   m_trk_genuine;
-  vector<int>*   m_trk_loose;
-  vector<int>*   m_trk_unknown;
-  vector<int>*   m_trk_combinatoric;
-  vector<int>*   m_trk_fake; //0 fake, 1 track from primary interaction, 2 secondary track
-  vector<int>*   m_trk_matchtp_pdgid;
-  vector<float>* m_trk_matchtp_pt;
-  vector<float>* m_trk_matchtp_eta;
-  vector<float>* m_trk_matchtp_phi;
-  vector<float>* m_trk_matchtp_z0;
-  vector<float>* m_trk_matchtp_dxy;
+  // vector<float>* m_trk_pt;
+  // vector<float>* m_trk_eta;
+  // vector<float>* m_trk_phi;
+  // vector<float>* m_trk_d0;   // (filled if L1Tk_nPar==5, else 999)
+  // vector<float>* m_trk_z0;
+  // std::vector<float> m_trk_rInv;
+  // std::vector<float> m_trk_tanL;
+  // std::vector<float> m_trk_MVA1;
+  // std::vector<float> m_trk_MVA2;
+  // std::vector<float> m_trk_MVA3;
+  // vector<float>* m_trk_chi2;
+  // vector<float>* m_trk_bendchi2;
+  // vector<int>*   m_trk_nstub;
+  // vector<int>*   m_trk_lhits;
+  // vector<int>*   m_trk_dhits;
+  // vector<int>*   m_trk_seed;
+  // vector<unsigned int>*   m_trk_phiSector;
+  // vector<int>*   m_trk_genuine;
+  // vector<int>*   m_trk_loose;
+  // vector<int>*   m_trk_unknown;
+  // vector<int>*   m_trk_combinatoric;
+  // vector<int>*   m_trk_fake; //0 fake, 1 track from primary interaction, 2 secondary track
+  // vector<int>*   m_trk_matchtp_pdgid;
+  // vector<float>* m_trk_matchtp_pt;
+  // vector<float>* m_trk_matchtp_eta;
+  // vector<float>* m_trk_matchtp_phi;
+  // vector<float>* m_trk_matchtp_z0;
+  // vector<float>* m_trk_matchtp_dxy;
 
-  vector<float>* m_stub_x;
-  vector<float>* m_stub_y;
-  vector<float>* m_stub_z;
-  vector<int>*   m_stub_isBarrel; // stub is in barrel (1) or in disk (0)
-  vector<int>*   m_stub_layer;
+  // vector<float>* m_stub_x;
+  // vector<float>* m_stub_y;
+  // vector<float>* m_stub_z;
+  // vector<int>*   m_stub_isBarrel; // stub is in barrel (1) or in disk (0)
+  // vector<int>*   m_stub_layer;
 
-  // l1TkMuon
-  std::vector<float> mL1TkMu_pt;
-  std::vector<float> mL1TkMu_eta;
-  std::vector<float> mL1TkMu_phi;
-  std::vector<float> mL1TkMu_trkIsol;
-  std::vector<float> mL1TkMu_trkzVtx;
-  std::vector<float> mL1TkMu_dR;
+  // // l1TkMuon
+  // std::vector<float> mL1TkMu_pt;
+  // std::vector<float> mL1TkMu_eta;
+  // std::vector<float> mL1TkMu_phi;
+  // std::vector<float> mL1TkMu_trkIsol;
+  // std::vector<float> mL1TkMu_trkzVtx;
+  // std::vector<float> mL1TkMu_dR;
 
-  std::vector<int> mL1TkMu_nTracksMatched;
-  std::vector<float> mL1TkMu_trackCurvature;
+  // std::vector<int> mL1TkMu_nTracksMatched;
+  // std::vector<float> mL1TkMu_trackCurvature;
 
-  std::vector<unsigned int> mL1TkMu_quality;
-  std::vector<unsigned int> mL1TkMu_pattern;
-  std::vector<unsigned int> mL1TkMu_muonDetector;
+  // std::vector<unsigned int> mL1TkMu_quality;
+  // std::vector<unsigned int> mL1TkMu_pattern;
+  // std::vector<unsigned int> mL1TkMu_muonDetector;
 
-  std::vector<int> mL1TkMu_TTTpointer;
+  // std::vector<int> mL1TkMu_TTTpointer;
 
-  std::vector<float> mL1TkMu_muRefHwPt;
-  std::vector<int> mL1TkMu_muRefHwDXY;
-  std::vector<float> mL1TkMu_muRefHwEta;
-  std::vector<float> mL1TkMu_muRefHwPhi;
-  std::vector<int> mL1TkMu_muRefHwSign;
-  std::vector<int> mL1TkMu_muRefHwSignValid;
-  std::vector<int> mL1TkMu_muRefHwQual;
+  // std::vector<float> mL1TkMu_muRefHwPt;
+  // std::vector<int> mL1TkMu_muRefHwDXY;
+  // std::vector<float> mL1TkMu_muRefHwEta;
+  // std::vector<float> mL1TkMu_muRefHwPhi;
+  // std::vector<int> mL1TkMu_muRefHwSign;
+  // std::vector<int> mL1TkMu_muRefHwSignValid;
+  // std::vector<int> mL1TkMu_muRefHwQual;
 
-  std::map<MuonHLTobjCorrelator::L1TTTrack,unsigned int> mTTTrackMap;
+  // std::map<MuonHLTobjCorrelator::L1TTTrack,unsigned int> mTTTrackMap;
 
   class tmpTSOD {
   private:
@@ -1168,7 +1168,7 @@ private:
     edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_,
     edm::Handle<TrackingParticleCollection>& TPCollection_,
     edm::ESHandle<TrackerGeometry>& tracker,
-    pairSeedMvaEstimator pairMvaEstimator,
+    // pairSeedMvaEstimator pairMvaEstimator,
     std::map<tmpTSOD,unsigned int>& trkMap,
     trkTemplate* TTtrack
   );
@@ -1176,6 +1176,7 @@ private:
   void Fill_TP( const edm::Event &iEvent, tpTemplate* TrkParticle );
 
   // -- seed MVA -- //
+  /*
   edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_0_;
   edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_1_;
   edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_2_;
@@ -1262,14 +1263,15 @@ private:
   std::vector<double> mvaScaleStdHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_;
   std::vector<double> mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_;
   std::vector<double> mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_E_;
+  */
 
-  pairSeedMvaEstimator mvaHltIterL3OISeedsFromL2Muons_;
-  pairSeedMvaEstimator mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_;
-  pairSeedMvaEstimator mvaHltIter2IterL3MuonPixelSeeds_;
-  pairSeedMvaEstimator mvaHltIter3IterL3MuonPixelSeeds_;
-  pairSeedMvaEstimator mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
-  pairSeedMvaEstimator mvaHltIter2IterL3FromL1MuonPixelSeeds_;
-  pairSeedMvaEstimator mvaHltIter3IterL3FromL1MuonPixelSeeds_;
+  // pairSeedMvaEstimator mvaHltIterL3OISeedsFromL2Muons_;
+  // pairSeedMvaEstimator mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_;
+  // pairSeedMvaEstimator mvaHltIter2IterL3MuonPixelSeeds_;
+  // pairSeedMvaEstimator mvaHltIter3IterL3MuonPixelSeeds_;
+  // pairSeedMvaEstimator mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
+  // pairSeedMvaEstimator mvaHltIter2IterL3FromL1MuonPixelSeeds_;
+  // pairSeedMvaEstimator mvaHltIter3IterL3FromL1MuonPixelSeeds_;
 
   vector<float> getSeedMva(
     pairSeedMvaEstimator pairMvaEstimator,
