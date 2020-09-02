@@ -33,10 +33,13 @@ private:
 
   TH1F *h_gen_pt;
   TH1F *h_gen_eta;
+  TH1F *h_gen_phi_abseta1p2;
   TH1F *h_gen_matL1TkMuon_pt;
   TH1F *h_gen_matL1TkMuon_eta;
+  TH1F *h_gen_matL1TkMuon_phi_abseta1p2;
   TH1F *h_gen_matL1TT_pt;
   TH1F *h_gen_matL1TT_eta;
+  TH1F *h_gen_matL1TT_phi_abseta1p2;
 };
 
 
@@ -49,12 +52,17 @@ GenMuAnalyzer::GenMuAnalyzer(const edm::ParameterSet& iConfig)
   edm::Service<TFileService> fs;
   TH1::SetDefaultSumw2(true);
 
-  h_gen_pt              = fs->make<TH1F>("h_gen_pt",  "", 1000, 0, 1000);
-  h_gen_eta             = fs->make<TH1F>("h_gen_eta", "", 60, -3, 3);
-  h_gen_matL1TkMuon_pt  = fs->make<TH1F>("h_gen_matL1TkMuon_pt",  "", 1000, 0, 1000);
-  h_gen_matL1TkMuon_eta = fs->make<TH1F>("h_gen_matL1TkMuon_eta", "", 60, -3, 3);
-  h_gen_matL1TT_pt      = fs->make<TH1F>("h_gen_matL1TT_pt",  "", 1000, 0, 1000);
-  h_gen_matL1TT_eta     = fs->make<TH1F>("h_gen_matL1TT_eta", "", 60, -3, 3);
+  h_gen_pt                        = fs->make<TH1F>("h_gen_pt",  "", 1000, 0, 1000);
+  h_gen_eta                       = fs->make<TH1F>("h_gen_eta", "", 60, -3, 3);
+  h_gen_phi_abseta1p2             = fs->make<TH1F>("h_gen_phi_abseta1p2", "", 60, -3.2, 3.2);
+
+  h_gen_matL1TkMuon_pt            = fs->make<TH1F>("h_gen_matL1TkMuon_pt",  "", 1000, 0, 1000);
+  h_gen_matL1TkMuon_eta           = fs->make<TH1F>("h_gen_matL1TkMuon_eta", "", 60, -3, 3);
+  h_gen_matL1TkMuon_phi_abseta1p2 = fs->make<TH1F>("h_gen_matL1TkMuon_phi_abseta1p2", "", 60, -3.2, 3.2);
+
+  h_gen_matL1TT_pt                = fs->make<TH1F>("h_gen_matL1TT_pt",  "", 1000, 0, 1000);
+  h_gen_matL1TT_eta               = fs->make<TH1F>("h_gen_matL1TT_eta", "", 60, -3, 3);
+  h_gen_matL1TT_phi_abseta1p2     = fs->make<TH1F>("h_gen_matL1TT_phi_abseta1p2", "", 60, -3.2, 3.2);
 }
 
 void GenMuAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&) {
@@ -78,7 +86,10 @@ void GenMuAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&) {
       if( fabs(genp->eta()) > 2.4 )  continue;
 
       h_gen_pt->Fill( genp->pt() );
-      if( genp->pt() > _pt_min )  h_gen_eta->Fill( genp->eta() );
+      if( genp->pt() > _pt_min )
+        h_gen_eta->Fill( genp->eta() );
+      if( genp->pt() > _pt_min && fabs(genp->eta()) > 1.2 )
+        h_gen_phi_abseta1p2->Fill( genp->phi() );
 
       bool L1TTmatched = false;
       for(auto itL1TT = h_L1TT->begin(); itL1TT != h_L1TT->end(); itL1TT++) {
@@ -89,7 +100,10 @@ void GenMuAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&) {
       }
       if( L1TTmatched ) {
         h_gen_matL1TT_pt->Fill( genp->pt() );
-        if( genp->pt() > _pt_min )  h_gen_matL1TT_eta->Fill( genp->eta() );
+        if( genp->pt() > _pt_min )
+          h_gen_matL1TT_eta->Fill( genp->eta() );
+        if( genp->pt() > _pt_min && fabs(genp->eta()) > 1.2 )
+          h_gen_matL1TT_phi_abseta1p2->Fill( genp->phi() );
       }
 
       bool L1TkMuonmatched = false;
@@ -101,7 +115,10 @@ void GenMuAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&) {
       }
       if( L1TkMuonmatched ) {
         h_gen_matL1TkMuon_pt->Fill( genp->pt() );
-        if( genp->pt() > _pt_min )  h_gen_matL1TkMuon_eta->Fill( genp->eta() );
+        if( genp->pt() > _pt_min )
+          h_gen_matL1TkMuon_eta->Fill( genp->eta() );
+        if( genp->pt() > _pt_min && fabs(genp->eta()) > 1.2 )
+          h_gen_matL1TkMuon_phi_abseta1p2->Fill( genp->phi() );
       }
 
     }
