@@ -179,8 +179,8 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults::HLT") # dummy to avoid ordering error occur in skimming, as it is not used at the moment
 
     # L1TRK_PROC  =  process.TTTracksFromTrackletEmulation
-    # L1TRK_NAME  = "TTTracksFromTrackletEmulation"
-    # L1TRK_LABEL = "Level1TTTracks"
+    L1TRK_NAME  = "TTTracksFromTrackletEmulation"
+    L1TRK_LABEL = "Level1TTTracks"
     # process.TTTrackAssociatorFromPixelDigis.TTTracks = cms.VInputTag( cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks") )
 
     process.ntupler.DebugMode = cms.bool(False)
