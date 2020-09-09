@@ -178,25 +178,28 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
 
     process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults::HLT") # dummy to avoid ordering error occur in skimming, as it is not used at the moment
 
-    L1TRK_PROC  =  process.TTTracksFromTrackletEmulation
-    L1TRK_NAME  = "TTTracksFromTrackletEmulation"
-    L1TRK_LABEL = "Level1TTTracks"
-    process.TTTrackAssociatorFromPixelDigis.TTTracks = cms.VInputTag( cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks") )
+    # L1TRK_PROC  =  process.TTTracksFromTrackletEmulation
+    # L1TRK_NAME  = "TTTracksFromTrackletEmulation"
+    # L1TRK_LABEL = "Level1TTTracks"
+    # process.TTTrackAssociatorFromPixelDigis.TTTracks = cms.VInputTag( cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks") )
 
     process.ntupler.DebugMode = cms.bool(False)
     process.ntupler.SaveAllTracks = cms.bool(True)
     process.ntupler.SaveStubs = cms.bool(False)
     process.ntupler.L1TrackInputTag = cms.InputTag(L1TRK_NAME, L1TRK_LABEL) # TTTrack input 
-    process.ntupler.MCTruthTrackInputTag = cms.InputTag("TTTrackAssociatorFromPixelDigis", L1TRK_LABEL)  ## MCTruth input
+    # process.ntupler.MCTruthTrackInputTag = cms.InputTag("TTTrackAssociatorFromPixelDigis", L1TRK_LABEL)  ## MCTruth input
     process.ntupler.L1StubInputTag = cms.InputTag("TTStubsFromPhase2TrackerDigis","StubAccepted")
-    process.ntupler.TkMuonToken = cms.InputTag("L1TkMuons","")
+    process.ntupler.TkMuonToken = cms.InputTag("L1TkMuons", "", newProcessName)
     process.ntupler.l1TkPrimaryVertex = cms.InputTag("L1TkPrimaryVertex","")
 
     if doDYSkim:
         from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
         process.Skimmer = DYmuSkimmer.clone()
-        process.mypath = cms.Path(process.Skimmer*process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+        process.mypath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+        # process.mypath = cms.Path(process.Skimmer*process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+
     else:
-        process.mypath = cms.Path(process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+        process.mypath = cms.Path(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
+        # process.mypath = cms.Path(process.TrackTriggerAssociatorTracks*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.ntupler)
 
     return process

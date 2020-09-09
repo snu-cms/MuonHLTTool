@@ -76,7 +76,7 @@ DebugMode(iConfig.getParameter<bool>("DebugMode")),
 SaveAllTracks(iConfig.getParameter<bool>("SaveAllTracks")),
 SaveStubs(iConfig.getParameter<bool>("SaveStubs")),
 ttTrackToken_        ( consumes<std::vector<TTTrack<Ref_Phase2TrackerDigi_> > >(iConfig.getParameter<edm::InputTag>("L1TrackInputTag"     )) ),
-ttTrackMCTruthToken_ ( consumes< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > >(iConfig.getParameter<edm::InputTag>("MCTruthTrackInputTag"))),
+// ttTrackMCTruthToken_ ( consumes< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > >(iConfig.getParameter<edm::InputTag>("MCTruthTrackInputTag"))),
 ttStubToken_         ( consumes< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > >(iConfig.getParameter<edm::InputTag>("L1StubInputTag"))),
 TkMuonToken_         ( consumes<l1t::TkMuonCollection>          (iConfig.getParameter<edm::InputTag>("TkMuonToken"))),
 l1TkPrimaryVertexToken_ (consumes< l1t::TkPrimaryVertexCollection> (iConfig.getParameter<edm::InputTag>("l1TkPrimaryVertex"))),
@@ -308,7 +308,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   if( doSeed )  Fill_Seed(iEvent, iSetup);
   if( !isRealData_ ) {
     Fill_GenParticle(iEvent);
-    Fill_TP(iEvent, TrkParticle);
+    // Fill_TP(iEvent, TrkParticle);
   }
 
   ntuple_->Fill();
@@ -1093,8 +1093,8 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
   edm::Handle< edmNew::DetSetVector< TTStub< Ref_Phase2TrackerDigi_ > > > TTStubHandle;
   if (SaveStubs) iEvent.getByToken(ttStubToken_, TTStubHandle);
 
-  edm::Handle< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > > MCTruthTTTrackHandle;
-  iEvent.getByToken(ttTrackMCTruthToken_, MCTruthTTTrackHandle);
+  // edm::Handle< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > > MCTruthTTTrackHandle;
+  // iEvent.getByToken(ttTrackMCTruthToken_, MCTruthTTTrackHandle);
 
   edm::ESHandle<TrackerGeometry> tGeomHandle;
   iSetup.get<TrackerDigiGeometryRecord>().get(tGeomHandle);
@@ -1206,10 +1206,10 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
     int tmp_trk_loose = 0;
     int tmp_trk_unknown = 0;
     int tmp_trk_combinatoric = 0;
-    if (MCTruthTTTrackHandle->isLooselyGenuine(l1track_ptr)) tmp_trk_loose = 1;
-    if (MCTruthTTTrackHandle->isGenuine(l1track_ptr)) tmp_trk_genuine = 1;
-    if (MCTruthTTTrackHandle->isUnknown(l1track_ptr)) tmp_trk_unknown = 1;
-    if (MCTruthTTTrackHandle->isCombinatoric(l1track_ptr)) tmp_trk_combinatoric = 1;
+    // if (MCTruthTTTrackHandle->isLooselyGenuine(l1track_ptr)) tmp_trk_loose = 1;
+    // if (MCTruthTTTrackHandle->isGenuine(l1track_ptr)) tmp_trk_genuine = 1;
+    // if (MCTruthTTTrackHandle->isUnknown(l1track_ptr)) tmp_trk_unknown = 1;
+    // if (MCTruthTTTrackHandle->isCombinatoric(l1track_ptr)) tmp_trk_combinatoric = 1;
 
     if (DebugMode) {
     cout << "L1 track, pt: " << tmp_trk_pt << " eta: " << tmp_trk_eta << " phi: " << tmp_trk_phi
@@ -1248,7 +1248,7 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
   // ----------------------------------------------------------------------------------------------
   // for studying the fake rate
   // ----------------------------------------------------------------------------------------------
-
+  /*
   edm::Ptr< TrackingParticle > my_tp = MCTruthTTTrackHandle->findTrackingParticlePtr(l1track_ptr);
 
   int myFake = 0;
@@ -1292,6 +1292,7 @@ void MuonHLTNtupler::Fill_L1Track(const edm::Event &iEvent, const edm::EventSetu
   m_trk_matchtp_phi->push_back(myTP_phi);
   m_trk_matchtp_z0->push_back(myTP_z0);
   m_trk_matchtp_dxy->push_back(myTP_dxy);
+  */
 
   this_l1track++;
     }//l1 track loop
