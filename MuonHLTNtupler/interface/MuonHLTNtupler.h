@@ -396,6 +396,12 @@ private:
   int muon_isHighPtNew_[arrSize_];
   int muon_isSoft_[arrSize_];
 
+  int muon_isLooseTriggerMuon_[arrSize_];
+  int muon_isME0Muon_[arrSize_];
+  int muon_isGEMMuon_[arrSize_];
+  int muon_isRPCMuon_[arrSize_];
+  int muon_isGoodMuon_TMOneStationTight_[arrSize_];
+
   double muon_iso03_sumPt_[arrSize_];
   double muon_iso03_hadEt_[arrSize_];
   double muon_iso03_emEt_[arrSize_];
@@ -436,6 +442,7 @@ private:
   int muon_nMatchedStation_[arrSize_];
   int muon_nMatchedRPCLayer_[arrSize_];
   int muon_stationMask_[arrSize_];
+  int muon_expectedNnumberOfMatchedStations_[arrSize_];
 
   std::map<tmpTSOD,unsigned int> MuonIterSeedMap;
   std::map<tmpTSOD,unsigned int> MuonIterNoIdSeedMap;

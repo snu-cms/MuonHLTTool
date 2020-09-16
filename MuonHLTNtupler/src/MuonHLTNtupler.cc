@@ -595,6 +595,12 @@ void MuonHLTNtupler::Init()
     muon_isHighPtNew_[i] = 0;
     muon_isSoft_[i] = 0;
 
+    muon_isLooseTriggerMuon_[i] = 0;
+    muon_isME0Muon_[i] = 0;
+    muon_isGEMMuon_[i] = 0;
+    muon_isRPCMuon_[i] = 0;
+    muon_isGoodMuon_TMOneStationTight_[i] = 0;
+
     muon_iso03_sumPt_[i] = -999;
     muon_iso03_hadEt_[i] = -999;
     muon_iso03_emEt_[i] = -999;
@@ -635,6 +641,7 @@ void MuonHLTNtupler::Init()
     muon_nMatchedStation_[i] = -999;
     muon_nMatchedRPCLayer_[i] = -999;
     muon_stationMask_[i] = -999;
+    muon_expectedNnumberOfMatchedStations_[i] = -999;
   }
 
   nL3Muon_ = 0;
@@ -932,6 +939,12 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_isHighPtNew", &muon_isHighPtNew_, "muon_isHighPtNew[nMuon]/I");
   ntuple_->Branch("muon_isSoft", &muon_isSoft_, "muon_isSoft[nMuon]/I");
 
+  ntuple_->Branch("muon_isLooseTriggerMuon", &muon_isLooseTriggerMuon_, "muon_isLooseTriggerMuon[nMuon]/I");
+  ntuple_->Branch("muon_isME0Muon", &muon_isME0Muon_, "muon_isME0Muon[nMuon]/I");
+  ntuple_->Branch("muon_isGEMMuon", &muon_isGEMMuon_, "muon_isGEMMuon[nMuon]/I");
+  ntuple_->Branch("muon_isRPCMuon", &muon_isRPCMuon_, "muon_isRPCMuon[nMuon]/I");
+  ntuple_->Branch("muon_isGoodMuon_TMOneStationTight", &muon_isGoodMuon_TMOneStationTight_, "muon_isGoodMuon_TMOneStationTight[nMuon]/I");
+
   ntuple_->Branch("muon_iso03_sumPt", &muon_iso03_sumPt_, "muon_iso03_sumPt[nMuon]/D");
   ntuple_->Branch("muon_iso03_hadEt", &muon_iso03_hadEt_, "muon_iso03_hadEt[nMuon]/D");
   ntuple_->Branch("muon_iso03_emEt", &muon_iso03_emEt_, "muon_iso03_emEt[nMuon]/D");
@@ -964,6 +977,7 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_nMatchedStation", &muon_nMatchedStation_, "muon_nMatchedStation[nMuon]/I");
   ntuple_->Branch("muon_nMatchedRPCLayer", &muon_nMatchedRPCLayer_, "muon_nMatchedRPCLayer[nMuon]/I");
   ntuple_->Branch("muon_stationMask", &muon_stationMask_, "muon_stationMask[nMuon]/I");
+  ntuple_->Branch("muon_expectedNnumberOfMatchedStations", &muon_expectedNnumberOfMatchedStations_, "muon_expectedNnumberOfMatchedStations[nMuon]/I");
 
   ntuple_->Branch("nL3Muon", &nL3Muon_, "nL3Muon/I");
   ntuple_->Branch("L3Muon_pt", &L3Muon_pt_, "L3Muon_pt[nL3Muon]/D");
@@ -1395,6 +1409,12 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       if( muon::isHighPtMuon( (*mu), pv ) ) muon_isHighPt_[_nMuon] = 1;
       if( isNewHighPtMuon( (*mu), pv ) )    muon_isHighPtNew_[_nMuon] = 1;
 
+      if( muon::isLooseTriggerMuon( (*mu) ) )                   muon_isLooseTriggerMuon_[_nMuon] = 1;
+      if( mu->isME0Muon() )                                     muon_isME0Muon_[_nMuon] = 1;
+      if( mu->isGEMMuon() )                                     muon_isGEMMuon_[_nMuon] = 1;
+      if( mu->isRPCMuon() )                                     muon_isRPCMuon_[_nMuon] = 1;
+      if( muon::isGoodMuon( (*mu), muon::TMOneStationTight ) )  muon_isGoodMuon_TMOneStationTight_[_nMuon] = 1;
+
       // -- bool muon::isSoftMuon(const reco::Muon& muon, const reco::Vertex& vtx, bool run2016_hip_mitigation)
       // -- it is different under CMSSW_8_0_29: bool muon::isSoftMuon(const reco::Muon& muon, const reco::Vertex& vtx)
       // -- Remove this part to avoid compile error (and soft muon would not be used for now) - need to be fixed at some point
@@ -1452,6 +1472,7 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       muon_nMatchedStation_[_nMuon] = mu->numberOfMatchedStations();
       muon_nMatchedRPCLayer_[_nMuon] = mu->numberOfMatchedRPCLayers();
       muon_stationMask_[_nMuon] = mu->stationMask();
+      muon_expectedNnumberOfMatchedStations_[_nMuon] = mu->expectedNnumberOfMatchedStations();
 
       _nMuon++;
     }
