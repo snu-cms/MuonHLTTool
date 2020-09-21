@@ -1273,8 +1273,6 @@ private:
   std::vector<double> mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_;
   // std::vector<double> mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_E_;
 
-  typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
-
   // pairSeedMvaEstimator mvaHltIterL3OISeedsFromL2Muons_;
   // pairSeedMvaEstimator mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_;
   pairSeedMvaEstimator mvaHltIter2IterL3MuonPixelSeeds_;
