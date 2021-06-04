@@ -33,6 +33,6 @@
 <!-- <use name="DataFormats/L1TCorrelator"/> -->
 <use name="TrackingTools/TrackAssociator"/>
 <use name="CommonTools/MVAUtils"/>
-<use name="HLTrigger/MuonHLTSeedMVAClassifier"/>
+<use name="RecoMuon/TrackerSeedGenerator"/>
 <!--   <flags   EDM_PLUGIN="1"/> -->
 <flags EDM_PLUGIN="1"/>
