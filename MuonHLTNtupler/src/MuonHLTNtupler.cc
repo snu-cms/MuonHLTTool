@@ -2205,10 +2205,11 @@ void MuonHLTNtupler::fill_trackTemplate(
 
   edm::Handle<l1t::MuonBxCollection> h_L1Muon;
   bool hasL1 = iEvent.getByToken( t_L1Muon_, h_L1Muon);
+  const l1t::MuonBxCollection l1Muons = *(h_L1Muon.product());
 
   edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon;
   bool hasL2 = iEvent.getByToken( t_L2Muon_, h_L2Muon );
-
+  const reco::RecoChargedCandidateCollection l2Muons = *(h_L2Muon.product());
   edm::Handle<edm::View<reco::Track>> trkHandle;
   if( iEvent.getByToken( theToken, trkHandle ) )
   {
@@ -2256,9 +2257,9 @@ void MuonHLTNtupler::fill_trackTemplate(
           pairMvaEstimator,
           seed,
           global_p,
-          h_L1Muon,
+          l1Muons,
 	  7,
-          h_L2Muon
+          l2Muons
         );
         //TTtrack->fillMva( mva[0], mva[1], mva[2], mva[3] );
         TTtrack->fillMva( mva[0], -99999., -99999., -99999. );

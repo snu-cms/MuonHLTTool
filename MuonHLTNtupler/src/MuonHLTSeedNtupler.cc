@@ -669,9 +669,11 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
 
   edm::Handle<l1t::MuonBxCollection> h_L1Muon;
   bool hasL1 = iEvent.getByToken(t_L1Muon_, h_L1Muon);
+  const l1t::MuonBxCollection l1Muons = *(h_L1Muon.product());
 
   edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon;
   bool hasL2 = iEvent.getByToken( t_L2Muon_, h_L2Muon );
+  const reco::RecoChargedCandidateCollection l2Muons = *(h_L2Muon.product());
 
   edm::Handle< TrajectorySeedCollection > seedHandle;
   if( iEvent.getByToken( theToken, seedHandle) )
@@ -709,9 +711,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
           double mva = pairMvaEstimator.at(ic).first->computeMva(
             seed,
             global_p,
-            h_L1Muon,
+            l1Muons,
 	    minL1Qual,
-            h_L2Muon,
+            l2Muons,
 	    isFromL1
           );
           v_mva.push_back( mva );
@@ -720,9 +722,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
           double mva = pairMvaEstimator.at(ic).second->computeMva(
             seed,
             global_p,
-            h_L1Muon,
+            l1Muons,
 	    minL1Qual,
-            h_L2Muon,
+            l2Muons,
 	    isFromL1
           );
           v_mva.push_back( mva );

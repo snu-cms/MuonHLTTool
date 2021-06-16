@@ -1293,9 +1293,9 @@ private:
     pairSeedMvaEstimator pairMvaEstimator,
     const TrajectorySeed& seed,
     GlobalVector global_p,
-    edm::Handle<l1t::MuonBxCollection> h_L1Muon,
+    const l1t::MuonBxCollection& l1Muons,
     int minL1Qual,
-    edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon
+    const reco::RecoChargedCandidateCollection& l2Muons
   ) {
     vector<double> v_mva = {};
 
@@ -1307,9 +1307,9 @@ private:
         double mva = pairMvaEstimator.at(ic).first->computeMva(
           seed,
           global_p,
-          h_L1Muon,
+          l1Muons,
 	  minL1Qual,
-          h_L2Muon,
+          l2Muons,
 	  isFromL1
         );
         v_mva.push_back( mva );
@@ -1318,9 +1318,9 @@ private:
         double mva = pairMvaEstimator.at(ic).second->computeMva(
           seed,
           global_p,
-          h_L1Muon,
+          l1Muons,
 	  minL1Qual,
-          h_L2Muon,
+          l2Muons,
 	  isFromL1
         );
         v_mva.push_back( mva );

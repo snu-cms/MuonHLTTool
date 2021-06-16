@@ -165,12 +165,12 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYS
         from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
         process.Skimmer = DYmuSkimmer.clone()
         if isDIGI:
-            process.myseedpath = cms.Path(process.Skimmer*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
+            process.myseedpath = cms.Path(process.Skimmer*process.HLTBeginSequence*process.HLTL2muonrecoSequence*process.HLTL3muonrecoSequence*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
         else:
             process.myseedpath = cms.Path(process.Skimmer*process.seedNtupler)
     else:
         if isDIGI:
-            process.myseedpath = cms.Path(process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
+            process.myseedpath = cms.Path(process.HLTBeginSequence*process.HLTL2muonrecoSequence*process.HLTL3muonrecoSequence*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
         else:
             process.myseedpath = cms.Path(process.seedNtupler)
 
