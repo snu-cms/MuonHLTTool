@@ -799,10 +799,7 @@ private:
     std::vector<double> bestMatchTP_sharedFraction;
     std::vector<int> matchedTPsize;
     std::vector<float> mva;
-    //std::vector<float> mva0;
-    //std::vector<float> mva1;
-    //std::vector<float> mva2;
-    //std::vector<float> mva3;
+
   public:
     void clear() {
       nTrks = 0;
@@ -828,10 +825,6 @@ private:
       bestMatchTP_sharedFraction.clear();
       matchedTPsize.clear();
       mva.clear();
-      //mva0.clear();
-      //mva1.clear();
-      //mva2.clear();
-      //mva3.clear();
 
       return;
     }
@@ -860,10 +853,6 @@ private:
       tmpntpl->Branch(name+"_bestMatchTP_sharedFraction", &bestMatchTP_sharedFraction);
       tmpntpl->Branch(name+"_matchedTPsize", &matchedTPsize);
       tmpntpl->Branch(name+"_mva", &mva);
-      //tmpntpl->Branch(name+"_mva0", &mva0);
-      //tmpntpl->Branch(name+"_mva1", &mva1);
-      //tmpntpl->Branch(name+"_mva2", &mva2);
-      //tmpntpl->Branch(name+"_mva3", &mva3);
 
       return;
     }
@@ -922,10 +911,6 @@ private:
     void fillMva( float mva0_, float mva1_, float mva2_, float mva3_ ) {
       // FIXME tmp solution
       mva.push_back( (mva0_ +0.5) );
-      //mva0.push_back( (mva0_ +0.5) );
-      //mva1.push_back( (mva1_ +0.5) );
-      //mva2.push_back( (mva2_ +0.5) );
-      //mva3.push_back( (mva3_ +0.5) );
     }
   };
 
@@ -1103,16 +1088,11 @@ private:
     int nHits;
     std::vector<bool> isValid;
     std::vector<float> localx, localy, localz, globalx, globaly, globalz;
-    // std::vector<float> localxx, localyy, localxy;
-    // std::vector<float> globalcxx, globalcyx, globalcyy, globalczx, globalczy, globalczz, globalctx, globalcty, blobalctz, globalctt;
   public:
     void clear() {
       nHits = 0;
       isValid.clear();
       localx.clear(); localy.clear(); localz.clear(); globalx.clear(); globaly.clear(); globalz.clear();
-      // localxx.clear(); localyy.clear(); localxy.clear();
-      // globalcxx.clear(); globalcyx.clear(); globalcyy.clear(); globalczx.clear(); globalczy.clear();
-      // globalczz.clear(); globalctx.clear(); globalcty.clear(); blobalctz.clear(); globalctt.clear();
 
       return;
     }
@@ -1190,127 +1170,39 @@ private:
   void Fill_TP( const edm::Event &iEvent, tpTemplate* TrkParticle );
 
   // -- seed MVA -- //
-  // edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_0_;
-  // edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_1_;
-  // edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_2_;
-  // edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_B_3_;
-  // edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_0_;
-  // edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_1_;
-  // edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_2_;
-  // edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_3_;
   edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_;
-  //edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_0_;
-  //edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_1_;
-  //edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_2_;
-  //edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_B_3_;
-  // edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_B_0_;
-  // edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_B_1_;
-  // edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_B_2_;
-  // edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_B_3_;
-  // edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_0_;
-  // edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_1_;
-  // edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_2_;
-  // edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_3_;
   edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_;
-  //edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_0_;
-  //edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_1_;
-  //edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_2_;
-  //edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_3_;
-  // edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_0_;
-  // edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_1_;
-  // edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_2_;
-  // edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_B_3_;
-  // edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_E_0_;
-  // edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_E_1_;
-  // edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_E_2_;
-  // edm::FileInPath mvaFileHltIterL3OISeedsFromL2Muons_E_3_;
-  // edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_0_;
-  // edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_1_;
-  // edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_2_;
-  // edm::FileInPath mvaFileHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_3_;
   edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_;
-  //edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_0_;
-  //edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_1_;
-  //edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_2_;
-  //edm::FileInPath mvaFileHltIter2IterL3MuonPixelSeeds_E_3_;
-  // edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_E_0_;
-  // edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_E_1_;
-  // edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_E_2_;
-  // edm::FileInPath mvaFileHltIter3IterL3MuonPixelSeeds_E_3_;
-  // edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_0_;
-  // edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_1_;
-  // edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_2_;
-  // edm::FileInPath mvaFileHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_3_;
   edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_;
-  //edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_0_;
-  //edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_1_;
-  //edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_2_;
-  //edm::FileInPath mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_3_;
-  // edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_0_;
-  // edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_1_;
-  // edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_2_;
-  // edm::FileInPath mvaFileHltIter3IterL3FromL1MuonPixelSeeds_E_3_;
 
-  // std::vector<double> mvaScaleMeanHltIterL3OISeedsFromL2Muons_B_;
-  // std::vector<double> mvaScaleMeanHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_;
   std::vector<double> mvaScaleMeanHltIter2IterL3MuonPixelSeeds_B_;
-  // std::vector<double> mvaScaleMeanHltIter3IterL3MuonPixelSeeds_B_;
-  // std::vector<double> mvaScaleMeanHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_;
   std::vector<double> mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_B_;
-  // std::vector<double> mvaScaleMeanHltIter3IterL3FromL1MuonPixelSeeds_B_;
-  // std::vector<double> mvaScaleStdHltIterL3OISeedsFromL2Muons_B_;
-  // std::vector<double> mvaScaleStdHltIter0IterL3MuonPixelSeedsFromPixelTracks_B_;
   std::vector<double> mvaScaleStdHltIter2IterL3MuonPixelSeeds_B_;
-  // std::vector<double> mvaScaleStdHltIter3IterL3MuonPixelSeeds_B_;
-  // std::vector<double> mvaScaleStdHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_B_;
   std::vector<double> mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_B_;
-  // std::vector<double> mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_B_;
-
-  // std::vector<double> mvaScaleMeanHltIterL3OISeedsFromL2Muons_E_;
-  // std::vector<double> mvaScaleMeanHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_;
   std::vector<double> mvaScaleMeanHltIter2IterL3MuonPixelSeeds_E_;
-  // std::vector<double> mvaScaleMeanHltIter3IterL3MuonPixelSeeds_E_;
-  // std::vector<double> mvaScaleMeanHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_;
   std::vector<double> mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E_;
-  // std::vector<double> mvaScaleMeanHltIter3IterL3FromL1MuonPixelSeeds_E_;
-  // std::vector<double> mvaScaleStdHltIterL3OISeedsFromL2Muons_E_;
-  // std::vector<double> mvaScaleStdHltIter0IterL3MuonPixelSeedsFromPixelTracks_E_;
   std::vector<double> mvaScaleStdHltIter2IterL3MuonPixelSeeds_E_;
-  // std::vector<double> mvaScaleStdHltIter3IterL3MuonPixelSeeds_E_;
-  // std::vector<double> mvaScaleStdHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_E_;
   std::vector<double> mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_;
-  // std::vector<double> mvaScaleStdHltIter3IterL3FromL1MuonPixelSeeds_E_;
 
-  // pairSeedMvaEstimator mvaHltIterL3OISeedsFromL2Muons_;
-  // pairSeedMvaEstimator mvaHltIter0IterL3MuonPixelSeedsFromPixelTracks_;
   pairSeedMvaEstimator mvaHltIter2IterL3MuonPixelSeeds_;
-  // pairSeedMvaEstimator mvaHltIter3IterL3MuonPixelSeeds_;
-  // pairSeedMvaEstimator mvaHltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
   pairSeedMvaEstimator mvaHltIter2IterL3FromL1MuonPixelSeeds_;
-  // pairSeedMvaEstimator mvaHltIter3IterL3FromL1MuonPixelSeeds_;
 
   vector<double> getSeedMva(
     pairSeedMvaEstimator pairMvaEstimator,
     const TrajectorySeed& seed,
     GlobalVector global_p,
     const l1t::MuonBxCollection& l1Muons,
-    int minL1Qual,
     const reco::RecoChargedCandidateCollection& l2Muons
   ) {
     vector<double> v_mva = {};
 
     for(auto ic=0U; ic<pairMvaEstimator.size(); ++ic) {
-      bool isFromL1 = false;
-      if(pairMvaEstimator.at(ic).first->scale_mean_.size() == 8) isFromL1 = true;
-
       if( fabs( global_p.eta() ) < 1.2 ) {
         double mva = pairMvaEstimator.at(ic).first->computeMva(
           seed,
           global_p,
           l1Muons,
-	  minL1Qual,
-          l2Muons,
-	  isFromL1
+          l2Muons
         );
         v_mva.push_back( mva );
       }
@@ -1319,9 +1211,7 @@ private:
           seed,
           global_p,
           l1Muons,
-	  minL1Qual,
-          l2Muons,
-	  isFromL1
+          l2Muons
         );
         v_mva.push_back( mva );
       }
