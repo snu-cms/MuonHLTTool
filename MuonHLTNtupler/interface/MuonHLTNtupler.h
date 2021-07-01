@@ -190,7 +190,21 @@ private:
   edm::EDGetTokenT< LumiScalersCollection >                  t_offlineLumiScaler_;
   edm::EDGetTokenT< std::vector<PileupSummaryInfo> >         t_PUSummaryInfo_;
   edm::EDGetTokenT< GenEventInfoProduct >                    t_genEventInfo_;
-  edm::EDGetTokenT< reco::GenParticleCollection >            t_genParticle_;
+  edm::EDGetTokenT< edm::View<reco::GenParticle> >           t_genParticle_;
+
+  std::vector<std::string>   trackCollectionNames_;
+  std::vector<edm::InputTag> trackCollectionLabels_;
+  std::vector<edm::InputTag> associationLabels_;
+  std::vector<edm::EDGetTokenT< edm::View<reco::Track> > >  trackCollectionTokens_;
+  std::vector<edm::EDGetTokenT<reco::SimToRecoCollection> > simToRecoCollectionTokens_;
+  std::vector<edm::EDGetTokenT<reco::RecoToSimCollection> > recoToSimCollectionTokens_; //JH
+
+  edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_l1Matches_;
+  edm::EDGetTokenT<edm::ValueMap<int>>                     t_l1MatchesQuality_;
+  edm::EDGetTokenT<edm::ValueMap<float>>                   t_l1MatchesDeltaR_;
+  edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_l1MatchesByQ_;
+  edm::EDGetTokenT<edm::ValueMap<int>>                     t_l1MatchesByQQuality_;
+  edm::EDGetTokenT<edm::ValueMap<float>>                   t_l1MatchesByQDeltaR_;
 
   typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
 
@@ -246,6 +260,19 @@ private:
   int genParticle_fromHardProcessDecayed_[arrSize_];
   int genParticle_fromHardProcessFinalState_[arrSize_];
   int genParticle_isMostlyLikePythia6Status3_[arrSize_];
+
+  double genParticle_l1pt_[arrSize_];
+  double genParticle_l1eta_[arrSize_];
+  double genParticle_l1phi_[arrSize_];
+  double genParticle_l1charge_[arrSize_];
+  int    genParticle_l1q_[arrSize_];
+  double genParticle_l1dr_[arrSize_];
+  double genParticle_l1ptByQ_[arrSize_];
+  double genParticle_l1etaByQ_[arrSize_];
+  double genParticle_l1phiByQ_[arrSize_];
+  double genParticle_l1chargeByQ_[arrSize_];
+  int    genParticle_l1qByQ_[arrSize_];
+  double genParticle_l1drByQ_[arrSize_];
 
   // -- trigger info.
   vector< std::string > vec_firedTrigger_;
@@ -935,6 +962,12 @@ private:
     std::vector<double> gen_pt;
     std::vector<double> gen_eta;
     std::vector<double> gen_phi;
+    std::vector<double> bestMatchTrk_pt;
+    std::vector<double> bestMatchTrk_eta;
+    std::vector<double> bestMatchTrk_phi;
+    std::vector<int> bestMatchTrk_charge;
+    std::vector<double> bestMatchTrk_quality;
+    std::vector<int> bestMatchTrk_NValidHits;
   public:
     void clear() {
       nTP = 0;
@@ -956,6 +989,12 @@ private:
       gen_pt.clear();
       gen_eta.clear();
       gen_phi.clear();
+      bestMatchTrk_pt.clear();
+      bestMatchTrk_eta.clear();
+      bestMatchTrk_phi.clear();
+      bestMatchTrk_charge.clear();
+      bestMatchTrk_quality.clear();
+      bestMatchTrk_NValidHits.clear();
 
       return;
     }
@@ -980,6 +1019,12 @@ private:
       tmpntpl->Branch(name+"_gen_pt", &gen_pt);
       tmpntpl->Branch(name+"_gen_eta", &gen_eta);
       tmpntpl->Branch(name+"_gen_phi", &gen_phi);
+      tmpntpl->Branch(name+"_bestMatchTrk_pt", &bestMatchTrk_pt);
+      tmpntpl->Branch(name+"_bestMatchTrk_eta", &bestMatchTrk_eta);
+      tmpntpl->Branch(name+"_bestMatchTrk_phi", &bestMatchTrk_phi);
+      tmpntpl->Branch(name+"_bestMatchTrk_charge", &bestMatchTrk_charge);
+      tmpntpl->Branch(name+"_bestMatchTrk_quality", &bestMatchTrk_quality);
+      tmpntpl->Branch(name+"_bestMatchTrk_NValidHits", &bestMatchTrk_NValidHits);
 
       return;
     }
@@ -1018,6 +1063,23 @@ private:
 
       return;
     }
+
+    void fill_matchedTrk(
+      double _pt,
+      double _eta,
+      double _phi,
+      int _charge,
+      double _quality,
+      int _NValidHits
+    ) {
+      bestMatchTrk_pt.push_back(_pt);
+      bestMatchTrk_eta.push_back(_eta);
+      bestMatchTrk_phi.push_back(_phi);
+      bestMatchTrk_charge.push_back(_charge);
+      bestMatchTrk_quality.push_back(_quality);
+      bestMatchTrk_NValidHits.push_back(_NValidHits);
+    }
+
   };
 
   class vtxTemplate {
@@ -1146,6 +1208,9 @@ private:
   vtxTemplate* VThltIterL3MuonTrimmedPixelVertices = new vtxTemplate();
   vtxTemplate* VThltIterL3FromL1MuonTrimmedPixelVertices = new vtxTemplate();
 
+  vector< trkTemplate* > trkTemplates_;
+  vector< tpTemplate* >  tpTemplates_;
+
   void fill_trackTemplate(
     const edm::Event &iEvent,
     edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
@@ -1165,6 +1230,20 @@ private:
     pairSeedMvaEstimator pairMvaEstimator,
     std::map<tmpTSOD,unsigned int>& trkMap,
     trkTemplate* TTtrack
+  );
+
+  void fill_trackTemplate(
+    const edm::Event &iEvent,
+    edm::EDGetTokenT<edm::View<reco::Track>>& trkToken,
+    edm::EDGetTokenT<reco::RecoToSimCollection>& assoToken,
+    trkTemplate* TTtrack,
+    bool
+  );
+
+  void fill_tpTemplate(
+    const edm::Event &iEvent,
+    edm::EDGetTokenT<reco::SimToRecoCollection>& assoToken,
+    tpTemplate* TTtp
   );
 
   void Fill_TP( const edm::Event &iEvent, tpTemplate* TrkParticle );

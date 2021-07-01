@@ -113,13 +113,34 @@ t_hltIter0IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >        
 t_hltIter2IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonTrack"    )) ),
 t_hltIter3IterL3FromL1MuonTrack_    ( consumes< edm::View<reco::Track> >         (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonTrack"    )) ),
 
-
 t_lumiScaler_        ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("lumiScaler"        )) ),
 t_offlineLumiScaler_ ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("offlineLumiScaler" )) ),
 t_PUSummaryInfo_     ( consumes< std::vector<PileupSummaryInfo> >         (iConfig.getUntrackedParameter<edm::InputTag>("PUSummaryInfo"     )) ),
 t_genEventInfo_      ( consumes< GenEventInfoProduct >                    (iConfig.getUntrackedParameter<edm::InputTag>("genEventInfo"      )) ),
-t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) )
+t_genParticle_       ( consumes< edm::View<reco::GenParticle> >           (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) ),
+
+t_l1Matches_           ( consumes< pat::TriggerObjectStandAloneMatch >                (iConfig.getParameter<edm::InputTag>("l1Matches"))),
+t_l1MatchesQuality_    ( consumes< edm::ValueMap<int> >                               (iConfig.getParameter<edm::InputTag>("l1MatchesQuality"))),
+t_l1MatchesDeltaR_     ( consumes< edm::ValueMap<float> >                             (iConfig.getParameter<edm::InputTag>("l1MatchesDeltaR"))),
+t_l1MatchesByQ_        ( consumes< pat::TriggerObjectStandAloneMatch >                (iConfig.getParameter<edm::InputTag>("l1MatchesByQ"))),
+t_l1MatchesByQQuality_ ( consumes< edm::ValueMap<int> >                               (iConfig.getParameter<edm::InputTag>("l1MatchesByQQuality"))),
+t_l1MatchesByQDeltaR_  ( consumes< edm::ValueMap<float> >                             (iConfig.getParameter<edm::InputTag>("l1MatchesByQDeltaR")))
 {
+  trackCollectionNames_   = iConfig.getUntrackedParameter<std::vector<std::string>   >("trackCollectionNames");
+  trackCollectionLabels_  = iConfig.getUntrackedParameter<std::vector<edm::InputTag> >("trackCollectionLabels");
+  associationLabels_      = iConfig.getUntrackedParameter<std::vector<edm::InputTag> >("associationLabels");
+  if( trackCollectionNames_.size() != trackCollectionLabels_.size() || trackCollectionLabels_.size() != associationLabels_.size()) {
+    throw cms::Exception("ConfigurationError")
+      << "Number of track collection names is different from number of track collection names or association labels";
+  }
+  for( unsigned int i = 0; i < trackCollectionNames_.size(); ++i) {
+    trackCollectionTokens_.push_back(     consumes< edm::View<reco::Track> >(  trackCollectionLabels_[i]) );
+    simToRecoCollectionTokens_.push_back( consumes<reco::SimToRecoCollection>( associationLabels_[i]) );
+    recoToSimCollectionTokens_.push_back( consumes<reco::RecoToSimCollection>( associationLabels_[i]) );
+    trkTemplates_.push_back( new trkTemplate() );
+    tpTemplates_.push_back(  new tpTemplate()  );
+  }
+
   mvaFileHltIter2IterL3MuonPixelSeeds_B_                      = iConfig.getParameter<edm::FileInPath>("mvaFileHltIter2IterL3MuonPixelSeeds_B");
   mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_                = iConfig.getParameter<edm::FileInPath>("mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B");
   mvaFileHltIter2IterL3MuonPixelSeeds_E_                      = iConfig.getParameter<edm::FileInPath>("mvaFileHltIter2IterL3MuonPixelSeeds_E");
@@ -231,6 +252,18 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
     Fill_TP(iEvent, TrkParticle);
   }
 
+  cout << "===============================TEST========================================" << endl;
+  edm::Handle<edm::View<reco::Track>> MYtrkHandle1;
+  if( iEvent.getByToken( t_hltIterL3OIMuonTrack_, MYtrkHandle1 ) ) cout << "MYtrkHandle1 valid;" << endl;
+  edm::Handle<edm::View<reco::Track>> MYtrkHandle2;
+  if( iEvent.getByToken( trackCollectionTokens_.at(0), MYtrkHandle2 ) ) cout << "MYtrkHandle2 valid;" << endl; //JH
+
+  for( unsigned int i = 0; i < trackCollectionNames_.size(); ++i) {
+    bool doIso = false;
+    fill_trackTemplate( iEvent, trackCollectionTokens_.at(i), recoToSimCollectionTokens_.at(i), trkTemplates_.at(i), doIso );
+    fill_tpTemplate(    iEvent,                               simToRecoCollectionTokens_.at(i), tpTemplates_.at(i)         );
+  }
+
   ntuple_->Fill();
 }
 
@@ -307,9 +340,23 @@ void MuonHLTNtupler::Init()
     genParticle_fromHardProcessDecayed_[i] = 0;
     genParticle_fromHardProcessFinalState_[i] = 0;
     genParticle_isMostlyLikePythia6Status3_[i] = 0;
+
+    // -- L1 matched gen particles -- //
+    genParticle_l1pt_[i]        = -999;
+    genParticle_l1eta_[i]       = -999;
+    genParticle_l1phi_[i]       = -999;
+    genParticle_l1charge_[i]    = -999;
+    genParticle_l1q_[i]         = -999;
+    genParticle_l1dr_[i]        = -999;
+    genParticle_l1ptByQ_[i]     = -999;
+    genParticle_l1etaByQ_[i]    = -999;
+    genParticle_l1phiByQ_[i]    = -999;
+    genParticle_l1chargeByQ_[i] = -999;
+    genParticle_l1qByQ_[i]      = -999;
+    genParticle_l1drByQ_[i]     = -999;
   }
 
-  // -- original trigger objects- - //
+  // -- original trigger objects -- //
   vec_firedTrigger_.clear();
   vec_filterName_.clear();
   vec_HLTObj_pt_.clear();
@@ -549,6 +596,12 @@ void MuonHLTNtupler::Init()
 
   VThltIterL3MuonTrimmedPixelVertices->clear();
   VThltIterL3FromL1MuonTrimmedPixelVertices->clear();
+
+  for( unsigned int i = 0; i < trackCollectionNames_.size(); ++i) {
+    trkTemplates_.at(i)->clear();
+    tpTemplates_.at(i)->clear();
+  }
+
 }
 
 void MuonHLTNtupler::Make_Branch()
@@ -596,6 +649,18 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("genParticle_fromHardProcessDecayed", &genParticle_fromHardProcessDecayed_, "genParticle_fromHardProcessDecayed[nGenParticle]/I");
   ntuple_->Branch("genParticle_fromHardProcessFinalState", &genParticle_fromHardProcessFinalState_, "genParticle_fromHardProcessFinalState[nGenParticle]/I");
   ntuple_->Branch("genParticle_isMostlyLikePythia6Status3", &genParticle_isMostlyLikePythia6Status3_, "genParticle_isMostlyLikePythia6Status3[nGenParticle]/I");
+  ntuple_->Branch("genParticle_l1pt", &genParticle_l1pt_, "genParticle_l1pt[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1eta", &genParticle_l1eta_, "genParticle_l1eta[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1phi", &genParticle_l1phi_, "genParticle_l1phi[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1charge", &genParticle_l1charge_, "genParticle_l1charge[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1q", &genParticle_l1q_, "genParticle_l1q[nGenParticle]/I");
+  ntuple_->Branch("genParticle_l1dr", &genParticle_l1dr_, "genParticle_l1dr[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1ptByQ", &genParticle_l1ptByQ_, "genParticle_l1ptByQ[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1etaByQ", &genParticle_l1etaByQ_, "genParticle_l1etaByQ[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1phiByQ", &genParticle_l1phiByQ_, "genParticle_l1phiByQ[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1chargeByQ", &genParticle_l1chargeByQ_, "genParticle_l1chargeByQ[nGenParticle]/D");
+  ntuple_->Branch("genParticle_l1qByQ", &genParticle_l1qByQ_, "genParticle_l1qByQ[nGenParticle]/I");
+  ntuple_->Branch("genParticle_l1drByQ", &genParticle_l1drByQ_, "genParticle_l1drByQ[nGenParticle]/D");
 
   ntuple_->Branch("vec_firedTrigger", &vec_firedTrigger_);
   ntuple_->Branch("vec_filterName", &vec_filterName_);
@@ -781,6 +846,15 @@ void MuonHLTNtupler::Make_Branch()
 
   VThltIterL3MuonTrimmedPixelVertices->setBranch(ntuple_,"hltIterL3MuonTrimmedPixelVertices");
   VThltIterL3FromL1MuonTrimmedPixelVertices->setBranch(ntuple_,"hltIterL3FromL1MuonTrimmedPixelVertices");
+
+  for( unsigned int i = 0; i < trackCollectionNames_.size(); ++i) {
+    TString trkName = TString(trackCollectionNames_.at(i));
+    TString tpName  = "tpTo_" + TString(trackCollectionNames_.at(i));
+
+    trkTemplates_.at(i)->setBranch(ntuple_, trkName );
+    tpTemplates_.at(i)->setBranch(ntuple_,  tpName );
+  }
+
 }
 
 /*
@@ -1353,16 +1427,20 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
   genEventWeight_ = h_genEventInfo->weight();
 
   // -- Gen-particle info -- //
-  edm::Handle<reco::GenParticleCollection> h_genParticle;
+  edm::Handle<edm::View<reco::GenParticle>> h_genParticle;
   iEvent.getByToken(t_genParticle_, h_genParticle);
+  cout << "genParticle size : " << h_genParticle->size() << endl; //JH
 
   int _nGenParticle = 0;
   for( size_t i=0; i< h_genParticle->size(); ++i)
   {
-    const reco::GenParticle &parCand = (*h_genParticle)[i];
+    const auto &parCand = (*h_genParticle)[i];
+    auto genRef = h_genParticle->refAt(i);
 
     if( abs(parCand.pdgId()) == 13 ) // -- only muons -- //
     {
+      cout << "==" << i << "th gen==" << endl;
+      cout << "pdgId : " << parCand.pdgId() << ", status : " << parCand.status() << endl; //JH
       genParticle_ID_[_nGenParticle]     = parCand.pdgId();
       genParticle_status_[_nGenParticle] = parCand.status();
       genParticle_mother_[_nGenParticle] = parCand.mother(0)->pdgId();
@@ -1375,6 +1453,7 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
       genParticle_pz_[_nGenParticle]  = parCand.pz();
       genParticle_energy_[_nGenParticle] = parCand.energy();
       genParticle_charge_[_nGenParticle] = parCand.charge();
+      cout << "pt : " << parCand.pt() << ", eta : " << parCand.eta() << ", phi : " << parCand.phi() << ", charge : " << parCand.charge() << endl; //JH
 
       if( parCand.statusFlags().isPrompt() )                genParticle_isPrompt_[_nGenParticle] = 1;
       if( parCand.statusFlags().isTauDecayProduct() )       genParticle_isTauDecayProduct_[_nGenParticle] = 1;
@@ -1392,6 +1471,49 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
       if( parCand.fromHardProcessDecayed() )    genParticle_fromHardProcessDecayed_[_nGenParticle] = 1;
       if( parCand.fromHardProcessFinalState() ) genParticle_fromHardProcessFinalState_[_nGenParticle] = 1;
       // if( parCand.isMostlyLikePythia6Status3() ) this->genParticle_isMostlyLikePythia6Status3[_nGenParticle] = 1;
+
+      edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1Matches;
+      if( iEvent.getByToken(t_l1Matches_, h_l1Matches) ){
+        cout << "getByToken h_l1Matches;" << endl;
+        edm::Handle<edm::ValueMap<int>> h_l1Qualities;
+        iEvent.getByToken(t_l1MatchesQuality_, h_l1Qualities);
+        edm::Handle<edm::ValueMap<float>> h_l1Drs;
+        iEvent.getByToken(t_l1MatchesDeltaR_, h_l1Drs);
+
+        pat::TriggerObjectStandAloneRef genl1Match = (*h_l1Matches)[genRef];
+        if (genl1Match.isNonnull()) {
+          cout << "genl1Match has been found;" << endl;
+          cout << "pt : " << genl1Match->pt() << ", eta : " << genl1Match->eta() << ", phi : " << genl1Match->phi() << ", charge : " << genl1Match->charge() << endl;
+          cout << "quality : " << (*h_l1Qualities)[genRef] << ", dR : " << (*h_l1Drs)[genRef] << endl; //JH
+          genParticle_l1pt_[_nGenParticle]      = genl1Match->pt();
+          genParticle_l1eta_[_nGenParticle]     = genl1Match->eta();
+          genParticle_l1phi_[_nGenParticle]     = genl1Match->phi();
+          genParticle_l1charge_[_nGenParticle]  = genl1Match->charge();
+          genParticle_l1q_[_nGenParticle]       = (*h_l1Qualities)[genRef];
+          genParticle_l1dr_[_nGenParticle]      = (*h_l1Drs)[genRef];
+        }
+      }
+
+      edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1MatchesByQ;
+      if( iEvent.getByToken(t_l1MatchesByQ_, h_l1MatchesByQ) ){
+        edm::Handle<edm::ValueMap<int>> h_l1QualitiesByQ;
+        iEvent.getByToken(t_l1MatchesByQQuality_, h_l1QualitiesByQ);
+        edm::Handle<edm::ValueMap<float>> h_l1DrsByQ;
+        iEvent.getByToken(t_l1MatchesByQDeltaR_, h_l1DrsByQ);
+
+        pat::TriggerObjectStandAloneRef genl1MatchByQ = (*h_l1MatchesByQ)[genRef];
+        if (genl1MatchByQ.isNonnull()) {
+          cout << "genl1MatchByQ has been found;" << endl;
+          cout << "pt : " << genl1MatchByQ->pt() << ", eta : " << genl1MatchByQ->eta() << ", phi : " << genl1MatchByQ->phi() << ", charge : " << genl1MatchByQ->charge() << endl;
+          cout << "quality : " << (*h_l1QualitiesByQ)[genRef] << ", dR : " << (*h_l1DrsByQ)[genRef] << endl; //JH
+          genParticle_l1ptByQ_[_nGenParticle]      = genl1MatchByQ->pt();
+          genParticle_l1etaByQ_[_nGenParticle]     = genl1MatchByQ->eta();
+          genParticle_l1phiByQ_[_nGenParticle]     = genl1MatchByQ->phi();
+          genParticle_l1chargeByQ_[_nGenParticle]  = genl1MatchByQ->charge();
+          genParticle_l1qByQ_[_nGenParticle]       = (*h_l1QualitiesByQ)[genRef];
+          genParticle_l1drByQ_[_nGenParticle]      = (*h_l1DrsByQ)[genRef];
+        }
+      }
 
       _nGenParticle++;
     }
@@ -1620,14 +1742,14 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
   edm::Handle<TrackingParticleCollection> TPCollection;
 
   if(iEvent.getByToken(associatorToken, theAssociator) && iEvent.getByToken(trackingParticleToken, TPCollection)){
-    fill_trackTemplate(iEvent, t_hltIterL3OIMuonTrack_,          theAssociator, TPCollection, tracker,                       hltIterL3OIMuonTrackMap,         TThltIterL3OIMuonTrack);
-    fill_trackTemplate(iEvent, t_hltIter0IterL3MuonTrack_,       theAssociator, TPCollection, tracker,       hltIter0IterL3MuonTrackMap,      TThltIter0IterL3MuonTrack);
-    fill_trackTemplate(iEvent, t_hltIter3IterL3MuonTrack_,       theAssociator, TPCollection, tracker,                      hltIter3IterL3MuonTrackMap,      TThltIter3IterL3MuonTrack);
-    fill_trackTemplate(iEvent, t_hltIter0IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, hltIter0IterL3FromL1MuonTrackMap,TThltIter0IterL3FromL1MuonTrack);
-    fill_trackTemplate(iEvent, t_hltIter3IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker,                hltIter3IterL3FromL1MuonTrackMap,TThltIter3IterL3FromL1MuonTrack);
+    fill_trackTemplate(iEvent, t_hltIterL3OIMuonTrack_,          theAssociator, TPCollection, tracker, hltIterL3OIMuonTrackMap,          TThltIterL3OIMuonTrack);
+    fill_trackTemplate(iEvent, t_hltIter0IterL3MuonTrack_,       theAssociator, TPCollection, tracker, hltIter0IterL3MuonTrackMap,       TThltIter0IterL3MuonTrack);
+    fill_trackTemplate(iEvent, t_hltIter3IterL3MuonTrack_,       theAssociator, TPCollection, tracker, hltIter3IterL3MuonTrackMap,       TThltIter3IterL3MuonTrack);
+    fill_trackTemplate(iEvent, t_hltIter0IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, hltIter0IterL3FromL1MuonTrackMap, TThltIter0IterL3FromL1MuonTrack);
+    fill_trackTemplate(iEvent, t_hltIter3IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, hltIter3IterL3FromL1MuonTrackMap, TThltIter3IterL3FromL1MuonTrack);
 
-    fill_trackTemplate(iEvent, t_hltIter2IterL3MuonTrack_,       theAssociator, TPCollection, tracker, mvaHltIter2IterL3MuonPixelSeeds_,                      hltIter2IterL3MuonTrackMap,      TThltIter2IterL3MuonTrack);
-    fill_trackTemplate(iEvent, t_hltIter2IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, mvaHltIter2IterL3FromL1MuonPixelSeeds_,                hltIter2IterL3FromL1MuonTrackMap,TThltIter2IterL3FromL1MuonTrack);
+    fill_trackTemplate(iEvent, t_hltIter2IterL3MuonTrack_,       theAssociator, TPCollection, tracker, mvaHltIter2IterL3MuonPixelSeeds_,       hltIter2IterL3MuonTrackMap,      TThltIter2IterL3MuonTrack);
+    fill_trackTemplate(iEvent, t_hltIter2IterL3FromL1MuonTrack_, theAssociator, TPCollection, tracker, mvaHltIter2IterL3FromL1MuonPixelSeeds_, hltIter2IterL3FromL1MuonTrackMap,TThltIter2IterL3FromL1MuonTrack);
   }
 }
 
@@ -1947,6 +2069,115 @@ void MuonHLTNtupler::fill_trackTemplate(
   }
 }
 
+void MuonHLTNtupler::fill_trackTemplate(
+  const edm::Event &iEvent,
+  edm::EDGetTokenT<edm::View<reco::Track>>& trkToken,
+  edm::EDGetTokenT<reco::RecoToSimCollection>& assoToken,
+  trkTemplate* TTtrack,
+  bool doIso = false
+) {
+
+  edm::Handle<edm::View<reco::Track>> trkHandle;
+  if( iEvent.getByToken( trkToken, trkHandle ) ) {
+
+    edm::Handle<reco::RecoToSimCollection> assoHandle;
+    if( iEvent.getByToken( assoToken, assoHandle ) ) {
+      auto recSimColl = *assoHandle.product();
+
+      for( unsigned int i = 0; i < trkHandle->size(); i++ ) {
+        TTtrack->fill(trkHandle->at(i));
+
+        auto track = trkHandle->refAt(i);
+        auto TPfound = recSimColl.find(track);
+        if (TPfound != recSimColl.end()) {
+          const auto& TPmatch = TPfound->val;
+          TTtrack->fillBestTP(TPmatch[0].first);
+          TTtrack->fillBestTPsharedFrac(TPmatch[0].second);
+          TTtrack->fillmatchedTPsize(TPmatch.size());
+        } else {  // to sync vector size
+          TTtrack->fillDummyTP();
+          TTtrack->fillBestTPsharedFrac(-99999.);
+          TTtrack->fillmatchedTPsize(0);
+        }
+
+        // -- fill dummy
+        TTtrack->linkIterL3(-1);
+        TTtrack->linkIterL3NoId(-1);
+        TTtrack->fillMva( -99999., -99999., -99999., -99999. );
+      }
+    }
+  }
+} 
+
+void MuonHLTNtupler::fill_tpTemplate(
+  const edm::Event &iEvent,
+  edm::EDGetTokenT<reco::SimToRecoCollection>& assoToken,
+  tpTemplate* TTtp
+) {
+
+  edm::Handle<TrackingParticleCollection> TPCollection;
+  if( iEvent.getByToken(trackingParticleToken, TPCollection) ) {
+
+    edm::Handle<reco::SimToRecoCollection> assoHandle;
+    if( iEvent.getByToken( assoToken, assoHandle ) ) {
+      auto simRecColl = *assoHandle.product();
+
+      for( unsigned int i = 0; i < TPCollection->size(); i++ ) {
+
+        auto tp = TPCollection->at(i);
+
+        if( !(tp.eventId().bunchCrossing() == 0 && tp.eventId().event() == 0) )
+          continue;
+
+        if( abs( tp.pdgId() ) != 13 )
+          continue;
+
+        bool isStable = true;
+        for (TrackingParticle::genp_iterator j = tp.genParticle_begin(); j != tp.genParticle_end(); ++j) {
+          if (j->get() == nullptr || j->get()->status() != 1) {
+            isStable = false;
+          }
+        }
+        if( tp.status() == -99 && (std::abs(tp.pdgId()) != 11 && std::abs(tp.pdgId()) != 13 && std::abs(tp.pdgId()) != 211 &&
+                                   std::abs(tp.pdgId()) != 321 && std::abs(tp.pdgId()) != 2212 && std::abs(tp.pdgId()) != 3112 &&
+                                   std::abs(tp.pdgId()) != 3222 && std::abs(tp.pdgId()) != 3312 && std::abs(tp.pdgId()) != 3334)
+        ) {
+          isStable = false;
+        }
+
+        if( !isStable )
+          continue;
+
+        TTtp->fill( tp );
+
+        TrackingParticleRef tpref(TPCollection, i);
+        auto TrkFound = simRecColl.find( tpref );
+        if( TrkFound != simRecColl.end() ) {
+          const auto& trkMatch = TrkFound->val;
+          TTtp->fill_matchedTrk(
+            trkMatch[0].first->pt(),
+            trkMatch[0].first->eta(),
+            trkMatch[0].first->phi(),
+            trkMatch[0].first->charge(),
+            trkMatch[0].second,
+            trkMatch[0].first->numberOfValidHits()
+          );
+        }
+        else {
+          TTtp->fill_matchedTrk(
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999,
+            -99999.,
+            -99999
+          );
+        }
+      }
+    }
+  }
+}
+
 // -- reference: https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/src/MuonSelectors.cc#L910-L938
 bool MuonHLTNtupler::isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx){
   if(!muon.isGlobalMuon()) return false;
@@ -1984,6 +2215,11 @@ void MuonHLTNtupler::endJob() {
     delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).second;
     delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).first;
     delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).second;
+  }
+
+  for( unsigned int i = 0; i < trackCollectionNames_.size(); ++i) {
+    delete trkTemplates_.at(i);
+    delete tpTemplates_.at(i);
   }
 }
 
