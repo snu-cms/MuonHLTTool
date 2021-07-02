@@ -82,13 +82,13 @@ t_L2Muon_            ( consumes< reco::RecoChargedCandidateCollection >   (iConf
 // t_L1TkMuon_          ( consumes< l1t::TkMuonCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("L1TkMuon"))),
 // t_L1TkPrimaryVertex_ ( consumes< l1t::TkPrimaryVertexCollection >         (iConfig.getUntrackedParameter<edm::InputTag>("L1TkPrimaryVertex"))),
 
-t_hltIterL3OISeedsFromL2Muons_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OISeedsFromL2Muons")) ),
-t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonPixelSeedsFromPixelTracks")) ),
-t_hltIter2IterL3MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3MuonPixelSeeds")) ),
-t_hltIter3IterL3MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3MuonPixelSeeds")) ),
-t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks")) ),
-t_hltIter2IterL3FromL1MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonPixelSeeds")) ),
-t_hltIter3IterL3FromL1MuonPixelSeeds_ ( consumes< TrajectorySeedCollection >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonPixelSeeds")) ),
+t_hltIterL3OISeedsFromL2Muons_ ( consumes< edm::View<TrajectorySeed> >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OISeedsFromL2Muons")) ),
+t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_ ( consumes< edm::View<TrajectorySeed> >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonPixelSeedsFromPixelTracks")) ),
+t_hltIter2IterL3MuonPixelSeeds_ ( consumes< edm::View<TrajectorySeed> >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3MuonPixelSeeds")) ),
+t_hltIter3IterL3MuonPixelSeeds_ ( consumes< edm::View<TrajectorySeed> >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3MuonPixelSeeds")) ),
+t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_ ( consumes< edm::View<TrajectorySeed> >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks")) ),
+t_hltIter2IterL3FromL1MuonPixelSeeds_ ( consumes< edm::View<TrajectorySeed> >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter2IterL3FromL1MuonPixelSeeds")) ),
+t_hltIter3IterL3FromL1MuonPixelSeeds_ ( consumes< edm::View<TrajectorySeed> >     (iConfig.getUntrackedParameter<edm::InputTag>("hltIter3IterL3FromL1MuonPixelSeeds")) ),
 
 t_hltIterL3OIMuonTrack_    ( consumes< edm::View<reco::Track> >                  (iConfig.getUntrackedParameter<edm::InputTag>("hltIterL3OIMuonTrack"    )) ),
 t_hltIter0IterL3MuonTrack_    ( consumes< edm::View<reco::Track> >               (iConfig.getUntrackedParameter<edm::InputTag>("hltIter0IterL3MuonTrack"    )) ),
@@ -326,7 +326,7 @@ void MuonHLTSeedNtupler::fill_trackTemplate(const edm::Event &iEvent, edm::EDGet
 
 void MuonHLTSeedNtupler::fill_seedTemplate(
   const edm::Event &iEvent,
-  edm::EDGetTokenT<TrajectorySeedCollection>& theToken,
+  edm::EDGetTokenT<edm::View<TrajectorySeed>>& theToken,
   edm::ESHandle<TrackerGeometry>& tracker,
   std::map<tmpTSOD,unsigned int>& trkMap,
   trkTemplate* TTtrack,
@@ -343,7 +343,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
   edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon;
   bool hasL2 = iEvent.getByToken( t_L2Muon_, h_L2Muon );
 
-  edm::Handle< TrajectorySeedCollection > seedHandle;
+  edm::Handle< edm::View<TrajectorySeed> > seedHandle;
   if( iEvent.getByToken( theToken, seedHandle) )
   {
     nSeed = seedHandle->size();
@@ -363,6 +363,20 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
       std::map<tmpTSOD,unsigned int>::const_iterator where = trkMap.find(seedTsod);
       int idxtmpL3 = (where==trkMap.end()) ? -1 : trkMap[seedTsod];
       ST->fill_TP(TTtrack, idxtmpL3 );
+
+      edm::Handle<reco::TrackToTrackingParticleAssociator> theAssociator;
+      edm::Handle<TrackingParticleCollection> theTPCollection;
+      if( iEvent.getByToken(associatorToken, theAssociator) && iEvent.getByToken(trackingParticleToken, theTPCollection) ) {
+        auto recSimColl = theAssociator->associateRecoToSim(seedHandle,theTPCollection);
+        auto seed = seedHandle->refAt(i);
+        auto TPfound = recSimColl.find(seed);
+        if (TPfound != recSimColl.end()) {
+          const auto& TPmatch = TPfound->val;
+          ST->fill_SeedTP(TPmatch[0].first);
+          ST->fill_SeedTPsharedFrac(TPmatch[0].second);
+          ST->fill_matchedSeedTPsize(TPmatch.size());
+        }
+      }
 
       GlobalVector global_p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
       GlobalPoint  global_x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
@@ -488,7 +502,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
 
 void MuonHLTSeedNtupler::fill_seedTemplate(
   const edm::Event &iEvent,
-  edm::EDGetTokenT<TrajectorySeedCollection>& theToken,
+  edm::EDGetTokenT<edm::View<TrajectorySeed>>& theToken,
   pairSeedMvaEstimator pairMvaEstimator,
   edm::ESHandle<TrackerGeometry>& tracker,
   std::map<tmpTSOD,unsigned int>& trkMap,
@@ -508,7 +522,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
   bool hasL2 = iEvent.getByToken( t_L2Muon_, h_L2Muon );
   const reco::RecoChargedCandidateCollection l2Muons = *(h_L2Muon.product());
 
-  edm::Handle< TrajectorySeedCollection > seedHandle;
+  edm::Handle< edm::View<TrajectorySeed> > seedHandle;
   if( iEvent.getByToken( theToken, seedHandle) )
   {
     nSeed = seedHandle->size();
@@ -529,6 +543,20 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
       int idxtmpL3 = (where==trkMap.end()) ? -1 : trkMap[seedTsod];
       //cout<<"[SeedNtupler] fill_TP : i="<<i<<", index tmpL3="<<idxtmpL3<<endl;
       ST->fill_TP(TTtrack, idxtmpL3 );
+
+      edm::Handle<reco::TrackToTrackingParticleAssociator> theAssociator;
+      edm::Handle<TrackingParticleCollection> theTPCollection;
+      if( iEvent.getByToken(associatorToken, theAssociator) && iEvent.getByToken(trackingParticleToken, theTPCollection) ) {
+        auto recSimColl = theAssociator->associateRecoToSim(seedHandle,theTPCollection);
+        auto seed = seedHandle->refAt(i);
+        auto TPfound = recSimColl.find(seed);
+        if (TPfound != recSimColl.end()) {
+          const auto& TPmatch = TPfound->val;
+          ST->fill_SeedTP(TPmatch[0].first);
+          ST->fill_SeedTPsharedFrac(TPmatch[0].second);
+          ST->fill_matchedSeedTPsize(TPmatch.size());
+        }
+      }
 
       GlobalVector global_p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
       GlobalPoint  global_x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());

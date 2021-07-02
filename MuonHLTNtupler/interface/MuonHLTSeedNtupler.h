@@ -130,13 +130,13 @@ private:
   edm::EDGetTokenT< l1t::MuonBxCollection >                  t_L1Muon_;
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L2Muon_;
 
-  edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIterL3OISeedsFromL2Muons_;
-  edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_;
-  edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter2IterL3MuonPixelSeeds_;
-  edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter3IterL3MuonPixelSeeds_;
-  edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
-  edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter2IterL3FromL1MuonPixelSeeds_;
-  edm::EDGetTokenT< TrajectorySeedCollection >               t_hltIter3IterL3FromL1MuonPixelSeeds_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIterL3OISeedsFromL2Muons_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIter2IterL3MuonPixelSeeds_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIter3IterL3MuonPixelSeeds_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIter2IterL3FromL1MuonPixelSeeds_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIter3IterL3FromL1MuonPixelSeeds_;
 
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIterL3OIMuonTrack_;
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter0IterL3MuonTrack_;
@@ -457,6 +457,21 @@ private:
     float dPhi_L1TkMuSeedP_;
     int bestMatchTP_pdgId_;
     int matchedTPsize_;
+    float bestMatchSeedTP_charge_;
+    int bestMatchSeedTP_pdgId_;
+    double bestMatchSeedTP_energy_;
+    double bestMatchSeedTP_pt_;
+    double bestMatchSeedTP_eta_;
+    double bestMatchSeedTP_phi_;
+    double bestMatchSeedTP_parentVx_;
+    double bestMatchSeedTP_parentVy_;
+    double bestMatchSeedTP_parentVz_;
+    int bestMatchSeedTP_status_;
+    int bestMatchSeedTP_numberOfHits_;
+    int bestMatchSeedTP_numberOfTrackerHits_;
+    int bestMatchSeedTP_numberOfTrackerLayers_;
+    double bestMatchSeedTP_sharedFraction_;
+    int matchedSeedTPsize_;
     float gen_pt_;
     float gen_eta_;
     float gen_phi_;
@@ -514,6 +529,21 @@ private:
       dPhi_L1TkMuSeedP_ = -99999.;
       bestMatchTP_pdgId_ = -99999;
       matchedTPsize_ = -99999;
+      bestMatchSeedTP_charge_ = -99999.;
+      bestMatchSeedTP_pdgId_ = -99999;
+      bestMatchSeedTP_energy_ = -99999.;
+      bestMatchSeedTP_pt_ = -99999.;
+      bestMatchSeedTP_eta_ = -99999.;
+      bestMatchSeedTP_phi_ = -99999.;
+      bestMatchSeedTP_parentVx_ = -99999.;
+      bestMatchSeedTP_parentVy_ = -99999.;
+      bestMatchSeedTP_parentVz_ = -99999.;
+      bestMatchSeedTP_status_ = -99999;
+      bestMatchSeedTP_numberOfHits_ = -99999;
+      bestMatchSeedTP_numberOfTrackerHits_ = -99999;
+      bestMatchSeedTP_numberOfTrackerLayers_ = -99999;
+      bestMatchSeedTP_sharedFraction_ = -99999.;
+      matchedSeedTPsize_ = -99999;
       gen_pt_ = -99999.;
       gen_eta_ = -99999.;
       gen_phi_ = -99999.;
@@ -574,6 +604,21 @@ private:
       tmpntpl->Branch("dPhi_L1TkMuSeedP",   &dPhi_L1TkMuSeedP_, "dPhi_L1TkMuSeedP/F");
       tmpntpl->Branch("bestMatchTP_pdgId", &bestMatchTP_pdgId_, "bestMatchTP_pdgId/I");
       tmpntpl->Branch("matchedTPsize", &matchedTPsize_, "matchedTPsize/I");
+      tmpntpl->Branch("bestMatchSeedTP_charge", &bestMatchSeedTP_charge_, "bestMatchSeedTP_charge/F");
+      tmpntpl->Branch("bestMatchSeedTP_pdgId", &bestMatchSeedTP_pdgId_, "bestMatchSeedTP_pdgId/I");
+      tmpntpl->Branch("bestMatchSeedTP_energy", &bestMatchSeedTP_energy_, "bestMatchSeedTP_energy/D");
+      tmpntpl->Branch("bestMatchSeedTP_pt", &bestMatchSeedTP_pt_,   "bestMatchSeedTP_pt/D");
+      tmpntpl->Branch("bestMatchSeedTP_eta", &bestMatchSeedTP_eta_, "bestMatchSeedTP_eta/D");
+      tmpntpl->Branch("bestMatchSeedTP_phi", &bestMatchSeedTP_phi_, "bestMatchSeedTP_phi/D");
+      tmpntpl->Branch("bestMatchSeedTP_parentVx", &bestMatchSeedTP_parentVx_, "bestMatchSeedTP_parentVx/D");
+      tmpntpl->Branch("bestMatchSeedTP_parentVy", &bestMatchSeedTP_parentVy_, "bestMatchSeedTP_parentVy/D");
+      tmpntpl->Branch("bestMatchSeedTP_parentVz", &bestMatchSeedTP_parentVz_, "bestMatchSeedTP_parentVz/D");
+      tmpntpl->Branch("bestMatchSeedTP_status", &bestMatchSeedTP_status_, "bestMatchSeedTP_status/I");
+      tmpntpl->Branch("bestMatchSeedTP_numberOfHits", &bestMatchSeedTP_numberOfHits_, "bestMatchSeedTP_numberOfHits/I");
+      tmpntpl->Branch("bestMatchSeedTP_numberOfTrackerHits", &bestMatchSeedTP_numberOfTrackerHits_, "bestMatchSeedTP_numberOfTrackerHits/I");
+      tmpntpl->Branch("bestMatchSeedTP_numberOfTrackerLayers", &bestMatchSeedTP_numberOfTrackerLayers_, "bestMatchSeedTP_numberOfTrackerLayers/I");
+      tmpntpl->Branch("bestMatchSeedTP_sharedFraction", &bestMatchSeedTP_sharedFraction_, "bestMatchSeedTP_sharedFraction/D");
+      tmpntpl->Branch("matchedSeedTPsize", &matchedSeedTPsize_, "matchedSeedTPsize/I");
       tmpntpl->Branch("gen_pt",      &gen_pt_, "gen_pt/F");
       tmpntpl->Branch("gen_eta",     &gen_eta_, "gen_eta/F");
       tmpntpl->Branch("gen_phi",     &gen_phi_, "gen_phi/F");
@@ -685,6 +730,24 @@ private:
       matchedTPsize_ = TTtrack->get_matchedTPsize(index);
     }
 
+    void fill_SeedTP(const TrackingParticleRef TP) {
+      bestMatchSeedTP_charge_ = TP->charge();
+      bestMatchSeedTP_pdgId_ = TP->pdgId();
+      bestMatchSeedTP_energy_ = TP->energy();
+      bestMatchSeedTP_pt_ = TP->pt();
+      bestMatchSeedTP_eta_ = TP->eta();
+      bestMatchSeedTP_phi_ = TP->phi();
+      bestMatchSeedTP_parentVx_ = TP->vx();
+      bestMatchSeedTP_parentVy_ = TP->vy();
+      bestMatchSeedTP_parentVz_ = TP->vz();
+      bestMatchSeedTP_status_ = TP->status();
+      bestMatchSeedTP_numberOfHits_ = TP->numberOfHits();
+      bestMatchSeedTP_numberOfTrackerHits_ = TP->numberOfTrackerHits();
+      bestMatchSeedTP_numberOfTrackerLayers_ = TP->numberOfTrackerLayers();
+    }
+    void fill_SeedTPsharedFrac(double seed_frac) { bestMatchSeedTP_sharedFraction_ = seed_frac; }
+    void fill_matchedSeedTPsize(int SeedTPsize) { matchedSeedTPsize_ = SeedTPsize; }
+
     void fill_ntuple( TTree* tmpntpl ) {
       tmpntpl->Fill();
     }
@@ -715,7 +778,7 @@ private:
 
   void fill_seedTemplate(
     const edm::Event &,
-    edm::EDGetTokenT<TrajectorySeedCollection>&,
+    edm::EDGetTokenT<edm::View<TrajectorySeed>>&,
     edm::ESHandle<TrackerGeometry>&,
     std::map<tmpTSOD,unsigned int>&,
     trkTemplate*,
@@ -725,7 +788,7 @@ private:
 
   void fill_seedTemplate(
     const edm::Event &,
-    edm::EDGetTokenT<TrajectorySeedCollection>&,
+    edm::EDGetTokenT<edm::View<TrajectorySeed>>&,
     pairSeedMvaEstimator,
     edm::ESHandle<TrackerGeometry>&,
     std::map<tmpTSOD,unsigned int>&,

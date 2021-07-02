@@ -197,7 +197,7 @@ private:
   std::vector<edm::InputTag> associationLabels_;
   std::vector<edm::EDGetTokenT< edm::View<reco::Track> > >  trackCollectionTokens_;
   std::vector<edm::EDGetTokenT<reco::SimToRecoCollection> > simToRecoCollectionTokens_;
-  std::vector<edm::EDGetTokenT<reco::RecoToSimCollection> > recoToSimCollectionTokens_; //JH
+  std::vector<edm::EDGetTokenT<reco::RecoToSimCollection> > recoToSimCollectionTokens_;
 
   edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_l1Matches_;
   edm::EDGetTokenT<edm::ValueMap<int>>                     t_l1MatchesQuality_;

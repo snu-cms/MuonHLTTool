@@ -252,12 +252,6 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
     Fill_TP(iEvent, TrkParticle);
   }
 
-  cout << "===============================TEST========================================" << endl;
-  edm::Handle<edm::View<reco::Track>> MYtrkHandle1;
-  if( iEvent.getByToken( t_hltIterL3OIMuonTrack_, MYtrkHandle1 ) ) cout << "MYtrkHandle1 valid;" << endl;
-  edm::Handle<edm::View<reco::Track>> MYtrkHandle2;
-  if( iEvent.getByToken( trackCollectionTokens_.at(0), MYtrkHandle2 ) ) cout << "MYtrkHandle2 valid;" << endl; //JH
-
   for( unsigned int i = 0; i < trackCollectionNames_.size(); ++i) {
     bool doIso = false;
     fill_trackTemplate( iEvent, trackCollectionTokens_.at(i), recoToSimCollectionTokens_.at(i), trkTemplates_.at(i), doIso );
@@ -1429,7 +1423,6 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
   // -- Gen-particle info -- //
   edm::Handle<edm::View<reco::GenParticle>> h_genParticle;
   iEvent.getByToken(t_genParticle_, h_genParticle);
-  cout << "genParticle size : " << h_genParticle->size() << endl; //JH
 
   int _nGenParticle = 0;
   for( size_t i=0; i< h_genParticle->size(); ++i)
@@ -1439,8 +1432,6 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
     if( abs(parCand.pdgId()) == 13 ) // -- only muons -- //
     {
-      cout << "==" << i << "th gen==" << endl;
-      cout << "pdgId : " << parCand.pdgId() << ", status : " << parCand.status() << endl; //JH
       genParticle_ID_[_nGenParticle]     = parCand.pdgId();
       genParticle_status_[_nGenParticle] = parCand.status();
       genParticle_mother_[_nGenParticle] = parCand.mother(0)->pdgId();
@@ -1453,7 +1444,6 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
       genParticle_pz_[_nGenParticle]  = parCand.pz();
       genParticle_energy_[_nGenParticle] = parCand.energy();
       genParticle_charge_[_nGenParticle] = parCand.charge();
-      cout << "pt : " << parCand.pt() << ", eta : " << parCand.eta() << ", phi : " << parCand.phi() << ", charge : " << parCand.charge() << endl; //JH
 
       if( parCand.statusFlags().isPrompt() )                genParticle_isPrompt_[_nGenParticle] = 1;
       if( parCand.statusFlags().isTauDecayProduct() )       genParticle_isTauDecayProduct_[_nGenParticle] = 1;
@@ -1474,7 +1464,6 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
       edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1Matches;
       if( iEvent.getByToken(t_l1Matches_, h_l1Matches) ){
-        cout << "getByToken h_l1Matches;" << endl;
         edm::Handle<edm::ValueMap<int>> h_l1Qualities;
         iEvent.getByToken(t_l1MatchesQuality_, h_l1Qualities);
         edm::Handle<edm::ValueMap<float>> h_l1Drs;
@@ -1482,9 +1471,6 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
         pat::TriggerObjectStandAloneRef genl1Match = (*h_l1Matches)[genRef];
         if (genl1Match.isNonnull()) {
-          cout << "genl1Match has been found;" << endl;
-          cout << "pt : " << genl1Match->pt() << ", eta : " << genl1Match->eta() << ", phi : " << genl1Match->phi() << ", charge : " << genl1Match->charge() << endl;
-          cout << "quality : " << (*h_l1Qualities)[genRef] << ", dR : " << (*h_l1Drs)[genRef] << endl; //JH
           genParticle_l1pt_[_nGenParticle]      = genl1Match->pt();
           genParticle_l1eta_[_nGenParticle]     = genl1Match->eta();
           genParticle_l1phi_[_nGenParticle]     = genl1Match->phi();
@@ -1503,9 +1489,6 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
         pat::TriggerObjectStandAloneRef genl1MatchByQ = (*h_l1MatchesByQ)[genRef];
         if (genl1MatchByQ.isNonnull()) {
-          cout << "genl1MatchByQ has been found;" << endl;
-          cout << "pt : " << genl1MatchByQ->pt() << ", eta : " << genl1MatchByQ->eta() << ", phi : " << genl1MatchByQ->phi() << ", charge : " << genl1MatchByQ->charge() << endl;
-          cout << "quality : " << (*h_l1QualitiesByQ)[genRef] << ", dR : " << (*h_l1DrsByQ)[genRef] << endl; //JH
           genParticle_l1ptByQ_[_nGenParticle]      = genl1MatchByQ->pt();
           genParticle_l1etaByQ_[_nGenParticle]     = genl1MatchByQ->eta();
           genParticle_l1phiByQ_[_nGenParticle]     = genl1MatchByQ->phi();
