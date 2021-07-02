@@ -130,13 +130,13 @@ private:
   edm::EDGetTokenT< l1t::MuonBxCollection >                  t_L1Muon_;
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L2Muon_;
 
-  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIterL3OISeedsFromL2Muons_;
-  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIterL3OISeedsFromL2Muons_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIter0IterL3MuonPixelSeedsFromPixelTracks_;
   edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIter2IterL3MuonPixelSeeds_;
-  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIter3IterL3MuonPixelSeeds_;
-  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIter3IterL3MuonPixelSeeds_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks_;
   edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIter2IterL3FromL1MuonPixelSeeds_;
-  edm::EDGetTokenT< edm::View<TrajectorySeed> >               t_hltIter3IterL3FromL1MuonPixelSeeds_;
+  edm::EDGetTokenT< edm::View<TrajectorySeed> >              t_hltIter3IterL3FromL1MuonPixelSeeds_;
 
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIterL3OIMuonTrack_;
   edm::EDGetTokenT< edm::View<reco::Track> >               t_hltIter0IterL3MuonTrack_;
@@ -441,6 +441,7 @@ private:
     float tsos_pz_;
     float tsos_qbp_;
     int tsos_charge_;
+    int nL1Muon_;
     float dR_minDRL1SeedP_;
     float dPhi_minDRL1SeedP_;
     float dR_minDPhiL1SeedX_;
@@ -449,6 +450,7 @@ private:
     float dPhi_minDRL1SeedP_AtVtx_;
     float dR_minDPhiL1SeedX_AtVtx_;
     float dPhi_minDPhiL1SeedX_AtVtx_;
+    int nL2Muon_;
     float dR_minDRL2SeedP_;
     float dPhi_minDRL2SeedP_;
     float dR_minDPhiL2SeedX_;
@@ -513,6 +515,7 @@ private:
       tsos_pz_ = -99999.;
       tsos_qbp_ = -99999.;
       tsos_charge_ = -99999;
+      nL1Muon_ = 0;
       dR_minDRL1SeedP_ = -99999.;
       dPhi_minDRL1SeedP_ = -99999.;
       dR_minDPhiL1SeedX_ = -99999.;
@@ -521,6 +524,7 @@ private:
       dPhi_minDRL1SeedP_AtVtx_ = -99999.;
       dR_minDPhiL1SeedX_AtVtx_ = -99999.;
       dPhi_minDPhiL1SeedX_AtVtx_ = -99999.;
+      nL2Muon_ = 0;
       dR_minDRL2SeedP_ = -99999.;
       dPhi_minDRL2SeedP_ = -99999.;
       dR_minDPhiL2SeedX_ = -99999.;
@@ -588,6 +592,7 @@ private:
       tmpntpl->Branch("tsos_pz",      &tsos_pz_, "tsos_pz/F");
       tmpntpl->Branch("tsos_qbp",     &tsos_qbp_, "tsos_qbp/F");
       tmpntpl->Branch("tsos_charge",  &tsos_charge_, "tsos_charge/I");
+      tmpntpl->Branch("nL1Muon",     &nL1Muon_, "nL1Muon/I");
       tmpntpl->Branch("dR_minDRL1SeedP",     &dR_minDRL1SeedP_, "dR_minDRL1SeedP/F");
       tmpntpl->Branch("dPhi_minDRL1SeedP",   &dPhi_minDRL1SeedP_, "dPhi_minDRL1SeedP/F");
       tmpntpl->Branch("dR_minDPhiL1SeedX",   &dR_minDPhiL1SeedX_, "dR_minDPhiL1SeedX/F");
@@ -596,6 +601,7 @@ private:
       tmpntpl->Branch("dPhi_minDRL1SeedP_AtVtx",   &dPhi_minDRL1SeedP_AtVtx_, "dPhi_minDRL1SeedP_AtVtx/F");
       tmpntpl->Branch("dR_minDPhiL1SeedX_AtVtx",   &dR_minDPhiL1SeedX_AtVtx_, "dR_minDPhiL1SeedX_AtVtx/F");
       tmpntpl->Branch("dPhi_minDPhiL1SeedX_AtVtx", &dPhi_minDPhiL1SeedX_AtVtx_, "dPhi_minDPhiL1SeedX_AtVtx/F");
+      tmpntpl->Branch("nL2Muon",     &nL2Muon_, "nL2Muon/I");
       tmpntpl->Branch("dR_minDRL2SeedP",     &dR_minDRL2SeedP_, "dR_minDRL2SeedP/F");
       tmpntpl->Branch("dPhi_minDRL2SeedP",   &dPhi_minDRL2SeedP_, "dPhi_minDRL2SeedP/F");
       tmpntpl->Branch("dR_minDPhiL2SeedX",   &dR_minDPhiL2SeedX_, "dR_minDPhiL2SeedX/F");
@@ -692,10 +698,12 @@ private:
       return;
     }
 
-    void fill_L1vars( float dR_minDRL1SeedP,         float dPhi_minDRL1SeedP,
+    void fill_L1vars( int nL1Muon,
+                      float dR_minDRL1SeedP,         float dPhi_minDRL1SeedP,
                       float dR_minDPhiL1SeedX ,      float dPhi_minDPhiL1SeedX,
                       float dR_minDRL1SeedP_AtVtx,   float dPhi_minDRL1SeedP_AtVtx,
                       float dR_minDPhiL1SeedX_AtVtx, float dPhi_minDPhiL1SeedX_AtVtx ) {
+      nL1Muon_                   = nL1Muon;
       dR_minDRL1SeedP_           = dR_minDRL1SeedP;
       dPhi_minDRL1SeedP_         = dPhi_minDRL1SeedP;
       dR_minDPhiL1SeedX_         = dR_minDPhiL1SeedX;
@@ -709,8 +717,10 @@ private:
       return;
     }
 
-    void fill_L2vars( float dR_minDRL2SeedP,         float dPhi_minDRL2SeedP,
+    void fill_L2vars( int nL2Muon,
+                      float dR_minDRL2SeedP,         float dPhi_minDRL2SeedP,
                       float dR_minDPhiL2SeedX ,      float dPhi_minDPhiL2SeedX ) {
+      nL2Muon_                   = nL2Muon;
       dR_minDRL2SeedP_           = dR_minDRL2SeedP;
       dPhi_minDRL2SeedP_         = dPhi_minDRL2SeedP;
       dR_minDPhiL2SeedX_         = dR_minDPhiL2SeedX;
