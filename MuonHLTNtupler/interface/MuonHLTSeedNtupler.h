@@ -122,6 +122,7 @@ private:
 
   // TrackerHitAssociator::Config trackerHitAssociatorConfig_;
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
+  edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> seedAssociatorToken;
   edm::EDGetTokenT<TrackingParticleCollection> trackingParticleToken;
 
   edm::EDGetTokenT< reco::VertexCollection >                 t_offlineVertex_;

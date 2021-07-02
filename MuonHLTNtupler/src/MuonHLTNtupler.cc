@@ -1160,6 +1160,18 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
   // -- Gen-particle info -- //
   edm::Handle<edm::View<reco::GenParticle>> h_genParticle;
   iEvent.getByToken(t_genParticle_, h_genParticle);
+  edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1Matches;
+  iEvent.getByToken(t_l1Matches_, h_l1Matches);
+  edm::Handle<edm::ValueMap<int>> h_l1Qualities;
+  iEvent.getByToken(t_l1MatchesQuality_, h_l1Qualities);
+  edm::Handle<edm::ValueMap<float>> h_l1Drs;
+  iEvent.getByToken(t_l1MatchesDeltaR_, h_l1Drs);
+  edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1MatchesByQ;
+  iEvent.getByToken(t_l1MatchesByQ_, h_l1MatchesByQ);
+  edm::Handle<edm::ValueMap<int>> h_l1QualitiesByQ;
+  iEvent.getByToken(t_l1MatchesByQQuality_, h_l1QualitiesByQ);
+  edm::Handle<edm::ValueMap<float>> h_l1DrsByQ;
+  iEvent.getByToken(t_l1MatchesByQDeltaR_, h_l1DrsByQ);
 
   int _nGenParticle = 0;
   for( size_t i=0; i< h_genParticle->size(); ++i)
@@ -1199,40 +1211,24 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
       if( parCand.fromHardProcessFinalState() ) genParticle_fromHardProcessFinalState_[_nGenParticle] = 1;
       // if( parCand.isMostlyLikePythia6Status3() ) this->genParticle_isMostlyLikePythia6Status3[_nGenParticle] = 1;
 
-      edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1Matches;
-      if( iEvent.getByToken(t_l1Matches_, h_l1Matches) ){
-        edm::Handle<edm::ValueMap<int>> h_l1Qualities;
-        iEvent.getByToken(t_l1MatchesQuality_, h_l1Qualities);
-        edm::Handle<edm::ValueMap<float>> h_l1Drs;
-        iEvent.getByToken(t_l1MatchesDeltaR_, h_l1Drs);
-
-        pat::TriggerObjectStandAloneRef genl1Match = (*h_l1Matches)[genRef];
-        if (genl1Match.isNonnull()) {
-          genParticle_l1pt_[_nGenParticle]      = genl1Match->pt();
-          genParticle_l1eta_[_nGenParticle]     = genl1Match->eta();
-          genParticle_l1phi_[_nGenParticle]     = genl1Match->phi();
-          genParticle_l1charge_[_nGenParticle]  = genl1Match->charge();
-          genParticle_l1q_[_nGenParticle]       = (*h_l1Qualities)[genRef];
-          genParticle_l1dr_[_nGenParticle]      = (*h_l1Drs)[genRef];
-        }
+      pat::TriggerObjectStandAloneRef genl1Match = (*h_l1Matches)[genRef];
+      if (genl1Match.isNonnull()) {
+        genParticle_l1pt_[_nGenParticle]      = genl1Match->pt();
+        genParticle_l1eta_[_nGenParticle]     = genl1Match->eta();
+        genParticle_l1phi_[_nGenParticle]     = genl1Match->phi();
+        genParticle_l1charge_[_nGenParticle]  = genl1Match->charge();
+        genParticle_l1q_[_nGenParticle]       = (*h_l1Qualities)[genRef];
+        genParticle_l1dr_[_nGenParticle]      = (*h_l1Drs)[genRef];
       }
 
-      edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1MatchesByQ;
-      if( iEvent.getByToken(t_l1MatchesByQ_, h_l1MatchesByQ) ){
-        edm::Handle<edm::ValueMap<int>> h_l1QualitiesByQ;
-        iEvent.getByToken(t_l1MatchesByQQuality_, h_l1QualitiesByQ);
-        edm::Handle<edm::ValueMap<float>> h_l1DrsByQ;
-        iEvent.getByToken(t_l1MatchesByQDeltaR_, h_l1DrsByQ);
-
-        pat::TriggerObjectStandAloneRef genl1MatchByQ = (*h_l1MatchesByQ)[genRef];
-        if (genl1MatchByQ.isNonnull()) {
-          genParticle_l1ptByQ_[_nGenParticle]      = genl1MatchByQ->pt();
-          genParticle_l1etaByQ_[_nGenParticle]     = genl1MatchByQ->eta();
-          genParticle_l1phiByQ_[_nGenParticle]     = genl1MatchByQ->phi();
-          genParticle_l1chargeByQ_[_nGenParticle]  = genl1MatchByQ->charge();
-          genParticle_l1qByQ_[_nGenParticle]       = (*h_l1QualitiesByQ)[genRef];
-          genParticle_l1drByQ_[_nGenParticle]      = (*h_l1DrsByQ)[genRef];
-        }
+      pat::TriggerObjectStandAloneRef genl1MatchByQ = (*h_l1MatchesByQ)[genRef];
+      if (genl1MatchByQ.isNonnull()) {
+        genParticle_l1ptByQ_[_nGenParticle]      = genl1MatchByQ->pt();
+        genParticle_l1etaByQ_[_nGenParticle]     = genl1MatchByQ->eta();
+        genParticle_l1phiByQ_[_nGenParticle]     = genl1MatchByQ->phi();
+        genParticle_l1chargeByQ_[_nGenParticle]  = genl1MatchByQ->charge();
+        genParticle_l1qByQ_[_nGenParticle]       = (*h_l1QualitiesByQ)[genRef];
+        genParticle_l1drByQ_[_nGenParticle]      = (*h_l1DrsByQ)[genRef];
       }
 
       _nGenParticle++;

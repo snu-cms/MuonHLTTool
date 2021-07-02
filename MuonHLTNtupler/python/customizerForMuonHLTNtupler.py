@@ -230,13 +230,37 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
         from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
         process.Skimmer = DYmuSkimmer.clone()
         if isDIGI:
-            process.mypath = cms.Path(process.Skimmer*process.HLTBeginSequence*process.HLTL2muonrecoSequence*process.HLTL3muonrecoSequence*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.trackAssoSeq*process.L1AssoSeq*process.ntupler)
+            process.mypath = cms.Path(process.Skimmer*
+                                      process.HLTBeginSequence*
+                                      process.HLTL2muonrecoSequence*
+                                      process.HLTL3muonrecoSequence*
+                                      process.hltTPClusterProducer*
+                                      process.hltTrackAssociatorByHits*
+                                      process.trackAssoSeq*
+                                      process.L1AssoSeq*
+                                      process.ntupler)
         else:
-            process.mypath = cms.Path(process.Skimmer*process.ntupler)
+            process.mypath = cms.Path(process.Skimmer*
+                                      process.HLTBeginSequence*
+                                      process.HLTL2muonrecoSequence*
+                                      process.HLTL3muonrecoSequence*
+                                      process.L1AssoSeq*
+                                      process.ntupler)
     else:
         if isDIGI:
-            process.mypath = cms.Path(process.HLTBeginSequence*process.HLTL2muonrecoSequence*process.HLTL3muonrecoSequence*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.trackAssoSeq*process.L1AssoSeq*process.ntupler)
+            process.mypath = cms.Path(process.HLTBeginSequence*
+                                      process.HLTL2muonrecoSequence*
+                                      process.HLTL3muonrecoSequence*
+                                      process.hltTPClusterProducer*
+                                      process.hltTrackAssociatorByHits*
+                                      process.trackAssoSeq*
+                                      process.L1AssoSeq*
+                                      process.ntupler)
         else:
-            process.mypath = cms.Path(process.ntupler)
+            process.mypath = cms.Path(process.HLTBeginSequence*
+                                      process.HLTL2muonrecoSequence*
+                                      process.HLTL3muonrecoSequence*
+                                      process.L1AssoSeq*
+                                      process.ntupler)
 
     return process

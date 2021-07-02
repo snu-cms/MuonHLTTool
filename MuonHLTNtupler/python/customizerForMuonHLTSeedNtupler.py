@@ -25,6 +25,13 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYS
     process.hltTrackAssociatorByHits.UseSplitting             = cms.bool( False )
     process.hltTrackAssociatorByHits.ThreeHitTracksAreSpecial = cms.bool( False )
 
+    process.hltSeedAssociatorByHits = SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi.quickTrackAssociatorByHits.clone()
+    process.hltSeedAssociatorByHits.cluster2TPSrc            = cms.InputTag("hltTPClusterProducer")
+    process.hltSeedAssociatorByHits.UseGrouped               = cms.bool( False )
+    process.hltSeedAssociatorByHits.UseSplitting             = cms.bool( False )
+    process.hltSeedAssociatorByHits.ThreeHitTracksAreSpecial = cms.bool( False )
+    process.hltSeedAssociatorByHits.Cut_RecoToSim = cms.double(0.)
+
     process.seedNtupler = seedNtuplerBase.clone()
 
     process.seedNtupler.L1Muon           = cms.untracked.InputTag("hltGtStage2Digis",        "Muon", newProcessName)
@@ -47,6 +54,7 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYS
     process.seedNtupler.hltIter3IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter3IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
 
     process.seedNtupler.associator = cms.untracked.InputTag("hltTrackAssociatorByHits")
+    process.seedNtupler.seedAssociator = cms.untracked.InputTag("hltSeedAssociatorByHits")
     process.seedNtupler.trackingParticle = cms.untracked.InputTag("mix","MergedTrackTruth")
 
     process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B                      = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/xgb_Run3_Iter2Seeds_barrel.xml")
@@ -72,13 +80,33 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYS
         from MuonHLTTool.MuonHLTNtupler.DYmuSkimmer import DYmuSkimmer 
         process.Skimmer = DYmuSkimmer.clone()
         if isDIGI:
-            process.myseedpath = cms.Path(process.Skimmer*process.HLTBeginSequence*process.HLTL2muonrecoSequence*process.HLTL3muonrecoSequence*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
+            process.myseedpath = cms.Path(process.Skimmer*
+                                          process.HLTBeginSequence*
+                                          process.HLTL2muonrecoSequence*
+                                          process.HLTL3muonrecoSequence*
+                                          process.hltTPClusterProducer*
+                                          process.hltTrackAssociatorByHits*
+                                          process.hltSeedAssociatorByHits*
+                                          process.seedNtupler)
         else:
-            process.myseedpath = cms.Path(process.Skimmer*process.seedNtupler)
+            process.myseedpath = cms.Path(process.Skimmer*
+                                          process.HLTBeginSequence*
+                                          process.HLTL2muonrecoSequence*
+                                          process.HLTL3muonrecoSequence*
+                                          process.seedNtupler)
     else:
         if isDIGI:
-            process.myseedpath = cms.Path(process.HLTBeginSequence*process.HLTL2muonrecoSequence*process.HLTL3muonrecoSequence*process.hltTPClusterProducer*process.hltTrackAssociatorByHits*process.seedNtupler)
+            process.myseedpath = cms.Path(process.HLTBeginSequence*
+                                          process.HLTL2muonrecoSequence*
+                                          process.HLTL3muonrecoSequence*
+                                          process.hltTPClusterProducer*
+                                          process.hltTrackAssociatorByHits*
+                                          process.hltSeedAssociatorByHits*
+                                          process.seedNtupler)
         else:
-            process.myseedpath = cms.Path(process.seedNtupler)
+            process.myseedpath = cms.Path(process.HLTBeginSequence*
+                                          process.HLTL2muonrecoSequence*
+                                          process.HLTL3muonrecoSequence*
+                                          process.seedNtupler)
 
     return process
