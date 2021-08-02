@@ -907,6 +907,7 @@ private:
     std::vector<int> bestMatchTrk_charge;
     std::vector<double> bestMatchTrk_quality;
     std::vector<int> bestMatchTrk_NValidHits;
+    std::vector<double> bestMatchTrk_mva;
   public:
     void clear() {
       nTP = 0;
@@ -934,6 +935,7 @@ private:
       bestMatchTrk_charge.clear();
       bestMatchTrk_quality.clear();
       bestMatchTrk_NValidHits.clear();
+      bestMatchTrk_mva.clear();
 
       return;
     }
@@ -964,6 +966,7 @@ private:
       tmpntpl->Branch(name+"_bestMatchTrk_charge", &bestMatchTrk_charge);
       tmpntpl->Branch(name+"_bestMatchTrk_quality", &bestMatchTrk_quality);
       tmpntpl->Branch(name+"_bestMatchTrk_NValidHits", &bestMatchTrk_NValidHits);
+      tmpntpl->Branch(name+"_bestMatchTrk_mva", &bestMatchTrk_mva);
 
       return;
     }
@@ -1009,7 +1012,8 @@ private:
       double _phi,
       int _charge,
       double _quality,
-      int _NValidHits
+      int _NValidHits,
+      double _mva
     ) {
       bestMatchTrk_pt.push_back(_pt);
       bestMatchTrk_eta.push_back(_eta);
@@ -1017,6 +1021,7 @@ private:
       bestMatchTrk_charge.push_back(_charge);
       bestMatchTrk_quality.push_back(_quality);
       bestMatchTrk_NValidHits.push_back(_NValidHits);
+      bestMatchTrk_mva.push_back(_mva + 0.5);
     }
 
   };
@@ -1179,9 +1184,27 @@ private:
     bool
   );
 
+  void fill_trackTemplate(
+    const edm::Event &iEvent,
+    edm::EDGetTokenT<edm::View<reco::Track>>& trkToken,
+    edm::EDGetTokenT<reco::RecoToSimCollection>& assoToken,
+    edm::ESHandle<TrackerGeometry>& tracker,
+    pairSeedMvaEstimator pairMvaEstimator,
+    trkTemplate* TTtrack,
+    bool
+  );
+
   void fill_tpTemplate(
     const edm::Event &iEvent,
     edm::EDGetTokenT<reco::SimToRecoCollection>& assoToken,
+    tpTemplate* TTtp
+  );
+
+  void fill_tpTemplate(
+    const edm::Event &iEvent,
+    edm::EDGetTokenT<reco::SimToRecoCollection>& assoToken,
+    edm::ESHandle<TrackerGeometry>& tracker,
+    pairSeedMvaEstimator pairMvaEstimator,
     tpTemplate* TTtp
   );
 
