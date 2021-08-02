@@ -246,7 +246,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   Fill_HLTMuon(iEvent);
   Fill_L1Muon(iEvent);
   Fill_IterL3(iEvent, iSetup);
-  if( doSeed )  Fill_Seed(iEvent, iSetup);
+  //if( doSeed )  Fill_Seed(iEvent, iSetup);
   if( !isRealData_ ) {
     Fill_GenParticle(iEvent);
     Fill_TP(iEvent, TrkParticle);
@@ -1481,6 +1481,7 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
 
 }
 
+/*
 void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 {
   // TrackerHitAssociator associate(iEvent, trackerHitAssociatorConfig_);
@@ -1655,6 +1656,7 @@ void MuonHLTNtupler::Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &
     } // -- end of seed iteration
   } // -- if getByToken is valid
 }
+*/
 
 void MuonHLTNtupler::Fill_TP( const edm::Event &iEvent, tpTemplate* tpTmp )
 {

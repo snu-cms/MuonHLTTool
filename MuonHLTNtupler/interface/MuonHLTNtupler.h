@@ -518,6 +518,7 @@ private:
   int iterL3Muon_isSTA_[arrSize_];
   int iterL3Muon_isTRK_[arrSize_];
 
+/*
   class seedTemplate {
   private:
     int nSeeds_;
@@ -711,6 +712,7 @@ private:
     void linktmpL3(int linkNo) { tmpL3Ref_.push_back(linkNo); }
     void matchingL3(int linkNo) { iterL3Matched_.push_back(linkNo); }
   };
+*/
 
   class tmpTrk {
   private:
@@ -1131,13 +1133,13 @@ private:
   std::vector<tmpTrk> iterL3IDpassed;
   std::vector<tmpTrk> iterL3NoIDpassed;
 
-  seedTemplate* SThltIterL3OISeedsFromL2Muons = new seedTemplate();
-  seedTemplate* SThltIter0IterL3MuonPixelSeedsFromPixelTracks = new seedTemplate();
-  seedTemplate* SThltIter2IterL3MuonPixelSeeds = new seedTemplate();
-  seedTemplate* SThltIter3IterL3MuonPixelSeeds = new seedTemplate();
-  seedTemplate* SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks = new seedTemplate();
-  seedTemplate* SThltIter2IterL3FromL1MuonPixelSeeds = new seedTemplate();
-  seedTemplate* SThltIter3IterL3FromL1MuonPixelSeeds = new seedTemplate();
+  //seedTemplate* SThltIterL3OISeedsFromL2Muons = new seedTemplate();
+  //seedTemplate* SThltIter0IterL3MuonPixelSeedsFromPixelTracks = new seedTemplate();
+  //seedTemplate* SThltIter2IterL3MuonPixelSeeds = new seedTemplate();
+  //seedTemplate* SThltIter3IterL3MuonPixelSeeds = new seedTemplate();
+  //seedTemplate* SThltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks = new seedTemplate();
+  //seedTemplate* SThltIter2IterL3FromL1MuonPixelSeeds = new seedTemplate();
+  //seedTemplate* SThltIter3IterL3FromL1MuonPixelSeeds = new seedTemplate();
 
   trkTemplate* TThltIterL3OIMuonTrack = new trkTemplate();
   trkTemplate* TThltIter0IterL3MuonTrack = new trkTemplate();
