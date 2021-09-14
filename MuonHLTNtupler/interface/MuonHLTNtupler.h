@@ -875,7 +875,7 @@ private:
       return;
     }
 
-    void fill(const reco::Track& trk) {
+    void fill(const reco::Track& trk, const reco::BeamSpot* bs) {
       trkPts.push_back(trk.pt());
       trkEtas.push_back(trk.eta());
       trkPhis.push_back(trk.phi());

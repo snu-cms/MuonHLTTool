@@ -1730,7 +1730,7 @@ void MuonHLTNtupler::fill_trackTemplate(
 
     for( unsigned int i = 0; i < trkHandle->size(); i++ )
     {
-      TTtrack->fill(trkHandle->at(i));
+      TTtrack->fill(trkHandle->at(i), bs);
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
@@ -1790,7 +1790,7 @@ void MuonHLTNtupler::fill_trackTemplate(
 
     for( unsigned int i = 0; i < trkHandle->size(); i++ )
     {
-      TTtrack->fill(trkHandle->at(i));
+      TTtrack->fill(trkHandle->at(i), bs);
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
@@ -1860,7 +1860,7 @@ void MuonHLTNtupler::fill_trackTemplate(
       auto recSimColl = *assoHandle.product();
 
       for( unsigned int i = 0; i < trkHandle->size(); i++ ) {
-        TTtrack->fill(trkHandle->at(i));
+        TTtrack->fill(trkHandle->at(i), bs);
 
         auto track = trkHandle->refAt(i);
         auto TPfound = recSimColl.find(track);
@@ -1910,7 +1910,7 @@ void MuonHLTNtupler::fill_trackTemplate(
       auto recSimColl = *assoHandle.product();
 
       for( unsigned int i = 0; i < trkHandle->size(); i++ ) {
-        TTtrack->fill(trkHandle->at(i));
+        TTtrack->fill(trkHandle->at(i), bs);
 
         // -- fill dummy index
         TTtrack->linkIterL3(-1);
