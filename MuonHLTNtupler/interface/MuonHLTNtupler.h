@@ -210,7 +210,7 @@ private:
 
   typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
 
-  reco::BeamSpot bs;
+  const reco::BeamSpot* bs;
 
   TTree *ntuple_;
   static const int arrSize_ = 5000;
@@ -886,9 +886,9 @@ private:
       vx.push_back(trk.vx());
       vy.push_back(trk.vy());
       vz.push_back(trk.vz());
-      dxy_bs.push_back(trk.dxy(bs.position()));
-      dxyError_bs.push_back(trk.dxyError(bs));
-      dz_bs.push_back(trk.dz(bs.position()));
+      dxy_bs.push_back(trk.dxy(bs->position()));
+      dxyError_bs.push_back(trk.dxyError(*bs));
+      dz_bs.push_back(trk.dz(bs->position()));
       dzError.push_back(trk.dzError());
       normalizedChi2.push_back(trk.normalizedChi2());
       nTrks++;
