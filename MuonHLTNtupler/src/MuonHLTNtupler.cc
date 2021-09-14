@@ -127,6 +127,10 @@ t_l1MatchesByQ_        ( consumes< pat::TriggerObjectStandAloneMatch >          
 t_l1MatchesByQQuality_ ( consumes< edm::ValueMap<int> >                               (iConfig.getParameter<edm::InputTag>("l1MatchesByQQuality"))),
 t_l1MatchesByQDeltaR_  ( consumes< edm::ValueMap<float> >                             (iConfig.getParameter<edm::InputTag>("l1MatchesByQDeltaR")))
 {
+  edm::Handle<reco::BeamSpot> h_beamSpot;
+  iEvent.getByToken(t_beamSpot_, h_beamSpot);
+  bs = *(h_beamSpot.product());
+
   trackCollectionNames_   = iConfig.getUntrackedParameter<std::vector<std::string>   >("trackCollectionNames");
   trackCollectionLabels_  = iConfig.getUntrackedParameter<std::vector<edm::InputTag> >("trackCollectionLabels");
   associationLabels_      = iConfig.getUntrackedParameter<std::vector<edm::InputTag> >("associationLabels");
@@ -168,9 +172,6 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   lumiBlockNum_ = iEvent.id().luminosityBlock();
   eventNum_     = iEvent.id().event();
 
-  edm::Handle<reco::BeamSpot> h_beamSpot;
-  iEvent.getByToken(t_beamSpot_, h_beamSpot);
-  bs = *(h_beamSpot.product());
   bs_x0_ = bs.x0();
   bs_y0_ = bs.y0();
   bs_z0_ = bs.z0();
