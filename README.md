@@ -2,15 +2,10 @@
 
 ## Run3 113X Recipe
 ```
-# 113X PR isn't applied, new release is needed
-cmsrel CMSSW_11_3_1_patch1
-cd CMSSW_11_3_1_patch1/src
+cmsrel CMSSW_11_3_2
+cd CMSSW_11_3_2/src
 cmsenv
 git cms-init
-git cms-merge-topic 34228
-
-# clone MVA data
-git clone https://github.com/cms-data/RecoMuon-TrackerSeedGenerator.git RecoMuon/TrackerSeedGenerator/data
 
 # Muon HLT customizers for Run 3
 git cms-addpkg HLTrigger/Configuration
@@ -20,6 +15,8 @@ git clone -b dev https://github.com/khaosmos93/MuonHLTForRun3.git HLTrigger/Conf
 hltGetConfiguration /dev/CMSSW_11_3_0/GRun/V14 --type GRun \
 --path HLTriggerFirstPath,HLT_IsoMu24_v*,HLT_Mu50_v*,HLTriggerFinalPath,HLTAnalyzerEndpath \
 --unprescale --cff >$CMSSW_BASE/src/HLTrigger/Configuration/python/HLT_MuonHLT_cff.py
+
+scram b -j 8
 
 # cmsDriver
 cmsDriver.py hlt_muon \

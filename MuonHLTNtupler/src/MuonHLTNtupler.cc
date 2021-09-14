@@ -1177,7 +1177,7 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
     {
       genParticle_ID_[_nGenParticle]     = parCand.pdgId();
       genParticle_status_[_nGenParticle] = parCand.status();
-      genParticle_mother_[_nGenParticle] = parCand.mother(0)->pdgId();
+      genParticle_mother_[_nGenParticle] = parCand.mother(0)? parCand.mother(0)->pdgId(): -999;
 
       genParticle_pt_[_nGenParticle]  = parCand.pt();
       genParticle_eta_[_nGenParticle] = parCand.eta();
