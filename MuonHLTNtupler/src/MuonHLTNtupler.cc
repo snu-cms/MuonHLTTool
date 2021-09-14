@@ -76,6 +76,7 @@ DebugMode(iConfig.getParameter<bool>("DebugMode")),
 
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
 trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackingParticle"))),
+t_beamSpot_          ( consumes< reco::BeamSpot >                         (iConfig.getUntrackedParameter<edm::InputTag>("beamSpot"     )) ),
 t_offlineMuon_       ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"       )) ),
 t_offlineVertex_     ( consumes< reco::VertexCollection >                 (iConfig.getUntrackedParameter<edm::InputTag>("offlineVertex"     )) ),
 t_triggerResults_    ( consumes< edm::TriggerResults >                    (iConfig.getUntrackedParameter<edm::InputTag>("triggerResults"    )) ),
@@ -124,7 +125,8 @@ t_l1MatchesQuality_    ( consumes< edm::ValueMap<int> >                         
 t_l1MatchesDeltaR_     ( consumes< edm::ValueMap<float> >                             (iConfig.getParameter<edm::InputTag>("l1MatchesDeltaR"))),
 t_l1MatchesByQ_        ( consumes< pat::TriggerObjectStandAloneMatch >                (iConfig.getParameter<edm::InputTag>("l1MatchesByQ"))),
 t_l1MatchesByQQuality_ ( consumes< edm::ValueMap<int> >                               (iConfig.getParameter<edm::InputTag>("l1MatchesByQQuality"))),
-t_l1MatchesByQDeltaR_  ( consumes< edm::ValueMap<float> >                             (iConfig.getParameter<edm::InputTag>("l1MatchesByQDeltaR")))
+t_l1MatchesByQDeltaR_  ( consumes< edm::ValueMap<float> >                             (iConfig.getParameter<edm::InputTag>("l1MatchesByQDeltaR"))),
+bs(0)
 {
   trackCollectionNames_   = iConfig.getUntrackedParameter<std::vector<std::string>   >("trackCollectionNames");
   trackCollectionLabels_  = iConfig.getUntrackedParameter<std::vector<edm::InputTag> >("trackCollectionLabels");
@@ -166,6 +168,23 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   runNum_       = iEvent.id().run();
   lumiBlockNum_ = iEvent.id().luminosityBlock();
   eventNum_     = iEvent.id().event();
+
+  edm::Handle<reco::BeamSpot> h_beamSpot;
+  iEvent.getByToken(t_beamSpot_, h_beamSpot);
+  bs = h_beamSpot.isValid() ? &*h_beamSpot : 0;
+  bs_x0_ = bs->x0();
+  bs_y0_ = bs->y0();
+  bs_z0_ = bs->z0();
+  bs_sigmaZ_ = bs->sigmaZ();
+  bs_dxdz_ = bs->dxdz();
+  bs_dydz_ = bs->dydz();
+  bs_x0Error_ = bs->x0Error();
+  bs_y0Error_ = bs->y0Error();
+  bs_z0Error_ = bs->z0Error();
+  bs_sigmaZ0Error_ = bs->sigmaZ0Error();
+  bs_dxdzError_ = bs->dxdzError();
+  bs_dydzError_ = bs->dydzError();
+
 
   // -- vertex
   edm::Handle<reco::VertexCollection> h_offlineVertex;
@@ -281,6 +300,19 @@ void MuonHLTNtupler::Init()
   eventNum_     = 0;
 
   bunchID_ = -999;
+
+  bs_x0_ = -999;
+  bs_y0_ = -999;
+  bs_z0_ = -999;
+  bs_sigmaZ_ = -999;
+  bs_dxdz_ = -999;
+  bs_dydz_ = -999;
+  bs_x0Error_ = -999;
+  bs_y0Error_ = -999;
+  bs_z0Error_ = -999;
+  bs_sigmaZ0Error_ = -999;
+  bs_dxdzError_ = -999;
+  bs_dydzError_ = -999;
 
   nVertex_ = -999;
 
@@ -598,6 +630,18 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("runNum",&runNum_,"runNum/I");
   ntuple_->Branch("lumiBlockNum",&lumiBlockNum_,"lumiBlockNum/I");
   ntuple_->Branch("eventNum",&eventNum_,"eventNum/l"); // -- unsigned long long -- //
+  ntuple_->Branch("bs_x0", &bs_x0_, "bs_x0/D");
+  ntuple_->Branch("bs_y0", &bs_y0_, "bs_y0/D");
+  ntuple_->Branch("bs_z0", &bs_z0_, "bs_z0/D");
+  ntuple_->Branch("bs_sigmaZ", &bs_sigmaZ_, "bs_sigmaZ/D");
+  ntuple_->Branch("bs_dxdz", &bs_dxdz_, "bs_dxdz/D");
+  ntuple_->Branch("bs_dydz", &bs_dydz_, "bs_dydz/D");
+  ntuple_->Branch("bs_x0Error", &bs_x0Error_, "bs_x0Error/D");
+  ntuple_->Branch("bs_y0Error", &bs_y0Error_, "bs_y0Error/D");
+  ntuple_->Branch("bs_z0Error", &bs_z0Error_, "bs_z0Error/D");
+  ntuple_->Branch("bs_sigmaZ0Error", &bs_sigmaZ0Error_, "bs_sigmaZ0Error/D");
+  ntuple_->Branch("bs_dxdzError", &bs_dxdzError_, "bs_dxdzError/D");
+  ntuple_->Branch("bs_dydzError", &bs_dydzError_, "bs_dydzError/D");
   ntuple_->Branch("nVertex", &nVertex_, "nVertex/I");
   ntuple_->Branch("bunchID", &bunchID_, "bunchID/D");
   ntuple_->Branch("instLumi", &instLumi_, "instLumi/D");
@@ -1686,7 +1730,7 @@ void MuonHLTNtupler::fill_trackTemplate(
 
     for( unsigned int i = 0; i < trkHandle->size(); i++ )
     {
-      TTtrack->fill(trkHandle->at(i));
+      TTtrack->fill(trkHandle->at(i), bs);
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
@@ -1746,7 +1790,7 @@ void MuonHLTNtupler::fill_trackTemplate(
 
     for( unsigned int i = 0; i < trkHandle->size(); i++ )
     {
-      TTtrack->fill(trkHandle->at(i));
+      TTtrack->fill(trkHandle->at(i), bs);
 
       int linkNo = -1;
       for (unsigned int idxL3passed = 0; idxL3passed < iterL3IDpassed.size(); idxL3passed++) {
@@ -1816,7 +1860,7 @@ void MuonHLTNtupler::fill_trackTemplate(
       auto recSimColl = *assoHandle.product();
 
       for( unsigned int i = 0; i < trkHandle->size(); i++ ) {
-        TTtrack->fill(trkHandle->at(i));
+        TTtrack->fill(trkHandle->at(i), bs);
 
         auto track = trkHandle->refAt(i);
         auto TPfound = recSimColl.find(track);
@@ -1866,7 +1910,7 @@ void MuonHLTNtupler::fill_trackTemplate(
       auto recSimColl = *assoHandle.product();
 
       for( unsigned int i = 0; i < trkHandle->size(); i++ ) {
-        TTtrack->fill(trkHandle->at(i));
+        TTtrack->fill(trkHandle->at(i), bs);
 
         // -- fill dummy index
         TTtrack->linkIterL3(-1);
@@ -1959,6 +2003,17 @@ void MuonHLTNtupler::fill_tpTemplate(
             trkMatch[0].first->eta(),
             trkMatch[0].first->phi(),
             trkMatch[0].first->charge(),
+            trkMatch[0].first->px(),
+            trkMatch[0].first->py(),
+            trkMatch[0].first->pz(),
+            trkMatch[0].first->vx(),
+            trkMatch[0].first->vy(),
+            trkMatch[0].first->vz(),
+            trkMatch[0].first->dxy(bs->position()),
+            trkMatch[0].first->dxyError(*bs),
+            trkMatch[0].first->dz(bs->position()),
+            trkMatch[0].first->dzError(),
+            trkMatch[0].first->normalizedChi2(),
             trkMatch[0].second,
             trkMatch[0].first->numberOfValidHits(),
             -99999.
@@ -1970,6 +2025,17 @@ void MuonHLTNtupler::fill_tpTemplate(
             -99999.,
             -99999.,
             -99999,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
             -99999.,
             -99999,
             -99999.
@@ -2057,6 +2123,17 @@ void MuonHLTNtupler::fill_tpTemplate(
             trkMatch[0].first->eta(),
             trkMatch[0].first->phi(),
             trkMatch[0].first->charge(),
+            trkMatch[0].first->px(),
+            trkMatch[0].first->py(),
+            trkMatch[0].first->pz(),
+            trkMatch[0].first->vx(),
+            trkMatch[0].first->vy(),
+            trkMatch[0].first->vz(),
+            trkMatch[0].first->dxy(bs->position()),
+            trkMatch[0].first->dxyError(*bs),
+            trkMatch[0].first->dz(bs->position()),
+            trkMatch[0].first->dzError(),
+            trkMatch[0].first->normalizedChi2(),
             trkMatch[0].second,
             trkMatch[0].first->numberOfValidHits(),
             this_mva
@@ -2068,6 +2145,17 @@ void MuonHLTNtupler::fill_tpTemplate(
             -99999.,
             -99999.,
             -99999,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
+            -99999.,
             -99999.,
             -99999,
             -99999.

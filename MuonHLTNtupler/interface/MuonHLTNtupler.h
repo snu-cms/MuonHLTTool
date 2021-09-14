@@ -11,6 +11,7 @@
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Framework/interface/EventSetup.h"
 
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/Ref.h"
 #include "DataFormats/Common/interface/View.h"
@@ -148,6 +149,7 @@ private:
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
   edm::EDGetTokenT<TrackingParticleCollection> trackingParticleToken;
 
+  edm::EDGetTokenT< reco::BeamSpot >                         t_beamSpot_;
   edm::EDGetTokenT< std::vector<reco::Muon> >                t_offlineMuon_;
   edm::EDGetTokenT< reco::VertexCollection >                 t_offlineVertex_;
   edm::EDGetTokenT< edm::TriggerResults >                    t_triggerResults_;
@@ -208,6 +210,8 @@ private:
 
   typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
 
+  const reco::BeamSpot* bs;
+
   TTree *ntuple_;
   static const int arrSize_ = 5000;
 
@@ -216,6 +220,19 @@ private:
   int runNum_;
   int lumiBlockNum_;
   unsigned long long eventNum_;
+
+  double bs_x0_;
+  double bs_y0_;
+  double bs_z0_;
+  double bs_sigmaZ_;
+  double bs_dxdz_;
+  double bs_dydz_;
+  double bs_x0Error_;
+  double bs_y0Error_;
+  double bs_z0Error_;
+  double bs_sigmaZ0Error_;
+  double bs_dxdzError_;
+  double bs_dydzError_;
 
   int nVertex_;
 
@@ -749,6 +766,17 @@ private:
     std::vector<double> trkEtas;
     std::vector<double> trkPhis;
     std::vector<int> trkCharges;
+    std::vector<double> px;
+    std::vector<double> py;
+    std::vector<double> pz;
+    std::vector<double> vx;
+    std::vector<double> vy;
+    std::vector<double> vz;
+    std::vector<double> dxy_bs;
+    std::vector<double> dxyError_bs;
+    std::vector<double> dz_bs;
+    std::vector<double> dzError;
+    std::vector<double> normalizedChi2;
     std::vector<int> linkToL3s;
     std::vector<int> linkToL3NoIds;
     std::vector<float> bestMatchTP_charge;
@@ -775,6 +803,17 @@ private:
       trkEtas.clear();
       trkPhis.clear();
       trkCharges.clear();
+      px.clear();
+      py.clear();
+      pz.clear();
+      vx.clear();
+      vy.clear();
+      vz.clear();
+      dxy_bs.clear();
+      dxyError_bs.clear();
+      dz_bs.clear();
+      dzError.clear();
+      normalizedChi2.clear();
       linkToL3s.clear();
       linkToL3NoIds.clear();
       bestMatchTP_charge.clear();
@@ -803,6 +842,17 @@ private:
       tmpntpl->Branch(name+"_eta", &trkEtas);
       tmpntpl->Branch(name+"_phi", &trkPhis);
       tmpntpl->Branch(name+"_charge", &trkCharges);
+      tmpntpl->Branch(name+"_px", &px);
+      tmpntpl->Branch(name+"_py", &py);
+      tmpntpl->Branch(name+"_pz", &pz);
+      tmpntpl->Branch(name+"_vx", &vx);
+      tmpntpl->Branch(name+"_vy", &vy);
+      tmpntpl->Branch(name+"_vz", &vz);
+      tmpntpl->Branch(name+"_dxy_bs", &dxy_bs);
+      tmpntpl->Branch(name+"_dxyError_bs", &dxyError_bs);
+      tmpntpl->Branch(name+"_dz_bs", &dz_bs);
+      tmpntpl->Branch(name+"_dzError", &dzError);
+      tmpntpl->Branch(name+"_normalizedChi2", &normalizedChi2);
       tmpntpl->Branch(name+"_matchedL3", &linkToL3s);
       tmpntpl->Branch(name+"_matchedL3NoId", &linkToL3NoIds);
       tmpntpl->Branch(name+"_bestMatchTP_charge", &bestMatchTP_charge);
@@ -825,11 +875,22 @@ private:
       return;
     }
 
-    void fill(const reco::Track trk) {
+    void fill(const reco::Track& trk, const reco::BeamSpot* bs) {
       trkPts.push_back(trk.pt());
       trkEtas.push_back(trk.eta());
       trkPhis.push_back(trk.phi());
       trkCharges.push_back(trk.charge());
+      px.push_back(trk.px());
+      py.push_back(trk.py());
+      pz.push_back(trk.pz());
+      vx.push_back(trk.vx());
+      vy.push_back(trk.vy());
+      vz.push_back(trk.vz());
+      dxy_bs.push_back(trk.dxy(bs->position()));
+      dxyError_bs.push_back(trk.dxyError(*bs));
+      dz_bs.push_back(trk.dz(bs->position()));
+      dzError.push_back(trk.dzError());
+      normalizedChi2.push_back(trk.normalizedChi2());
       nTrks++;
 
       return;
@@ -907,6 +968,17 @@ private:
     std::vector<double> bestMatchTrk_eta;
     std::vector<double> bestMatchTrk_phi;
     std::vector<int> bestMatchTrk_charge;
+    std::vector<double> bestMatchTrk_px;
+    std::vector<double> bestMatchTrk_py;
+    std::vector<double> bestMatchTrk_pz;
+    std::vector<double> bestMatchTrk_vx;
+    std::vector<double> bestMatchTrk_vy;
+    std::vector<double> bestMatchTrk_vz;
+    std::vector<double> bestMatchTrk_dxy_bs;
+    std::vector<double> bestMatchTrk_dxyError_bs;
+    std::vector<double> bestMatchTrk_dz_bs;
+    std::vector<double> bestMatchTrk_dzError;
+    std::vector<double> bestMatchTrk_normalizedChi2;
     std::vector<double> bestMatchTrk_quality;
     std::vector<int> bestMatchTrk_NValidHits;
     std::vector<double> bestMatchTrk_mva;
@@ -935,6 +1007,17 @@ private:
       bestMatchTrk_eta.clear();
       bestMatchTrk_phi.clear();
       bestMatchTrk_charge.clear();
+      bestMatchTrk_px.clear();
+      bestMatchTrk_py.clear();
+      bestMatchTrk_pz.clear();
+      bestMatchTrk_vx.clear();
+      bestMatchTrk_vy.clear();
+      bestMatchTrk_vz.clear();
+      bestMatchTrk_dxy_bs.clear();
+      bestMatchTrk_dxyError_bs.clear();
+      bestMatchTrk_dz_bs.clear();
+      bestMatchTrk_dzError.clear();
+      bestMatchTrk_normalizedChi2.clear();
       bestMatchTrk_quality.clear();
       bestMatchTrk_NValidHits.clear();
       bestMatchTrk_mva.clear();
@@ -966,6 +1049,17 @@ private:
       tmpntpl->Branch(name+"_bestMatchTrk_eta", &bestMatchTrk_eta);
       tmpntpl->Branch(name+"_bestMatchTrk_phi", &bestMatchTrk_phi);
       tmpntpl->Branch(name+"_bestMatchTrk_charge", &bestMatchTrk_charge);
+      tmpntpl->Branch(name+"_bestMatchTrk_px", &bestMatchTrk_px);
+      tmpntpl->Branch(name+"_bestMatchTrk_py", &bestMatchTrk_py);
+      tmpntpl->Branch(name+"_bestMatchTrk_pz", &bestMatchTrk_pz);
+      tmpntpl->Branch(name+"_bestMatchTrk_vx", &bestMatchTrk_vx);
+      tmpntpl->Branch(name+"_bestMatchTrk_vy", &bestMatchTrk_vy);
+      tmpntpl->Branch(name+"_bestMatchTrk_vz", &bestMatchTrk_vz);
+      tmpntpl->Branch(name+"_bestMatchTrk_dxy_bs", &bestMatchTrk_dxy_bs);
+      tmpntpl->Branch(name+"_bestMatchTrk_dxyError_bs", &bestMatchTrk_dxyError_bs);
+      tmpntpl->Branch(name+"_bestMatchTrk_dz_bs", &bestMatchTrk_dz_bs);
+      tmpntpl->Branch(name+"_bestMatchTrk_dzError", &bestMatchTrk_dzError);
+      tmpntpl->Branch(name+"_bestMatchTrk_normalizedChi2", &bestMatchTrk_normalizedChi2);
       tmpntpl->Branch(name+"_bestMatchTrk_quality", &bestMatchTrk_quality);
       tmpntpl->Branch(name+"_bestMatchTrk_NValidHits", &bestMatchTrk_NValidHits);
       tmpntpl->Branch(name+"_bestMatchTrk_mva", &bestMatchTrk_mva);
@@ -1013,6 +1107,17 @@ private:
       double _eta,
       double _phi,
       int _charge,
+      double _bestMatchTrk_px,
+      double _bestMatchTrk_py,
+      double _bestMatchTrk_pz,
+      double _bestMatchTrk_vx,
+      double _bestMatchTrk_vy,
+      double _bestMatchTrk_vz,
+      double _bestMatchTrk_dxy_bs,
+      double _bestMatchTrk_dxyError_bs,
+      double _bestMatchTrk_dz_bs,
+      double _bestMatchTrk_dzError,
+      double _bestMatchTrk_normalizedChi2,
       double _quality,
       int _NValidHits,
       double _mva
@@ -1021,6 +1126,17 @@ private:
       bestMatchTrk_eta.push_back(_eta);
       bestMatchTrk_phi.push_back(_phi);
       bestMatchTrk_charge.push_back(_charge);
+      bestMatchTrk_px.push_back(_bestMatchTrk_px);
+      bestMatchTrk_py.push_back(_bestMatchTrk_py);
+      bestMatchTrk_pz.push_back(_bestMatchTrk_pz);
+      bestMatchTrk_vx.push_back(_bestMatchTrk_vx);
+      bestMatchTrk_vy.push_back(_bestMatchTrk_vy);
+      bestMatchTrk_vz.push_back(_bestMatchTrk_vz);
+      bestMatchTrk_dxy_bs.push_back(_bestMatchTrk_dxy_bs);
+      bestMatchTrk_dxyError_bs.push_back(_bestMatchTrk_dxyError_bs);
+      bestMatchTrk_dz_bs.push_back(_bestMatchTrk_dz_bs);
+      bestMatchTrk_dzError.push_back(_bestMatchTrk_dzError);
+      bestMatchTrk_normalizedChi2.push_back(_bestMatchTrk_normalizedChi2);
       bestMatchTrk_quality.push_back(_quality);
       bestMatchTrk_NValidHits.push_back(_NValidHits);
       bestMatchTrk_mva.push_back(_mva + 0.5);
