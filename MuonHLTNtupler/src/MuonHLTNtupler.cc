@@ -174,8 +174,6 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   bs_x0_ = bs.x0();
   bs_y0_ = bs.y0();
   bs_z0_ = bs.z0();
-  bs_x_ = bs.x();
-  bs_y_ = bs.y();
   bs_sigmaZ_ = bs.sigmaZ();
   bs_dxdz_ = bs.dxdz();
   bs_dydz_ = bs.dydz();
@@ -305,8 +303,6 @@ void MuonHLTNtupler::Init()
   bs_x0_ = -999;
   bs_y0_ = -999;
   bs_z0_ = -999;
-  bs_x_ = -999;
-  bs_y_ = -999;
   bs_sigmaZ_ = -999;
   bs_dxdz_ = -999;
   bs_dydz_ = -999;
@@ -636,8 +632,6 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("bs_x0", &bs_x0_, "bs_x0/D");
   ntuple_->Branch("bs_y0", &bs_y0_, "bs_y0/D");
   ntuple_->Branch("bs_z0", &bs_z0_, "bs_z0/D");
-  ntuple_->Branch("bs_x", &bs_x_, "bs_x/D");
-  ntuple_->Branch("bs_y", &bs_y_, "bs_y/D");
   ntuple_->Branch("bs_sigmaZ", &bs_sigmaZ_, "bs_sigmaZ/D");
   ntuple_->Branch("bs_dxdz", &bs_dxdz_, "bs_dxdz/D");
   ntuple_->Branch("bs_dydz", &bs_dydz_, "bs_dydz/D");
@@ -2014,9 +2008,9 @@ void MuonHLTNtupler::fill_tpTemplate(
             trkMatch[0].first->vx(),
             trkMatch[0].first->vy(),
             trkMatch[0].first->vz(),
-            trkMatch[0].first->dxy(bs),
+            trkMatch[0].first->dxy(bs.position()),
             trkMatch[0].first->dxyError(bs),
-            trkMatch[0].first->dz(bs),
+            trkMatch[0].first->dz(bs.position()),
             trkMatch[0].first->dzError(),
             trkMatch[0].first->normalizedChi2(),
             trkMatch[0].second,
@@ -2134,9 +2128,9 @@ void MuonHLTNtupler::fill_tpTemplate(
             trkMatch[0].first->vx(),
             trkMatch[0].first->vy(),
             trkMatch[0].first->vz(),
-            trkMatch[0].first->dxy(bs),
+            trkMatch[0].first->dxy(bs.position()),
             trkMatch[0].first->dxyError(bs),
-            trkMatch[0].first->dz(bs),
+            trkMatch[0].first->dz(bs.position()),
             trkMatch[0].first->dzError(),
             trkMatch[0].first->normalizedChi2(),
             trkMatch[0].second,
