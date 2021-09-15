@@ -420,6 +420,12 @@ private:
   int muon_nMatchedRPCLayer_[arrSize_];
   int muon_stationMask_[arrSize_];
 
+  double muon_dxy_bs_[arrSize_];
+  double muon_dxyError_bs_[arrSize_];
+  double muon_dz_bs_[arrSize_];
+  double muon_dzError_[arrSize_];
+  double muon_IPSig_[arrSize_];
+
   std::map<tmpTSOD,unsigned int> MuonIterSeedMap;
   std::map<tmpTSOD,unsigned int> MuonIterNoIdSeedMap;
   std::map<tmpTSOD,unsigned int> hltIterL3OIMuonTrackMap;

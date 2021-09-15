@@ -463,6 +463,12 @@ void MuonHLTNtupler::Init()
     muon_nMatchedStation_[i] = -999;
     muon_nMatchedRPCLayer_[i] = -999;
     muon_stationMask_[i] = -999;
+
+    muon_dxy_bs_[i] = -999;
+    muon_dxyError_bs_[i] = -999;
+    muon_dz_bs_[i] = -999;
+    muon_dzError_[i] = -999;
+    muon_IPSig_[i] = -999;
   }
 
   nL3Muon_ = 0;
@@ -759,6 +765,11 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_nMatchedStation", &muon_nMatchedStation_, "muon_nMatchedStation[nMuon]/I");
   ntuple_->Branch("muon_nMatchedRPCLayer", &muon_nMatchedRPCLayer_, "muon_nMatchedRPCLayer[nMuon]/I");
   ntuple_->Branch("muon_stationMask", &muon_stationMask_, "muon_stationMask[nMuon]/I");
+  ntuple_->Branch("muon_dxy_bs", &muon_dxy_bs_, "muon_dxy_bs[nMuon]/D");
+  ntuple_->Branch("muon_dxyError_bs", &muon_dxyError_bs_, "muon_dxyError_bs[nMuon]/D");
+  ntuple_->Branch("muon_dz_bs", &muon_dz_bs_, "muon_dz_bs[nMuon]/D");
+  ntuple_->Branch("muon_dzError", &muon_dzError_, "muon_dzError[nMuon]/D");
+  ntuple_->Branch("muon_IPSig", &muon_IPSig_, "muon_IPSig[nMuon]/D");
 
   ntuple_->Branch("nL3Muon", &nL3Muon_, "nL3Muon/I");
   ntuple_->Branch("L3Muon_pt", &L3Muon_pt_, "L3Muon_pt[nL3Muon]/D");
@@ -958,6 +969,14 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       if( innerTrk.isNonnull() )
       {
         muon_normChi2_inner_[_nMuon] = innerTrk->normalizedChi2();
+
+        muon_dxy_bs_[_nMuon] = innerTrk->dxy(bs->position());
+        muon_dxyError_bs_[_nMuon] = innerTrk->dxyError(*bs);
+        muon_dz_bs_[_nMuon] = innerTrk->dz(bs->position());
+        muon_dzError_[_nMuon] = innerTrk->dzError();
+        if (innerTrk->dxyError(*bs) > 0.) {
+          muon_IPSig_[_nMuon] = abs(innerTrk->dxy(bs->position()) / innerTrk->dxyError(*bs));
+        }
 
         const reco::HitPattern & innerTrkHit = innerTrk->hitPattern();
         muon_nTrackerHit_inner_[_nMuon]   = innerTrkHit.numberOfValidTrackerHits();
