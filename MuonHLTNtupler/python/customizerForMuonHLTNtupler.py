@@ -52,20 +52,26 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     hltMuonAssociatorByHits.DTrechitTag                  = cms.InputTag("hltDt1DRecHits", "", newProcessName)
     hltMuonAssociatorByHits.ignoreMissingTrackCollection = True
     hltMuonAssociatorByHits.UseTracker                   = True
-    hltMuonAssociatorByHits.UseMuon                      = True
+    hltMuonAssociatorByHits.UseMuon                      = False  # True
 
     # Hit associators from each track
     process.AhltIterL3OIMuonTrackSelectionHighPurity          = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIterL3OIMuonTrackSelectionHighPurity", "", newProcessName) )
     process.AhltIter0IterL3MuonTrackSelectionHighPurity       = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter0IterL3MuonTrackSelectionHighPurity", "", newProcessName) )
-    process.AhltIter2IterL3MuonTrackSelectionHighPurity       = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter2IterL3MuonTrackSelectionHighPurity", "", newProcessName) )
+    process.AhltIter2IterL3MuonTrackSelectionHighPurity       = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter0IterL3MuonTrackWithVertexSelector", "", newProcessName) )
     process.AhltIter0IterL3FromL1MuonTrackSelectionHighPurity = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter0IterL3FromL1MuonTrackSelectionHighPurity", "", newProcessName) )
-    process.AhltIter2IterL3FromL1MuonTrackSelectionHighPurity = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter2IterL3FromL1MuonTrackSelectionHighPurity", "", newProcessName) )
+    process.AhltIter2IterL3FromL1MuonTrackSelectionHighPurity = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter0IterL3FromL1MuonTrackWithVertexSelector", "", newProcessName) )
     process.AhltIter2IterL3MuonMerged                         = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter2IterL3MuonMerged", "", newProcessName) )
     process.AhltIter2IterL3FromL1MuonMerged                   = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter2IterL3FromL1MuonMerged", "", newProcessName) )
     process.AhltIterL3MuonMerged                              = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIterL3MuonMerged", "", newProcessName) )
     process.AhltIterL3MuonAndMuonFromL1Merged                 = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIterL3MuonAndMuonFromL1Merged", "", newProcessName) )
-    process.AhltIterL3MuonsNoID                               = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIterL3MuonsNoIDTracks", "", newProcessName) )
-    process.AhltIterL3Muons                                   = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIterL3MuonsTracks", "", newProcessName) )
+    process.AhltIterL3MuonsNoID                               = hltMuonAssociatorByHits.clone(
+        tracksTag = cms.InputTag("hltIterL3MuonsNoIDTracks", "", newProcessName),
+        UseMuon = cms.bool(True),
+    )
+    process.AhltIterL3Muons                                   = hltMuonAssociatorByHits.clone(
+        tracksTag = cms.InputTag("hltIterL3MuonsTracks", "", newProcessName),
+        UseMuon = cms.bool(True),
+    )
 
     # Names for ntuple variable
     trackNames = [
@@ -85,9 +91,9 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     trackLabels = [
         cms.untracked.InputTag("hltIterL3OIMuonTrackSelectionHighPurity",          "", newProcessName),
         cms.untracked.InputTag("hltIter0IterL3MuonTrackSelectionHighPurity",       "", newProcessName),
-        cms.untracked.InputTag("hltIter2IterL3MuonTrackSelectionHighPurity",       "", newProcessName),
+        cms.untracked.InputTag("hltIter0IterL3MuonTrackWithVertexSelector",       "", newProcessName),
         cms.untracked.InputTag("hltIter0IterL3FromL1MuonTrackSelectionHighPurity", "", newProcessName),
-        cms.untracked.InputTag("hltIter2IterL3FromL1MuonTrackSelectionHighPurity", "", newProcessName),
+        cms.untracked.InputTag("hltIter0IterL3FromL1MuonTrackWithVertexSelector", "", newProcessName),
         cms.untracked.InputTag("hltIter2IterL3MuonMerged",                         "", newProcessName),
         cms.untracked.InputTag("hltIter2IterL3FromL1MuonMerged",                   "", newProcessName),
         cms.untracked.InputTag("hltIterL3MuonMerged",                              "", newProcessName),
@@ -195,10 +201,10 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
 
     process.ntupler.hltIterL3OIMuonTrack                              = cms.untracked.InputTag("hltIterL3OIMuonTrackSelectionHighPurity",             "", newProcessName)
     process.ntupler.hltIter0IterL3MuonTrack                           = cms.untracked.InputTag("hltIter0IterL3MuonTrackSelectionHighPurity",          "", newProcessName)
-    process.ntupler.hltIter2IterL3MuonTrack                           = cms.untracked.InputTag("hltIter2IterL3MuonTrackSelectionHighPurity",          "", newProcessName)
+    process.ntupler.hltIter2IterL3MuonTrack                           = cms.untracked.InputTag("hltIter0IterL3MuonTrackWithVertexSelector",          "", newProcessName)
     process.ntupler.hltIter3IterL3MuonTrack                           = cms.untracked.InputTag("hltIter3IterL3MuonTrackSelectionHighPurity",          "", newProcessName)
     process.ntupler.hltIter0IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter0IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
-    process.ntupler.hltIter2IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter2IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
+    process.ntupler.hltIter2IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter0IterL3FromL1MuonTrackWithVertexSelector",    "", newProcessName)
     process.ntupler.hltIter3IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter3IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
 
     process.ntupler.associator = cms.untracked.InputTag("hltTrackAssociatorByHits")
