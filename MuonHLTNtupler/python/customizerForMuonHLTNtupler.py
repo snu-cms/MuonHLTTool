@@ -45,14 +45,28 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     process.hltIterL3MuonsTracks.inputDTRecSegment4DCollection     = cms.InputTag("hltDt4DSegments", "", newProcessName)
 
     # Call the hit associator
+    # https://github.com/cms-sw/cmssw/blob/CMSSW_12_1_0_pre4/Validation/RecoMuon/python/associators_cff.py
+    from SimMuon.MCTruth.trackingParticleMuon_cfi import trackingParticleMuon as _trackingParticleMuon
+    process.TPmu = _trackingParticleMuon.clone()
+
     from SimMuon.MCTruth.MuonAssociatorByHits_cfi import muonAssociatorByHits as _muonAssociatorByHits
     hltMuonAssociatorByHits = _muonAssociatorByHits.clone()
-    hltMuonAssociatorByHits.PurityCut_track              = 0.75
-    hltMuonAssociatorByHits.PurityCut_muon               = 0.75
-    hltMuonAssociatorByHits.DTrechitTag                  = cms.InputTag("hltDt1DRecHits", "", newProcessName)
+    # HERE
+    hltMuonAssociatorByHits.PurityCut_track              = 0.1  # 0.75
+    hltMuonAssociatorByHits.PurityCut_muon               = 0.1  # 0.75
+    hltMuonAssociatorByHits.DTrechitTag                  = 'hltDt1DRecHits'
     hltMuonAssociatorByHits.ignoreMissingTrackCollection = True
+    hltMuonAssociatorByHits.tpTag                        = ("TPmu")
+    hltMuonAssociatorByHits.tpRefVector                  = True
     hltMuonAssociatorByHits.UseTracker                   = True
     hltMuonAssociatorByHits.UseMuon                      = False  # True
+
+    # hltMuonAssociatorByHits.PurityCut_track              = 0.75
+    # hltMuonAssociatorByHits.PurityCut_muon               = 0.75
+    # hltMuonAssociatorByHits.DTrechitTag                  = cms.InputTag("hltDt1DRecHits", "", newProcessName)
+    # hltMuonAssociatorByHits.ignoreMissingTrackCollection = True
+    # hltMuonAssociatorByHits.UseTracker                   = True
+    # hltMuonAssociatorByHits.UseMuon                      = False  # True
 
     # Hit associators from each track
     process.AhltIterL3OIMuonTrackSelectionHighPurity          = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIterL3OIMuonTrackSelectionHighPurity", "", newProcessName) )
@@ -67,10 +81,12 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     process.AhltIterL3MuonsNoID                               = hltMuonAssociatorByHits.clone(
         tracksTag = cms.InputTag("hltIterL3MuonsNoIDTracks", "", newProcessName),
         UseMuon = cms.bool(True),
+        rejectBadGlobal = cms.bool(False),
     )
     process.AhltIterL3Muons                                   = hltMuonAssociatorByHits.clone(
         tracksTag = cms.InputTag("hltIterL3MuonsTracks", "", newProcessName),
         UseMuon = cms.bool(True),
+        rejectBadGlobal = cms.bool(False),
     )
 
     # Names for ntuple variable
@@ -116,6 +132,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
         'AhltIterL3Muons'
     ]
     process.trackAssoSeq = cms.Sequence(
+        process.TPmu +
         process.hltIterL3MuonsNoIDTracks +
         process.hltIterL3MuonsTracks +
         process.AhltIterL3OIMuonTrackSelectionHighPurity +
