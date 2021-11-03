@@ -6,7 +6,12 @@
 import FWCore.ParameterSet.Config as cms
 import HLTrigger.Configuration.MuonHLTForRun3.mvaScale as _mvaScale
 
-def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYSkim = False, isDIGI = True, MvaVersion = "Run3v0"):
+def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYSkim = False, isDIGI = True, MvaVersion = "v7Fast"):
+    isv7 = (True if "v7Fast" in MvaVersion else False)
+    isNoVtx = False
+    if "_noVtx" in MvaVersion:
+        isNoVtx = True
+        MvaVersion = MvaVersion.replace("_noVtx", "")
     if hasattr(process, "DQMOutput"):
         del process.DQMOutput
 
@@ -53,6 +58,15 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYS
     process.seedNtupler.hltIter2IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter0IterL3FromL1MuonTrackWithVertexSelector",    "", newProcessName)
     process.seedNtupler.hltIter3IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter3IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
 
+    if isNoVtx:
+        process.ntupler.hltIter2IterL3MuonTrack                           = cms.untracked.InputTag("hltIter0IterL3MuonTrackSelectionHighPurity",          "", newProcessName)
+        process.ntupler.hltIter2IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter0IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
+    if isv7:
+        process.ntupler.hltIter2IterL3MuonPixelSeeds                      = cms.untracked.InputTag("hltIter2IterL3MuonPixelSeeds",         "", newProcessName)
+        process.ntupler.hltIter2IterL3FromL1MuonPixelSeeds                = cms.untracked.InputTag("hltIter2IterL3FromL1MuonPixelSeeds",   "", newProcessName)
+        process.ntupler.hltIter2IterL3MuonTrack                           = cms.untracked.InputTag("hltIter2IterL3MuonTrackSelectionHighPurity",          "", newProcessName)
+        process.ntupler.hltIter2IterL3FromL1MuonTrack                     = cms.untracked.InputTag("hltIter2IterL3FromL1MuonTrackSelectionHighPurity",    "", newProcessName)
+
     process.seedNtupler.associator = cms.untracked.InputTag("hltTrackAssociatorByHits")
     process.seedNtupler.seedAssociator = cms.untracked.InputTag("hltSeedAssociatorByHits")
     process.seedNtupler.trackingParticle = cms.untracked.InputTag("mix","MergedTrackTruth")
@@ -70,19 +84,19 @@ def customizerFuncForMuonHLTSeedNtupler(process, newProcessName = "MYHLT", doDYS
     #process.seedNtupler.mvaScaleStdHltIter2IterL3MuonPixelSeeds_E                       = cms.vdouble( getattr(_mvaScale, "xgb_Run3_Iter2Seeds_endcap_ScaleStd") )
     #process.seedNtupler.mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E                = cms.vdouble( getattr(_mvaScale, "xgb_Run3_Iter2FromL1Seeds_endcap_ScaleMean") )
     #process.seedNtupler.mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E                 = cms.vdouble( getattr(_mvaScale, "xgb_Run3_Iter2FromL1Seeds_endcap_ScaleStd") )
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B                      = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/v7Fast_Barrel_hltIter2.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B                = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/v7Fast_Barrel_hltIter2FromL1.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E                      = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/v7Fast_Endcap_hltIter2.xml")
-    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E                = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/v7Fast_Endcap_hltIter2FromL1.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_B                      = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/"+MvaVersion+"_Barrel_hltIter2.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B                = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/"+MvaVersion+"_Barrel_hltIter2FromL1.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3MuonPixelSeeds_E                      = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/"+MvaVersion+"_Endcap_hltIter2.xml")
+    process.seedNtupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E                = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/"+MvaVersion+"_Endcap_hltIter2FromL1.xml")
 
-    process.seedNtupler.mvaScaleMeanHltIter2IterL3MuonPixelSeeds_B                      = cms.vdouble( getattr(_mvaScale, "v7Fast_Barrel_hltIter2_ScaleMean") )
-    process.seedNtupler.mvaScaleStdHltIter2IterL3MuonPixelSeeds_B                       = cms.vdouble( getattr(_mvaScale, "v7Fast_Barrel_hltIter2_ScaleStd") )
-    process.seedNtupler.mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_B                = cms.vdouble( getattr(_mvaScale, "v7Fast_Barrel_hltIter2FromL1_ScaleMean") )
-    process.seedNtupler.mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_B                 = cms.vdouble( getattr(_mvaScale, "v7Fast_Barrel_hltIter2FromL1_ScaleStd") )
-    process.seedNtupler.mvaScaleMeanHltIter2IterL3MuonPixelSeeds_E                      = cms.vdouble( getattr(_mvaScale, "v7Fast_Endcap_hltIter2_ScaleMean") )
-    process.seedNtupler.mvaScaleStdHltIter2IterL3MuonPixelSeeds_E                       = cms.vdouble( getattr(_mvaScale, "v7Fast_Endcap_hltIter2_ScaleStd") )
-    process.seedNtupler.mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E                = cms.vdouble( getattr(_mvaScale, "v7Fast_Endcap_hltIter2FromL1_ScaleMean") )
-    process.seedNtupler.mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E                 = cms.vdouble( getattr(_mvaScale, "v7Fast_Endcap_hltIter2FromL1_ScaleStd") )
+    process.seedNtupler.mvaScaleMeanHltIter2IterL3MuonPixelSeeds_B                      = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Barrel_hltIter2_ScaleMean") )
+    process.seedNtupler.mvaScaleStdHltIter2IterL3MuonPixelSeeds_B                       = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Barrel_hltIter2_ScaleStd") )
+    process.seedNtupler.mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_B                = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Barrel_hltIter2FromL1_ScaleMean") )
+    process.seedNtupler.mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_B                 = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Barrel_hltIter2FromL1_ScaleStd") )
+    process.seedNtupler.mvaScaleMeanHltIter2IterL3MuonPixelSeeds_E                      = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Endcap_hltIter2_ScaleMean") )
+    process.seedNtupler.mvaScaleStdHltIter2IterL3MuonPixelSeeds_E                       = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Endcap_hltIter2_ScaleStd") )
+    process.seedNtupler.mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E                = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Endcap_hltIter2FromL1_ScaleMean") )
+    process.seedNtupler.mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E                 = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Endcap_hltIter2FromL1_ScaleStd") )
 
     process.TFileService = cms.Service("TFileService",
       fileName = cms.string("ntuple.root"),
