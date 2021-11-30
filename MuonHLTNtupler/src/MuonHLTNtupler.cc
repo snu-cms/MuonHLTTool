@@ -261,7 +261,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
   // Fill_L1Track(iEvent, iSetup);
   Fill_Muon(iEvent);
   Fill_HLT(iEvent, 0); // -- original HLT objects saved in data taking
-  // Fill_HLT(iEvent, 1); // -- rerun objects
+  Fill_HLT(iEvent, 1); // -- rerun objects
   Fill_HLTMuon(iEvent);
   Fill_L1Muon(iEvent);
   Fill_IterL3(iEvent, iSetup);
@@ -1078,7 +1078,8 @@ bool MuonHLTNtupler::SavedTriggerCondition( std::string& pathName )
   bool flag = false;
 
   // -- muon triggers
-  if( pathName.find("HLT_IsoMu")    != std::string::npos ||
+  if( pathName.find("Mu")           != std::string::npos ||
+      pathName.find("HLT_IsoMu")    != std::string::npos ||
       pathName.find("HLT_Mu")       != std::string::npos ||
       pathName.find("HLT_OldMu")    != std::string::npos ||
       pathName.find("HLT_TkMu")     != std::string::npos ||
@@ -1094,7 +1095,11 @@ bool MuonHLTNtupler::SavedFilterCondition( std::string& filterName )
   bool flag = false;
 
   // -- muon filters
-  if( (filterName.find("sMu") != std::string::npos || filterName.find("SingleMu") != std::string::npos) &&
+  if( (
+        filterName.find("sMu") != std::string::npos ||
+        filterName.find("SingleMu") != std::string::npos ||
+        filterName.find("TkMu") != std::string::npos
+      ) &&
        filterName.find("Tau")      == std::string::npos &&
        filterName.find("EG")       == std::string::npos &&
        filterName.find("MultiFit") == std::string::npos ) flag = true;

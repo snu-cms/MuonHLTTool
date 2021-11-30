@@ -54,8 +54,8 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     from SimMuon.MCTruth.MuonAssociatorByHits_cfi import muonAssociatorByHits as _muonAssociatorByHits
     hltMuonAssociatorByHits = _muonAssociatorByHits.clone()
     # HERE
-    hltMuonAssociatorByHits.PurityCut_track              = 0.1  # 0.75
-    hltMuonAssociatorByHits.PurityCut_muon               = 0.1  # 0.75
+    hltMuonAssociatorByHits.PurityCut_track              = 0.75
+    hltMuonAssociatorByHits.PurityCut_muon               = 0.75
     hltMuonAssociatorByHits.DTrechitTag                  = 'hltDt1DRecHits'
     hltMuonAssociatorByHits.ignoreMissingTrackCollection = True
     hltMuonAssociatorByHits.tpTag                        = ("TPmu")
@@ -273,7 +273,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
       closeFileFast = cms.untracked.bool(False),
     )
 
-    process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults::HLT") # dummy to avoid ordering error occur in skimming, as it is not used at the moment
+    # process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults::HLT") # dummy to avoid ordering error occur in skimming, as it is not used at the moment
     process.ntupler.DebugMode = cms.bool(False)
 
     if doDYSkim:
@@ -287,15 +287,15 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
                                       process.hltTPClusterProducer*
                                       process.hltTrackAssociatorByHits*
                                       process.trackAssoSeq*
-                                      process.L1AssoSeq*
-                                      process.ntupler)
+                                      process.L1AssoSeq)
+            process.myendpath = cms.EndPath(process.ntupler)
         else:
             process.mypath = cms.Path(process.Skimmer*
                                       process.HLTBeginSequence*
                                       process.HLTL2muonrecoSequence*
                                       process.HLTL3muonrecoSequence*
-                                      process.L1AssoSeq*
-                                      process.ntupler)
+                                      process.L1AssoSeq)
+            process.myendpath = cms.EndPath(process.ntupler)
     else:
         if isDIGI:
             process.mypath = cms.Path(process.HLTBeginSequence*
@@ -304,13 +304,13 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
                                       process.hltTPClusterProducer*
                                       process.hltTrackAssociatorByHits*
                                       process.trackAssoSeq*
-                                      process.L1AssoSeq*
-                                      process.ntupler)
+                                      process.L1AssoSeq)
+            process.myendpath = cms.EndPath(process.ntupler)
         else:
             process.mypath = cms.Path(process.HLTBeginSequence*
                                       process.HLTL2muonrecoSequence*
                                       process.HLTL3muonrecoSequence*
-                                      process.L1AssoSeq*
-                                      process.ntupler)
+                                      process.L1AssoSeq)
+            process.myendpath = cms.EndPath(process.ntupler)
 
     return process
