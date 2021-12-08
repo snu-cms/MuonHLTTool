@@ -459,6 +459,7 @@ private:
     float dR_L1TkMuSeedP_;
     float dPhi_L1TkMuSeedP_;
     int bestMatchTP_pdgId_;
+    float bestMatchTP_sharedFraction_;
     int matchedTPsize_;
     float bestMatchSeedTP_charge_;
     int bestMatchSeedTP_pdgId_;
@@ -533,6 +534,7 @@ private:
       dR_L1TkMuSeedP_ = -99999.;
       dPhi_L1TkMuSeedP_ = -99999.;
       bestMatchTP_pdgId_ = -99999;
+      bestMatchTP_sharedFraction_ = -99999.;
       matchedTPsize_ = -99999;
       bestMatchSeedTP_charge_ = -99999.;
       bestMatchSeedTP_pdgId_ = -99999;
@@ -610,6 +612,7 @@ private:
       tmpntpl->Branch("dR_L1TkMuSeedP",     &dR_L1TkMuSeedP_,   "dR_L1TkMuSeedP/F");
       tmpntpl->Branch("dPhi_L1TkMuSeedP",   &dPhi_L1TkMuSeedP_, "dPhi_L1TkMuSeedP/F");
       tmpntpl->Branch("bestMatchTP_pdgId", &bestMatchTP_pdgId_, "bestMatchTP_pdgId/I");
+      tmpntpl->Branch("bestMatchTP_sharedFraction", &bestMatchTP_sharedFraction_, "bestMatchTP_sharedFraction/D");
       tmpntpl->Branch("matchedTPsize", &matchedTPsize_, "matchedTPsize/I");
       tmpntpl->Branch("bestMatchSeedTP_charge", &bestMatchSeedTP_charge_, "bestMatchSeedTP_charge/F");
       tmpntpl->Branch("bestMatchSeedTP_pdgId", &bestMatchSeedTP_pdgId_, "bestMatchSeedTP_pdgId/I");

@@ -63,13 +63,6 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     hltMuonAssociatorByHits.UseTracker                   = True
     hltMuonAssociatorByHits.UseMuon                      = False  # True
 
-    # hltMuonAssociatorByHits.PurityCut_track              = 0.75
-    # hltMuonAssociatorByHits.PurityCut_muon               = 0.75
-    # hltMuonAssociatorByHits.DTrechitTag                  = cms.InputTag("hltDt1DRecHits", "", newProcessName)
-    # hltMuonAssociatorByHits.ignoreMissingTrackCollection = True
-    # hltMuonAssociatorByHits.UseTracker                   = True
-    # hltMuonAssociatorByHits.UseMuon                      = False  # True
-
     # Hit associators from each track
     process.AhltIterL3OIMuonTrackSelectionHighPurity          = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIterL3OIMuonTrackSelectionHighPurity", "", newProcessName) )
     process.AhltIter0IterL3MuonTrackSelectionHighPurity       = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter0IterL3MuonTrackSelectionHighPurity", "", newProcessName) )
@@ -93,6 +86,22 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
     if isv7:
         process.AhltIter2IterL3MuonTrackSelectionHighPurity       = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter2IterL3MuonTrackSelectionHighPurity", "", newProcessName) )
         process.AhltIter2IterL3FromL1MuonTrackSelectionHighPurity = hltMuonAssociatorByHits.clone( tracksTag = cms.InputTag("hltIter2IterL3FromL1MuonTrackSelectionHighPurity", "", newProcessName) )
+    process.AhltPixelTracks = hltMuonAssociatorByHits.clone(
+        tracksTag = cms.InputTag("hltPixelTracks", "", newProcessName),
+        PurityCut_track = cms.double(0.65),
+    )
+    process.AhltPixelTracksInRegionL2 = hltMuonAssociatorByHits.clone(
+        tracksTag = cms.InputTag("hltPixelTracksInRegionL2", "", newProcessName),
+        PurityCut_track = cms.double(0.65),
+    )
+    process.AhltPixelTracksInRegionL1 = hltMuonAssociatorByHits.clone(
+        tracksTag = cms.InputTag("hltPixelTracksInRegionL1", "", newProcessName),
+        PurityCut_track = cms.double(0.65),
+    )
+    process.AhltPixelTracksForSeedsL3Muon = hltMuonAssociatorByHits.clone( # For Run2 Legacy comparison
+        tracksTag = cms.InputTag("hltPixelTracksForSeedsL3Muon", "", newProcessName),
+        PurityCut_track = cms.double(0.65),
+    )
 
     # Names for ntuple variable
     trackNames = [
@@ -106,7 +115,11 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
         'hltIterL3MuonMergedAssociated',
         'hltIterL3MuonAndMuonFromL1MergedAssociated',
         'iterL3MuonNoIDTrackAssociated',
-        'iterL3MuonTrackAssociated'
+        'iterL3MuonTrackAssociated',
+        'hltPixelTracksAssociated',
+        'hltPixelTracksInRegionL2Associated',
+        'hltPixelTracksInRegionL1Associated',
+        'hltPixelTracksForSeedsL3MuonAssociated',
     ]
     # Labels for calling each track in the Ntupler
     trackLabels = [
@@ -120,7 +133,11 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
         cms.untracked.InputTag("hltIterL3MuonMerged",                              "", newProcessName),
         cms.untracked.InputTag("hltIterL3MuonAndMuonFromL1Merged",                 "", newProcessName),
         cms.untracked.InputTag("hltIterL3MuonsNoIDTracks",                         "", newProcessName),
-        cms.untracked.InputTag("hltIterL3MuonsTracks",                             "", newProcessName)
+        cms.untracked.InputTag("hltIterL3MuonsTracks",                             "", newProcessName),
+        cms.untracked.InputTag("hltPixelTracks",                                   "", newProcessName),
+        cms.untracked.InputTag("hltPixelTracksInRegionL2",                         "", newProcessName),
+        cms.untracked.InputTag("hltPixelTracksInRegionL1",                         "", newProcessName),
+        cms.untracked.InputTag("hltPixelTracksForSeedsL3Muon",                     "", newProcessName),
     ]
 
     # Labels for calling each associator in the Ntupler
@@ -135,7 +152,11 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
         'AhltIterL3MuonMerged',
         'AhltIterL3MuonAndMuonFromL1Merged',
         'AhltIterL3MuonsNoID',
-        'AhltIterL3Muons'
+        'AhltIterL3Muons',
+        'AhltPixelTracks',
+        'AhltPixelTracksInRegionL2',
+        'AhltPixelTracksInRegionL1',
+        'AhltPixelTracksForSeedsL3Muon',
     ]
     process.trackAssoSeq = cms.Sequence(
         process.TPmu +
@@ -151,7 +172,11 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
         process.AhltIterL3MuonMerged +
         process.AhltIterL3MuonAndMuonFromL1Merged +
         process.AhltIterL3MuonsNoID +
-        process.AhltIterL3Muons
+        process.AhltIterL3Muons +
+        process.AhltPixelTracks +
+        process.AhltPixelTracksInRegionL2 +
+        process.AhltPixelTracksInRegionL1 +
+        process.AhltPixelTracksForSeedsL3Muon
     )
 
     # Call the L1 associators
