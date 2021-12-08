@@ -14,19 +14,37 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
 
 
     from MuonHLTTool.MuonHLTNtupler.ntupler_cfi import ntuplerBase
-    import SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi
+    #import SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi
+    import SimTracker.TrackAssociatorProducers.trackAssociatorByHits_cfi
     from SimTracker.TrackerHitAssociation.tpClusterProducer_cfi import tpClusterProducer as _tpClusterProducer
 
-    process.hltTPClusterProducer = _tpClusterProducer.clone(
-      pixelClusterSrc = "hltSiPixelClusters",
-      stripClusterSrc = "hltSiStripRawToClustersFacility"
-    )
+    from SimGeneral.TrackingAnalysis.simHitTPAssociation_cfi import simHitTPAssocProducer as _simHitTPAssocProducer
+    process.simHitTPAssocProducer = _simHitTPAssocProducer.clone()
 
-    process.hltTrackAssociatorByHits = SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi.quickTrackAssociatorByHits.clone()
-    process.hltTrackAssociatorByHits.cluster2TPSrc            = cms.InputTag("hltTPClusterProducer")
-    process.hltTrackAssociatorByHits.UseGrouped               = cms.bool( False )
-    process.hltTrackAssociatorByHits.UseSplitting             = cms.bool( False )
-    process.hltTrackAssociatorByHits.ThreeHitTracksAreSpecial = cms.bool( False )
+    # process.hltTPClusterProducer = _tpClusterProducer.clone(
+    #   pixelClusterSrc = "hltSiPixelClusters",
+    #   stripClusterSrc = "hltSiStripRawToClustersFacility"
+    # )
+
+    # process.hltTrackAssociatorByHits = SimTracker.TrackAssociatorProducers.quickTrackAssociatorByHits_cfi.quickTrackAssociatorByHits.clone()
+    # process.hltTrackAssociatorByHits.cluster2TPSrc            = cms.InputTag("hltTPClusterProducer")
+    # process.hltTrackAssociatorByHits.UseGrouped               = cms.bool( False )
+    # process.hltTrackAssociatorByHits.UseSplitting             = cms.bool( False )
+    # process.hltTrackAssociatorByHits.ThreeHitTracksAreSpecial = cms.bool( False )
+
+    process.hltTrackAssociatorByHits = SimTracker.TrackAssociatorProducers.trackAssociatorByHits_cfi.trackAssociatorByHits.clone(
+        UsePixels = cms.bool(True),
+        UseGrouped = cms.bool(True),
+        UseSplitting = cms.bool(True),
+        ThreeHitTracksAreSpecial = cms.bool(False),
+        associatePixel = cms.bool(True),
+        associateStrip = cms.bool(True),
+        usePhase2Tracker = cms.bool(False),
+        pixelSimLinkSrc = cms.InputTag("simSiPixelDigis"),
+        stripSimLinkSrc = cms.InputTag("simSiStripDigis"),
+        phase2TrackerSimLinkSrc  = cms.InputTag("simSiPixelDigis","Tracker"),
+        associateRecoTracks = cms.bool(True)
+    )
 
     # Produce tracks from L3 muons -- to use track hit association
     import SimMuon.MCTruth.MuonTrackProducer_cfi
@@ -309,7 +327,8 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
                                       process.HLTBeginSequence*
                                       process.HLTL2muonrecoSequence*
                                       process.HLTL3muonrecoSequence*
-                                      process.hltTPClusterProducer*
+                                      # process.hltTPClusterProducer*
+                                      process.simHitTPAssocProducer*
                                       process.hltTrackAssociatorByHits*
                                       process.trackAssoSeq*
                                       process.L1AssoSeq)
@@ -326,7 +345,8 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", doDYSkim 
             process.mypath = cms.Path(process.HLTBeginSequence*
                                       process.HLTL2muonrecoSequence*
                                       process.HLTL3muonrecoSequence*
-                                      process.hltTPClusterProducer*
+                                      # process.hltTPClusterProducer*
+                                      process.simHitTPAssocProducer*
                                       process.hltTrackAssociatorByHits*
                                       process.trackAssoSeq*
                                       process.L1AssoSeq)

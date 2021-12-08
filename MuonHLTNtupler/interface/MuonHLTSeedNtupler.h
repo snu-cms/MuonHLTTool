@@ -252,18 +252,18 @@ private:
     std::vector<int> linkToL3s;
     std::vector<float> bestMatchTP_charge;
     std::vector<int> bestMatchTP_pdgId;
-    std::vector<double> bestMatchTP_energy;
-    std::vector<double> bestMatchTP_pt;
-    std::vector<double> bestMatchTP_eta;
-    std::vector<double> bestMatchTP_phi;
-    std::vector<double> bestMatchTP_parentVx;
-    std::vector<double> bestMatchTP_parentVy;
-    std::vector<double> bestMatchTP_parentVz;
+    std::vector<float> bestMatchTP_energy;
+    std::vector<float> bestMatchTP_pt;
+    std::vector<float> bestMatchTP_eta;
+    std::vector<float> bestMatchTP_phi;
+    std::vector<float> bestMatchTP_parentVx;
+    std::vector<float> bestMatchTP_parentVy;
+    std::vector<float> bestMatchTP_parentVz;
     std::vector<int> bestMatchTP_status;
     std::vector<int> bestMatchTP_numberOfHits;
     std::vector<int> bestMatchTP_numberOfTrackerHits;
     std::vector<int> bestMatchTP_numberOfTrackerLayers;
-    std::vector<double> bestMatchTP_sharedFraction;
+    std::vector<float> bestMatchTP_sharedFraction;
     std::vector<int> matchedTPsize;
   public:
     void clear() {
@@ -370,7 +370,20 @@ private:
     void fillBestTPsharedFrac(double frac) { bestMatchTP_sharedFraction.push_back(frac); }
     void fillmatchedTPsize(int TPsize) { matchedTPsize.push_back(TPsize); }
 
+    float get_bestMatchTP_charge(int idx) { return bestMatchTP_charge.at(idx); }
     int get_bestMatchTP_pdgId(int idx) { return bestMatchTP_pdgId.at(idx); }
+    float get_bestMatchTP_energy(int idx) { return bestMatchTP_energy.at(idx); }
+    float get_bestMatchTP_pt(int idx) { return bestMatchTP_pt.at(idx); }
+    float get_bestMatchTP_eta(int idx) { return bestMatchTP_eta.at(idx); }
+    float get_bestMatchTP_phi(int idx) { return bestMatchTP_phi.at(idx); }
+    float get_bestMatchTP_parentVx(int idx) { return bestMatchTP_parentVx.at(idx); }
+    float get_bestMatchTP_parentVy(int idx) { return bestMatchTP_parentVy.at(idx); }
+    float get_bestMatchTP_parentVz(int idx) { return bestMatchTP_parentVz.at(idx); }
+    int get_bestMatchTP_status(int idx) { return bestMatchTP_status.at(idx); }
+    int get_bestMatchTP_numberOfHits(int idx) { return bestMatchTP_numberOfHits.at(idx); }
+    int get_bestMatchTP_numberOfTrackerHits(int idx) { return bestMatchTP_numberOfTrackerHits.at(idx); }
+    int get_bestMatchTP_numberOfTrackerLayers(int idx) { return bestMatchTP_numberOfTrackerLayers.at(idx); }
+    float get_bestMatchTP_sharedFraction(int idx) { return bestMatchTP_sharedFraction.at(idx); }
     int get_matchedTPsize(int idx) { return matchedTPsize.at(idx); }
 
     void print() {
@@ -458,7 +471,19 @@ private:
     float dPhi_minDPhiL2SeedX_;
     float dR_L1TkMuSeedP_;
     float dPhi_L1TkMuSeedP_;
+    float bestMatchTP_charge_;
     int bestMatchTP_pdgId_;
+    float bestMatchTP_energy_;
+    float bestMatchTP_pt_;
+    float bestMatchTP_eta_;
+    float bestMatchTP_phi_;
+    float bestMatchTP_parentVx_;
+    float bestMatchTP_parentVy_;
+    float bestMatchTP_parentVz_;
+    int bestMatchTP_status_;
+    int bestMatchTP_numberOfHits_;
+    int bestMatchTP_numberOfTrackerHits_;
+    int bestMatchTP_numberOfTrackerLayers_;
     float bestMatchTP_sharedFraction_;
     int matchedTPsize_;
     float bestMatchSeedTP_charge_;
@@ -533,7 +558,19 @@ private:
       dPhi_minDPhiL2SeedX_ = -99999.;
       dR_L1TkMuSeedP_ = -99999.;
       dPhi_L1TkMuSeedP_ = -99999.;
+      bestMatchTP_charge_ = -99999.;
       bestMatchTP_pdgId_ = -99999;
+      bestMatchTP_energy_ = -99999.;
+      bestMatchTP_pt_ = -99999.;
+      bestMatchTP_eta_ = -99999.;
+      bestMatchTP_phi_ = -99999.;
+      bestMatchTP_parentVx_ = -99999.;
+      bestMatchTP_parentVy_ = -99999.;
+      bestMatchTP_parentVz_ = -99999.;
+      bestMatchTP_status_ = -99999;
+      bestMatchTP_numberOfHits_ = -99999;
+      bestMatchTP_numberOfTrackerHits_ = -99999;
+      bestMatchTP_numberOfTrackerLayers_ = -99999;
       bestMatchTP_sharedFraction_ = -99999.;
       matchedTPsize_ = -99999;
       bestMatchSeedTP_charge_ = -99999.;
@@ -611,8 +648,20 @@ private:
       tmpntpl->Branch("dPhi_minDPhiL2SeedX", &dPhi_minDPhiL2SeedX_, "dPhi_minDPhiL2SeedX/F");
       tmpntpl->Branch("dR_L1TkMuSeedP",     &dR_L1TkMuSeedP_,   "dR_L1TkMuSeedP/F");
       tmpntpl->Branch("dPhi_L1TkMuSeedP",   &dPhi_L1TkMuSeedP_, "dPhi_L1TkMuSeedP/F");
+      tmpntpl->Branch("bestMatchTP_charge", &bestMatchTP_charge_, "bestMatchTP_charge/F");
       tmpntpl->Branch("bestMatchTP_pdgId", &bestMatchTP_pdgId_, "bestMatchTP_pdgId/I");
-      tmpntpl->Branch("bestMatchTP_sharedFraction", &bestMatchTP_sharedFraction_, "bestMatchTP_sharedFraction/D");
+      tmpntpl->Branch("bestMatchTP_energy", &bestMatchTP_energy_, "bestMatchTP_energy/F");
+      tmpntpl->Branch("bestMatchTP_pt", &bestMatchTP_pt_,   "bestMatchTP_pt/F");
+      tmpntpl->Branch("bestMatchTP_eta", &bestMatchTP_eta_, "bestMatchTP_eta/F");
+      tmpntpl->Branch("bestMatchTP_phi", &bestMatchTP_phi_, "bestMatchTP_phi/F");
+      tmpntpl->Branch("bestMatchTP_parentVx", &bestMatchTP_parentVx_, "bestMatchTP_parentVx/F");
+      tmpntpl->Branch("bestMatchTP_parentVy", &bestMatchTP_parentVy_, "bestMatchTP_parentVy/F");
+      tmpntpl->Branch("bestMatchTP_parentVz", &bestMatchTP_parentVz_, "bestMatchTP_parentVz/F");
+      tmpntpl->Branch("bestMatchTP_status", &bestMatchTP_status_, "bestMatchTP_status/I");
+      tmpntpl->Branch("bestMatchTP_numberOfHits", &bestMatchTP_numberOfHits_, "bestMatchTP_numberOfHits/I");
+      tmpntpl->Branch("bestMatchTP_numberOfTrackerHits", &bestMatchTP_numberOfTrackerHits_, "bestMatchTP_numberOfTrackerHits/I");
+      tmpntpl->Branch("bestMatchTP_numberOfTrackerLayers", &bestMatchTP_numberOfTrackerLayers_, "bestMatchTP_numberOfTrackerLayers/I");
+      tmpntpl->Branch("bestMatchTP_sharedFraction", &bestMatchTP_sharedFraction_, "bestMatchTP_sharedFraction/F");
       tmpntpl->Branch("matchedTPsize", &matchedTPsize_, "matchedTPsize/I");
       tmpntpl->Branch("bestMatchSeedTP_charge", &bestMatchSeedTP_charge_, "bestMatchSeedTP_charge/F");
       tmpntpl->Branch("bestMatchSeedTP_pdgId", &bestMatchSeedTP_pdgId_, "bestMatchSeedTP_pdgId/I");
@@ -740,8 +789,21 @@ private:
       if( index < 0 )
         return;
 
-      bestMatchTP_pdgId_ = TTtrack->get_bestMatchTP_pdgId(index);
-      matchedTPsize_ = TTtrack->get_matchedTPsize(index);
+      bestMatchTP_charge_                = TTtrack->get_bestMatchTP_charge(index);
+      bestMatchTP_pdgId_                 = TTtrack->get_bestMatchTP_pdgId(index);
+      bestMatchTP_energy_                = TTtrack->get_bestMatchTP_energy(index);
+      bestMatchTP_pt_                    = TTtrack->get_bestMatchTP_pt(index);
+      bestMatchTP_eta_                   = TTtrack->get_bestMatchTP_eta(index);
+      bestMatchTP_phi_                   = TTtrack->get_bestMatchTP_phi(index);
+      bestMatchTP_parentVx_              = TTtrack->get_bestMatchTP_parentVx(index);
+      bestMatchTP_parentVy_              = TTtrack->get_bestMatchTP_parentVy(index);
+      bestMatchTP_parentVz_              = TTtrack->get_bestMatchTP_parentVz(index);
+      bestMatchTP_status_                = TTtrack->get_bestMatchTP_status(index);
+      bestMatchTP_numberOfHits_          = TTtrack->get_bestMatchTP_numberOfHits(index);
+      bestMatchTP_numberOfTrackerHits_   = TTtrack->get_bestMatchTP_numberOfTrackerHits(index);
+      bestMatchTP_numberOfTrackerLayers_ = TTtrack->get_bestMatchTP_numberOfTrackerLayers(index);
+      bestMatchTP_sharedFraction_        = TTtrack->get_bestMatchTP_sharedFraction(index);
+      matchedTPsize_                     = TTtrack->get_matchedTPsize(index);
     }
 
     void fill_SeedTP(const TrackingParticleRef TP) {
