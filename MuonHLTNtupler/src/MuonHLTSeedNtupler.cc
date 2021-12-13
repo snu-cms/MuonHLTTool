@@ -409,7 +409,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
 
       // -- L1, L2 association
       if( hasL1 ) {
-	int nL1Muon = 0;
+        int nL1Muon = 0;
         float dR_minDRL1SeedP = 99999.;
         float dPhi_minDRL1SeedP = 99999.;
         float dR_minDPhiL1SeedX = 99999.;
@@ -418,6 +418,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
         float dPhi_minDRL1SeedP_AtVtx = 99999.;
         float dR_minDPhiL1SeedX_AtVtx = 99999.;
         float dPhi_minDPhiL1SeedX_AtVtx = 99999.;
+        float L1Muon_pt = 99999.;
+        float L1Muon_eta = 99999.;
+        float L1Muon_phi = 99999.;
         for(int ibx = h_L1Muon->getFirstBX(); ibx<=h_L1Muon->getLastBX(); ++ibx)
         {
           if(ibx != 0) continue; // -- only take when ibx == 0 -- //
@@ -428,7 +431,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
             if(ref_L1Mu->hwQual() < 7)
               continue;
 
-	    nL1Muon ++;
+            nL1Muon ++;
             float dR_L1SeedP   = reco::deltaR( *ref_L1Mu, global_p);
             float dPhi_L1SeedP = reco::deltaPhi( ref_L1Mu->phi(), global_p.phi());
             float dR_L1SeedX   = reco::deltaR( *ref_L1Mu, global_x);
@@ -451,6 +454,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
             if( dR_L1SeedP_AtVtx < dR_minDRL1SeedP_AtVtx ) {
               dR_minDRL1SeedP_AtVtx = dR_L1SeedP_AtVtx;
               dPhi_minDRL1SeedP_AtVtx = dPhi_L1SeedP_AtVtx;
+              L1Muon_pt = ref_L1Mu->pt();
+              L1Muon_eta = ref_L1Mu->etaAtVtx();
+              L1Muon_phi = ref_L1Mu->phiAtVtx();
             }
             if( fabs(dPhi_L1SeedX_AtVtx) < fabs(dPhi_minDPhiL1SeedX_AtVtx) ) {
               dR_minDPhiL1SeedX_AtVtx = dR_L1SeedX_AtVtx;
@@ -462,17 +468,21 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
           dR_minDRL1SeedP,         dPhi_minDRL1SeedP,
           dR_minDPhiL1SeedX,       dPhi_minDPhiL1SeedX,
           dR_minDRL1SeedP_AtVtx,   dPhi_minDRL1SeedP_AtVtx,
-          dR_minDPhiL1SeedX_AtVtx, dPhi_minDPhiL1SeedX_AtVtx
+          dR_minDPhiL1SeedX_AtVtx, dPhi_minDPhiL1SeedX_AtVtx,
+          L1Muon_pt,               L1Muon_eta,                L1Muon_phi
         );
       }
 
       if( hasL2 && h_L2Muon->size() > 0 ) {
-	int nL2Muon = 0;
+        int nL2Muon = 0;
         float dR_minDRL2SeedP = 99999.;
         float dPhi_minDRL2SeedP = 99999.;
         float dR_minDPhiL2SeedX = 99999.;
         float dPhi_minDPhiL2SeedX = 99999.;
-	nL2Muon = h_L2Muon->size();
+        float L2Muon_pt = 99999.;
+        float L2Muon_eta = 99999.;
+        float L2Muon_phi = 99999.;
+        nL2Muon = h_L2Muon->size();
         for( unsigned int i_L2=0; i_L2<h_L2Muon->size(); i_L2++)
         {
           reco::RecoChargedCandidateRef ref_L2Mu(h_L2Muon, i_L2);
@@ -485,6 +495,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
           if( dR_L2SeedP < dR_minDRL2SeedP ) {
             dR_minDRL2SeedP = dR_L2SeedP;
             dPhi_minDRL2SeedP = dPhi_L2SeedP;
+            L2Muon_pt = ref_L2Mu->pt();
+            L2Muon_eta = ref_L2Mu->eta();
+            L2Muon_phi = ref_L2Mu->phi();
           }
           if( fabs(dPhi_L2SeedX) < fabs(dPhi_minDPhiL2SeedX) ) {
             dR_minDPhiL2SeedX = dR_L2SeedX;
@@ -494,7 +507,8 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
 
         ST->fill_L2vars(nL2Muon,
           dR_minDRL2SeedP,         dPhi_minDRL2SeedP,
-          dR_minDPhiL2SeedX,       dPhi_minDPhiL2SeedX
+          dR_minDPhiL2SeedX,       dPhi_minDPhiL2SeedX,
+          L2Muon_pt,               L2Muon_eta,                L2Muon_phi
         );
       }
 
@@ -613,7 +627,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
               gen_pt = genp->pt();
               gen_eta = genp->eta();
               gen_phi = genp->phi();
-	      //cout<<"(gen_pt, gen_eta, gen_phi, dR) = ("<<gen_pt<<", "<<gen_eta<<", "<<gen_phi<<", "<<dR_GenSeed<<")"<<endl;
+              //cout<<"(gen_pt, gen_eta, gen_phi, dR) = ("<<gen_pt<<", "<<gen_eta<<", "<<gen_phi<<", "<<dR_GenSeed<<")"<<endl;
             }
           }
         }
@@ -626,7 +640,7 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
 
       // -- L1, L2 association
       if( hasL1 ) {
-	int nL1Muon = 0;
+        int nL1Muon = 0;
         float dR_minDRL1SeedP = 99999.;
         float dPhi_minDRL1SeedP = 99999.;
         float dR_minDPhiL1SeedX = 99999.;
@@ -635,6 +649,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
         float dPhi_minDRL1SeedP_AtVtx = 99999.;
         float dR_minDPhiL1SeedX_AtVtx = 99999.;
         float dPhi_minDPhiL1SeedX_AtVtx = 99999.;
+        float L1Muon_pt = 99999.;
+        float L1Muon_eta = 99999.;
+        float L1Muon_phi = 99999.;
         for(int ibx = h_L1Muon->getFirstBX(); ibx<=h_L1Muon->getLastBX(); ++ibx)
         {
           if(ibx != 0) continue; // -- only take when ibx == 0 -- //
@@ -668,6 +685,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
             if( dR_L1SeedP_AtVtx < dR_minDRL1SeedP_AtVtx ) {
               dR_minDRL1SeedP_AtVtx = dR_L1SeedP_AtVtx;
               dPhi_minDRL1SeedP_AtVtx = dPhi_L1SeedP_AtVtx;
+              L1Muon_pt = ref_L1Mu->pt();
+              L1Muon_eta = ref_L1Mu->etaAtVtx();
+              L1Muon_phi = ref_L1Mu->phiAtVtx();
             }
             if( fabs(dPhi_L1SeedX_AtVtx) < fabs(dPhi_minDPhiL1SeedX_AtVtx) ) {
               dR_minDPhiL1SeedX_AtVtx = dR_L1SeedX_AtVtx;
@@ -679,17 +699,21 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
           dR_minDRL1SeedP,         dPhi_minDRL1SeedP,
           dR_minDPhiL1SeedX,       dPhi_minDPhiL1SeedX,
           dR_minDRL1SeedP_AtVtx,   dPhi_minDRL1SeedP_AtVtx,
-          dR_minDPhiL1SeedX_AtVtx, dPhi_minDPhiL1SeedX_AtVtx
+          dR_minDPhiL1SeedX_AtVtx, dPhi_minDPhiL1SeedX_AtVtx,
+          L1Muon_pt,               L1Muon_eta,                L1Muon_phi
         );
       }
 
       if( hasL2 && h_L2Muon->size() > 0 ) {
-	int nL2Muon = 0;
+        int nL2Muon = 0;
         float dR_minDRL2SeedP = 99999.;
         float dPhi_minDRL2SeedP = 99999.;
         float dR_minDPhiL2SeedX = 99999.;
         float dPhi_minDPhiL2SeedX = 99999.;
-	nL2Muon = h_L2Muon->size();
+        float L2Muon_pt = 99999.;
+        float L2Muon_eta = 99999.;
+        float L2Muon_phi = 99999.;
+        nL2Muon = h_L2Muon->size();
         for( unsigned int i_L2=0; i_L2<h_L2Muon->size(); i_L2++)
         {
           reco::RecoChargedCandidateRef ref_L2Mu(h_L2Muon, i_L2);
@@ -702,6 +726,9 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
           if( dR_L2SeedP < dR_minDRL2SeedP ) {
             dR_minDRL2SeedP = dR_L2SeedP;
             dPhi_minDRL2SeedP = dPhi_L2SeedP;
+            L2Muon_pt = ref_L2Mu->pt();
+            L2Muon_eta = ref_L2Mu->eta();
+            L2Muon_phi = ref_L2Mu->phi();
           }
           if( fabs(dPhi_L2SeedX) < fabs(dPhi_minDPhiL2SeedX) ) {
             dR_minDPhiL2SeedX = dR_L2SeedX;
@@ -711,7 +738,8 @@ void MuonHLTSeedNtupler::fill_seedTemplate(
 
         ST->fill_L2vars(nL2Muon,
           dR_minDRL2SeedP,         dPhi_minDRL2SeedP,
-          dR_minDPhiL2SeedX,       dPhi_minDPhiL2SeedX
+          dR_minDPhiL2SeedX,       dPhi_minDPhiL2SeedX,
+          L2Muon_pt,               L2Muon_eta,                L2Muon_phi
         );
       }
 
