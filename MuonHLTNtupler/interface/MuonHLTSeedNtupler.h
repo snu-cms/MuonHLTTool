@@ -1,7 +1,7 @@
 // -- ntuple maker for Muon HLT study
 // -- author: Kyeongpil Lee (Seoul National University, kplee@cern.ch)
 
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -100,17 +100,18 @@ using namespace std;
 using namespace reco;
 using namespace edm;
 
-class MuonHLTSeedNtupler : public edm::EDAnalyzer
+class MuonHLTSeedNtupler : public edm::one::EDAnalyzer<>
 {
 public:
-  MuonHLTSeedNtupler(const edm::ParameterSet &iConfig);
+  explicit MuonHLTSeedNtupler(const edm::ParameterSet &iConfig);
   virtual ~MuonHLTSeedNtupler() {};
 
   virtual void analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup);
   virtual void beginJob();
   virtual void endJob();
-  virtual void beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
-  virtual void endRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
+
+  // virtual void beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
+  // virtual void endRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
 
 private:
   void Init();
@@ -119,6 +120,8 @@ private:
   void Fill_Event(const edm::Event &iEvent);
   void Fill_IterL3TT(const edm::Event &iEvent);
   void Fill_Seed(const edm::Event &iEvent, const edm::EventSetup &iSetup);
+
+  const edm::ESGetToken<TrackerGeometry, TrackerDigiGeometryRecord> trackerGeometryToken_;
 
   // TrackerHitAssociator::Config trackerHitAssociatorConfig_;
   edm::EDGetTokenT<reco::TrackToTrackingParticleAssociator> associatorToken;
@@ -163,7 +166,8 @@ private:
   std::vector<double> mvaScaleStdHltIter2IterL3MuonPixelSeeds_E_;
   std::vector<double> mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_;
 
-  typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
+  // typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
+  typedef std::vector< std::pair<std::unique_ptr<const SeedMvaEstimator>, std::unique_ptr<const SeedMvaEstimator>>> pairSeedMvaEstimator;
 
   pairSeedMvaEstimator mvaHltIter2IterL3MuonPixelSeeds_;
   pairSeedMvaEstimator mvaHltIter2IterL3FromL1MuonPixelSeeds_;
@@ -703,9 +707,9 @@ private:
       return;
     }
 
-    void fill(TrajectorySeed seed, edm::ESHandle<TrackerGeometry> tracker) {
-      GlobalVector p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
-      GlobalPoint x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
+    void fill(TrajectorySeed seed, const TrackerGeometry& tracker) {
+      GlobalVector p = tracker.idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
+      GlobalPoint x = tracker.idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
 
       dir_ = seed.direction();
       tsos_detId_ = seed.startingState().detId();
@@ -881,7 +885,7 @@ private:
   void fill_seedTemplate(
     const edm::Event &,
     edm::EDGetTokenT<edm::View<TrajectorySeed>>&,
-    edm::ESHandle<TrackerGeometry>&,
+    const TrackerGeometry&,
     std::map<tmpTSOD,unsigned int>&,
     trkTemplate*,
     TTree*,
@@ -891,8 +895,8 @@ private:
   void fill_seedTemplate(
     const edm::Event &,
     edm::EDGetTokenT<edm::View<TrajectorySeed>>&,
-    pairSeedMvaEstimator,
-    edm::ESHandle<TrackerGeometry>&,
+    const pairSeedMvaEstimator&,
+    const TrackerGeometry&,
     std::map<tmpTSOD,unsigned int>&,
     trkTemplate*,
     TTree*,

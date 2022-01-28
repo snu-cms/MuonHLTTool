@@ -3,7 +3,7 @@
 
 #include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTNtupler.h"
 
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -73,6 +73,8 @@ MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
 doMVA(iConfig.getParameter<bool>("doMVA")),
 doSeed(iConfig.getParameter<bool>("doSeed")),
 DebugMode(iConfig.getParameter<bool>("DebugMode")),
+
+trackerGeometryToken_(esConsumes<TrackerGeometry, TrackerDigiGeometryRecord>()),
 
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
 trackingParticleToken(consumes<TrackingParticleCollection>(iConfig.getUntrackedParameter<edm::InputTag>("trackingParticle"))),
@@ -156,6 +158,15 @@ bs(0)
   mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E_ =                iConfig.getParameter<std::vector<double>>("mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E");
   mvaScaleStdHltIter2IterL3MuonPixelSeeds_E_ =                       iConfig.getParameter<std::vector<double>>("mvaScaleStdHltIter2IterL3MuonPixelSeeds_E");
   mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_ =                 iConfig.getParameter<std::vector<double>>("mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E");
+
+  mvaHltIter2IterL3MuonPixelSeeds_.push_back(
+    std::make_pair( std::make_unique<SeedMvaEstimator>(mvaFileHltIter2IterL3MuonPixelSeeds_B_, mvaScaleMeanHltIter2IterL3MuonPixelSeeds_B_, mvaScaleStdHltIter2IterL3MuonPixelSeeds_B_, false, 7),
+                    std::make_unique<SeedMvaEstimator>(mvaFileHltIter2IterL3MuonPixelSeeds_E_, mvaScaleMeanHltIter2IterL3MuonPixelSeeds_E_, mvaScaleStdHltIter2IterL3MuonPixelSeeds_E_, false, 7) )
+  );
+  mvaHltIter2IterL3FromL1MuonPixelSeeds_.push_back(
+    std::make_pair( std::make_unique<SeedMvaEstimator>(mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_, mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_B_, mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_B_, true, 7),
+                    std::make_unique<SeedMvaEstimator>(mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_, mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E_, mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_, true, 7) )
+  );
 }
 
 void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
@@ -276,15 +287,6 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
 
 void MuonHLTNtupler::beginJob()
 {
-  mvaHltIter2IterL3MuonPixelSeeds_ = {
-    make_pair( new SeedMvaEstimator(mvaFileHltIter2IterL3MuonPixelSeeds_B_, mvaScaleMeanHltIter2IterL3MuonPixelSeeds_B_, mvaScaleStdHltIter2IterL3MuonPixelSeeds_B_, false, 7),
-               new SeedMvaEstimator(mvaFileHltIter2IterL3MuonPixelSeeds_E_, mvaScaleMeanHltIter2IterL3MuonPixelSeeds_E_, mvaScaleStdHltIter2IterL3MuonPixelSeeds_E_, false, 7) )
-  };
-  mvaHltIter2IterL3FromL1MuonPixelSeeds_ = {
-    make_pair( new SeedMvaEstimator(mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B_, mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_B_, mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_B_, true, 7),
-               new SeedMvaEstimator(mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E_, mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E_, mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E_, true, 7) )
-  };
-
   edm::Service<TFileService> fs;
   ntuple_ = fs->make<TTree>("ntuple","ntuple");
 
@@ -1513,8 +1515,9 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
   //////////////////////////
   // -- Tracks from each algo -- //
   //////////////////////////
-  edm::ESHandle<TrackerGeometry> tracker;
-  iSetup.get<TrackerDigiGeometryRecord>().get(tracker);
+  // edm::ESHandle<TrackerGeometry> tracker;
+  // iSetup.get<TrackerDigiGeometryRecord>().get(tracker);
+  const TrackerGeometry& tracker = iSetup.getData(trackerGeometryToken_);
 
   edm::Handle<reco::TrackToTrackingParticleAssociator> theAssociator;
   edm::Handle<TrackingParticleCollection> TPCollection;
@@ -1743,7 +1746,7 @@ void MuonHLTNtupler::fill_trackTemplate(
   edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
   edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_,
   edm::Handle<TrackingParticleCollection>& TPCollection_,
-  edm::ESHandle<TrackerGeometry>& tracker,
+  const TrackerGeometry& tracker,
   std::map<tmpTSOD,unsigned int>& trkMap,
   trkTemplate* TTtrack
 ) {
@@ -1793,8 +1796,8 @@ void MuonHLTNtupler::fill_trackTemplate(
   edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
   edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_,
   edm::Handle<TrackingParticleCollection>& TPCollection_,
-  edm::ESHandle<TrackerGeometry>& tracker,
-  pairSeedMvaEstimator pairMvaEstimator,
+  const TrackerGeometry& tracker,
+  const pairSeedMvaEstimator& pairMvaEstimator,
   std::map<tmpTSOD,unsigned int>& trkMap,
   trkTemplate* TTtrack
 ) {
@@ -1847,8 +1850,8 @@ void MuonHLTNtupler::fill_trackTemplate(
 
       if( doMVA && hasL1 && hasL2 ) {
         const TrajectorySeed seed = *(trkHandle->at(i).seedRef());
-        GlobalVector global_p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
-        //GlobalPoint  global_x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
+        GlobalVector global_p = tracker.idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
+        //GlobalPoint  global_x = tracker.idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
 
         vector<double> mva = getSeedMva(
           pairMvaEstimator,
@@ -1912,8 +1915,8 @@ void MuonHLTNtupler::fill_trackTemplate(
   const edm::Event &iEvent,
   edm::EDGetTokenT<edm::View<reco::Track>>& trkToken,
   edm::EDGetTokenT<reco::RecoToSimCollection>& assoToken,
-  edm::ESHandle<TrackerGeometry>& tracker,
-  pairSeedMvaEstimator pairMvaEstimator,
+  const TrackerGeometry& tracker,
+  const pairSeedMvaEstimator& pairMvaEstimator,
   trkTemplate* TTtrack,
   bool doIso = false
 ) {
@@ -1955,8 +1958,8 @@ void MuonHLTNtupler::fill_trackTemplate(
 
         if( doMVA && hasL1 && hasL2 ) {
           const TrajectorySeed seed = *(trkHandle->at(i).seedRef());
-          GlobalVector global_p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
-          //GlobalPoint  global_x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
+          GlobalVector global_p = tracker.idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
+          //GlobalPoint  global_x = tracker.idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
   
           vector<double> mva = getSeedMva(
             pairMvaEstimator,
@@ -2073,8 +2076,8 @@ void MuonHLTNtupler::fill_tpTemplate(
 void MuonHLTNtupler::fill_tpTemplate(
   const edm::Event &iEvent,
   edm::EDGetTokenT<reco::SimToRecoCollection>& assoToken,
-  edm::ESHandle<TrackerGeometry>& tracker,
-  pairSeedMvaEstimator pairMvaEstimator,
+  const TrackerGeometry& tracker,
+  const pairSeedMvaEstimator& pairMvaEstimator,
   tpTemplate* TTtp
 ) {
 
@@ -2129,8 +2132,8 @@ void MuonHLTNtupler::fill_tpTemplate(
           double this_mva = -99999.;
           if( doMVA && hasL1 && hasL2 ) {
             const TrajectorySeed seed = *(trkMatch[0].first->seedRef());
-            GlobalVector global_p = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
-            //GlobalPoint  global_x = tracker->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
+            GlobalVector global_p = tracker.idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().momentum());
+            //GlobalPoint  global_x = tracker.idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
     
             vector<double> mva = getSeedMva(
               pairMvaEstimator,
@@ -2222,20 +2225,20 @@ bool MuonHLTNtupler::isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex&
 
 void MuonHLTNtupler::endJob() {
   //for( int i=0; i<4; ++i ) {
-  for( int i=0; i<1; ++i ) {
-    delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).first;
-    delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).second;
-    delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).first;
-    delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).second;
-  }
+  // for( int i=0; i<1; ++i ) {
+  //   delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).first;
+  //   delete mvaHltIter2IterL3MuonPixelSeeds_.at(i).second;
+  //   delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).first;
+  //   delete mvaHltIter2IterL3FromL1MuonPixelSeeds_.at(i).second;
+  // }
 
-  for( unsigned int i = 0; i < trackCollectionNames_.size(); ++i) {
-    delete trkTemplates_.at(i);
-    delete tpTemplates_.at(i);
-  }
+  // for( unsigned int i = 0; i < trackCollectionNames_.size(); ++i) {
+  //   delete trkTemplates_.at(i);
+  //   delete tpTemplates_.at(i);
+  // }
 }
 
-void MuonHLTNtupler::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}
-void MuonHLTNtupler::endRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}
+// void MuonHLTNtupler::beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}
+// void MuonHLTNtupler::endRun(const edm::Run &iRun, const edm::EventSetup &iSetup) {}
 
 DEFINE_FWK_MODULE(MuonHLTNtupler);

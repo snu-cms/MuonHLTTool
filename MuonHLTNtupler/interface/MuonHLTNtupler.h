@@ -1,7 +1,7 @@
 // -- ntuple maker for Muon HLT study
 // -- author: Kyeongpil Lee (Seoul National University, kplee@cern.ch)
 
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -102,17 +102,18 @@ using namespace std;
 using namespace reco;
 using namespace edm;
 
-class MuonHLTNtupler : public edm::EDAnalyzer
+class MuonHLTNtupler : public edm::one::EDAnalyzer<>
 {
 public:
-  MuonHLTNtupler(const edm::ParameterSet &iConfig);
+  explicit MuonHLTNtupler(const edm::ParameterSet &iConfig);
   virtual ~MuonHLTNtupler() {};
 
   virtual void analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup);
   virtual void beginJob();
   virtual void endJob();
-  virtual void beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
-  virtual void endRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
+
+  // virtual void beginRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
+  // virtual void endRun(const edm::Run &iRun, const edm::EventSetup &iSetup);
 
 private:
   void Init();
@@ -138,6 +139,8 @@ private:
   bool DebugMode;
   // bool SaveAllTracks;   // store in ntuples not only truth-matched tracks but ALL tracks
   // bool SaveStubs;       // option to save also stubs in the ntuples (makes them large...)
+
+  const edm::ESGetToken<TrackerGeometry, TrackerDigiGeometryRecord> trackerGeometryToken_;
 
   // edm::EDGetTokenT< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > ttTrackToken_;
   // edm::EDGetTokenT< TTTrackAssociationMap< Ref_Phase2TrackerDigi_ > > ttTrackMCTruthToken_;
@@ -208,7 +211,8 @@ private:
   edm::EDGetTokenT<edm::ValueMap<int>>                     t_l1MatchesByQQuality_;
   edm::EDGetTokenT<edm::ValueMap<float>>                   t_l1MatchesByQDeltaR_;
 
-  typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
+  // typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
+  typedef std::vector< std::pair<std::unique_ptr<const SeedMvaEstimator>, std::unique_ptr<const SeedMvaEstimator>>> pairSeedMvaEstimator;
 
   const reco::BeamSpot* bs;
 
@@ -1284,7 +1288,7 @@ private:
     edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
     edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_,
     edm::Handle<TrackingParticleCollection>& TPCollection_,
-    edm::ESHandle<TrackerGeometry>& tracker,
+    const TrackerGeometry& tracker,
     std::map<tmpTSOD,unsigned int>& trkMap,
     trkTemplate* TTtrack
   );
@@ -1294,8 +1298,8 @@ private:
     edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
     edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_,
     edm::Handle<TrackingParticleCollection>& TPCollection_,
-    edm::ESHandle<TrackerGeometry>& tracker,
-    pairSeedMvaEstimator pairMvaEstimator,
+    const TrackerGeometry& tracker,
+    const pairSeedMvaEstimator& pairMvaEstimator,
     std::map<tmpTSOD,unsigned int>& trkMap,
     trkTemplate* TTtrack
   );
@@ -1312,8 +1316,8 @@ private:
     const edm::Event &iEvent,
     edm::EDGetTokenT<edm::View<reco::Track>>& trkToken,
     edm::EDGetTokenT<reco::RecoToSimCollection>& assoToken,
-    edm::ESHandle<TrackerGeometry>& tracker,
-    pairSeedMvaEstimator pairMvaEstimator,
+    const TrackerGeometry& tracker,
+    const pairSeedMvaEstimator& pairMvaEstimator,
     trkTemplate* TTtrack,
     bool
   );
@@ -1327,8 +1331,8 @@ private:
   void fill_tpTemplate(
     const edm::Event &iEvent,
     edm::EDGetTokenT<reco::SimToRecoCollection>& assoToken,
-    edm::ESHandle<TrackerGeometry>& tracker,
-    pairSeedMvaEstimator pairMvaEstimator,
+    const TrackerGeometry& tracker,
+    const pairSeedMvaEstimator& pairMvaEstimator,
     tpTemplate* TTtp
   );
 
@@ -1353,7 +1357,7 @@ private:
   pairSeedMvaEstimator mvaHltIter2IterL3FromL1MuonPixelSeeds_;
 
   vector<double> getSeedMva(
-    pairSeedMvaEstimator pairMvaEstimator,
+    const pairSeedMvaEstimator& pairMvaEstimator,
     const TrajectorySeed& seed,
     GlobalVector global_p,
     const l1t::MuonBxCollection& l1Muons,
