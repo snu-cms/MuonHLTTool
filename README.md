@@ -1,155 +1,207 @@
 # MuonHLT Ntupler
 
-## Run3 121X Recipe
+## Run3 124X Recipe
 ```
-cmsrel CMSSW_12_1_0
-cd CMSSW_12_1_0/src
+export SCRAM_ARCH=slc7_amd64_gcc10
+cmsrel CMSSW_12_4_8
+cd CMSSW_12_4_8/src
 cmsenv
 git cms-init
-
-git cms-addpkg DataFormats/SiPixelDetId
-vi CommonTools/RecoAlgos/interface/TrackFullCloneSelectorBase.h
-# constexpr static Packing thePacking = {11, 11, 0, 10};
-git cms-checkdeps -a -A
-scram b -j 8
-
-git cms-addpkg RecoMuon/TrackerSeedGenerator
-git clone -b dev https://github.com/wonpoint4/RecoMuon-TrackerSeedGenerator.git RecoMuon/TrackerSeedGenerator/data
 
 git cms-addpkg HLTrigger/Configuration
 git clone https://github.com/khaosmos93/MuonHLTForRun3.git HLTrigger/Configuration/python/MuonHLTForRun3
 
-## Use cmsDriver for ntupler (due to sim hit matching...)
-
-hltGetConfiguration /dev/CMSSW_12_1_0/GRun/V12 --type GRun \
---path HLTriggerFirstPath,HLT_IsoMu24_v*,HLT_Mu50_v*,HLTriggerFinalPath,HLTAnalyzerEndpath \
---unprescale --cff >$CMSSW_BASE/src/HLTrigger/Configuration/python/HLT_MuonHLT_cff.py
-
-cmsDriver.py hlt_muon \
---python_filename=hlt_muon_Run3_mc.py \
---step HLT:MuonHLT \
---process MYHLT --era=Run3 \
---mc --conditions=auto:phase1_2021_realistic \
---customise=HLTrigger/Configuration/MuonHLTForRun3/customizeMuonHLTForRun3.customizeDoubleMuIsoFix \
---customise=HLTrigger/Configuration/MuonHLTForRun3/customizeMuonHLTForRun3.customizeMuonHLTForDoubletRemoval \
---customise=HLTrigger/Configuration/MuonHLTForRun3/customizeMuonHLTForRun3.customizeMuonHLTForCscSegment \
---customise=HLTrigger/Configuration/MuonHLTForRun3/customizeMuonHLTForRun3.customizeMuonHLTForGEM \
---customise=HLTrigger/Configuration/MuonHLTForRun3/customizeMuonHLTForRun3.customizeMuonHLTForPatatrackWithIsoAndTriplets \
---customise=HLTrigger/Configuration/MuonHLTForRun3/customizeMuonHLTForRun3.customizeIOSeedingPatatrack \
---filein=/store/mc/Run3Winter21DRMiniAOD/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v2/120003/e786c41e-21ba-489f-880c-42d0a248e59e.root \
--n 100 --no_output --no_exec
-#--customise=RecoMuon/TrackerSeedGenerator/customizeOIseeding.customizeOIseeding \
-
-## direct hltGetConfiguration
-
-hltGetConfiguration /dev/CMSSW_12_1_0/GRun/V12 --type GRun \
+### Data
+# Muon paths
+hltGetConfiguration /dev/CMSSW_12_4_0/GRun/V110 \
  --process MYHLT \
- --mc --globaltag auto:phase1_2021_realistic \
+ --data --globaltag auto:run3_hlt \
  --unprescale \
- --paths HLTriggerFirstPath,HLT_IsoMu24_v*,HLT_Mu50_v*,HLTriggerFinalPath,HLTAnalyzerEndpath \
+ --paths \
+HLTriggerFirstPath,\
+HLT_IsoMu24_v*,\
+HLT_Mu50_v*,\
+HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*,\
+HLTriggerFinalPath,\
+HLTAnalyzerEndpath \
+ --input /store/data/Run2022C/SingleMuon/RAW-RECO/ZMu-PromptReco-v1/000/356/381/00000/20ef4383-984c-450d-8b1f-ca0877b6234a.root \
  --eras Run3 \
- --input /store/mc/Run3Winter21DRMiniAOD/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/FlatPU30to80FEVT_112X_mcRun3_2021_realistic_v16-v2/120003/e786c41e-21ba-489f-880c-42d0a248e59e.root \
- --full --offline --no-output >hlt_muon_run3_mc.py
+ --max-events 100 \
+ --full --offline --no-output >hlt_muon_data_Run2022.py
 
-from HLTrigger.Configuration.MuonHLTForRun3.customizeMuonHLTForRun3 import customizeDoubleMuIsoFix,customizeMuonHLTForDoubletRemoval,customizeMuonHLTForCscSegment,customizeMuonHLTForGEM,customizeMuonHLTForPatatrackWithIsoAndTriplets,customizeIOSeedingPatatrack
-process = customizeDoubleMuIsoFix(process)
-process = customizeMuonHLTForDoubletRemoval(process)
-process = customizeMuonHLTForCscSegment(process)
-process = customizeMuonHLTForGEM(process)
-process = customizeMuonHLTForPatatrackWithIsoAndTriplets(process)
-process = customizeIOSeedingPatatrack(process)  # update here for other WPs
+# Full menu
+hltGetConfiguration /dev/CMSSW_12_4_0/GRun/V110 \
+ --process MYHLT \
+ --data --globaltag auto:run3_hlt \
+ --unprescale \
+ --input /store/data/Run2022C/SingleMuon/RAW-RECO/ZMu-PromptReco-v1/000/356/381/00000/20ef4383-984c-450d-8b1f-ca0877b6234a.root \
+ --eras Run3 \
+ --max-events 20 \
+ --full --offline --no-output >hlt_muon_data_full_Run2022.py
 
-#from RecoMuon.TrackerSeedGenerator.customizeOIseeding import customizeOIseeding
-#process = customizeOIseeding(process)
+### MC
+# Muon paths
+hltGetConfiguration /dev/CMSSW_12_4_0/GRun/V110 \
+ --process MYHLT \
+ --mc --globaltag auto:run3_mc_GRun \
+ --unprescale \
+ --paths \
+HLTriggerFirstPath,\
+HLT_IsoMu24_v*,\
+HLT_Mu50_v*,\
+HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*,\
+HLTriggerFinalPath,\
+HLTAnalyzerEndpath \
+ --input /store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/AODSIM/120X_mcRun3_2021_realistic_v6-v2/80003/8e9e1bc0-64c4-427a-9175-26b7290f93d3.root \
+ --eras Run3 --l1-emulator uGT --l1 L1Menu_Collisions2022_v1_3_0-d1_xml \
+ --max-events 100 \
+ --full --offline --no-output >hlt_muon_mc_Run3.py
 
-# optionally, add the following lines at the end of the configuration file to print out full trigger reports
-process.options.wantSummary = cms.untracked.bool( True )
-if 'MessageLogger' in process.__dict__:
-     process.MessageLogger.TriggerSummaryProducerAOD = cms.untracked.PSet()
-     process.MessageLogger.L1GtTrigReport = cms.untracked.PSet()
-     process.MessageLogger.L1TGlobalSummary = cms.untracked.PSet()
-     process.MessageLogger.HLTrigReport = cms.untracked.PSet()
-     process.MessageLogger.FastReport = cms.untracked.PSet()
-     process.MessageLogger.ThroughputService = cms.untracked.PSet()
-     process.MessageLogger.cerr.FwkReport.reportEvery = 10
+# Full menu
+hltGetConfiguration /dev/CMSSW_12_4_0/GRun/V110 \
+ --process MYHLT \
+ --mc --globaltag auto:run3_mc_GRun \
+ --unprescale \
+ --input /store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/AODSIM/120X_mcRun3_2021_realistic_v6-v2/80003/8e9e1bc0-64c4-427a-9175-26b7290f93d3.root \
+ --eras Run3 --l1-emulator uGT --l1 L1Menu_Collisions2022_v1_3_0-d1_xml \
+ --max-events 20 \
+ --full --offline --no-output >hlt_muon_mc_full_Run3.py
 
 ## Test run
-cmsRun hlt_muon_Run3_mc.py
+cmsRun hlt_muon_data_full_Run2022.py
+cmsRun hlt_muon_mc_full_Run3.py
 ```
 
 ## Ntupler
 ```
 git clone -b Run3 git@github.com:snu-cms/MuonHLTTool.git
 scram b -j8
+
+vi after_menu_data.sh # See below
+vi after_menu_mc.sh   #	See below
+
+## Test run
+cat after_menu_data.sh >> hlt_muon_data_full_Run2022.py
+sed -i 's/numberOfThreads = 4/numberOfThreads = 1/g' hlt_muon_data_full_Run2022.py
+cmsRun hlt_muon_data_full_Run2022.py
+
+cat after_menu_mc.sh >> hlt_muon_mc_full_Run3.py
+sed -i 's/numberOfThreads = 4/numberOfThreads = 1/g' hlt_muon_mc_full_Run3.py
+cmsRun hlt_muon_mc_full_Run3.py
 ```
-In hlt_muon_Run3_mc.py, Add these line
+
+# after_menu_data.sh
 ```
-
-process.load("Configuration.StandardSequences.Reconstruction_cff")
-# -- L2 seed stat recovery -- #
-#process.hltIterL3MuonPixelTracksTrackingRegions.input = cms.InputTag( 'hltL2Muons','UpdatedAtVtx' )
-#process.hltIter3IterL3MuonL2Candidates.src = cms.InputTag( 'hltL2Muons','UpdatedAtVtx' )
-#process.hltL3MuonsIterL3IO.L3TrajBuilderParameters.MuonTrackingRegionBuilder.input = cms.InputTag( 'hltL2Muons','UpdatedAtVtx' )
-#process.HLTIterL3OIAndIOFromL2muonTkCandidateSequence = cms.Sequence(
-#    process.HLTIterL3OImuonTkCandidateSequence +
-#    process.hltIterL3OIL3MuonsLinksCombination +
-#    process.hltIterL3OIL3Muons +
-#    process.hltIterL3OIL3MuonCandidates +
-#    #process.hltL2SelectorForL3IO +
-#    process.HLTIterL3IOmuonTkCandidateSequence +
-#    process.hltIterL3MuonsFromL2LinksCombination
-#)
-
-# -- Ignoring filters -- #
-process.HLT_Mu50_v13 = cms.Path(
-    process.HLTBeginSequence +
-    cms.ignore(process.hltL1sSingleMu22or25) +
-    cms.ignore(process.hltPreMu50) +
-    cms.ignore(process.hltL1fL1sMu22or25L1Filtered0) +
-    process.HLTL2muonrecoSequence +
-    cms.ignore(process.hltL2fL1sMu22or25L1f0L2Filtered10Q) +
-    process.HLTL3muonrecoSequence +
-    cms.ignore(process.hltL1fForIterL3L1fL1sMu22or25L1Filtered0) +
-    cms.ignore(process.hltL3fL1sMu22Or25L1f0L2f10QL3Filtered50Q) +
-    process.HLTEndSequence
-)
-
-skimDY = True         # set True (False) for DY (otherwise)
-isDIGI = True         # set True (False) for GEN-SIM-DIGI-RAW (GEN-SIM-RAW)
-MvaVersion = "v8Pre"  # set v7Fast or v8Pre
-WP = 0.0
-doOI = False
+isMC   = False         # set True (False) for DY (data)
+isDIGI = False         # set True (False) for GEN-SIM-DIGI-RAW (GEN-SIM-RAW)
 
 from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTNtupler import *
-process = customizerFuncForMuonHLTNtupler(process, "MYHLT", skimDY, isDIGI, MvaVersion)
+process = customizerFuncForMuonHLTNtupler(process, "MYHLT", isMC, isDIGI, "")
 process.ntupler.hltIter2IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter0IterL3MuonPixelSeedsFromPixelTracksFiltered",       "", "MYHLT")
 process.ntupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracksFiltered", "", "MYHLT")
 from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTSeedNtupler import *
-process = customizerFuncForMuonHLTSeedNtupler(process, "MYHLT", skimDY, isDIGI, MvaVersion)
+process = customizerFuncForMuonHLTSeedNtupler(process, "MYHLT", isMC, isDIGI, "")
 process.seedNtupler.hltIter2IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter0IterL3MuonPixelSeedsFromPixelTracksFiltered",       "", "MYHLT")
 process.seedNtupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracksFiltered", "", "MYHLT")
 
+process.HLT_IsoMu24_v14 = cms.Path(
+    process.HLTBeginSequence +
+    cms.ignore(process.hltL1sSingleMu22) +
+    cms.ignore(process.hltPreIsoMu24) +
+    cms.ignore(process.hltL1fL1sMu22L1Filtered0) +
+    process.HLTL2muonrecoSequence +
+    cms.ignore(process.hltL2fL1sSingleMu22L1f0L2Filtered10Q) +
+    process.HLTL3muonrecoSequence +
+    cms.ignore(process.hltL1fForIterL3L1fL1sMu22L1Filtered0) +
+    cms.ignore(process.hltL3fL1sSingleMu22L1f0L2f10QL3Filtered24Q) +
+    process.HLTMu24IsolationSequence +
+    cms.ignore(process.hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3trkIsoFiltered) +
+    process.HLTEndSequence
+)
+process.HLTMu24IsolationSequence = cms.Sequence(
+    process.HLTL3muonEcalPFisorecoSequenceNoBoolsForMuons +
+    cms.ignore(process.hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3pfecalIsoRhoFiltered) +
+    process.HLTL3muonHcalPFisorecoSequenceNoBoolsForMuons +
+    cms.ignore(process.hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3pfhcalIsoRhoFiltered) +
+    process.HLTTrackReconstructionForIsoL3MuonIter02 +
+    process.hltMuonTkRelIsolationCut0p08Map
+)
+
 process.schedule = cms.Schedule(
      process.HLTriggerFirstPath,
-     process.HLT_IsoMu24_v13,
-     process.HLT_Mu50_v13,
+     process.HLT_IsoMu24_v14,
+     process.HLT_Mu50_v14,
+     process.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v6,
+     process.HLT_Mu15_v4,
      process.HLTriggerFinalPath,
      process.mypath,
+     process.myendpath,
      process.myseedpath
 )
-# Automatic addition of the customisation function from HLTrigger.Configuration.MuonHLTForRun3.customizeMuonHLTForRun3
-from HLTrigger.Configuration.MuonHLTForRun3.customizeMuonHLTForRun3 import customizeDoubleMuIsoFix,customizeMuonHLTForDoubletRemoval,customizeMuonHLTForCscSegment,customizeMuonHLTForGEM,customizeMuonHLTForPatatrackWithIsoAndTriplets,customizeIOSeedingPatatrack
-process = customizeDoubleMuIsoFix(process)
-process = customizeMuonHLTForDoubletRemoval(process)
-process = customizeMuonHLTForCscSegment(process)
-process = customizeMuonHLTForGEM(process)
-process = customizeMuonHLTForPatatrackWithIsoAndTriplets(process)
-process = customizeIOSeedingPatatrack(process, mvaCutBs = (WP, WP), mvaCutEs = (WP, WP))
+```
+# after_menu_mc.sh
+```
+isMC   = True         # set True (False) for DY (data)
+isDIGI = False         # set True (False) for GEN-SIM-DIGI-RAW (GEN-SIM-RAW)
 
-if doOI == True :
-  from RecoMuon.TrackerSeedGenerator.customizeOIseeding import customizeOIseeding
-  process = customizeOIseeding(process)
+from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTNtupler import *
+process = customizerFuncForMuonHLTNtupler(process, "MYHLT", isMC, isDIGI, "")
+process.ntupler.hltIter2IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter0IterL3MuonPixelSeedsFromPixelTracksFiltered",       "", "MYHLT")
+process.ntupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracksFiltered", "", "MYHLT")
+from MuonHLTTool.MuonHLTNtupler.customizerForMuonHLTSeedNtupler import *
+process = customizerFuncForMuonHLTSeedNtupler(process, "MYHLT", isMC, isDIGI, "")
+process.seedNtupler.hltIter2IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter0IterL3MuonPixelSeedsFromPixelTracksFiltered",       "", "MYHLT")
+process.seedNtupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracksFiltered", "", "MYHLT")
 
-## Test run
-cmsRun hlt_muon_Run3_mc.py
+process.HLT_IsoMu24_v14 = cms.Path(
+    process.HLTBeginSequence +
+    cms.ignore(process.hltL1sSingleMu22) +
+    cms.ignore(process.hltPreIsoMu24) +
+    cms.ignore(process.hltL1fL1sMu22L1Filtered0) +
+    process.HLTL2muonrecoSequence +
+    cms.ignore(process.hltL2fL1sSingleMu22L1f0L2Filtered10Q) +
+    process.HLTL3muonrecoSequence +
+    cms.ignore(process.hltL1fForIterL3L1fL1sMu22L1Filtered0) +
+    cms.ignore(process.hltL3fL1sSingleMu22L1f0L2f10QL3Filtered24Q) +
+    process.HLTMu24IsolationSequence +
+    cms.ignore(process.hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3trkIsoFiltered) +
+    process.HLTEndSequence
+)
+process.HLTMu24IsolationSequence = cms.Sequence(
+    process.HLTL3muonEcalPFisorecoSequenceNoBoolsForMuons +
+    cms.ignore(process.hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3pfecalIsoRhoFiltered) +
+    process.HLTL3muonHcalPFisorecoSequenceNoBoolsForMuons +
+    cms.ignore(process.hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3pfhcalIsoRhoFiltered) +
+    process.HLTTrackReconstructionForIsoL3MuonIter02 +
+    process.hltMuonTkRelIsolationCut0p08Map
+)
+
+process.source = cms.Source( "PoolSource",
+    fileNames = cms.untracked.vstring(
+        '/store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/AODSIM/120X_mcRun3_2021_realistic_v6-v2/80003/8e9e1bc0-64c4-427a-9175-26b7290f93d3.root',
+    ),
+    secondaryFileNames=cms.untracked.vstring(
+        '/store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/120X_mcRun3_2021_realistic_v6-v2/80002/09910a26-f5ee-4fa7-9027-ec22369a4185.root',
+        '/store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/120X_mcRun3_2021_realistic_v6-v2/80002/24143f8a-7c62-4dec-8f0b-6b45e23b307c.root',
+        '/store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/120X_mcRun3_2021_realistic_v6-v2/80002/430c8503-a46c-40ad-9666-18baad23152e.root',
+        '/store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/120X_mcRun3_2021_realistic_v6-v2/80002/44aef3c4-0197-4194-a609-cb4d9d76919a.root',
+        '/store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/120X_mcRun3_2021_realistic_v6-v2/80002/83f0aa4d-819a-4ff6-8ee1-6344abcd871b.root',
+        '/store/mc/Run3Summer21DRPremix/DYToLL_M-50_TuneCP5_14TeV-pythia8/GEN-SIM-DIGI-RAW/120X_mcRun3_2021_realistic_v6-v2/80002/a7304eb5-be26-4ea4-bb71-2907bc06a770.root',
+    ),  
+    inputCommands = cms.untracked.vstring(
+        'keep *'
+    )
+)
+
+process.schedule = cms.Schedule(
+     process.HLTriggerFirstPath,
+     process.HLT_IsoMu24_v14,
+     process.HLT_Mu50_v14,
+     process.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v6,
+     process.HLT_Mu15_v4,
+     process.HLTriggerFinalPath,
+     process.mypath,
+     process.myendpath,
+     process.myseedpath
+)
 ```

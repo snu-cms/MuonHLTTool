@@ -86,6 +86,11 @@ t_triggerEvent_      ( consumes< trigger::TriggerEvent >                  (iConf
 t_myTriggerResults_  ( consumes< edm::TriggerResults >                    (iConfig.getUntrackedParameter<edm::InputTag>("myTriggerResults"  )) ),
 t_myTriggerEvent_    ( consumes< trigger::TriggerEvent >                  (iConfig.getUntrackedParameter<edm::InputTag>("myTriggerEvent"    )) ),
 t_L3Muon_            ( consumes< reco::RecoChargedCandidateCollection >   (iConfig.getUntrackedParameter<edm::InputTag>("L3Muon"            )) ),
+t_rho_ECAL_          ( consumes< double >                                 (iConfig.getUntrackedParameter<edm::InputTag>("rho_ECAL"          )) ),
+t_rho_HCAL_          ( consumes< double >                                 (iConfig.getUntrackedParameter<edm::InputTag>("rho_HCAL"          )) ),
+t_ECALIsoMap_        ( consumes< reco::RecoChargedCandidateIsolationMap > (iConfig.getUntrackedParameter<edm::InputTag>("ECALIsoMap"        )) ),
+t_HCALIsoMap_        ( consumes< reco::RecoChargedCandidateIsolationMap > (iConfig.getUntrackedParameter<edm::InputTag>("HCALIsoMap"        )) ),
+t_trkIsoMap_         ( consumes< reco::IsoDepositMap >                    (iConfig.getUntrackedParameter<edm::InputTag>("trkIsoMap"         )) ),
 t_L2Muon_            ( consumes< reco::RecoChargedCandidateCollection >   (iConfig.getUntrackedParameter<edm::InputTag>("L2Muon"            )) ),
 t_L1Muon_            ( consumes< l1t::MuonBxCollection  >                 (iConfig.getUntrackedParameter<edm::InputTag>("L1Muon"            )) ),
 t_TkMuon_            ( consumes< reco::RecoChargedCandidateCollection >   (iConfig.getUntrackedParameter<edm::InputTag>("TkMuon"            )) ),
@@ -122,12 +127,18 @@ t_PUSummaryInfo_     ( consumes< std::vector<PileupSummaryInfo> >         (iConf
 t_genEventInfo_      ( consumes< GenEventInfoProduct >                    (iConfig.getUntrackedParameter<edm::InputTag>("genEventInfo"      )) ),
 t_genParticle_       ( consumes< edm::View<reco::GenParticle> >           (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) ),
 
-t_l1Matches_           ( consumes< pat::TriggerObjectStandAloneMatch >                (iConfig.getParameter<edm::InputTag>("l1Matches"))),
-t_l1MatchesQuality_    ( consumes< edm::ValueMap<int> >                               (iConfig.getParameter<edm::InputTag>("l1MatchesQuality"))),
-t_l1MatchesDeltaR_     ( consumes< edm::ValueMap<float> >                             (iConfig.getParameter<edm::InputTag>("l1MatchesDeltaR"))),
-t_l1MatchesByQ_        ( consumes< pat::TriggerObjectStandAloneMatch >                (iConfig.getParameter<edm::InputTag>("l1MatchesByQ"))),
-t_l1MatchesByQQuality_ ( consumes< edm::ValueMap<int> >                               (iConfig.getParameter<edm::InputTag>("l1MatchesByQQuality"))),
-t_l1MatchesByQDeltaR_  ( consumes< edm::ValueMap<float> >                             (iConfig.getParameter<edm::InputTag>("l1MatchesByQDeltaR"))),
+t_recol1Matches_           ( consumes< pat::TriggerObjectStandAloneMatch >               (iConfig.getParameter<edm::InputTag>("recol1Matches"))),
+t_recol1MatchesQuality_    ( consumes< edm::ValueMap<int> >                              (iConfig.getParameter<edm::InputTag>("recol1MatchesQuality"))),
+t_recol1MatchesDeltaR_     ( consumes< edm::ValueMap<float> >                            (iConfig.getParameter<edm::InputTag>("recol1MatchesDeltaR"))),
+t_recol1MatchesByQ_        ( consumes< pat::TriggerObjectStandAloneMatch >               (iConfig.getParameter<edm::InputTag>("recol1MatchesByQ"))),
+t_recol1MatchesByQQuality_ ( consumes< edm::ValueMap<int> >                              (iConfig.getParameter<edm::InputTag>("recol1MatchesByQQuality"))),
+t_recol1MatchesByQDeltaR_  ( consumes< edm::ValueMap<float> >                            (iConfig.getParameter<edm::InputTag>("recol1MatchesByQDeltaR"))),
+t_genl1Matches_            ( consumes< pat::TriggerObjectStandAloneMatch >               (iConfig.getParameter<edm::InputTag>("genl1Matches"))),
+t_genl1MatchesQuality_     ( consumes< edm::ValueMap<int> >                              (iConfig.getParameter<edm::InputTag>("genl1MatchesQuality"))),
+t_genl1MatchesDeltaR_      ( consumes< edm::ValueMap<float> >                            (iConfig.getParameter<edm::InputTag>("genl1MatchesDeltaR"))),
+t_genl1MatchesByQ_         ( consumes< pat::TriggerObjectStandAloneMatch >               (iConfig.getParameter<edm::InputTag>("genl1MatchesByQ"))),
+t_genl1MatchesByQQuality_  ( consumes< edm::ValueMap<int> >                              (iConfig.getParameter<edm::InputTag>("genl1MatchesByQQuality"))),
+t_genl1MatchesByQDeltaR_   ( consumes< edm::ValueMap<float> >                            (iConfig.getParameter<edm::InputTag>("genl1MatchesByQDeltaR"))),
 bs(0)
 {
   trackCollectionNames_   = iConfig.getUntrackedParameter<std::vector<std::string>   >("trackCollectionNames");
@@ -207,6 +218,15 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
 
     nVertex_ = nGoodVtx;
   }
+
+  // -- rho
+  edm::Handle<double> h_rho_ECAL;
+  if( iEvent.getByToken(t_rho_ECAL_, h_rho_ECAL) )
+    rho_ECAL_ = *(h_rho_ECAL.product());
+
+  edm::Handle<double> h_rho_HCAL;
+  if( iEvent.getByToken(t_rho_HCAL_, h_rho_HCAL) )
+    rho_HCAL_ = *(h_rho_HCAL.product());
 
   // -- hltIterL3MuonTrimmedPixelVertices
   edm::Handle<reco::VertexCollection> h_hltIterL3MuonTrimmedPixelVertices;
@@ -322,6 +342,9 @@ void MuonHLTNtupler::Init()
   dataPU_    = -999;
   dataPURMS_ = -999;
   bunchLumi_ = -999;
+
+  rho_ECAL_ = -999;
+  rho_HCAL_ = -999;
 
   offlineInstLumi_  = -999;
   offlineDataPU_    = -999;
@@ -471,6 +494,20 @@ void MuonHLTNtupler::Init()
     muon_dz_bs_[i] = -999;
     muon_dzError_[i] = -999;
     muon_IPSig_[i] = -999;
+
+    // -- L1 matched offline muons -- //
+    muon_l1pt_[i]        = -999;
+    muon_l1eta_[i]       = -999;
+    muon_l1phi_[i]       = -999;
+    muon_l1charge_[i]    = -999;
+    muon_l1q_[i]         = -999;
+    muon_l1dr_[i]        = -999;
+    muon_l1ptByQ_[i]     = -999;
+    muon_l1etaByQ_[i]    = -999;
+    muon_l1phiByQ_[i]    = -999;
+    muon_l1chargeByQ_[i] = -999;
+    muon_l1qByQ_[i]      = -999;
+    muon_l1drByQ_[i]     = -999;
   }
 
   nL3Muon_ = 0;
@@ -481,6 +518,9 @@ void MuonHLTNtupler::Init()
     L3Muon_phi_[i] = -999;
     L3Muon_charge_[i] = -999;
     L3Muon_trkPt_[i] = -999;
+    L3Muon_ECALIso_[i] = -999;
+    L3Muon_HCALIso_[i] = -999;
+    L3Muon_trkIso_[i] = -999;
   }
 
   nL2Muon_ = 0;
@@ -662,6 +702,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("offlineBunchLumi", &offlineBunchLumi_, "offlineBunchLumi/D");
   ntuple_->Branch("truePU", &truePU_, "truePU/I");
 
+  ntuple_->Branch("rho_ECAL", &rho_ECAL_, "rho_ECAL/D");
+  ntuple_->Branch("rho_HCAL", &rho_HCAL_, "rho_HCAL/D");
+
   ntuple_->Branch("genEventWeight", &genEventWeight_, "genEventWeight/D");
   ntuple_->Branch("nGenParticle", &nGenParticle_, "nGenParticle/I");
   ntuple_->Branch("genParticle_ID", &genParticle_ID_, "genParticle_ID[nGenParticle]/I");
@@ -772,6 +815,18 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_dz_bs", &muon_dz_bs_, "muon_dz_bs[nMuon]/D");
   ntuple_->Branch("muon_dzError", &muon_dzError_, "muon_dzError[nMuon]/D");
   ntuple_->Branch("muon_IPSig", &muon_IPSig_, "muon_IPSig[nMuon]/D");
+  ntuple_->Branch("muon_l1pt", &muon_l1pt_, "muon_l1pt[nMuon]/D");
+  ntuple_->Branch("muon_l1eta", &muon_l1eta_, "muon_l1eta[nMuon]/D");
+  ntuple_->Branch("muon_l1phi", &muon_l1phi_, "muon_l1phi[nMuon]/D");
+  ntuple_->Branch("muon_l1charge", &muon_l1charge_, "muon_l1charge[nMuon]/D");
+  ntuple_->Branch("muon_l1q", &muon_l1q_, "muon_l1q[nMuon]/I");
+  ntuple_->Branch("muon_l1dr", &muon_l1dr_, "muon_l1dr[nMuon]/D");
+  ntuple_->Branch("muon_l1ptByQ", &muon_l1ptByQ_, "muon_l1ptByQ[nMuon]/D");
+  ntuple_->Branch("muon_l1etaByQ", &muon_l1etaByQ_, "muon_l1etaByQ[nMuon]/D");
+  ntuple_->Branch("muon_l1phiByQ", &muon_l1phiByQ_, "muon_l1phiByQ[nMuon]/D");
+  ntuple_->Branch("muon_l1chargeByQ", &muon_l1chargeByQ_, "muon_l1chargeByQ[nMuon]/D");
+  ntuple_->Branch("muon_l1qByQ", &muon_l1qByQ_, "muon_l1qByQ[nMuon]/I");
+  ntuple_->Branch("muon_l1drByQ", &muon_l1drByQ_, "muon_l1drByQ[nMuon]/D");
 
   ntuple_->Branch("nL3Muon", &nL3Muon_, "nL3Muon/I");
   ntuple_->Branch("L3Muon_pt", &L3Muon_pt_, "L3Muon_pt[nL3Muon]/D");
@@ -779,6 +834,9 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("L3Muon_phi", &L3Muon_phi_, "L3Muon_phi[nL3Muon]/D");
   ntuple_->Branch("L3Muon_charge", &L3Muon_charge_, "L3Muon_charge[nL3Muon]/D");
   ntuple_->Branch("L3Muon_trkPt", &L3Muon_trkPt_, "L3Muon_trkPt[nL3Muon]/D");
+  ntuple_->Branch("L3Muon_ECALIso", &L3Muon_ECALIso_, "L3Muon_ECALIso[nL3Muon]/D");
+  ntuple_->Branch("L3Muon_HCALIso", &L3Muon_HCALIso_, "L3Muon_HCALIso[nL3Muon]/D");
+  ntuple_->Branch("L3Muon_trkIso",  &L3Muon_trkIso_,  "L3Muon_trkIso[nL3Muon]/D");
 
   ntuple_->Branch("nL2Muon", &nL2Muon_, "nL2Muon/I");
   ntuple_->Branch("L2Muon_pt", &L2Muon_pt_, "L2Muon_pt[nL2Muon]/D");
@@ -907,6 +965,18 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
   edm::Handle<std::vector<reco::Muon> > h_offlineMuon;
   if( iEvent.getByToken(t_offlineMuon_, h_offlineMuon) ) // -- only when the dataset has offline muon collection (e.g. AOD) -- //
   {
+    edm::Handle<pat::TriggerObjectStandAloneMatch> h_recol1Matches;
+    iEvent.getByToken(t_recol1Matches_, h_recol1Matches);
+    edm::Handle<edm::ValueMap<int>> h_recol1Qualities;
+    iEvent.getByToken(t_recol1MatchesQuality_, h_recol1Qualities);
+    edm::Handle<edm::ValueMap<float>> h_recol1Drs;
+    iEvent.getByToken(t_recol1MatchesDeltaR_, h_recol1Drs);
+    edm::Handle<pat::TriggerObjectStandAloneMatch> h_recol1MatchesByQ;
+    iEvent.getByToken(t_recol1MatchesByQ_, h_recol1MatchesByQ);
+    edm::Handle<edm::ValueMap<int>> h_recol1QualitiesByQ;
+    iEvent.getByToken(t_recol1MatchesByQQuality_, h_recol1QualitiesByQ);
+    edm::Handle<edm::ValueMap<float>> h_recol1DrsByQ;
+    iEvent.getByToken(t_recol1MatchesByQDeltaR_, h_recol1DrsByQ);
     edm::Handle<reco::VertexCollection> h_offlineVertex;
     iEvent.getByToken(t_offlineVertex_, h_offlineVertex);
     const reco::Vertex & pv = h_offlineVertex->at(0);
@@ -953,7 +1023,7 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       muon_PFIso04_photon_[_nMuon]  = mu->pfIsolationR04().sumPhotonEt;
       muon_PFIso04_sumPU_[_nMuon]   = mu->pfIsolationR04().sumPUPt;
 
-      // reco::MuonRef muRef = reco::MuonRef(h_offlineMuon, _nMuon);
+      reco::MuonRef muRef = reco::MuonRef(h_offlineMuon, _nMuon);
 
       reco::TrackRef globalTrk = mu->globalTrack();
       if( globalTrk.isNonnull() )
@@ -999,6 +1069,26 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       muon_nMatchedStation_[_nMuon] = mu->numberOfMatchedStations();
       muon_nMatchedRPCLayer_[_nMuon] = mu->numberOfMatchedRPCLayers();
       muon_stationMask_[_nMuon] = mu->stationMask();
+
+      pat::TriggerObjectStandAloneRef recol1Match = (*h_recol1Matches)[muRef];
+      if (recol1Match.isNonnull()) {
+        muon_l1pt_[_nMuon]      = recol1Match->pt();
+        muon_l1eta_[_nMuon]     = recol1Match->eta();
+        muon_l1phi_[_nMuon]     = recol1Match->phi();
+        muon_l1charge_[_nMuon]  = recol1Match->charge();
+        muon_l1q_[_nMuon]       = (*h_recol1Qualities)[muRef];
+        muon_l1dr_[_nMuon]      = (*h_recol1Drs)[muRef];
+      }
+
+      pat::TriggerObjectStandAloneRef recol1MatchByQ = (*h_recol1MatchesByQ)[muRef];
+      if (recol1MatchByQ.isNonnull()) {
+        muon_l1ptByQ_[_nMuon]      = recol1MatchByQ->pt();
+        muon_l1etaByQ_[_nMuon]     = recol1MatchByQ->eta();
+        muon_l1phiByQ_[_nMuon]     = recol1MatchByQ->phi();
+        muon_l1chargeByQ_[_nMuon]  = recol1MatchByQ->charge();
+        muon_l1qByQ_[_nMuon]       = (*h_recol1QualitiesByQ)[muRef];
+        muon_l1drByQ_[_nMuon]      = (*h_recol1DrsByQ)[muRef];
+      }
 
       _nMuon++;
     }
@@ -1117,6 +1207,23 @@ void MuonHLTNtupler::Fill_HLTMuon(const edm::Event &iEvent)
   edm::Handle<reco::RecoChargedCandidateCollection> h_L3Muon;
   if( iEvent.getByToken( t_L3Muon_, h_L3Muon ) )
   {
+    edm::Handle<reco::RecoChargedCandidateIsolationMap> h_ECALIsoMap;
+    edm::Handle<reco::RecoChargedCandidateIsolationMap> h_HCALIsoMap;
+    edm::Handle<reco::IsoDepositMap> h_trkIsoMap;
+
+    // -- vetos for calculating the tracker isolation: needed for tracker isolation calculation
+    // -- typedef std::vector<Veto> Vetos;
+    IsoDeposit::Vetos vec_trkVeto(h_L3Muon->size());
+    if( iEvent.getByToken(t_trkIsoMap_, h_trkIsoMap) )
+      {
+	for(unsigned int i_L3=0; i_L3<h_L3Muon->size(); i_L3++)
+	  {
+	    reco::RecoChargedCandidateRef ref_L3Mu(h_L3Muon, i_L3);
+	    reco::IsoDeposit trkIsoDeposit = (*h_trkIsoMap)[ref_L3Mu];
+	    vec_trkVeto[i_L3] = trkIsoDeposit.veto();
+	  }
+      }
+
     int _nL3Muon = 0;
     for(unsigned int i_L3=0; i_L3<h_L3Muon->size(); i_L3++)
     {
@@ -1129,6 +1236,27 @@ void MuonHLTNtupler::Fill_HLTMuon(const edm::Event &iEvent)
 
       reco::TrackRef trackRef = ref_L3Mu->track();
       L3Muon_trkPt_[_nL3Muon] = trackRef->pt();
+
+      if( iEvent.getByToken(t_ECALIsoMap_, h_ECALIsoMap) )
+	{
+	  reco::RecoChargedCandidateIsolationMap::const_iterator iter_ECALIsoMap = (*h_ECALIsoMap).find( ref_L3Mu );
+	  L3Muon_ECALIso_[_nL3Muon] = iter_ECALIsoMap->val;
+	}
+      if( iEvent.getByToken(t_HCALIsoMap_, h_HCALIsoMap) )
+	{
+	  reco::RecoChargedCandidateIsolationMap::const_iterator iter_HCALIsoMap = (*h_HCALIsoMap).find( ref_L3Mu );
+	  L3Muon_HCALIso_[_nL3Muon] = iter_HCALIsoMap->val;
+	}
+      if( iEvent.getByToken(t_trkIsoMap_, h_trkIsoMap) )
+	{
+	  reco::IsoDeposit trkIsoDeposit = (*h_trkIsoMap)[ref_L3Mu];
+	  // L3Muon_trkIso_[_nL3Muon] = trkIsoDeposit.depositWithin(0.3);
+
+	  double conSize = 0.3;
+	  double theTrackPt_Min = -1.0;
+	  std::pair<double, int> trkIsoSumAndCount = trkIsoDeposit.depositAndCountWithin(conSize, vec_trkVeto, theTrackPt_Min);
+	  L3Muon_trkIso_[_nL3Muon] = trkIsoSumAndCount.first;
+	}
 
       _nL3Muon++;
     }
@@ -1224,18 +1352,18 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
   // -- Gen-particle info -- //
   edm::Handle<edm::View<reco::GenParticle>> h_genParticle;
   iEvent.getByToken(t_genParticle_, h_genParticle);
-  edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1Matches;
-  iEvent.getByToken(t_l1Matches_, h_l1Matches);
-  edm::Handle<edm::ValueMap<int>> h_l1Qualities;
-  iEvent.getByToken(t_l1MatchesQuality_, h_l1Qualities);
-  edm::Handle<edm::ValueMap<float>> h_l1Drs;
-  iEvent.getByToken(t_l1MatchesDeltaR_, h_l1Drs);
-  edm::Handle<pat::TriggerObjectStandAloneMatch> h_l1MatchesByQ;
-  iEvent.getByToken(t_l1MatchesByQ_, h_l1MatchesByQ);
-  edm::Handle<edm::ValueMap<int>> h_l1QualitiesByQ;
-  iEvent.getByToken(t_l1MatchesByQQuality_, h_l1QualitiesByQ);
-  edm::Handle<edm::ValueMap<float>> h_l1DrsByQ;
-  iEvent.getByToken(t_l1MatchesByQDeltaR_, h_l1DrsByQ);
+  edm::Handle<pat::TriggerObjectStandAloneMatch> h_genl1Matches;
+  iEvent.getByToken(t_genl1Matches_, h_genl1Matches);
+  edm::Handle<edm::ValueMap<int>> h_genl1Qualities;
+  iEvent.getByToken(t_genl1MatchesQuality_, h_genl1Qualities);
+  edm::Handle<edm::ValueMap<float>> h_genl1Drs;
+  iEvent.getByToken(t_genl1MatchesDeltaR_, h_genl1Drs);
+  edm::Handle<pat::TriggerObjectStandAloneMatch> h_genl1MatchesByQ;
+  iEvent.getByToken(t_genl1MatchesByQ_, h_genl1MatchesByQ);
+  edm::Handle<edm::ValueMap<int>> h_genl1QualitiesByQ;
+  iEvent.getByToken(t_genl1MatchesByQQuality_, h_genl1QualitiesByQ);
+  edm::Handle<edm::ValueMap<float>> h_genl1DrsByQ;
+  iEvent.getByToken(t_genl1MatchesByQDeltaR_, h_genl1DrsByQ);
 
   int _nGenParticle = 0;
   for( size_t i=0; i< h_genParticle->size(); ++i)
@@ -1275,24 +1403,24 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
       if( parCand.fromHardProcessFinalState() ) genParticle_fromHardProcessFinalState_[_nGenParticle] = 1;
       // if( parCand.isMostlyLikePythia6Status3() ) this->genParticle_isMostlyLikePythia6Status3[_nGenParticle] = 1;
 
-      pat::TriggerObjectStandAloneRef genl1Match = (*h_l1Matches)[genRef];
+      pat::TriggerObjectStandAloneRef genl1Match = (*h_genl1Matches)[genRef];
       if (genl1Match.isNonnull()) {
         genParticle_l1pt_[_nGenParticle]      = genl1Match->pt();
         genParticle_l1eta_[_nGenParticle]     = genl1Match->eta();
         genParticle_l1phi_[_nGenParticle]     = genl1Match->phi();
         genParticle_l1charge_[_nGenParticle]  = genl1Match->charge();
-        genParticle_l1q_[_nGenParticle]       = (*h_l1Qualities)[genRef];
-        genParticle_l1dr_[_nGenParticle]      = (*h_l1Drs)[genRef];
+        genParticle_l1q_[_nGenParticle]       = (*h_genl1Qualities)[genRef];
+        genParticle_l1dr_[_nGenParticle]      = (*h_genl1Drs)[genRef];
       }
 
-      pat::TriggerObjectStandAloneRef genl1MatchByQ = (*h_l1MatchesByQ)[genRef];
+      pat::TriggerObjectStandAloneRef genl1MatchByQ = (*h_genl1MatchesByQ)[genRef];
       if (genl1MatchByQ.isNonnull()) {
         genParticle_l1ptByQ_[_nGenParticle]      = genl1MatchByQ->pt();
         genParticle_l1etaByQ_[_nGenParticle]     = genl1MatchByQ->eta();
         genParticle_l1phiByQ_[_nGenParticle]     = genl1MatchByQ->phi();
         genParticle_l1chargeByQ_[_nGenParticle]  = genl1MatchByQ->charge();
-        genParticle_l1qByQ_[_nGenParticle]       = (*h_l1QualitiesByQ)[genRef];
-        genParticle_l1drByQ_[_nGenParticle]      = (*h_l1DrsByQ)[genRef];
+        genParticle_l1qByQ_[_nGenParticle]       = (*h_genl1QualitiesByQ)[genRef];
+        genParticle_l1drByQ_[_nGenParticle]      = (*h_genl1DrsByQ)[genRef];
       }
 
       _nGenParticle++;

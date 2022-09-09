@@ -161,6 +161,11 @@ private:
   edm::EDGetTokenT< trigger::TriggerEvent >                  t_myTriggerEvent_;
 
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L3Muon_;
+  edm::EDGetTokenT< double >                                 t_rho_ECAL_;
+  edm::EDGetTokenT< double >                                 t_rho_HCAL_;
+  edm::EDGetTokenT< reco::RecoChargedCandidateIsolationMap > t_ECALIsoMap_;
+  edm::EDGetTokenT< reco::RecoChargedCandidateIsolationMap > t_HCALIsoMap_;
+  edm::EDGetTokenT< reco::IsoDepositMap >                    t_trkIsoMap_;
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_L2Muon_;
   edm::EDGetTokenT< l1t::MuonBxCollection >                  t_L1Muon_;
   edm::EDGetTokenT< reco::RecoChargedCandidateCollection >   t_TkMuon_;
@@ -204,12 +209,18 @@ private:
   std::vector<edm::EDGetTokenT<reco::SimToRecoCollection> > simToRecoCollectionTokens_;
   std::vector<edm::EDGetTokenT<reco::RecoToSimCollection> > recoToSimCollectionTokens_;
 
-  edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_l1Matches_;
-  edm::EDGetTokenT<edm::ValueMap<int>>                     t_l1MatchesQuality_;
-  edm::EDGetTokenT<edm::ValueMap<float>>                   t_l1MatchesDeltaR_;
-  edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_l1MatchesByQ_;
-  edm::EDGetTokenT<edm::ValueMap<int>>                     t_l1MatchesByQQuality_;
-  edm::EDGetTokenT<edm::ValueMap<float>>                   t_l1MatchesByQDeltaR_;
+  edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_recol1Matches_;
+  edm::EDGetTokenT<edm::ValueMap<int>>                     t_recol1MatchesQuality_;
+  edm::EDGetTokenT<edm::ValueMap<float>>                   t_recol1MatchesDeltaR_;
+  edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_recol1MatchesByQ_;
+  edm::EDGetTokenT<edm::ValueMap<int>>                     t_recol1MatchesByQQuality_;
+  edm::EDGetTokenT<edm::ValueMap<float>>                   t_recol1MatchesByQDeltaR_;
+  edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_genl1Matches_;
+  edm::EDGetTokenT<edm::ValueMap<int>>                     t_genl1MatchesQuality_;
+  edm::EDGetTokenT<edm::ValueMap<float>>                   t_genl1MatchesDeltaR_;
+  edm::EDGetTokenT<pat::TriggerObjectStandAloneMatch>      t_genl1MatchesByQ_;
+  edm::EDGetTokenT<edm::ValueMap<int>>                     t_genl1MatchesByQQuality_;
+  edm::EDGetTokenT<edm::ValueMap<float>>                   t_genl1MatchesByQDeltaR_;
 
   // typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
   typedef std::vector< std::pair<std::unique_ptr<const SeedMvaEstimator>, std::unique_ptr<const SeedMvaEstimator>>> pairSeedMvaEstimator;
@@ -251,6 +262,9 @@ private:
   double offlineBunchLumi_;
   int truePU_;
   double genEventWeight_;
+
+  double rho_ECAL_;
+  double rho_HCAL_;
 
   // -- generator level particles (only MC)
   int nGenParticle_;
@@ -430,6 +444,19 @@ private:
   double muon_dzError_[arrSize_];
   double muon_IPSig_[arrSize_];
 
+  double muon_l1pt_[arrSize_];
+  double muon_l1eta_[arrSize_];
+  double muon_l1phi_[arrSize_];
+  double muon_l1charge_[arrSize_];
+  int    muon_l1q_[arrSize_];
+  double muon_l1dr_[arrSize_];
+  double muon_l1ptByQ_[arrSize_];
+  double muon_l1etaByQ_[arrSize_];
+  double muon_l1phiByQ_[arrSize_];
+  double muon_l1chargeByQ_[arrSize_];
+  int    muon_l1qByQ_[arrSize_];
+  double muon_l1drByQ_[arrSize_];
+
   std::map<tmpTSOD,unsigned int> MuonIterSeedMap;
   std::map<tmpTSOD,unsigned int> MuonIterNoIdSeedMap;
   std::map<tmpTSOD,unsigned int> hltIterL3OIMuonTrackMap;
@@ -447,6 +474,10 @@ private:
   double L3Muon_phi_[arrSize_];
   double L3Muon_charge_[arrSize_];
   double L3Muon_trkPt_[arrSize_];
+
+  double L3Muon_ECALIso_[arrSize_];
+  double L3Muon_HCALIso_[arrSize_];
+  double L3Muon_trkIso_[arrSize_];
 
   // -- L2 muon
   int nL2Muon_;
