@@ -1323,12 +1323,27 @@ private:
     std::map<tmpTSOD,unsigned int>& trkMap,
     trkTemplate* TTtrack
   );
+  void fill_trackTemplate( //When No SimHit, Asso (ex. Data)
+    const edm::Event &iEvent,
+    edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
+    const TrackerGeometry& tracker,
+    std::map<tmpTSOD,unsigned int>& trkMap,
+    trkTemplate* TTtrack
+  );
 
   void fill_trackTemplate(
     const edm::Event &iEvent,
     edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
     edm::Handle<reco::TrackToTrackingParticleAssociator>& theAssociator_,
     edm::Handle<TrackingParticleCollection>& TPCollection_,
+    const TrackerGeometry& tracker,
+    const pairSeedMvaEstimator& pairMvaEstimator,
+    std::map<tmpTSOD,unsigned int>& trkMap,
+    trkTemplate* TTtrack
+  );
+  void fill_trackTemplate( //When No SimHit, Asso (ex. Data)
+    const edm::Event &iEvent,
+    edm::EDGetTokenT<edm::View<reco::Track>>& theToken,
     const TrackerGeometry& tracker,
     const pairSeedMvaEstimator& pairMvaEstimator,
     std::map<tmpTSOD,unsigned int>& trkMap,

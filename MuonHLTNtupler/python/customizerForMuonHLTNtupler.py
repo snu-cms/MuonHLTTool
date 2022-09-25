@@ -322,7 +322,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isMC = Fa
     process.ntupler.iterL3OI         = cms.untracked.InputTag("hltL3MuonsIterL3OI",                   "", newProcessName)
     process.ntupler.iterL3IOFromL2   = cms.untracked.InputTag("hltL3MuonsIterL3IO",                   "", newProcessName)
     process.ntupler.iterL3FromL2     = cms.untracked.InputTag("hltIterL3MuonsFromL2LinksCombination", "", newProcessName)
-    process.ntupler.iterL3IOFromL1   = cms.untracked.InputTag("hltIter2IterL3FromL1MuonMerged",       "", newProcessName)
+    process.ntupler.iterL3IOFromL1   = cms.untracked.InputTag("hltIter0IterL3FromL1MuonTrackSelectionHighPurity", "", newProcessName)
     process.ntupler.iterL3MuonNoID   = cms.untracked.InputTag("hltIterL3MuonsNoID",                   "", newProcessName)
     process.ntupler.iterL3Muon       = cms.untracked.InputTag("hltIterL3Muons",                       "", newProcessName)
 
