@@ -226,6 +226,11 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isMC = Fa
         process.AhltDiMuonMerging +
         process.AhltGlbTrkMuons
     )
+    process.trackAssoSeqNoGen = cms.Sequence(
+        process.hltIterL3MuonsNoIDTracks +
+        process.hltIterL3MuonsTracks +
+        process.hltGlbTrkMuonsTracks
+    )
 
     # Call the L1 associators
     from MuonAnalysis.MuonAssociators.muonL1Match_cfi import muonL1Match as _muonL1Match
@@ -401,6 +406,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isMC = Fa
         process.mypath = cms.Path(process.HLTBeginSequence*
                                   process.HLTL2muonrecoSequence*
                                   process.HLTL3muonrecoSequence*
+                                  process.trackAssoSeqNoGen*
                                   process.L1AssoSeq)
         process.myendpath = cms.EndPath(process.ntupler)
 
