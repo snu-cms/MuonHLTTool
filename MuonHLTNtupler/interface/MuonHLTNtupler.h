@@ -92,6 +92,7 @@
 // #include "DataFormats/L1TCorrelator/interface/TkPrimaryVertex.h"
 
 #include "RecoMuon/TrackerSeedGenerator/interface/SeedMvaEstimator.h"
+#include "MuonAnalysis/MuonAssociators/interface/PropagateToMuonSetup.h"
 
 // #include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTobjCorrelator.h"
 
@@ -120,7 +121,7 @@ private:
   void Make_Branch();
   // void Fill_L1Track(const edm::Event &iEvent, const edm::EventSetup &iSetup);
   void Fill_HLT(const edm::Event &iEvent, bool isMYHLT);
-  void Fill_Muon(const edm::Event &iEvent);
+  void Fill_Muon(const edm::Event &iEvent, const edm::EventSetup &iSetup);
   void Fill_HLTMuon(const edm::Event &iEvent);
   void Fill_L1Muon(const edm::Event &iEvent);
   void Fill_GenParticle(const edm::Event &iEvent);
@@ -140,6 +141,7 @@ private:
   // bool SaveAllTracks;   // store in ntuples not only truth-matched tracks but ALL tracks
   // bool SaveStubs;       // option to save also stubs in the ntuples (makes them large...)
 
+  const PropagateToMuonSetup propSetup_;
   const edm::ESGetToken<TrackerGeometry, TrackerDigiGeometryRecord> trackerGeometryToken_;
 
   // edm::EDGetTokenT< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > ttTrackToken_;
@@ -440,6 +442,14 @@ private:
   double muon_l1chargeByQ_[arrSize_];
   int    muon_l1qByQ_[arrSize_];
   double muon_l1drByQ_[arrSize_];
+
+  int muon_nl1t_[arrSize_];
+  double muon_l1tpt_[arrSize_][20];
+  double muon_l1teta_[arrSize_][20];
+  double muon_l1tphi_[arrSize_][20];
+  double muon_l1tcharge_[arrSize_][20];
+  int    muon_l1tq_[arrSize_][20];
+  double muon_l1tdr_[arrSize_][20];
 
   std::map<tmpTSOD,unsigned int> MuonIterSeedMap;
   std::map<tmpTSOD,unsigned int> MuonIterNoIdSeedMap;

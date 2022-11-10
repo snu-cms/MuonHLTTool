@@ -74,6 +74,7 @@ doMVA(iConfig.getParameter<bool>("doMVA")),
 doSeed(iConfig.getParameter<bool>("doSeed")),
 DebugMode(iConfig.getParameter<bool>("DebugMode")),
 
+propSetup_(iConfig, consumesCollector()),
 trackerGeometryToken_(esConsumes<TrackerGeometry, TrackerDigiGeometryRecord>()),
 
 associatorToken(consumes<reco::TrackToTrackingParticleAssociator>(iConfig.getUntrackedParameter<edm::InputTag>("associator"))),
@@ -274,7 +275,7 @@ void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iS
 
   // -- fill each object
   // Fill_L1Track(iEvent, iSetup);
-  Fill_Muon(iEvent);
+  Fill_Muon(iEvent, iSetup);
   Fill_HLT(iEvent, 0); // -- original HLT objects saved in data taking
   Fill_HLT(iEvent, 1); // -- rerun objects
   Fill_HLTMuon(iEvent);
@@ -492,6 +493,17 @@ void MuonHLTNtupler::Init()
     muon_l1chargeByQ_[i] = -999;
     muon_l1qByQ_[i]      = -999;
     muon_l1drByQ_[i]     = -999;
+
+    muon_nl1t_[i]        = -999;
+    for( int j=0; j<20; j++)
+    {
+      muon_l1tpt_[i][j]     = -999;
+      muon_l1teta_[i][j]    = -999;
+      muon_l1tphi_[i][j]    = -999;
+      muon_l1tcharge_[i][j] = -999;
+      muon_l1tq_[i][j]      = -999;
+      muon_l1tdr_[i][j]     = -999;
+    }
   }
 
   nL3Muon_ = 0;
@@ -796,6 +808,14 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_l1qByQ", &muon_l1qByQ_, "muon_l1qByQ[nMuon]/I");
   ntuple_->Branch("muon_l1drByQ", &muon_l1drByQ_, "muon_l1drByQ[nMuon]/D");
 
+  ntuple_->Branch("muon_nl1t", &muon_nl1t_, "muon_nl1t[nMuon]/I");
+  ntuple_->Branch("muon_l1tpt", &muon_l1tpt_, "muon_l1tpt[nMuon][muon_nl1t]/D");
+  ntuple_->Branch("muon_l1teta", &muon_l1teta_, "muon_l1teta[nMuon][muon_nl1t]/D");
+  ntuple_->Branch("muon_l1tphi", &muon_l1tphi_, "muon_l1tphi[nMuon][muon_nl1t]/D");
+  ntuple_->Branch("muon_l1tcharge", &muon_l1tcharge_, "muon_l1tcharge[nMuon][muon_nl1t]/D");
+  ntuple_->Branch("muon_l1tq", &muon_l1tq_, "muon_l1tq[nMuon][muon_nl1t]/I");
+  ntuple_->Branch("muon_l1tdr", &muon_l1tdr_, "muon_l1tdr[nMuon][muon_nl1t]/D");
+
   ntuple_->Branch("nL3Muon", &nL3Muon_, "nL3Muon/I");
   ntuple_->Branch("L3Muon_pt", &L3Muon_pt_, "L3Muon_pt[nL3Muon]/D");
   ntuple_->Branch("L3Muon_eta", &L3Muon_eta_, "L3Muon_eta[nL3Muon]/D");
@@ -912,8 +932,10 @@ void MuonHLTNtupler::Make_Branch()
 
 }
 
-void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
+void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 {
+  auto const prop = propSetup_.init(iSetup);
+
   edm::Handle<std::vector<reco::Muon> > h_offlineMuon;
   if( iEvent.getByToken(t_offlineMuon_, h_offlineMuon) ) // -- only when the dataset has offline muon collection (e.g. AOD) -- //
   {
@@ -1042,6 +1064,39 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
         muon_l1drByQ_[_nMuon]      = (*h_recol1DrsByQ)[muRef];
       }
 
+      double etaForMatch = mu->eta();
+      double phiForMatch = mu->phi();
+      reco::TrackRef trk = mu->track();
+      if (trk.isNonnull()) {
+        auto const propagated = prop.extrapolate(*trk);
+        etaForMatch = propagated.isValid() ? propagated.globalPosition().eta() : mu->eta();
+        phiForMatch = propagated.isValid() ? (double)propagated.globalPosition().phi() : mu->phi();
+      }
+
+      int _nMatchedL1t = 0;
+      edm::Handle<l1t::MuonBxCollection> h_L1Muon;
+      if( iEvent.getByToken(t_L1Muon_, h_L1Muon) )
+        {
+          for(int ibx = h_L1Muon->getFirstBX(); ibx<=h_L1Muon->getLastBX(); ++ibx)
+            {
+              if(ibx != 0) continue; // -- only take when ibx == 0 -- //
+              for(auto it=h_L1Muon->begin(ibx); it!=h_L1Muon->end(ibx); it++)
+                {
+                  l1t::MuonRef l1t(h_L1Muon, distance(h_L1Muon->begin(h_L1Muon->getFirstBX()), it) );
+                  if (deltaR(etaForMatch, phiForMatch, l1t->eta(), l1t->phi()) < 0.5) continue;
+
+                  muon_l1tpt_[_nMuon][_nMatchedL1t]     = l1t->pt();
+                  muon_l1teta_[_nMuon][_nMatchedL1t]    = l1t->eta();
+                  muon_l1tphi_[_nMuon][_nMatchedL1t]    = l1t->phi();
+                  muon_l1tcharge_[_nMuon][_nMatchedL1t] = l1t->charge();
+                  muon_l1tq_[_nMuon][_nMatchedL1t]      = l1t->hwQual();
+                  muon_l1tdr_[_nMuon][_nMatchedL1t]     = deltaR(etaForMatch, phiForMatch, l1t->eta(), l1t->phi());
+
+                  _nMatchedL1t++;
+                }
+            }
+        }
+      muon_nl1t_[_nMuon] = _nMatchedL1t;
       _nMuon++;
     }
 

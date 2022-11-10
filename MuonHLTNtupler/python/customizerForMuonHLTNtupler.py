@@ -370,20 +370,6 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isMC = Fa
     process.ntupler.mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E                = cms.vdouble( getattr(_mvaScale, "xgb_Run3_Iter0FromL1_PatatrackSeeds_endcap_v2_ScaleMean") )
     process.ntupler.mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E                 = cms.vdouble( getattr(_mvaScale, "xgb_Run3_Iter0FromL1_PatatrackSeeds_endcap_v2_ScaleStd") )
 
-    #process.ntupler.mvaFileHltIter2IterL3MuonPixelSeeds_B                      = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/"+MvaVersion+"_Barrel_hltIter2.xml")
-    #process.ntupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_B                = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/"+MvaVersion+"_Barrel_hltIter2FromL1.xml")
-    #process.ntupler.mvaFileHltIter2IterL3MuonPixelSeeds_E                      = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/"+MvaVersion+"_Endcap_hltIter2.xml")
-    #process.ntupler.mvaFileHltIter2IterL3FromL1MuonPixelSeeds_E                = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/"+MvaVersion+"_Endcap_hltIter2FromL1.xml")
-
-    #process.ntupler.mvaScaleMeanHltIter2IterL3MuonPixelSeeds_B                      = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Barrel_hltIter2_ScaleMean") )
-    #process.ntupler.mvaScaleStdHltIter2IterL3MuonPixelSeeds_B                       = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Barrel_hltIter2_ScaleStd") )
-    #process.ntupler.mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_B                = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Barrel_hltIter2FromL1_ScaleMean") )
-    #process.ntupler.mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_B                 = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Barrel_hltIter2FromL1_ScaleStd") )
-    #process.ntupler.mvaScaleMeanHltIter2IterL3MuonPixelSeeds_E                      = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Endcap_hltIter2_ScaleMean") )
-    #process.ntupler.mvaScaleStdHltIter2IterL3MuonPixelSeeds_E                       = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Endcap_hltIter2_ScaleStd") )
-    #process.ntupler.mvaScaleMeanHltIter2IterL3FromL1MuonPixelSeeds_E                = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Endcap_hltIter2FromL1_ScaleMean") )
-    #process.ntupler.mvaScaleStdHltIter2IterL3FromL1MuonPixelSeeds_E                 = cms.vdouble( getattr(_mvaScale, MvaVersion+"_Endcap_hltIter2FromL1_ScaleStd") )
-
     process.TFileService = cms.Service("TFileService",
       fileName = cms.string("ntuple.root"),
       closeFileFast = cms.untracked.bool(False),

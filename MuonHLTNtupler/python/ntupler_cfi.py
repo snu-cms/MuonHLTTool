@@ -41,6 +41,17 @@ ntuplerBase = cms.EDAnalyzer("MuonHLTNtupler",
 	doMVA  = cms.bool(True),
 	doSeed = cms.bool(True),
 
+        useSimpleGeometry = cms.bool( True ),
+        useStation2 = cms.bool( True ),
+        fallbackToME1 = cms.bool( False ),
+        cosmicPropagationHypothesis = cms.bool( False ),
+        useMB2InOverlap = cms.bool( False ),
+        useTrack = cms.string( "tracker" ),
+        useState = cms.string( "atVertex" ),
+        propagatorAlong = cms.ESInputTag( "","hltESPSteppingHelixPropagatorAlong" ),
+        propagatorAny = cms.ESInputTag( "","SteppingHelixPropagatorAny" ),
+        propagatorOpposite = cms.ESInputTag( "","hltESPSteppingHelixPropagatorOpposite" ),
+
 	# -- generator information
 	PUSummaryInfo = cms.untracked.InputTag("addPileupInfo"),
 	genEventInfo = cms.untracked.InputTag("generator"),
