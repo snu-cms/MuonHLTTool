@@ -35,5 +35,6 @@
 <use name="CommonTools/MVAUtils"/>
 <use name="RecoMuon/TrackerSeedGenerator"/>
 <use name="MuonAnalysis/MuonAssociators"/>
+<use name="DataFormats/StdDictionaries"/>
 <!--   <flags   EDM_PLUGIN="1"/> -->
 <flags EDM_PLUGIN="1"/>

@@ -444,12 +444,12 @@ private:
   double muon_l1drByQ_[arrSize_];
 
   int muon_nl1t_[arrSize_];
-  double muon_l1tpt_[arrSize_][20];
-  double muon_l1teta_[arrSize_][20];
-  double muon_l1tphi_[arrSize_][20];
-  double muon_l1tcharge_[arrSize_][20];
-  int    muon_l1tq_[arrSize_][20];
-  double muon_l1tdr_[arrSize_][20];
+  vector<vector<double>> muon_l1tpt_;
+  vector<vector<double>> muon_l1teta_;
+  vector<vector<double>> muon_l1tphi_;
+  vector<vector<double>> muon_l1tcharge_;
+  vector<vector<double>> muon_l1tq_;
+  vector<vector<double>> muon_l1tdr_;
 
   std::map<tmpTSOD,unsigned int> MuonIterSeedMap;
   std::map<tmpTSOD,unsigned int> MuonIterNoIdSeedMap;
