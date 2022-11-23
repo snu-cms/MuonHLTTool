@@ -1087,7 +1087,7 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent, const edm::EventSetup &
               for(auto it=h_L1Muon->begin(ibx); it!=h_L1Muon->end(ibx); it++)
                 {
                   l1t::MuonRef l1t(h_L1Muon, distance(h_L1Muon->begin(h_L1Muon->getFirstBX()), it) );
-                  if (deltaR(etaForMatch, phiForMatch, l1t->eta(), l1t->phi()) < 0.5) continue;
+                  if (deltaR(etaForMatch, phiForMatch, l1t->eta(), l1t->phi()) > 0.5) continue;
 
                   muon_l1tpt_tmp.push_back(l1t->pt());
                   muon_l1teta_tmp.push_back(l1t->eta());
