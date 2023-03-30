@@ -6,7 +6,7 @@
 import FWCore.ParameterSet.Config as cms
 import HLTrigger.Configuration.MuonHLTForRun3.mvaScale as _mvaScale
 
-def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isMC = False, isDIGI = True, MvaVersion = ""):
+def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isDIGI = True):
     process.load("TrackPropagation.SteppingHelixPropagator.SteppingHelixPropagatorAlong_cfi")
     if hasattr(process, "DQMOutput"):
         del process.DQMOutput
@@ -263,7 +263,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isMC = Fa
 
     process.genmuonL1Info = _muonL1Match.clone()
     process.genmuonL1InfoByQ = process.genmuonL1Info.clone()
-    if isMC:
+    if isDIGI:
         process.genmuonL1Info = _muonL1Match.clone(
             src = cms.InputTag("genParticles"),
             useMB2InOverlap = cms.bool(True),
