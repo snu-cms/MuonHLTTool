@@ -108,10 +108,10 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isDIGI = 
         UseMuon = cms.bool(True),
         rejectBadGlobal = cms.bool(False),
     )
-    #process.AhltPixelTracks = hltMuonAssociatorByHits.clone(
-    #    tracksTag = cms.InputTag("hltPixelTracks", "", newProcessName),
-    #    PurityCut_track = cms.double(0.65),
-    #)
+    process.AhltPixelTracks = hltMuonAssociatorByHits.clone(
+        tracksTag = cms.InputTag("hltPixelTracks", "", newProcessName),
+        PurityCut_track = cms.double(0.65),
+    )
     process.AhltPixelTracksInRegionL2 = hltMuonAssociatorByHits.clone(
         tracksTag = cms.InputTag("hltPixelTracksInRegionL2", "", newProcessName),
         PurityCut_track = cms.double(0.65),
@@ -151,7 +151,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isDIGI = 
         'hltIterL3MuonAndMuonFromL1MergedAssociated',
         'iterL3MuonNoIDTrackAssociated',
         'iterL3MuonTrackAssociated',
-        #'hltPixelTracksAssociated',
+        'hltPixelTracksAssociated',
         'hltPixelTracksInRegionL2Associated',
         'hltPixelTracksInRegionL1Associated',
         'hltPixelTracksForSeedsL3MuonAssociated',
@@ -172,7 +172,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isDIGI = 
         cms.untracked.InputTag("hltIterL3MuonAndMuonFromL1Merged",                 "", newProcessName),
         cms.untracked.InputTag("hltIterL3MuonsNoIDTracks",                         "", newProcessName),
         cms.untracked.InputTag("hltIterL3MuonsTracks",                             "", newProcessName),
-        #cms.untracked.InputTag("hltPixelTracks",                                   "", newProcessName),
+        cms.untracked.InputTag("hltPixelTracks",                                   "", newProcessName),
         cms.untracked.InputTag("hltPixelTracksInRegionL2",                         "", newProcessName),
         cms.untracked.InputTag("hltPixelTracksInRegionL1",                         "", newProcessName),
         cms.untracked.InputTag("hltPixelTracksForSeedsL3Muon",                     "", newProcessName),
@@ -194,7 +194,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isDIGI = 
         'AhltIterL3MuonAndMuonFromL1Merged',
         'AhltIterL3MuonsNoID',
         'AhltIterL3Muons',
-        #'AhltPixelTracks',
+        'AhltPixelTracks',
         'AhltPixelTracksInRegionL2',
         'AhltPixelTracksInRegionL1',
         'AhltPixelTracksForSeedsL3Muon',
@@ -218,7 +218,7 @@ def customizerFuncForMuonHLTNtupler(process, newProcessName = "MYHLT", isDIGI = 
         process.AhltIterL3MuonAndMuonFromL1Merged +
         process.AhltIterL3MuonsNoID +
         process.AhltIterL3Muons +
-        #process.AhltPixelTracks +
+        process.AhltPixelTracks +
         process.AhltPixelTracksInRegionL2 +
         process.AhltPixelTracksInRegionL1 +
         process.AhltPixelTracksForSeedsL3Muon +
