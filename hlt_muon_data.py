@@ -1,4 +1,4 @@
-# hltGetConfiguration /dev/CMSSW_13_0_0/GRun --process MYHLT --data --globaltag 130X_dataRun3_HLT_v2 --unprescale --paths HLTriggerFirstPath,HLT_IsoMu24_v*,HLT_Mu50_v*,HLT_CascadeMu100_v*,HLT_HighPtTkMu100_v*,HLT_Mu15_v*,HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*,HLTriggerFinalPath,HLTAnalyzerEndpath --input /store/data/Run2023C/Muon1/RAW-RECO/ZMu-PromptReco-v1/000/367/095/00000/0ee5c7e1-d3d2-4a81-9896-820265384d1f.root --eras Run3 --l1-emulator Full --l1 L1Menu_Collisions2023_v1_0_0_xml --max-events 100 --full --offline --no-output
+# hltGetConfiguration /dev/CMSSW_13_0_0/GRun --process MYHLT --data --globaltag 130X_dataRun3_HLT_v2 --unprescale --paths HLTriggerFirstPath,HLT_IsoMu24_v*,HLT_Mu50_v*,HLT_CascadeMu100_v*,HLT_HighPtTkMu100_v*,HLT_Mu15_v*,HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*,HLTriggerFinalPath,HLTAnalyzerEndpath --input /store/data/Run2023C/Muon1/RAW-RECO/ZMu-PromptReco-v1/000/367/095/00000/0ee5c7e1-d3d2-4a81-9896-820265384d1f.root --eras Run3 --max-events 100 --full --offline --no-output
 
 # /dev/CMSSW_13_0_0/GRun/V111 (CMSSW_13_0_2)
 
@@ -11740,10 +11740,6 @@ process.source = cms.Source( "PoolSource",
     )
 )
 
-# run the Full L1T emulator, then repack the data into a new RAW collection, to be used by the HLT
-from HLTrigger.Configuration.CustomConfigs import L1REPACK
-process = L1REPACK(process,"Full")
-
 # limit the number of events to be processed
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32( 100 )
@@ -11757,7 +11753,7 @@ process.options.numberOfStreams = 0
 # override the GlobalTag, connection string and pfnPrefix
 if 'GlobalTag' in process.__dict__:
     from Configuration.AlCa.GlobalTag import GlobalTag as customiseGlobalTag
-    process.GlobalTag = customiseGlobalTag(process.GlobalTag, globaltag = '130X_dataRun3_HLT_v2', conditions = 'L1Menu_Collisions2023_v1_0_0_xml,L1TUtmTriggerMenuRcd,,,9999-12-31 23:59:59.000')
+    process.GlobalTag = customiseGlobalTag(process.GlobalTag, globaltag = '130X_dataRun3_HLT_v2')
 
 # show summaries from trigger analysers used at HLT
 if 'MessageLogger' in process.__dict__:
@@ -11787,7 +11783,7 @@ _customInfo['globalTags'][False] = "auto:run3_mc_GRun"
 _customInfo['inputFiles']={}
 _customInfo['inputFiles'][True]  = "file:RelVal_Raw_GRun_DATA.root"
 _customInfo['inputFiles'][False] = "file:RelVal_Raw_GRun_MC.root"
-_customInfo['maxEvents' ]=  100
+_customInfo['maxEvents' ]=  -1
 _customInfo['globalTag' ]= "130X_dataRun3_HLT_v2"
 _customInfo['inputFile' ]=  ['/store/data/Run2023C/Muon1/RAW-RECO/ZMu-PromptReco-v1/000/367/095/00000/0ee5c7e1-d3d2-4a81-9896-820265384d1f.root']
 _customInfo['realData'  ]=  True

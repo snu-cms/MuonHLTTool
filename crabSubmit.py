@@ -25,11 +25,7 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '%(menu)s'
 
 config.Data.inputDataset = '%(datasetPath)s'
-#config.Data.secondaryInputDataset = '/BsToMuMuG_MuGFilter_SoftQCDnonD_TuneCP5_13p6TeV_pythia8-evtgen/Run3Winter23Digi-KeepSi_126X_mcRun3_2023_forPU65_v1-v2/GEN-SIM-RAW'    ##Only MC (Bs)
-#config.Data.secondaryInputDataset = '/JPsiTo2Mu_Pt-0To100_pythia8-gun/Run3Winter23Digi-KeepSi_126X_mcRun3_2023_forPU65_v1-v2/GEN-SIM-RAW'                                   ##Only MC (JPsi)
-#config.Data.secondaryInputDataset = '/DYTo2L_MLL-50_TuneCP5_13p6TeV_pythia8/Run3Winter23Digi-KeepSi_RnD_126X_mcRun3_2023_forPU65_v1-v2/GEN-SIM-RAW'                         ##Only MC (DY)
-#config.Data.secondaryInputDataset = '/ZprimeToMuMu_M-6000_TuneCP5_13p6TeV_pythia8/Run3Winter23Digi-KeepSi_126X_mcRun3_2023_forPU65_v1-v2/GEN-SIM-RAW'                       ##Only MC (Zprime)
-config.Data.useParent = True
+#config.Data.useParent = True                   ## Only MC
 config.Data.allowNonValidInputDataset = True
 
 config.Data.inputDBS = 'global'
@@ -46,9 +42,7 @@ config.JobType.maxMemoryMB = 4000
 config.JobType.maxJobRuntimeMin = 2700
 config.Data.outLFNDirBase = '%(mainOutputDir)s'
 config.Data.publication = False
-config.Data.ignoreLocality = True
 config.Site.storageSite = 'T3_KR_KNU'
-config.Site.whitelist = ['T2_CH_CERN','T2_FR_*','T2_KR_*']
     """
 
     datasets = [
@@ -79,8 +73,7 @@ config.Site.whitelist = ['T2_CH_CERN','T2_FR_*','T2_KR_*']
 
     HLT_menus = [
         #"hlt_muon_mc_Run3.py",
-
-        "hlt_muon_data_Full.py",
+        "hlt_muon_data.py",
      ]
 
     # proxy = '"/tmp/x509up_u95096"'
