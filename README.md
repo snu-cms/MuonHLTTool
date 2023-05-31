@@ -2,8 +2,8 @@
 
 ## Run3 130X Recipe
 ```
-cmsrel CMSSW_13_0_3
-cd CMSSW_13_0_3/src
+cmsrel CMSSW_13_0_6
+cd CMSSW_13_0_6/src
 cmsenv
 git cms-init
 
@@ -26,7 +26,7 @@ HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*,\
 HLTriggerFinalPath,\
 HLTAnalyzerEndpath \
  --input /store/data/Run2022F/Muon/RAW-RECO/ZMu-PromptReco-v1/000/361/223/00000/7b6a8758-df56-43a7-88cb-e7392b433042.root \
- --eras Run3 --l1-emulator Full --l1 L1Menu_Collisions2023_v1_0_0_xml \
+ --eras Run3 \
  --max-events 100 \
  --full --offline --no-output >hlt_muon_data_Run2022.py
 
@@ -47,7 +47,7 @@ HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*,\
 HLTriggerFinalPath,\
 HLTAnalyzerEndpath \
  --input /store/mc/Run3Winter23Reco/DYTo2L_MLL-50_TuneCP5_13p6TeV_pythia8/AODSIM/KeepSi_RnD_126X_mcRun3_2023_forPU65_v1-v2/40000/4b79f858-07ac-4aad-962f-e9473f3141a6.root \
- --eras Run3 --l1-emulator FullMC --l1 L1Menu_Collisions2023_v1_0_0_xml \
+ --eras Run3 \
  --max-events 100 \
  --full --offline --no-output >hlt_muon_mc_Run3.py
 
