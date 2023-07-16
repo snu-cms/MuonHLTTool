@@ -6,7 +6,7 @@ now = datetime.datetime.now()
 date = now.strftime('%Y%m%d')
 
 submitVersion = 'MuonHLTRun3_cmssw1306'
-mainOutputDir = '/store/user/%s/%s/%s' % (getUsernameFromCRIC(), submitVersion, date)
+mainOutputDir = '/store/group/phys_muon/ec/HLT/%s/%s' % (submitVersion, date)
 
 
 # 'MultiCRAB' part
@@ -35,14 +35,13 @@ config.Data.unitsPerJob = 12    # 2(DY) # 12(Data)
 #config.Data.lumiMask = 'Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON_Last5invfb.txt'                       ## Only Data
 #config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions22/Cert_Collisions2022_355100_362760_Golden.json'   ## Only Data
 
-#config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions23/Cert_Collisions2023_366442_367268_Golden.json'   ## Only Data
-config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions23/DCSOnly_JSONS/dailyDCSOnlyJSON/Collisions23_13p6TeV_366403_367790_DCSOnly_TkPx.json'   ## Only Data
+config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions23/Cert_Collisions2023_366442_370092_Golden.json'   ## Only Data
 
 config.JobType.maxMemoryMB = 4000
 config.JobType.maxJobRuntimeMin = 2700
 config.Data.outLFNDirBase = '%(mainOutputDir)s'
 config.Data.publication = False
-config.Site.storageSite = 'T3_KR_KNU'
+config.Site.storageSite = 'T2_CH_CERN'
     """
 
     datasets = [
@@ -57,6 +56,14 @@ config.Site.storageSite = 'T3_KR_KNU'
         ("Muon1_Run2023C", "/Muon1/Run2023C-ZMu-PromptReco-v1/RAW-RECO"),
         ("Muon0_Run2023Cv2", "/Muon0/Run2023C-ZMu-PromptReco-v2/RAW-RECO"),
         ("Muon1_Run2023Cv2", "/Muon1/Run2023C-ZMu-PromptReco-v2/RAW-RECO"),
+        ("Muon0_Run2023Cv3", "/Muon0/Run2023C-ZMu-PromptReco-v3/RAW-RECO"),
+        ("Muon1_Run2023Cv3", "/Muon1/Run2023C-ZMu-PromptReco-v3/RAW-RECO"),
+        ("Muon0_Run2023Cv4", "/Muon0/Run2023C-ZMu-PromptReco-v4/RAW-RECO"),
+        ("Muon1_Run2023Cv4", "/Muon1/Run2023C-ZMu-PromptReco-v4/RAW-RECO"),
+        ("Muon0_Run2023D", "/Muon0/Run2023D-ZMu-PromptReco-v1/RAW-RECO"),
+        ("Muon1_Run2023D", "/Muon1/Run2023D-ZMu-PromptReco-v1/RAW-RECO"),
+        ("Muon0_Run2023Dv2", "/Muon0/Run2023D-ZMu-PromptReco-v2/RAW-RECO"),
+        ("Muon1_Run2023Dv2", "/Muon1/Run2023D-ZMu-PromptReco-v2/RAW-RECO"),
 
         #("Muon_Run2022G", "/Muon/Run2022G-ZMu-PromptReco-v1/RAW-RECO"),
 
@@ -73,7 +80,9 @@ config.Site.storageSite = 'T3_KR_KNU'
 
     HLT_menus = [
         #"hlt_muon_mc_Run3.py",
-        "hlt_muon_data.py",
+        #"hlt_muon_data.py",
+        "hlt_muon_data_old_align.py",
+        #"hlt_muon_data_FullL1.py",
      ]
 
     # proxy = '"/tmp/x509up_u95096"'
