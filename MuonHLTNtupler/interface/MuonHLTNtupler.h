@@ -403,16 +403,27 @@ private:
   double muon_PFCluster04_ECAL_[arrSize_];
   double muon_PFCluster04_HCAL_[arrSize_];
 
-  double muon_normChi2_global_[arrSize_];
-  int muon_nTrackerHit_global_[arrSize_];
-  int muon_nTrackerLayer_global_[arrSize_];
-  int muon_nPixelHit_global_[arrSize_];
-  int muon_nMuonHit_global_[arrSize_];
-
-  double muon_normChi2_inner_[arrSize_];
-  int muon_nTrackerHit_inner_[arrSize_];
-  int muon_nTrackerLayer_inner_[arrSize_];
-  int muon_nPixelHit_inner_[arrSize_];
+  double muon_inner_trkChi2_[arrSize_];
+  double muon_inner_validFraction_[arrSize_];
+  int    muon_inner_trackerLayers_[arrSize_];
+  int    muon_inner_trackerHits_[arrSize_];
+  int    muon_inner_pixelLayers_[arrSize_];
+  int    muon_inner_pixelHits_[arrSize_];
+  int    muon_global_muonHits_[arrSize_];
+  double muon_global_trkChi2_[arrSize_];
+  int    muon_global_trackerLayers_[arrSize_];
+  int    muon_global_trackerHits_[arrSize_];
+  double muon_momentumChi2_[arrSize_];
+  double muon_positionChi2_[arrSize_];
+  double muon_glbKink_[arrSize_];
+  double muon_glbTrackProbability_[arrSize_];
+  double muon_globalDeltaEtaPhi_[arrSize_];
+  double muon_localDistance_[arrSize_];
+  double muon_staRelChi2_[arrSize_];
+  int    muon_tightMatch_[arrSize_];
+  double muon_trkKink_[arrSize_];
+  double muon_trkRelChi2_[arrSize_];
+  double muon_segmentCompatibility_[arrSize_];
 
   double muon_pt_tuneP_[arrSize_];
   double muon_ptError_tuneP_[arrSize_];
@@ -499,11 +510,18 @@ private:
   double TkMuon_charge_[arrSize_];
   double TkMuon_trkPt_[arrSize_];
 
+  // -- iterL3 object from outside-in
   int    nIterL3OI_;
   double iterL3OI_inner_pt_[arrSize_];
   double iterL3OI_inner_eta_[arrSize_];
   double iterL3OI_inner_phi_[arrSize_];
   double iterL3OI_inner_charge_[arrSize_];
+  double iterL3OI_inner_trkChi2_[arrSize_];
+  double iterL3OI_inner_validFraction_[arrSize_];
+  int    iterL3OI_inner_trackerLayers_[arrSize_];
+  int    iterL3OI_inner_trackerHits_[arrSize_];
+  int    iterL3OI_inner_pixelLayers_[arrSize_];
+  int    iterL3OI_inner_pixelHits_[arrSize_];
   double iterL3OI_outer_pt_[arrSize_];
   double iterL3OI_outer_eta_[arrSize_];
   double iterL3OI_outer_phi_[arrSize_];
@@ -512,12 +530,23 @@ private:
   double iterL3OI_global_eta_[arrSize_];
   double iterL3OI_global_phi_[arrSize_];
   double iterL3OI_global_charge_[arrSize_];
+  int    iterL3OI_global_muonHits_[arrSize_];
+  double iterL3OI_global_trkChi2_[arrSize_];
+  int    iterL3OI_global_trackerLayers_[arrSize_];
+  int    iterL3OI_global_trackerHits_[arrSize_];
 
+  // -- iterL3 object from inside-out step (from L2)
   int    nIterL3IOFromL2_;
   double iterL3IOFromL2_inner_pt_[arrSize_];
   double iterL3IOFromL2_inner_eta_[arrSize_];
   double iterL3IOFromL2_inner_phi_[arrSize_];
   double iterL3IOFromL2_inner_charge_[arrSize_];
+  double iterL3IOFromL2_inner_trkChi2_[arrSize_];
+  double iterL3IOFromL2_inner_validFraction_[arrSize_];
+  int    iterL3IOFromL2_inner_trackerLayers_[arrSize_];
+  int    iterL3IOFromL2_inner_trackerHits_[arrSize_];
+  int    iterL3IOFromL2_inner_pixelLayers_[arrSize_];
+  int    iterL3IOFromL2_inner_pixelHits_[arrSize_];
   double iterL3IOFromL2_outer_pt_[arrSize_];
   double iterL3IOFromL2_outer_eta_[arrSize_];
   double iterL3IOFromL2_outer_phi_[arrSize_];
@@ -526,6 +555,10 @@ private:
   double iterL3IOFromL2_global_eta_[arrSize_];
   double iterL3IOFromL2_global_phi_[arrSize_];
   double iterL3IOFromL2_global_charge_[arrSize_];
+  int    iterL3IOFromL2_global_muonHits_[arrSize_];
+  double iterL3IOFromL2_global_trkChi2_[arrSize_];
+  int    iterL3IOFromL2_global_trackerLayers_[arrSize_];
+  int    iterL3IOFromL2_global_trackerHits_[arrSize_];
 
   // -- iterL3 object from outside-in + inside-out step (from L2)
   int    nIterL3FromL2_;
@@ -533,6 +566,12 @@ private:
   double iterL3FromL2_inner_eta_[arrSize_];
   double iterL3FromL2_inner_phi_[arrSize_];
   double iterL3FromL2_inner_charge_[arrSize_];
+  double iterL3FromL2_inner_trkChi2_[arrSize_];
+  double iterL3FromL2_inner_validFraction_[arrSize_];
+  int    iterL3FromL2_inner_trackerLayers_[arrSize_];
+  int    iterL3FromL2_inner_trackerHits_[arrSize_];
+  int    iterL3FromL2_inner_pixelLayers_[arrSize_];
+  int    iterL3FromL2_inner_pixelHits_[arrSize_];
   double iterL3FromL2_outer_pt_[arrSize_];
   double iterL3FromL2_outer_eta_[arrSize_];
   double iterL3FromL2_outer_phi_[arrSize_];
@@ -541,12 +580,24 @@ private:
   double iterL3FromL2_global_eta_[arrSize_];
   double iterL3FromL2_global_phi_[arrSize_];
   double iterL3FromL2_global_charge_[arrSize_];
+  int    iterL3FromL2_global_muonHits_[arrSize_];
+  double iterL3FromL2_global_trkChi2_[arrSize_];
+  int    iterL3FromL2_global_trackerLayers_[arrSize_];
+  int    iterL3FromL2_global_trackerHits_[arrSize_];
 
+  // -- iterL3 object from inside-out step (from L1)
   int    nIterL3IOFromL1_;
   double iterL3IOFromL1_pt_[arrSize_];
   double iterL3IOFromL1_eta_[arrSize_];
   double iterL3IOFromL1_phi_[arrSize_];
   double iterL3IOFromL1_charge_[arrSize_];
+  int    iterL3IOFromL1_muonHits_[arrSize_];
+  double iterL3IOFromL1_trkChi2_[arrSize_];
+  double iterL3IOFromL1_validFraction_[arrSize_];
+  int    iterL3IOFromL1_trackerLayers_[arrSize_];
+  int    iterL3IOFromL1_trackerHits_[arrSize_];
+  int    iterL3IOFromL1_pixelLayers_[arrSize_];
+  int    iterL3IOFromL1_pixelHits_[arrSize_];
 
   // -- iterL3 object before applying ID @ HLT
   int nIterL3MuonNoID_;
@@ -555,9 +606,30 @@ private:
   double iterL3MuonNoID_eta_[arrSize_];
   double iterL3MuonNoID_phi_[arrSize_];
   double iterL3MuonNoID_charge_[arrSize_];
-  int iterL3MuonNoID_isGLB_[arrSize_];
-  int iterL3MuonNoID_isSTA_[arrSize_];
-  int iterL3MuonNoID_isTRK_[arrSize_];
+  int    iterL3MuonNoID_isGLB_[arrSize_];
+  int    iterL3MuonNoID_isSTA_[arrSize_];
+  int    iterL3MuonNoID_isTRK_[arrSize_];
+  double iterL3MuonNoID_inner_trkChi2_[arrSize_];
+  double iterL3MuonNoID_inner_validFraction_[arrSize_];
+  int    iterL3MuonNoID_inner_trackerLayers_[arrSize_];
+  int    iterL3MuonNoID_inner_trackerHits_[arrSize_];
+  int    iterL3MuonNoID_inner_pixelLayers_[arrSize_];
+  int    iterL3MuonNoID_inner_pixelHits_[arrSize_];
+  int    iterL3MuonNoID_global_muonHits_[arrSize_];
+  double iterL3MuonNoID_global_trkChi2_[arrSize_];
+  int    iterL3MuonNoID_global_trackerLayers_[arrSize_];
+  int    iterL3MuonNoID_global_trackerHits_[arrSize_];
+  double iterL3MuonNoID_momentumChi2_[arrSize_];
+  double iterL3MuonNoID_positionChi2_[arrSize_];
+  double iterL3MuonNoID_glbKink_[arrSize_];
+  double iterL3MuonNoID_glbTrackProbability_[arrSize_];
+  double iterL3MuonNoID_globalDeltaEtaPhi_[arrSize_];
+  double iterL3MuonNoID_localDistance_[arrSize_];
+  double iterL3MuonNoID_staRelChi2_[arrSize_];
+  int    iterL3MuonNoID_tightMatch_[arrSize_];
+  double iterL3MuonNoID_trkKink_[arrSize_];
+  double iterL3MuonNoID_trkRelChi2_[arrSize_];
+  double iterL3MuonNoID_segmentCompatibility_[arrSize_];
 
   // -- iterL3 object after applying ID @ HLT
   int nIterL3Muon_;
@@ -566,9 +638,30 @@ private:
   double iterL3Muon_eta_[arrSize_];
   double iterL3Muon_phi_[arrSize_];
   double iterL3Muon_charge_[arrSize_];
-  int iterL3Muon_isGLB_[arrSize_];
-  int iterL3Muon_isSTA_[arrSize_];
-  int iterL3Muon_isTRK_[arrSize_];
+  int    iterL3Muon_isGLB_[arrSize_];
+  int    iterL3Muon_isSTA_[arrSize_];
+  int    iterL3Muon_isTRK_[arrSize_];
+  double iterL3Muon_inner_trkChi2_[arrSize_];
+  double iterL3Muon_inner_validFraction_[arrSize_];
+  int    iterL3Muon_inner_trackerLayers_[arrSize_];
+  int    iterL3Muon_inner_trackerHits_[arrSize_];
+  int    iterL3Muon_inner_pixelLayers_[arrSize_];
+  int    iterL3Muon_inner_pixelHits_[arrSize_];
+  int    iterL3Muon_global_muonHits_[arrSize_];
+  double iterL3Muon_global_trkChi2_[arrSize_];
+  int    iterL3Muon_global_trackerLayers_[arrSize_];
+  int    iterL3Muon_global_trackerHits_[arrSize_];
+  double iterL3Muon_momentumChi2_[arrSize_];
+  double iterL3Muon_positionChi2_[arrSize_];
+  double iterL3Muon_glbKink_[arrSize_];
+  double iterL3Muon_glbTrackProbability_[arrSize_];
+  double iterL3Muon_globalDeltaEtaPhi_[arrSize_];
+  double iterL3Muon_localDistance_[arrSize_];
+  double iterL3Muon_staRelChi2_[arrSize_];
+  int    iterL3Muon_tightMatch_[arrSize_];
+  double iterL3Muon_trkKink_[arrSize_];
+  double iterL3Muon_trkRelChi2_[arrSize_];
+  double iterL3Muon_segmentCompatibility_[arrSize_];
 
   class tmpTrk {
   private:
@@ -615,7 +708,13 @@ private:
     std::vector<double> dxyError_bs;
     std::vector<double> dz_bs;
     std::vector<double> dzError;
-    std::vector<double> normalizedChi2;
+    std::vector<int> muonHits;
+    std::vector<double> trkChi2;
+    std::vector<double> validFraction;
+    std::vector<int> trackerLayers;
+    std::vector<int> trackerHits;
+    std::vector<int> pixelLayers;
+    std::vector<int> pixelHits;
     std::vector<int> linkToL3s;
     std::vector<int> linkToL3NoIds;
     std::vector<float> bestMatchTP_charge;
@@ -652,7 +751,13 @@ private:
       dxyError_bs.clear();
       dz_bs.clear();
       dzError.clear();
-      normalizedChi2.clear();
+      muonHits.clear();
+      trkChi2.clear();
+      validFraction.clear();
+      trackerLayers.clear();
+      trackerHits.clear();
+      pixelLayers.clear();
+      pixelHits.clear();
       linkToL3s.clear();
       linkToL3NoIds.clear();
       bestMatchTP_charge.clear();
@@ -691,7 +796,13 @@ private:
       tmpntpl->Branch(name+"_dxyError_bs", &dxyError_bs);
       tmpntpl->Branch(name+"_dz_bs", &dz_bs);
       tmpntpl->Branch(name+"_dzError", &dzError);
-      tmpntpl->Branch(name+"_normalizedChi2", &normalizedChi2);
+      tmpntpl->Branch(name+"_muonHits", &muonHits);
+      tmpntpl->Branch(name+"_trkChi2", &trkChi2);
+      tmpntpl->Branch(name+"_validFraction", &validFraction);
+      tmpntpl->Branch(name+"_trackerLayers", &trackerLayers);
+      tmpntpl->Branch(name+"_trackerHits", &trackerHits);
+      tmpntpl->Branch(name+"_pixelLayers", &pixelLayers);
+      tmpntpl->Branch(name+"_pixelHits", &pixelHits);
       tmpntpl->Branch(name+"_matchedL3", &linkToL3s);
       tmpntpl->Branch(name+"_matchedL3NoId", &linkToL3NoIds);
       tmpntpl->Branch(name+"_bestMatchTP_charge", &bestMatchTP_charge);
@@ -729,7 +840,13 @@ private:
       dxyError_bs.push_back(trk.dxyError(*bs));
       dz_bs.push_back(trk.dz(bs->position()));
       dzError.push_back(trk.dzError());
-      normalizedChi2.push_back(trk.normalizedChi2());
+      muonHits.push_back(trk.hitPattern().numberOfValidMuonHits());
+      trkChi2.push_back(trk.normalizedChi2());
+      validFraction.push_back(trk.validFraction());
+      trackerLayers.push_back(trk.hitPattern().trackerLayersWithMeasurement());
+      trackerHits.push_back(trk.hitPattern().numberOfValidTrackerHits());
+      pixelLayers.push_back(trk.hitPattern().pixelLayersWithMeasurement());
+      pixelHits.push_back(trk.hitPattern().numberOfValidPixelHits());
       nTrks++;
 
       return;

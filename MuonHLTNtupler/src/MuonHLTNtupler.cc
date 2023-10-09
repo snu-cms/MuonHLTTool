@@ -453,16 +453,27 @@ void MuonHLTNtupler::Init()
     muon_PFCluster04_ECAL_[i] = -999;
     muon_PFCluster04_HCAL_[i] = -999;
 
-    muon_normChi2_global_[i] = -999;
-    muon_nTrackerHit_global_[i] = -999;
-    muon_nTrackerLayer_global_[i] = -999;
-    muon_nPixelHit_global_[i] = -999;
-    muon_nMuonHit_global_[i] = -999;
-
-    muon_normChi2_inner_[i] = -999;
-    muon_nTrackerHit_inner_[i] = -999;
-    muon_nTrackerLayer_inner_[i] = -999;
-    muon_nPixelHit_inner_[i] = -999;
+    muon_inner_trkChi2_[i] = -999;
+    muon_inner_validFraction_[i] = -999;
+    muon_inner_trackerLayers_[i] = -999;
+    muon_inner_trackerHits_[i] = -999;
+    muon_inner_pixelLayers_[i] = -999;
+    muon_inner_pixelHits_[i] = -999;
+    muon_global_muonHits_[i] = -999;
+    muon_global_trkChi2_[i] = -999;
+    muon_global_trackerLayers_[i] = -999;
+    muon_global_trackerHits_[i] = -999;
+    muon_momentumChi2_[i] = -999;
+    muon_positionChi2_[i] = -999;
+    muon_glbKink_[i] = -999;
+    muon_glbTrackProbability_[i] = -999;
+    muon_globalDeltaEtaPhi_[i] = -999;
+    muon_localDistance_[i] = -999;
+    muon_staRelChi2_[i] = -999;
+    muon_tightMatch_[i] = -999;
+    muon_trkKink_[i] = -999;
+    muon_trkRelChi2_[i] = -999;
+    muon_segmentCompatibility_[i] = -999;
 
     muon_pt_tuneP_[i] = -999;
     muon_ptError_tuneP_[i] = -999;
@@ -555,6 +566,12 @@ void MuonHLTNtupler::Init()
     iterL3OI_inner_eta_[i] = -999;
     iterL3OI_inner_phi_[i] = -999;
     iterL3OI_inner_charge_[i] = -999;
+    iterL3OI_inner_trkChi2_[i] = -999;
+    iterL3OI_inner_validFraction_[i] = -999;
+    iterL3OI_inner_trackerLayers_[i] = -999;
+    iterL3OI_inner_trackerHits_[i] = -999;
+    iterL3OI_inner_pixelLayers_[i] = -999;
+    iterL3OI_inner_pixelHits_[i] = -999;
     iterL3OI_outer_pt_[i] = -999;
     iterL3OI_outer_eta_[i] = -999;
     iterL3OI_outer_phi_[i] = -999;
@@ -563,6 +580,10 @@ void MuonHLTNtupler::Init()
     iterL3OI_global_eta_[i] = -999;
     iterL3OI_global_phi_[i] = -999;
     iterL3OI_global_charge_[i] = -999;
+    iterL3OI_global_muonHits_[i] = -999;
+    iterL3OI_global_trkChi2_[i] = -999;
+    iterL3OI_global_trackerLayers_[i] = -999;
+    iterL3OI_global_trackerHits_[i] = -999;
   }
 
   nIterL3IOFromL2_ = 0;
@@ -572,6 +593,12 @@ void MuonHLTNtupler::Init()
     iterL3IOFromL2_inner_eta_[i] = -999;
     iterL3IOFromL2_inner_phi_[i] = -999;
     iterL3IOFromL2_inner_charge_[i] = -999;
+    iterL3IOFromL2_inner_trkChi2_[i] = -999;
+    iterL3IOFromL2_inner_validFraction_[i] = -999;
+    iterL3IOFromL2_inner_trackerLayers_[i] = -999;
+    iterL3IOFromL2_inner_trackerHits_[i] = -999;
+    iterL3IOFromL2_inner_pixelLayers_[i] = -999;
+    iterL3IOFromL2_inner_pixelHits_[i] = -999;
     iterL3IOFromL2_outer_pt_[i] = -999;
     iterL3IOFromL2_outer_eta_[i] = -999;
     iterL3IOFromL2_outer_phi_[i] = -999;
@@ -580,6 +607,10 @@ void MuonHLTNtupler::Init()
     iterL3IOFromL2_global_eta_[i] = -999;
     iterL3IOFromL2_global_phi_[i] = -999;
     iterL3IOFromL2_global_charge_[i] = -999;
+    iterL3IOFromL2_global_muonHits_[i] = -999;
+    iterL3IOFromL2_global_trkChi2_[i] = -999;
+    iterL3IOFromL2_global_trackerLayers_[i] = -999;
+    iterL3IOFromL2_global_trackerHits_[i] = -999;
   }
 
   nIterL3FromL2_ = 0;
@@ -589,6 +620,12 @@ void MuonHLTNtupler::Init()
     iterL3FromL2_inner_eta_[i] = -999;
     iterL3FromL2_inner_phi_[i] = -999;
     iterL3FromL2_inner_charge_[i] = -999;
+    iterL3FromL2_inner_trkChi2_[i] = -999;
+    iterL3FromL2_inner_validFraction_[i] = -999;
+    iterL3FromL2_inner_trackerLayers_[i] = -999;
+    iterL3FromL2_inner_trackerHits_[i] = -999;
+    iterL3FromL2_inner_pixelLayers_[i] = -999;
+    iterL3FromL2_inner_pixelHits_[i] = -999;
     iterL3FromL2_outer_pt_[i] = -999;
     iterL3FromL2_outer_eta_[i] = -999;
     iterL3FromL2_outer_phi_[i] = -999;
@@ -597,6 +634,10 @@ void MuonHLTNtupler::Init()
     iterL3FromL2_global_eta_[i] = -999;
     iterL3FromL2_global_phi_[i] = -999;
     iterL3FromL2_global_charge_[i] = -999;
+    iterL3FromL2_global_muonHits_[i] = -999;
+    iterL3FromL2_global_trkChi2_[i] = -999;
+    iterL3FromL2_global_trackerLayers_[i] = -999;
+    iterL3FromL2_global_trackerHits_[i] = -999;
   }
 
   nIterL3IOFromL1_ = 0;
@@ -606,6 +647,13 @@ void MuonHLTNtupler::Init()
     iterL3IOFromL1_eta_[i] = -999;
     iterL3IOFromL1_phi_[i] = -999;
     iterL3IOFromL1_charge_[i] = -999;
+    iterL3IOFromL1_muonHits_[i] = -999;
+    iterL3IOFromL1_trkChi2_[i] = -999;
+    iterL3IOFromL1_validFraction_[i] = -999;
+    iterL3IOFromL1_trackerLayers_[i] = -999;
+    iterL3IOFromL1_trackerHits_[i] = -999;
+    iterL3IOFromL1_pixelLayers_[i] = -999;
+    iterL3IOFromL1_pixelHits_[i] = -999;
   }
 
 
@@ -617,10 +665,30 @@ void MuonHLTNtupler::Init()
     iterL3MuonNoID_eta_[i] = -999;
     iterL3MuonNoID_phi_[i] = -999;
     iterL3MuonNoID_charge_[i] = -999;
-
     iterL3MuonNoID_isGLB_[i] = 0;
     iterL3MuonNoID_isSTA_[i] = 0;
     iterL3MuonNoID_isTRK_[i] = 0;
+    iterL3MuonNoID_inner_trkChi2_[i] = -999;
+    iterL3MuonNoID_inner_validFraction_[i] = -999;
+    iterL3MuonNoID_inner_trackerLayers_[i] = -999;
+    iterL3MuonNoID_inner_trackerHits_[i] = -999;
+    iterL3MuonNoID_inner_pixelLayers_[i] = -999;
+    iterL3MuonNoID_inner_pixelHits_[i] = -999;
+    iterL3MuonNoID_global_muonHits_[i] = -999;
+    iterL3MuonNoID_global_trkChi2_[i] = -999;
+    iterL3MuonNoID_global_trackerLayers_[i] = -999;
+    iterL3MuonNoID_global_trackerHits_[i] = -999;
+    iterL3MuonNoID_momentumChi2_[i] = -999;
+    iterL3MuonNoID_positionChi2_[i] = -999;
+    iterL3MuonNoID_glbKink_[i] = -999;
+    iterL3MuonNoID_glbTrackProbability_[i] = -999;
+    iterL3MuonNoID_globalDeltaEtaPhi_[i] = -999;
+    iterL3MuonNoID_localDistance_[i] = -999;
+    iterL3MuonNoID_staRelChi2_[i] = -999;
+    iterL3MuonNoID_tightMatch_[i] = -999;
+    iterL3MuonNoID_trkKink_[i] = -999;
+    iterL3MuonNoID_trkRelChi2_[i] = -999;
+    iterL3MuonNoID_segmentCompatibility_[i] = -999;
   }
 
   nIterL3Muon_ = 0;
@@ -631,10 +699,30 @@ void MuonHLTNtupler::Init()
     iterL3Muon_eta_[i] = -999;
     iterL3Muon_phi_[i] = -999;
     iterL3Muon_charge_[i] = -999;
-
     iterL3Muon_isGLB_[i] = 0;
     iterL3Muon_isSTA_[i] = 0;
     iterL3Muon_isTRK_[i] = 0;
+    iterL3Muon_inner_trkChi2_[i] = -999;
+    iterL3Muon_inner_validFraction_[i] = -999;
+    iterL3Muon_inner_trackerLayers_[i] = -999;
+    iterL3Muon_inner_trackerHits_[i] = -999;
+    iterL3Muon_inner_pixelLayers_[i] = -999;
+    iterL3Muon_inner_pixelHits_[i] = -999;
+    iterL3Muon_global_muonHits_[i] = -999;
+    iterL3Muon_global_trkChi2_[i] = -999;
+    iterL3Muon_global_trackerLayers_[i] = -999;
+    iterL3Muon_global_trackerHits_[i] = -999;
+    iterL3Muon_momentumChi2_[i] = -999;
+    iterL3Muon_positionChi2_[i] = -999;
+    iterL3Muon_glbKink_[i] = -999;
+    iterL3Muon_glbTrackProbability_[i] = -999;
+    iterL3Muon_globalDeltaEtaPhi_[i] = -999;
+    iterL3Muon_localDistance_[i] = -999;
+    iterL3Muon_staRelChi2_[i] = -999;
+    iterL3Muon_tightMatch_[i] = -999;
+    iterL3Muon_trkKink_[i] = -999;
+    iterL3Muon_trkRelChi2_[i] = -999;
+    iterL3Muon_segmentCompatibility_[i] = -999;
   }
 
   TrkParticle->clear();
@@ -771,15 +859,28 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_PFCluster03_HCAL", &muon_PFCluster03_HCAL_, "muon_PFCluster03_HCAL[nMuon]/D");
   ntuple_->Branch("muon_PFCluster04_ECAL", &muon_PFCluster04_ECAL_, "muon_PFCluster04_ECAL[nMuon]/D");
   ntuple_->Branch("muon_PFCluster04_HCAL", &muon_PFCluster04_HCAL_, "muon_PFCluster04_HCAL[nMuon]/D");
-  ntuple_->Branch("muon_normChi2_global", &muon_normChi2_global_, "muon_normChi2_global[nMuon]/D");
-  ntuple_->Branch("muon_nTrackerHit_global", &muon_nTrackerHit_global_, "muon_nTrackerHit_global[nMuon]/I");
-  ntuple_->Branch("muon_nTrackerLayer_global", &muon_nTrackerLayer_global_, "muon_nTrackerLayer_global[nMuon]/I");
-  ntuple_->Branch("muon_nPixelHit_global", &muon_nPixelHit_global_, "muon_nPixelHit_global[nMuon]/I");
-  ntuple_->Branch("muon_nMuonHit_global", &muon_nMuonHit_global_, "muon_nMuonHit_global[nMuon]/I");
-  ntuple_->Branch("muon_normChi2_inner", &muon_normChi2_inner_, "muon_normChi2_inner[nMuon]/D");
-  ntuple_->Branch("muon_nTrackerHit_inner", &muon_nTrackerHit_inner_, "muon_nTrackerHit_inner[nMuon]/I");
-  ntuple_->Branch("muon_nTrackerLayer_inner", &muon_nTrackerLayer_inner_, "muon_nTrackerLayer_inner[nMuon]/I");
-  ntuple_->Branch("muon_nPixelHit_inner", &muon_nPixelHit_inner_, "muon_nPixelHit_inner[nMuon]/I");
+  ntuple_->Branch("muon_inner_trkChi2", &muon_inner_trkChi2_, "muon_inner_trkChi2[nMuon]/D");
+  ntuple_->Branch("muon_inner_validFraction", &muon_inner_validFraction_, "muon_inner_validFraction[nMuon]/D");
+  ntuple_->Branch("muon_inner_trackerLayers", &muon_inner_trackerLayers_, "muon_inner_trackerLayers[nMuon]/I");
+  ntuple_->Branch("muon_inner_trackerHits", &muon_inner_trackerHits_, "muon_inner_trackerHits[nMuon]/I");
+  ntuple_->Branch("muon_inner_pixelLayers", &muon_inner_pixelLayers_, "muon_inner_pixelLayers[nMuon]/I");
+  ntuple_->Branch("muon_inner_pixelHits", &muon_inner_pixelHits_, "muon_inner_pixelHits[nMuon]/I");
+  ntuple_->Branch("muon_global_muonHits", &muon_global_muonHits_, "muon_global_muonHits[nMuon]/I");
+  ntuple_->Branch("muon_global_trkChi2", &muon_global_trkChi2_, "muon_global_trkChi2[nMuon]/D");
+  ntuple_->Branch("muon_global_trackerLayers", &muon_global_trackerLayers_, "muon_global_trackerLayers[nMuon]/I");
+  ntuple_->Branch("muon_global_trackerHits", &muon_global_trackerHits_, "muon_global_trackerHits[nMuon]/I");
+  ntuple_->Branch("muon_momentumChi2", &muon_momentumChi2_, "muon_momentumChi2[nMuon]/D");
+  ntuple_->Branch("muon_positionChi2", &muon_positionChi2_, "muon_positionChi2[nMuon]/D");
+  ntuple_->Branch("muon_glbKink", &muon_glbKink_, "muon_glbKink[nMuon]/D");
+  ntuple_->Branch("muon_glbTrackProbability", &muon_glbTrackProbability_, "muon_glbTrackProbability[nMuon]/D");
+  ntuple_->Branch("muon_globalDeltaEtaPhi", &muon_globalDeltaEtaPhi_, "muon_globalDeltaEtaPhi[nMuon]/D");
+  ntuple_->Branch("muon_localDistance", &muon_localDistance_, "muon_localDistance[nMuon]/D");
+  ntuple_->Branch("muon_staRelChi2", &muon_staRelChi2_, "muon_staRelChi2[nMuon]/D");
+  ntuple_->Branch("muon_tightMatch", &muon_tightMatch_, "muon_tightMatch[nMuon]/I");
+  ntuple_->Branch("muon_trkKink", &muon_trkKink_, "muon_trkKink[nMuon]/D");
+  ntuple_->Branch("muon_trkRelChi2", &muon_trkRelChi2_, "muon_trkRelChi2[nMuon]/D");
+  ntuple_->Branch("muon_segmentCompatibility", &muon_segmentCompatibility_, "muon_segmentCompatibility[nMuon]/D");
+
   ntuple_->Branch("muon_pt_tuneP", &muon_pt_tuneP_, "muon_pt_tuneP[nMuon]/D");
   ntuple_->Branch("muon_ptError_tuneP", &muon_ptError_tuneP_, "muon_ptError_tuneP[nMuon]/D");
   ntuple_->Branch("muon_dxyVTX_best", &muon_dxyVTX_best_, "muon_dxyVTX_best[nMuon]/D");
@@ -851,6 +952,12 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3OI_inner_eta", &iterL3OI_inner_eta_, "iterL3OI_inner_eta[nIterL3OI]/D");
   ntuple_->Branch("iterL3OI_inner_phi", &iterL3OI_inner_phi_, "iterL3OI_inner_phi[nIterL3OI]/D");
   ntuple_->Branch("iterL3OI_inner_charge", &iterL3OI_inner_charge_, "iterL3OI_inner_charge[nIterL3OI]/D");
+  ntuple_->Branch("iterL3OI_inner_trkChi2", &iterL3OI_inner_trkChi2_, "iterL3OI_inner_trkChi2[nIterL3OI]/D");
+  ntuple_->Branch("iterL3OI_inner_validFraction", &iterL3OI_inner_validFraction_, "iterL3OI_inner_validFraction[nIterL3OI]/D");
+  ntuple_->Branch("iterL3OI_inner_trackerLayers", &iterL3OI_inner_trackerLayers_, "iterL3OI_inner_trackerLayers[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_trackerHits", &iterL3OI_inner_trackerHits_, "iterL3OI_inner_trackerHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_pixelLayers", &iterL3OI_inner_pixelLayers_, "iterL3OI_inner_pixelLayers[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_pixelHits", &iterL3OI_inner_pixelHits_, "iterL3OI_inner_pixelHits[nIterL3OI]/I");
   ntuple_->Branch("iterL3OI_outer_pt", &iterL3OI_outer_pt_, "iterL3OI_outer_pt[nIterL3OI]/D");
   ntuple_->Branch("iterL3OI_outer_eta", &iterL3OI_outer_eta_, "iterL3OI_outer_eta[nIterL3OI]/D");
   ntuple_->Branch("iterL3OI_outer_phi", &iterL3OI_outer_phi_, "iterL3OI_outer_phi[nIterL3OI]/D");
@@ -859,12 +966,22 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3OI_global_eta", &iterL3OI_global_eta_, "iterL3OI_global_eta[nIterL3OI]/D");
   ntuple_->Branch("iterL3OI_global_phi", &iterL3OI_global_phi_, "iterL3OI_global_phi[nIterL3OI]/D");
   ntuple_->Branch("iterL3OI_global_charge", &iterL3OI_global_charge_, "iterL3OI_global_charge[nIterL3OI]/D");
+  ntuple_->Branch("iterL3OI_global_muonHits", &iterL3OI_global_muonHits_, "iterL3OI_global_muonHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_global_trkChi2", &iterL3OI_global_trkChi2_, "iterL3OI_global_trkChi2[nIterL3OI]/D");
+  ntuple_->Branch("iterL3OI_global_trackerLayers", &iterL3OI_global_trackerLayers_, "iterL3OI_global_trackerLayers[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_global_trackerHits", &iterL3OI_global_trackerHits_, "iterL3OI_global_trackerHits[nIterL3OI]/I");
 
   ntuple_->Branch("nIterL3IOFromL2", &nIterL3IOFromL2_, "nIterL3IOFromL2/I");
   ntuple_->Branch("iterL3IOFromL2_inner_pt", &iterL3IOFromL2_inner_pt_, "iterL3IOFromL2_inner_pt[nIterL3IOFromL2]/D");
   ntuple_->Branch("iterL3IOFromL2_inner_eta", &iterL3IOFromL2_inner_eta_, "iterL3IOFromL2_inner_eta[nIterL3IOFromL2]/D");
   ntuple_->Branch("iterL3IOFromL2_inner_phi", &iterL3IOFromL2_inner_phi_, "iterL3IOFromL2_inner_phi[nIterL3IOFromL2]/D");
   ntuple_->Branch("iterL3IOFromL2_inner_charge", &iterL3IOFromL2_inner_charge_, "iterL3IOFromL2_inner_charge[nIterL3IOFromL2]/D");
+  ntuple_->Branch("iterL3IOFromL2_inner_trkChi2", &iterL3IOFromL2_inner_trkChi2_, "iterL3IOFromL2_inner_trkChi2[nIterL3IOFromL2]/D");
+  ntuple_->Branch("iterL3IOFromL2_inner_validFraction", &iterL3IOFromL2_inner_validFraction_, "iterL3IOFromL2_inner_validFraction[nIterL3IOFromL2]/D");
+  ntuple_->Branch("iterL3IOFromL2_inner_trackerLayers", &iterL3IOFromL2_inner_trackerLayers_, "iterL3IOFromL2_inner_trackerLayers[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_trackerHits", &iterL3IOFromL2_inner_trackerHits_, "iterL3IOFromL2_inner_trackerHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_pixelLayers", &iterL3IOFromL2_inner_pixelLayers_, "iterL3IOFromL2_inner_pixelLayers[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_pixelHits", &iterL3IOFromL2_inner_pixelHits_, "iterL3IOFromL2_inner_pixelHits[nIterL3IOFromL2]/I");
   ntuple_->Branch("iterL3IOFromL2_outer_pt", &iterL3IOFromL2_outer_pt_, "iterL3IOFromL2_outer_pt[nIterL3IOFromL2]/D");
   ntuple_->Branch("iterL3IOFromL2_outer_eta", &iterL3IOFromL2_outer_eta_, "iterL3IOFromL2_outer_eta[nIterL3IOFromL2]/D");
   ntuple_->Branch("iterL3IOFromL2_outer_phi", &iterL3IOFromL2_outer_phi_, "iterL3IOFromL2_outer_phi[nIterL3IOFromL2]/D");
@@ -873,18 +990,22 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3IOFromL2_global_eta", &iterL3IOFromL2_global_eta_, "iterL3IOFromL2_global_eta[nIterL3IOFromL2]/D");
   ntuple_->Branch("iterL3IOFromL2_global_phi", &iterL3IOFromL2_global_phi_, "iterL3IOFromL2_global_phi[nIterL3IOFromL2]/D");
   ntuple_->Branch("iterL3IOFromL2_global_charge", &iterL3IOFromL2_global_charge_, "iterL3IOFromL2_global_charge[nIterL3IOFromL2]/D");
-
-  ntuple_->Branch("nIterL3IOFromL1", &nIterL3IOFromL1_, "nIterL3IOFromL1/I");
-  ntuple_->Branch("iterL3IOFromL1_pt", &iterL3IOFromL1_pt_, "iterL3IOFromL1_pt[nIterL3IOFromL1]/D");
-  ntuple_->Branch("iterL3IOFromL1_eta", &iterL3IOFromL1_eta_, "iterL3IOFromL1_eta[nIterL3IOFromL1]/D");
-  ntuple_->Branch("iterL3IOFromL1_phi", &iterL3IOFromL1_phi_, "iterL3IOFromL1_phi[nIterL3IOFromL1]/D");
-  ntuple_->Branch("iterL3IOFromL1_charge", &iterL3IOFromL1_charge_, "iterL3IOFromL1_charge[nIterL3IOFromL1]/D");
+  ntuple_->Branch("iterL3IOFromL2_global_muonHits", &iterL3IOFromL2_global_muonHits_, "iterL3IOFromL2_global_muonHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_global_trkChi2", &iterL3IOFromL2_global_trkChi2_, "iterL3IOFromL2_global_trkChi2[nIterL3IOFromL2]/D");
+  ntuple_->Branch("iterL3IOFromL2_global_trackerLayers", &iterL3IOFromL2_global_trackerLayers_, "iterL3IOFromL2_global_trackerLayers[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_global_trackerHits", &iterL3IOFromL2_global_trackerHits_, "iterL3IOFromL2_global_trackerHits[nIterL3IOFromL2]/I");
 
   ntuple_->Branch("nIterL3FromL2", &nIterL3FromL2_, "nIterL3FromL2/I");
   ntuple_->Branch("iterL3FromL2_inner_pt", &iterL3FromL2_inner_pt_, "iterL3FromL2_inner_pt[nIterL3FromL2]/D");
   ntuple_->Branch("iterL3FromL2_inner_eta", &iterL3FromL2_inner_eta_, "iterL3FromL2_inner_eta[nIterL3FromL2]/D");
   ntuple_->Branch("iterL3FromL2_inner_phi", &iterL3FromL2_inner_phi_, "iterL3FromL2_inner_phi[nIterL3FromL2]/D");
   ntuple_->Branch("iterL3FromL2_inner_charge", &iterL3FromL2_inner_charge_, "iterL3FromL2_inner_charge[nIterL3FromL2]/D");
+  ntuple_->Branch("iterL3FromL2_inner_trkChi2", &iterL3FromL2_inner_trkChi2_, "iterL3FromL2_inner_trkChi2[nIterL3FromL2]/D");
+  ntuple_->Branch("iterL3FromL2_inner_validFraction", &iterL3FromL2_inner_validFraction_, "iterL3FromL2_inner_validFraction[nIterL3FromL2]/D");
+  ntuple_->Branch("iterL3FromL2_inner_trackerLayers", &iterL3FromL2_inner_trackerLayers_, "iterL3FromL2_inner_trackerLayers[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_trackerHits", &iterL3FromL2_inner_trackerHits_, "iterL3FromL2_inner_trackerHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_pixelLayers", &iterL3FromL2_inner_pixelLayers_, "iterL3FromL2_inner_pixelLayers[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_pixelHits", &iterL3FromL2_inner_pixelHits_, "iterL3FromL2_inner_pixelHits[nIterL3FromL2]/I");
   ntuple_->Branch("iterL3FromL2_outer_pt", &iterL3FromL2_outer_pt_, "iterL3FromL2_outer_pt[nIterL3FromL2]/D");
   ntuple_->Branch("iterL3FromL2_outer_eta", &iterL3FromL2_outer_eta_, "iterL3FromL2_outer_eta[nIterL3FromL2]/D");
   ntuple_->Branch("iterL3FromL2_outer_phi", &iterL3FromL2_outer_phi_, "iterL3FromL2_outer_phi[nIterL3FromL2]/D");
@@ -893,6 +1014,23 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3FromL2_global_eta", &iterL3FromL2_global_eta_, "iterL3FromL2_global_eta[nIterL3FromL2]/D");
   ntuple_->Branch("iterL3FromL2_global_phi", &iterL3FromL2_global_phi_, "iterL3FromL2_global_phi[nIterL3FromL2]/D");
   ntuple_->Branch("iterL3FromL2_global_charge", &iterL3FromL2_global_charge_, "iterL3FromL2_global_charge[nIterL3FromL2]/D");
+  ntuple_->Branch("iterL3FromL2_global_muonHits", &iterL3FromL2_global_muonHits_, "iterL3FromL2_global_muonHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_global_trkChi2", &iterL3FromL2_global_trkChi2_, "iterL3FromL2_global_trkChi2[nIterL3FromL2]/D");
+  ntuple_->Branch("iterL3FromL2_global_trackerLayers", &iterL3FromL2_global_trackerLayers_, "iterL3FromL2_global_trackerLayers[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_global_trackerHits", &iterL3FromL2_global_trackerHits_, "iterL3FromL2_global_trackerHits[nIterL3FromL2]/I");
+
+  ntuple_->Branch("nIterL3IOFromL1", &nIterL3IOFromL1_, "nIterL3IOFromL1/I");
+  ntuple_->Branch("iterL3IOFromL1_pt", &iterL3IOFromL1_pt_, "iterL3IOFromL1_pt[nIterL3IOFromL1]/D");
+  ntuple_->Branch("iterL3IOFromL1_eta", &iterL3IOFromL1_eta_, "iterL3IOFromL1_eta[nIterL3IOFromL1]/D");
+  ntuple_->Branch("iterL3IOFromL1_phi", &iterL3IOFromL1_phi_, "iterL3IOFromL1_phi[nIterL3IOFromL1]/D");
+  ntuple_->Branch("iterL3IOFromL1_charge", &iterL3IOFromL1_charge_, "iterL3IOFromL1_charge[nIterL3IOFromL1]/D");
+  ntuple_->Branch("iterL3IOFromL1_muonHits", &iterL3IOFromL1_muonHits_, "iterL3IOFromL1_muonHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_trkChi2", &iterL3IOFromL1_trkChi2_, "iterL3IOFromL1_trkChi2[nIterL3IOFromL1]/D");
+  ntuple_->Branch("iterL3IOFromL1_validFraction", &iterL3IOFromL1_validFraction_, "iterL3IOFromL1_validFraction[nIterL3IOFromL1]/D");
+  ntuple_->Branch("iterL3IOFromL1_trackerLayers", &iterL3IOFromL1_trackerLayers_, "iterL3IOFromL1_trackerLayers[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_trackerHits", &iterL3IOFromL1_trackerHits_, "iterL3IOFromL1_trackerHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_pixelLayers", &iterL3IOFromL1_pixelLayers_, "iterL3IOFromL1_pixelLayers[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_pixelHits", &iterL3IOFromL1_pixelHits_, "iterL3IOFromL1_pixelHits[nIterL3IOFromL1]/I");
 
   ntuple_->Branch("nIterL3MuonNoID",       &nIterL3MuonNoID_,       "nIterL3MuonNoID/I");
   ntuple_->Branch("iterL3MuonNoID_pt",     &iterL3MuonNoID_pt_,     "iterL3MuonNoID_pt[nIterL3MuonNoID]/D");
@@ -903,6 +1041,27 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3MuonNoID_isGLB",  &iterL3MuonNoID_isGLB_,  "iterL3MuonNoID_isGLB[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_isSTA",  &iterL3MuonNoID_isSTA_,  "iterL3MuonNoID_isSTA[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_isTRK",  &iterL3MuonNoID_isTRK_,  "iterL3MuonNoID_isTRK[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_trkChi2", &iterL3MuonNoID_inner_trkChi2_, "iterL3MuonNoID_inner_trkChi2[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_inner_validFraction", &iterL3MuonNoID_inner_validFraction_, "iterL3MuonNoID_inner_validFraction[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_inner_trackerLayers", &iterL3MuonNoID_inner_trackerLayers_, "iterL3MuonNoID_inner_trackerLayers[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_trackerHits", &iterL3MuonNoID_inner_trackerHits_, "iterL3MuonNoID_inner_trackerHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_pixelLayers", &iterL3MuonNoID_inner_pixelLayers_, "iterL3MuonNoID_inner_pixelLayers[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_pixelHits", &iterL3MuonNoID_inner_pixelHits_, "iterL3MuonNoID_inner_pixelHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_global_muonHits", &iterL3MuonNoID_global_muonHits_, "iterL3MuonNoID_global_muonHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_global_trkChi2", &iterL3MuonNoID_global_trkChi2_, "iterL3MuonNoID_global_trkChi2[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_global_trackerLayers", &iterL3MuonNoID_global_trackerLayers_, "iterL3MuonNoID_global_trackerLayers[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_global_trackerHits", &iterL3MuonNoID_global_trackerHits_, "iterL3MuonNoID_global_trackerHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_momentumChi2", &iterL3MuonNoID_momentumChi2_, "iterL3MuonNoID_momentumChi2[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_positionChi2", &iterL3MuonNoID_positionChi2_, "iterL3MuonNoID_positionChi2[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_glbKink", &iterL3MuonNoID_glbKink_, "iterL3MuonNoID_glbKink[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_glbTrackProbability", &iterL3MuonNoID_glbTrackProbability_, "iterL3MuonNoID_glbTrackProbability[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_globalDeltaEtaPhi", &iterL3MuonNoID_globalDeltaEtaPhi_, "iterL3MuonNoID_globalDeltaEtaPhi[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_localDistance", &iterL3MuonNoID_localDistance_, "iterL3MuonNoID_localDistance[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_staRelChi2", &iterL3MuonNoID_staRelChi2_, "iterL3MuonNoID_staRelChi2[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_tightMatch", &iterL3MuonNoID_tightMatch_, "iterL3MuonNoID_tightMatch[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_trkKink", &iterL3MuonNoID_trkKink_, "iterL3MuonNoID_trkKink[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_trkRelChi2", &iterL3MuonNoID_trkRelChi2_, "iterL3MuonNoID_trkRelChi2[nIterL3MuonNoID]/D");
+  ntuple_->Branch("iterL3MuonNoID_segmentCompatibility", &iterL3MuonNoID_segmentCompatibility_, "iterL3MuonNoID_segmentCompatibility[nIterL3MuonNoID]/D");
 
   ntuple_->Branch("nIterL3Muon",       &nIterL3Muon_,       "nIterL3Muon/I");
   ntuple_->Branch("iterL3Muon_pt",     &iterL3Muon_pt_,     "iterL3Muon_pt[nIterL3Muon]/D");
@@ -913,6 +1072,28 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3Muon_isGLB",  &iterL3Muon_isGLB_,  "iterL3Muon_isGLB[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_isSTA",  &iterL3Muon_isSTA_,  "iterL3Muon_isSTA[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_isTRK",  &iterL3Muon_isTRK_,  "iterL3Muon_isTRK[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_trkChi2", &iterL3Muon_inner_trkChi2_, "iterL3Muon_inner_trkChi2[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_inner_validFraction", &iterL3Muon_inner_validFraction_, "iterL3Muon_inner_validFraction[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_inner_trackerLayers", &iterL3Muon_inner_trackerLayers_, "iterL3Muon_inner_trackerLayers[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_trackerHits", &iterL3Muon_inner_trackerHits_, "iterL3Muon_inner_trackerHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_trackerLayers", &iterL3Muon_inner_trackerLayers_, "iterL3Muon_inner_trackerLayers[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_pixelLayers", &iterL3Muon_inner_pixelLayers_, "iterL3Muon_inner_pixelLayers[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_pixelHits", &iterL3Muon_inner_pixelHits_, "iterL3Muon_inner_pixelHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_global_muonHits", &iterL3Muon_global_muonHits_, "iterL3Muon_global_muonHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_global_trkChi2", &iterL3Muon_global_trkChi2_, "iterL3Muon_global_trkChi2[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_global_trackerLayers", &iterL3Muon_global_trackerLayers_, "iterL3Muon_global_trackerLayers[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_global_trackerHits", &iterL3Muon_global_trackerHits_, "iterL3Muon_global_trackerHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_momentumChi2", &iterL3Muon_momentumChi2_, "iterL3Muon_momentumChi2[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_positionChi2", &iterL3Muon_positionChi2_, "iterL3Muon_positionChi2[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_glbKink", &iterL3Muon_glbKink_, "iterL3Muon_glbKink[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_glbTrackProbability", &iterL3Muon_glbTrackProbability_, "iterL3Muon_glbTrackProbability[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_globalDeltaEtaPhi", &iterL3Muon_globalDeltaEtaPhi_, "iterL3Muon_globalDeltaEtaPhi[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_localDistance", &iterL3Muon_localDistance_, "iterL3Muon_localDistance[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_staRelChi2", &iterL3Muon_staRelChi2_, "iterL3Muon_staRelChi2[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_tightMatch", &iterL3Muon_tightMatch_, "iterL3Muon_tightMatch[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_trkKink", &iterL3Muon_trkKink_, "iterL3Muon_trkKink[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_trkRelChi2", &iterL3Muon_trkRelChi2_, "iterL3Muon_trkRelChi2[nIterL3Muon]/D");
+  ntuple_->Branch("iterL3Muon_segmentCompatibility", &iterL3Muon_segmentCompatibility_, "iterL3Muon_segmentCompatibility[nIterL3Muon]/D");
 
   TrkParticle->setBranch(ntuple_,"TP");
 
@@ -996,36 +1177,43 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent, const edm::EventSetup &
 
       reco::MuonRef muRef = reco::MuonRef(h_offlineMuon, _nMuon);
 
+      reco::TrackRef innerTrk = mu->innerTrack();
+      if( innerTrk.isNonnull() )
+        {
+          muon_dxy_bs_[_nMuon] = innerTrk->dxy(bs->position());
+          muon_dxyError_bs_[_nMuon] = innerTrk->dxyError(*bs);
+          muon_dz_bs_[_nMuon] = innerTrk->dz(bs->position());
+          muon_dzError_[_nMuon] = innerTrk->dzError();
+          if (innerTrk->dxyError(*bs) > 0.) {
+            muon_IPSig_[_nMuon] = abs(innerTrk->dxy(bs->position()) / innerTrk->dxyError(*bs));
+          }
+          muon_inner_trkChi2_[_nMuon]       = innerTrk->normalizedChi2();
+          muon_inner_validFraction_[_nMuon] = innerTrk->validFraction();
+          muon_inner_trackerLayers_[_nMuon] = innerTrk->hitPattern().trackerLayersWithMeasurement();
+          muon_inner_trackerHits_[_nMuon]   = innerTrk->hitPattern().numberOfValidTrackerHits();
+          muon_inner_pixelLayers_[_nMuon]   = innerTrk->hitPattern().pixelLayersWithMeasurement();
+          muon_inner_pixelHits_[_nMuon]     = innerTrk->hitPattern().numberOfValidPixelHits();
+        }
+
       reco::TrackRef globalTrk = mu->globalTrack();
       if( globalTrk.isNonnull() )
       {
-        muon_normChi2_global_[_nMuon] = globalTrk->normalizedChi2();
-
-        const reco::HitPattern & globalTrkHit = globalTrk->hitPattern();
-        muon_nTrackerHit_global_[_nMuon]   = globalTrkHit.numberOfValidTrackerHits();
-        muon_nTrackerLayer_global_[_nMuon] = globalTrkHit.trackerLayersWithMeasurement();
-        muon_nPixelHit_global_[_nMuon]     = globalTrkHit.numberOfValidPixelHits();
-        muon_nMuonHit_global_[_nMuon]      = globalTrkHit.numberOfValidMuonHits();
+        muon_global_muonHits_[_nMuon]      = globalTrk->hitPattern().numberOfValidMuonHits();
+        muon_global_trkChi2_[_nMuon]       = globalTrk->normalizedChi2();
+        muon_global_trackerLayers_[_nMuon] = globalTrk->hitPattern().trackerLayersWithMeasurement();
+        muon_global_trackerHits_[_nMuon]   = globalTrk->hitPattern().numberOfValidTrackerHits();
       }
-
-      reco::TrackRef innerTrk = mu->innerTrack();
-      if( innerTrk.isNonnull() )
-      {
-        muon_normChi2_inner_[_nMuon] = innerTrk->normalizedChi2();
-
-        muon_dxy_bs_[_nMuon] = innerTrk->dxy(bs->position());
-        muon_dxyError_bs_[_nMuon] = innerTrk->dxyError(*bs);
-        muon_dz_bs_[_nMuon] = innerTrk->dz(bs->position());
-        muon_dzError_[_nMuon] = innerTrk->dzError();
-        if (innerTrk->dxyError(*bs) > 0.) {
-          muon_IPSig_[_nMuon] = abs(innerTrk->dxy(bs->position()) / innerTrk->dxyError(*bs));
-        }
-
-        const reco::HitPattern & innerTrkHit = innerTrk->hitPattern();
-        muon_nTrackerHit_inner_[_nMuon]   = innerTrkHit.numberOfValidTrackerHits();
-        muon_nTrackerLayer_inner_[_nMuon] = innerTrkHit.trackerLayersWithMeasurement();
-        muon_nPixelHit_inner_[_nMuon]     = innerTrkHit.numberOfValidPixelHits();
-      }
+      muon_momentumChi2_[_nMuon]         = mu->combinedQuality().chi2LocalMomentum;
+      muon_positionChi2_[_nMuon]         = mu->combinedQuality().chi2LocalPosition;
+      muon_glbKink_[_nMuon]              = mu->combinedQuality().glbKink;
+      muon_glbTrackProbability_[_nMuon]  = mu->combinedQuality().glbTrackProbability;
+      muon_globalDeltaEtaPhi_[_nMuon]    = mu->combinedQuality().globalDeltaEtaPhi;
+      muon_localDistance_[_nMuon]        = mu->combinedQuality().localDistance;
+      muon_staRelChi2_[_nMuon]           = mu->combinedQuality().staRelChi2;
+      muon_tightMatch_[_nMuon]           = mu->combinedQuality().tightMatch;
+      muon_trkKink_[_nMuon]              = mu->combinedQuality().trkKink;
+      muon_trkRelChi2_[_nMuon]           = mu->combinedQuality().trkRelChi2;
+      muon_segmentCompatibility_[_nMuon] = muon::segmentCompatibility(*mu);
 
       reco::TrackRef tunePTrk = mu->tunePMuonBestTrack();
       if( tunePTrk.isNonnull() )
@@ -1448,49 +1636,6 @@ void MuonHLTNtupler::Fill_GenParticle(const edm::Event &iEvent)
 
 void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup &iSetup)
 {
-  //////////////////////////
-  // -- IterL3Muon -- //
-  //////////////////////////
-  edm::Handle< std::vector<reco::Muon> > h_iterL3Muon;
-  if( iEvent.getByToken( t_iterL3Muon_, h_iterL3Muon) )
-  {
-    int _nIterL3Muon = 0;
-    for( auto i=0U; i<h_iterL3Muon->size(); ++i )
-    {
-      const auto& muon(h_iterL3Muon->at(i));
-
-      iterL3Muon_pt_[_nIterL3Muon]     = muon.pt();
-      iterL3Muon_eta_[_nIterL3Muon]    = muon.eta();
-      iterL3Muon_phi_[_nIterL3Muon]    = muon.phi();
-      iterL3Muon_charge_[_nIterL3Muon] = muon.charge();
-
-      if( muon.isGlobalMuon() )     iterL3Muon_isGLB_[_nIterL3Muon] = 1;
-      if( muon.isStandAloneMuon() ) iterL3Muon_isSTA_[_nIterL3Muon] = 1;
-      if( muon.isTrackerMuon() )    iterL3Muon_isTRK_[_nIterL3Muon] = 1;
-
-      reco::TrackRef innerTrk = muon.innerTrack();
-      if( innerTrk.isNonnull() ) {
-        iterL3Muon_innerPt_[_nIterL3Muon] = innerTrk->pt();
-
-        tmpTrk trkTmp(innerTrk);
-        iterL3IDpassed.push_back(trkTmp);
-
-        const PTrajectoryStateOnDet tmpseed = innerTrk->seedRef()->startingState();
-        tmpTSOD tsod(tmpseed);
-        MuonIterSeedMap.insert(make_pair(tsod,i));
-      }
-      else {
-        cout << "IterL3Muon: innerTrk.isNonnull(): this should never happen" << endl;
-        tmpTrk trkTmp( -99999. );  // dummy tmpTrk
-        iterL3IDpassed.push_back(trkTmp);
-      }
-
-      _nIterL3Muon++;
-    } // -- end of muon iteration
-
-    nIterL3Muon_ = _nIterL3Muon;
-  } // -- if getByToken is valid
-
   ////////////////////
   // -- IterL3OI -- //
   ////////////////////
@@ -1506,6 +1651,12 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
         iterL3OI_inner_eta_[_nIterL3OI]    = h_iterL3OI->at(i).trackerTrack()->eta();
         iterL3OI_inner_phi_[_nIterL3OI]    = h_iterL3OI->at(i).trackerTrack()->phi();
         iterL3OI_inner_charge_[_nIterL3OI] = h_iterL3OI->at(i).trackerTrack()->charge();
+        iterL3OI_inner_trkChi2_[_nIterL3OI]       = h_iterL3OI->at(i).trackerTrack()->normalizedChi2();
+        iterL3OI_inner_validFraction_[_nIterL3OI] = h_iterL3OI->at(i).trackerTrack()->validFraction();
+        iterL3OI_inner_trackerLayers_[_nIterL3OI] = h_iterL3OI->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3OI_inner_trackerHits_[_nIterL3OI]   = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3OI_inner_pixelLayers_[_nIterL3OI]   = h_iterL3OI->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3OI_inner_pixelHits_[_nIterL3OI]     = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
       }
       if( h_iterL3OI->at(i).standAloneTrack().isNonnull() )
       {
@@ -1520,6 +1671,10 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
         iterL3OI_global_eta_[_nIterL3OI]    = h_iterL3OI->at(i).globalTrack()->eta();
         iterL3OI_global_phi_[_nIterL3OI]    = h_iterL3OI->at(i).globalTrack()->phi();
         iterL3OI_global_charge_[_nIterL3OI] = h_iterL3OI->at(i).globalTrack()->charge();
+        iterL3OI_global_muonHits_[_nIterL3OI]      = h_iterL3OI->at(i).globalTrack()->hitPattern().numberOfValidMuonHits();
+        iterL3OI_global_trkChi2_[_nIterL3OI]       = h_iterL3OI->at(i).globalTrack()->normalizedChi2();
+        iterL3OI_global_trackerLayers_[_nIterL3OI] = h_iterL3OI->at(i).globalTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3OI_global_trackerHits_[_nIterL3OI]   = h_iterL3OI->at(i).globalTrack()->hitPattern().numberOfValidTrackerHits();
       }
       _nIterL3OI++;
     }
@@ -1541,6 +1696,12 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
         iterL3IOFromL2_inner_eta_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).trackerTrack()->eta();
         iterL3IOFromL2_inner_phi_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).trackerTrack()->phi();
         iterL3IOFromL2_inner_charge_[_nIterL3IOFromL2] = h_iterL3IOFromL2->at(i).trackerTrack()->charge();
+        iterL3IOFromL2_inner_trkChi2_[_nIterL3IOFromL2]       = h_iterL3IOFromL2->at(i).trackerTrack()->normalizedChi2();
+        iterL3IOFromL2_inner_validFraction_[_nIterL3IOFromL2] = h_iterL3IOFromL2->at(i).trackerTrack()->validFraction();
+        iterL3IOFromL2_inner_trackerLayers_[_nIterL3IOFromL2] = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3IOFromL2_inner_trackerHits_[_nIterL3IOFromL2]   = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3IOFromL2_inner_pixelLayers_[_nIterL3IOFromL2]   = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3IOFromL2_inner_pixelHits_[_nIterL3IOFromL2]     = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
       }
       if( h_iterL3IOFromL2->at(i).standAloneTrack().isNonnull() )
       {
@@ -1555,6 +1716,10 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
         iterL3IOFromL2_global_eta_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).globalTrack()->eta();
         iterL3IOFromL2_global_phi_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).globalTrack()->phi();
         iterL3IOFromL2_global_charge_[_nIterL3IOFromL2] = h_iterL3IOFromL2->at(i).globalTrack()->charge();
+        iterL3IOFromL2_global_muonHits_[_nIterL3IOFromL2]      = h_iterL3IOFromL2->at(i).globalTrack()->hitPattern().numberOfValidMuonHits();
+        iterL3IOFromL2_global_trkChi2_[_nIterL3IOFromL2]       = h_iterL3IOFromL2->at(i).globalTrack()->normalizedChi2();
+        iterL3IOFromL2_global_trackerLayers_[_nIterL3IOFromL2] = h_iterL3IOFromL2->at(i).globalTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3IOFromL2_global_trackerHits_[_nIterL3IOFromL2]   = h_iterL3IOFromL2->at(i).globalTrack()->hitPattern().numberOfValidTrackerHits();
       }
       _nIterL3IOFromL2++;
     }
@@ -1576,6 +1741,12 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
         iterL3FromL2_inner_eta_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->eta();
         iterL3FromL2_inner_phi_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->phi();
         iterL3FromL2_inner_charge_[_nIterL3FromL2] = h_iterL3FromL2->at(i).trackerTrack()->charge();
+        iterL3FromL2_inner_trkChi2_[_nIterL3FromL2]       = h_iterL3FromL2->at(i).trackerTrack()->normalizedChi2();
+        iterL3FromL2_inner_validFraction_[_nIterL3FromL2] = h_iterL3FromL2->at(i).trackerTrack()->validFraction();
+        iterL3FromL2_inner_trackerLayers_[_nIterL3FromL2] = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3FromL2_inner_trackerHits_[_nIterL3FromL2]   = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3FromL2_inner_pixelLayers_[_nIterL3FromL2]   = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3FromL2_inner_pixelHits_[_nIterL3FromL2]     = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
       }
       if( h_iterL3FromL2->at(i).standAloneTrack().isNonnull() )
       {
@@ -1590,6 +1761,10 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
         iterL3FromL2_global_eta_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).globalTrack()->eta();
         iterL3FromL2_global_phi_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).globalTrack()->phi();
         iterL3FromL2_global_charge_[_nIterL3FromL2] = h_iterL3FromL2->at(i).globalTrack()->charge();
+        iterL3FromL2_global_muonHits_[_nIterL3FromL2]      = h_iterL3FromL2->at(i).globalTrack()->hitPattern().numberOfValidMuonHits();
+        iterL3FromL2_global_trkChi2_[_nIterL3FromL2]       = h_iterL3FromL2->at(i).globalTrack()->normalizedChi2();
+        iterL3FromL2_global_trackerLayers_[_nIterL3FromL2] = h_iterL3FromL2->at(i).globalTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3FromL2_global_trackerHits_[_nIterL3FromL2]   = h_iterL3FromL2->at(i).globalTrack()->hitPattern().numberOfValidTrackerHits();
       }
       _nIterL3FromL2++;
     }
@@ -1609,6 +1784,13 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
       iterL3IOFromL1_eta_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).eta();
       iterL3IOFromL1_phi_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).phi();
       iterL3IOFromL1_charge_[_nIterL3IOFromL1] = h_iterL3IOFromL1->at(i).charge();
+      iterL3IOFromL1_muonHits_[_nIterL3IOFromL1]      = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidMuonHits();
+      iterL3IOFromL1_trkChi2_[_nIterL3IOFromL1]       = h_iterL3IOFromL1->at(i).normalizedChi2();
+      iterL3IOFromL1_validFraction_[_nIterL3IOFromL1] = h_iterL3IOFromL1->at(i).validFraction();
+      iterL3IOFromL1_trackerLayers_[_nIterL3IOFromL1] = h_iterL3IOFromL1->at(i).hitPattern().trackerLayersWithMeasurement();
+      iterL3IOFromL1_trackerHits_[_nIterL3IOFromL1]   = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidTrackerHits();
+      iterL3IOFromL1_pixelLayers_[_nIterL3IOFromL1]   = h_iterL3IOFromL1->at(i).hitPattern().pixelLayersWithMeasurement();
+      iterL3IOFromL1_pixelHits_[_nIterL3IOFromL1]     = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidPixelHits();
       _nIterL3IOFromL1++;
     }
     nIterL3IOFromL1_ = _nIterL3IOFromL1;
@@ -1621,32 +1803,53 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
   if( iEvent.getByToken( t_iterL3MuonNoID_, h_iterL3MuonNoID) )
   {
     int _nIterL3MuonNoID = 0;
-    for( auto i=0U; i<h_iterL3MuonNoID->size(); ++i )
+    for(std::vector<reco::Muon>::const_iterator mu=h_iterL3MuonNoID->begin(); mu!=h_iterL3MuonNoID->end(); ++mu)
     {
-      const auto& muon(h_iterL3MuonNoID->at(i));
+      iterL3MuonNoID_pt_[_nIterL3MuonNoID]     = mu->pt();
+      iterL3MuonNoID_eta_[_nIterL3MuonNoID]    = mu->eta();
+      iterL3MuonNoID_phi_[_nIterL3MuonNoID]    = mu->phi();
+      iterL3MuonNoID_charge_[_nIterL3MuonNoID] = mu->charge();
 
-      iterL3MuonNoID_pt_[_nIterL3MuonNoID]     = muon.pt();
-      iterL3MuonNoID_eta_[_nIterL3MuonNoID]    = muon.eta();
-      iterL3MuonNoID_phi_[_nIterL3MuonNoID]    = muon.phi();
-      iterL3MuonNoID_charge_[_nIterL3MuonNoID] = muon.charge();
+      if( mu->isGlobalMuon() )     iterL3MuonNoID_isGLB_[_nIterL3MuonNoID] = 1;
+      if( mu->isStandAloneMuon() ) iterL3MuonNoID_isSTA_[_nIterL3MuonNoID] = 1;
+      if( mu->isTrackerMuon() )    iterL3MuonNoID_isTRK_[_nIterL3MuonNoID] = 1;
 
-      if( muon.isGlobalMuon() )     iterL3MuonNoID_isGLB_[_nIterL3MuonNoID] = 1;
-      if( muon.isStandAloneMuon() ) iterL3MuonNoID_isSTA_[_nIterL3MuonNoID] = 1;
-      if( muon.isTrackerMuon() )    iterL3MuonNoID_isTRK_[_nIterL3MuonNoID] = 1;
+      if( mu->innerTrack().isNonnull() )
+      {
+        iterL3MuonNoID_inner_trkChi2_[_nIterL3MuonNoID]       = mu->innerTrack()->normalizedChi2();
+        iterL3MuonNoID_inner_validFraction_[_nIterL3MuonNoID] = mu->innerTrack()->validFraction();
+        iterL3MuonNoID_inner_trackerLayers_[_nIterL3MuonNoID] = mu->innerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3MuonNoID_inner_trackerHits_[_nIterL3MuonNoID]   = mu->innerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3MuonNoID_inner_pixelLayers_[_nIterL3MuonNoID]   = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3MuonNoID_inner_pixelHits_[_nIterL3MuonNoID]     = mu->innerTrack()->hitPattern().numberOfValidPixelHits();
+      }
+      if( mu->globalTrack().isNonnull() )
+      {
+        iterL3MuonNoID_global_muonHits_[_nIterL3MuonNoID]      = mu->globalTrack()->hitPattern().numberOfValidMuonHits();
+        iterL3MuonNoID_global_trkChi2_[_nIterL3MuonNoID]       = mu->globalTrack()->normalizedChi2();
+        iterL3MuonNoID_global_trackerLayers_[_nIterL3MuonNoID] = mu->globalTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3MuonNoID_global_trackerHits_[_nIterL3MuonNoID]   = mu->globalTrack()->hitPattern().numberOfValidTrackerHits();
+      }
+      iterL3MuonNoID_momentumChi2_[_nIterL3MuonNoID]         = mu->combinedQuality().chi2LocalMomentum;
+      iterL3MuonNoID_positionChi2_[_nIterL3MuonNoID]         = mu->combinedQuality().chi2LocalPosition;
+      iterL3MuonNoID_glbKink_[_nIterL3MuonNoID]              = mu->combinedQuality().glbKink;
+      iterL3MuonNoID_glbTrackProbability_[_nIterL3MuonNoID]  = mu->combinedQuality().glbTrackProbability;
+      iterL3MuonNoID_globalDeltaEtaPhi_[_nIterL3MuonNoID]    = mu->combinedQuality().globalDeltaEtaPhi;
+      iterL3MuonNoID_localDistance_[_nIterL3MuonNoID]        = mu->combinedQuality().localDistance;
+      iterL3MuonNoID_staRelChi2_[_nIterL3MuonNoID]           = mu->combinedQuality().staRelChi2;
+      iterL3MuonNoID_tightMatch_[_nIterL3MuonNoID]           = mu->combinedQuality().tightMatch;
+      iterL3MuonNoID_trkKink_[_nIterL3MuonNoID]              = mu->combinedQuality().trkKink;
+      iterL3MuonNoID_trkRelChi2_[_nIterL3MuonNoID]           = mu->combinedQuality().trkRelChi2;
+      iterL3MuonNoID_segmentCompatibility_[_nIterL3MuonNoID] = muon::segmentCompatibility(*mu);
 
-      reco::TrackRef innerTrk = muon.innerTrack();
+      reco::TrackRef innerTrk = mu->innerTrack();
       if( innerTrk.isNonnull() ) {
         iterL3MuonNoID_innerPt_[_nIterL3MuonNoID] = innerTrk->pt();
 
         tmpTrk trkTmp(innerTrk);
         iterL3NoIDpassed.push_back(trkTmp);
-
-        // const PTrajectoryStateOnDet tmpseed = innerTrk->seedRef()->startingState();
-        // tmpTSOD tsod(tmpseed);
-        // MuonIterNoIdSeedMap.insert(make_pair(tsod,i));
       }
       else {
-        // cout << "IterL3MuonNoID: innerTrk.isNonnull(): this should never happen" << endl;
         tmpTrk trkTmp( -99999. );  // dummy tmpTrk
         iterL3NoIDpassed.push_back(trkTmp);
       }
@@ -1655,6 +1858,75 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
     } // -- end of muon iteration
 
     nIterL3MuonNoID_ = _nIterL3MuonNoID;
+  } // -- if getByToken is valid
+
+  //////////////////////
+  // -- IterL3Muon -- //
+  //////////////////////
+  edm::Handle< std::vector<reco::Muon> > h_iterL3Muon;
+  if( iEvent.getByToken( t_iterL3Muon_, h_iterL3Muon) )
+  {
+    int _nIterL3Muon = 0;
+    for(std::vector<reco::Muon>::const_iterator mu=h_iterL3Muon->begin(); mu!=h_iterL3Muon->end(); ++mu)
+    {
+      iterL3Muon_pt_[_nIterL3Muon]     = mu->pt();
+      iterL3Muon_eta_[_nIterL3Muon]    = mu->eta();
+      iterL3Muon_phi_[_nIterL3Muon]    = mu->phi();
+      iterL3Muon_charge_[_nIterL3Muon] = mu->charge();
+
+      if( mu->isGlobalMuon() )     iterL3Muon_isGLB_[_nIterL3Muon] = 1;
+      if( mu->isStandAloneMuon() ) iterL3Muon_isSTA_[_nIterL3Muon] = 1;
+      if( mu->isTrackerMuon() )    iterL3Muon_isTRK_[_nIterL3Muon] = 1;
+
+      if( mu->innerTrack().isNonnull() )
+      {
+        iterL3Muon_inner_trkChi2_[_nIterL3Muon]       = mu->innerTrack()->normalizedChi2();
+        iterL3Muon_inner_validFraction_[_nIterL3Muon] = mu->innerTrack()->validFraction();
+        iterL3Muon_inner_trackerLayers_[_nIterL3Muon] = mu->innerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3Muon_inner_trackerHits_[_nIterL3Muon]   = mu->innerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3Muon_inner_pixelLayers_[_nIterL3Muon]   = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3Muon_inner_pixelHits_[_nIterL3Muon]     = mu->innerTrack()->hitPattern().numberOfValidPixelHits();
+      }
+      if( mu->globalTrack().isNonnull() )
+      {
+        iterL3Muon_global_muonHits_[_nIterL3Muon]      = mu->globalTrack()->hitPattern().numberOfValidMuonHits();
+        iterL3Muon_global_trkChi2_[_nIterL3Muon]       = mu->globalTrack()->normalizedChi2();
+        iterL3Muon_global_trackerLayers_[_nIterL3Muon] = mu->globalTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3Muon_global_trackerHits_[_nIterL3Muon]   = mu->globalTrack()->hitPattern().numberOfValidTrackerHits();
+      }
+      iterL3Muon_momentumChi2_[_nIterL3Muon]         = mu->combinedQuality().chi2LocalMomentum;
+      iterL3Muon_positionChi2_[_nIterL3Muon]         = mu->combinedQuality().chi2LocalPosition;
+      iterL3Muon_glbKink_[_nIterL3Muon]              = mu->combinedQuality().glbKink;
+      iterL3Muon_glbTrackProbability_[_nIterL3Muon]  = mu->combinedQuality().glbTrackProbability;
+      iterL3Muon_globalDeltaEtaPhi_[_nIterL3Muon]    = mu->combinedQuality().globalDeltaEtaPhi;
+      iterL3Muon_localDistance_[_nIterL3Muon]        = mu->combinedQuality().localDistance;
+      iterL3Muon_staRelChi2_[_nIterL3Muon]           = mu->combinedQuality().staRelChi2;
+      iterL3Muon_tightMatch_[_nIterL3Muon]           = mu->combinedQuality().tightMatch;
+      iterL3Muon_trkKink_[_nIterL3Muon]              = mu->combinedQuality().trkKink;
+      iterL3Muon_trkRelChi2_[_nIterL3Muon]           = mu->combinedQuality().trkRelChi2;
+      iterL3Muon_segmentCompatibility_[_nIterL3Muon] = muon::segmentCompatibility(*mu);
+
+      reco::TrackRef innerTrk = mu->innerTrack();
+      if( innerTrk.isNonnull() ) {
+        iterL3Muon_innerPt_[_nIterL3Muon] = innerTrk->pt();
+
+        tmpTrk trkTmp(innerTrk);
+        iterL3IDpassed.push_back(trkTmp);
+
+        const PTrajectoryStateOnDet tmpseed = innerTrk->seedRef()->startingState();
+        tmpTSOD tsod(tmpseed);
+        MuonIterSeedMap.insert(make_pair(tsod,_nIterL3Muon));
+      }
+      else {
+        cout << "IterL3Muon: innerTrk.isNonnull(): this should never happen" << endl;
+        tmpTrk trkTmp( -99999. );  // dummy tmpTrk
+        iterL3IDpassed.push_back(trkTmp);
+      }
+
+      _nIterL3Muon++;
+    } // -- end of muon iteration
+
+    nIterL3Muon_ = _nIterL3Muon;
   } // -- if getByToken is valid
 
   //////////////////////////
