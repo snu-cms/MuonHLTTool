@@ -407,6 +407,9 @@ private:
   double muon_inner_validFraction_[arrSize_];
   int    muon_inner_trackerLayers_[arrSize_];
   int    muon_inner_trackerHits_[arrSize_];
+  int    muon_inner_lostTrackerHits_[arrSize_];
+  int    muon_inner_lostTrackerHitsIn_[arrSize_];
+  int    muon_inner_lostTrackerHitsOut_[arrSize_];
   int    muon_inner_pixelLayers_[arrSize_];
   int    muon_inner_pixelHits_[arrSize_];
   int    muon_global_muonHits_[arrSize_];
@@ -520,6 +523,9 @@ private:
   double iterL3OI_inner_validFraction_[arrSize_];
   int    iterL3OI_inner_trackerLayers_[arrSize_];
   int    iterL3OI_inner_trackerHits_[arrSize_];
+  int    iterL3OI_inner_lostTrackerHits_[arrSize_];
+  int    iterL3OI_inner_lostTrackerHitsIn_[arrSize_];
+  int    iterL3OI_inner_lostTrackerHitsOut_[arrSize_];
   int    iterL3OI_inner_pixelLayers_[arrSize_];
   int    iterL3OI_inner_pixelHits_[arrSize_];
   double iterL3OI_outer_pt_[arrSize_];
@@ -545,6 +551,9 @@ private:
   double iterL3IOFromL2_inner_validFraction_[arrSize_];
   int    iterL3IOFromL2_inner_trackerLayers_[arrSize_];
   int    iterL3IOFromL2_inner_trackerHits_[arrSize_];
+  int    iterL3IOFromL2_inner_lostTrackerHits_[arrSize_];
+  int    iterL3IOFromL2_inner_lostTrackerHitsIn_[arrSize_];
+  int    iterL3IOFromL2_inner_lostTrackerHitsOut_[arrSize_];
   int    iterL3IOFromL2_inner_pixelLayers_[arrSize_];
   int    iterL3IOFromL2_inner_pixelHits_[arrSize_];
   double iterL3IOFromL2_outer_pt_[arrSize_];
@@ -570,6 +579,9 @@ private:
   double iterL3FromL2_inner_validFraction_[arrSize_];
   int    iterL3FromL2_inner_trackerLayers_[arrSize_];
   int    iterL3FromL2_inner_trackerHits_[arrSize_];
+  int    iterL3FromL2_inner_lostTrackerHits_[arrSize_];
+  int    iterL3FromL2_inner_lostTrackerHitsIn_[arrSize_];
+  int    iterL3FromL2_inner_lostTrackerHitsOut_[arrSize_];
   int    iterL3FromL2_inner_pixelLayers_[arrSize_];
   int    iterL3FromL2_inner_pixelHits_[arrSize_];
   double iterL3FromL2_outer_pt_[arrSize_];
@@ -596,6 +608,9 @@ private:
   double iterL3IOFromL1_validFraction_[arrSize_];
   int    iterL3IOFromL1_trackerLayers_[arrSize_];
   int    iterL3IOFromL1_trackerHits_[arrSize_];
+  int    iterL3IOFromL1_lostTrackerHits_[arrSize_];
+  int    iterL3IOFromL1_lostTrackerHitsIn_[arrSize_];
+  int    iterL3IOFromL1_lostTrackerHitsOut_[arrSize_];
   int    iterL3IOFromL1_pixelLayers_[arrSize_];
   int    iterL3IOFromL1_pixelHits_[arrSize_];
 
@@ -613,6 +628,9 @@ private:
   double iterL3MuonNoID_inner_validFraction_[arrSize_];
   int    iterL3MuonNoID_inner_trackerLayers_[arrSize_];
   int    iterL3MuonNoID_inner_trackerHits_[arrSize_];
+  int    iterL3MuonNoID_inner_lostTrackerHits_[arrSize_];
+  int    iterL3MuonNoID_inner_lostTrackerHitsIn_[arrSize_];
+  int    iterL3MuonNoID_inner_lostTrackerHitsOut_[arrSize_];
   int    iterL3MuonNoID_inner_pixelLayers_[arrSize_];
   int    iterL3MuonNoID_inner_pixelHits_[arrSize_];
   int    iterL3MuonNoID_global_muonHits_[arrSize_];
@@ -645,6 +663,9 @@ private:
   double iterL3Muon_inner_validFraction_[arrSize_];
   int    iterL3Muon_inner_trackerLayers_[arrSize_];
   int    iterL3Muon_inner_trackerHits_[arrSize_];
+  int    iterL3Muon_inner_lostTrackerHits_[arrSize_];
+  int    iterL3Muon_inner_lostTrackerHitsIn_[arrSize_];
+  int    iterL3Muon_inner_lostTrackerHitsOut_[arrSize_];
   int    iterL3Muon_inner_pixelLayers_[arrSize_];
   int    iterL3Muon_inner_pixelHits_[arrSize_];
   int    iterL3Muon_global_muonHits_[arrSize_];
@@ -713,6 +734,9 @@ private:
     std::vector<double> validFraction;
     std::vector<int> trackerLayers;
     std::vector<int> trackerHits;
+    std::vector<int> lostTrackerHits;
+    std::vector<int> lostTrackerHitsIn;
+    std::vector<int> lostTrackerHitsOut;
     std::vector<int> pixelLayers;
     std::vector<int> pixelHits;
     std::vector<int> linkToL3s;
@@ -756,6 +780,9 @@ private:
       validFraction.clear();
       trackerLayers.clear();
       trackerHits.clear();
+      lostTrackerHits.clear();
+      lostTrackerHitsIn.clear();
+      lostTrackerHitsOut.clear();
       pixelLayers.clear();
       pixelHits.clear();
       linkToL3s.clear();
@@ -801,6 +828,9 @@ private:
       tmpntpl->Branch(name+"_validFraction", &validFraction);
       tmpntpl->Branch(name+"_trackerLayers", &trackerLayers);
       tmpntpl->Branch(name+"_trackerHits", &trackerHits);
+      tmpntpl->Branch(name+"_lostTrackerHits", &lostTrackerHits);
+      tmpntpl->Branch(name+"_lostTrackerHitsIn", &lostTrackerHitsIn);
+      tmpntpl->Branch(name+"_lostTrackerHitsOut", &lostTrackerHitsOut);
       tmpntpl->Branch(name+"_pixelLayers", &pixelLayers);
       tmpntpl->Branch(name+"_pixelHits", &pixelHits);
       tmpntpl->Branch(name+"_matchedL3", &linkToL3s);
@@ -845,6 +875,9 @@ private:
       validFraction.push_back(trk.validFraction());
       trackerLayers.push_back(trk.hitPattern().trackerLayersWithMeasurement());
       trackerHits.push_back(trk.hitPattern().numberOfValidTrackerHits());
+      lostTrackerHits.push_back(trk.hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS));
+      lostTrackerHitsIn.push_back(trk.hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS));
+      lostTrackerHitsOut.push_back(trk.hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS));
       pixelLayers.push_back(trk.hitPattern().pixelLayersWithMeasurement());
       pixelHits.push_back(trk.hitPattern().numberOfValidPixelHits());
       nTrks++;
