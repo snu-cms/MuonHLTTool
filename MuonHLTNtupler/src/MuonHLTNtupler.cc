@@ -460,6 +460,14 @@ void MuonHLTNtupler::Init()
     muon_inner_lostTrackerHits_[i] = -999;
     muon_inner_lostTrackerHitsIn_[i] = -999;
     muon_inner_lostTrackerHitsOut_[i] = -999;
+    muon_inner_lostPixelHits_[i] = -999;
+    muon_inner_lostPixelBarrelHits_[i] = -999;
+    muon_inner_lostPixelEndcapHits_[i] = -999;
+    muon_inner_lostStripHits_[i] = -999;
+    muon_inner_lostStripTIBHits_[i] = -999;
+    muon_inner_lostStripTIDHits_[i] = -999;
+    muon_inner_lostStripTOBHits_[i] = -999;
+    muon_inner_lostStripTECHits_[i] = -999;
     muon_inner_pixelLayers_[i] = -999;
     muon_inner_pixelHits_[i] = -999;
     muon_global_muonHits_[i] = -999;
@@ -576,6 +584,14 @@ void MuonHLTNtupler::Init()
     iterL3OI_inner_lostTrackerHits_[i] = -999;
     iterL3OI_inner_lostTrackerHitsIn_[i] = -999;
     iterL3OI_inner_lostTrackerHitsOut_[i] = -999;
+    iterL3OI_inner_lostPixelHits_[i] = -999;
+    iterL3OI_inner_lostPixelBarrelHits_[i] = -999;
+    iterL3OI_inner_lostPixelEndcapHits_[i] = -999;
+    iterL3OI_inner_lostStripHits_[i] = -999;
+    iterL3OI_inner_lostStripTIBHits_[i] = -999;
+    iterL3OI_inner_lostStripTIDHits_[i] = -999;
+    iterL3OI_inner_lostStripTOBHits_[i] = -999;
+    iterL3OI_inner_lostStripTECHits_[i] = -999;
     iterL3OI_inner_pixelLayers_[i] = -999;
     iterL3OI_inner_pixelHits_[i] = -999;
     iterL3OI_outer_pt_[i] = -999;
@@ -606,6 +622,14 @@ void MuonHLTNtupler::Init()
     iterL3IOFromL2_inner_lostTrackerHits_[i] = -999;
     iterL3IOFromL2_inner_lostTrackerHitsIn_[i] = -999;
     iterL3IOFromL2_inner_lostTrackerHitsOut_[i] = -999;
+    iterL3IOFromL2_inner_lostPixelHits_[i] = -999;
+    iterL3IOFromL2_inner_lostPixelBarrelHits_[i] = -999;
+    iterL3IOFromL2_inner_lostPixelEndcapHits_[i] = -999;
+    iterL3IOFromL2_inner_lostStripHits_[i] = -999;
+    iterL3IOFromL2_inner_lostStripTIBHits_[i] = -999;
+    iterL3IOFromL2_inner_lostStripTIDHits_[i] = -999;
+    iterL3IOFromL2_inner_lostStripTOBHits_[i] = -999;
+    iterL3IOFromL2_inner_lostStripTECHits_[i] = -999;
     iterL3IOFromL2_inner_pixelLayers_[i] = -999;
     iterL3IOFromL2_inner_pixelHits_[i] = -999;
     iterL3IOFromL2_outer_pt_[i] = -999;
@@ -636,6 +660,14 @@ void MuonHLTNtupler::Init()
     iterL3FromL2_inner_lostTrackerHits_[i] = -999;
     iterL3FromL2_inner_lostTrackerHitsIn_[i] = -999;
     iterL3FromL2_inner_lostTrackerHitsOut_[i] = -999;
+    iterL3FromL2_inner_lostPixelHits_[i] = -999;
+    iterL3FromL2_inner_lostPixelBarrelHits_[i] = -999;
+    iterL3FromL2_inner_lostPixelEndcapHits_[i] = -999;
+    iterL3FromL2_inner_lostStripHits_[i] = -999;
+    iterL3FromL2_inner_lostStripTIBHits_[i] = -999;
+    iterL3FromL2_inner_lostStripTIDHits_[i] = -999;
+    iterL3FromL2_inner_lostStripTOBHits_[i] = -999;
+    iterL3FromL2_inner_lostStripTECHits_[i] = -999;
     iterL3FromL2_inner_pixelLayers_[i] = -999;
     iterL3FromL2_inner_pixelHits_[i] = -999;
     iterL3FromL2_outer_pt_[i] = -999;
@@ -667,10 +699,17 @@ void MuonHLTNtupler::Init()
     iterL3IOFromL1_lostTrackerHits_[i] = -999;
     iterL3IOFromL1_lostTrackerHitsIn_[i] = -999;
     iterL3IOFromL1_lostTrackerHitsOut_[i] = -999;
+    iterL3IOFromL1_lostPixelHits_[i] = -999;
+    iterL3IOFromL1_lostPixelBarrelHits_[i] = -999;
+    iterL3IOFromL1_lostPixelEndcapHits_[i] = -999;
+    iterL3IOFromL1_lostStripHits_[i] = -999;
+    iterL3IOFromL1_lostStripTIBHits_[i] = -999;
+    iterL3IOFromL1_lostStripTIDHits_[i] = -999;
+    iterL3IOFromL1_lostStripTOBHits_[i] = -999;
+    iterL3IOFromL1_lostStripTECHits_[i] = -999;
     iterL3IOFromL1_pixelLayers_[i] = -999;
     iterL3IOFromL1_pixelHits_[i] = -999;
   }
-
 
   nIterL3MuonNoID_ = 0;
   for (int i=0; i<arrSize_; ++i)
@@ -690,6 +729,14 @@ void MuonHLTNtupler::Init()
     iterL3MuonNoID_inner_lostTrackerHits_[i] = -999;
     iterL3MuonNoID_inner_lostTrackerHitsIn_[i] = -999;
     iterL3MuonNoID_inner_lostTrackerHitsOut_[i] = -999;
+    iterL3MuonNoID_inner_lostPixelHits_[i] = -999;
+    iterL3MuonNoID_inner_lostPixelBarrelHits_[i] = -999;
+    iterL3MuonNoID_inner_lostPixelEndcapHits_[i] = -999;
+    iterL3MuonNoID_inner_lostStripHits_[i] = -999;
+    iterL3MuonNoID_inner_lostStripTIBHits_[i] = -999;
+    iterL3MuonNoID_inner_lostStripTIDHits_[i] = -999;
+    iterL3MuonNoID_inner_lostStripTOBHits_[i] = -999;
+    iterL3MuonNoID_inner_lostStripTECHits_[i] = -999;
     iterL3MuonNoID_inner_pixelLayers_[i] = -999;
     iterL3MuonNoID_inner_pixelHits_[i] = -999;
     iterL3MuonNoID_global_muonHits_[i] = -999;
@@ -727,6 +774,14 @@ void MuonHLTNtupler::Init()
     iterL3Muon_inner_lostTrackerHits_[i] = -999;
     iterL3Muon_inner_lostTrackerHitsIn_[i] = -999;
     iterL3Muon_inner_lostTrackerHitsOut_[i] = -999;
+    iterL3Muon_inner_lostPixelHits_[i] = -999;
+    iterL3Muon_inner_lostPixelBarrelHits_[i] = -999;
+    iterL3Muon_inner_lostPixelEndcapHits_[i] = -999;
+    iterL3Muon_inner_lostStripHits_[i] = -999;
+    iterL3Muon_inner_lostStripTIBHits_[i] = -999;
+    iterL3Muon_inner_lostStripTIDHits_[i] = -999;
+    iterL3Muon_inner_lostStripTOBHits_[i] = -999;
+    iterL3Muon_inner_lostStripTECHits_[i] = -999;
     iterL3Muon_inner_pixelLayers_[i] = -999;
     iterL3Muon_inner_pixelHits_[i] = -999;
     iterL3Muon_global_muonHits_[i] = -999;
@@ -887,6 +942,14 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_inner_lostTrackerHits", &muon_inner_lostTrackerHits_, "muon_inner_lostTrackerHits[nMuon]/I");
   ntuple_->Branch("muon_inner_lostTrackerHitsIn", &muon_inner_lostTrackerHitsIn_, "muon_inner_lostTrackerHitsIn[nMuon]/I");
   ntuple_->Branch("muon_inner_lostTrackerHitsOut", &muon_inner_lostTrackerHitsOut_, "muon_inner_lostTrackerHitsOut[nMuon]/I");
+  ntuple_->Branch("muon_inner_lostPixelHits", &muon_inner_lostPixelHits_, "muon_inner_lostPixelHits[nMuon]/I");
+  ntuple_->Branch("muon_inner_lostPixelBarrelHits", &muon_inner_lostPixelBarrelHits_, "muon_inner_lostPixelBarrelHits[nMuon]/I");
+  ntuple_->Branch("muon_inner_lostPixelEndcapHits", &muon_inner_lostPixelEndcapHits_, "muon_inner_lostPixelEndcapHits[nMuon]/I");
+  ntuple_->Branch("muon_inner_lostStripHits", &muon_inner_lostStripHits_, "muon_inner_lostStripHits[nMuon]/I");
+  ntuple_->Branch("muon_inner_lostStripTIBHits", &muon_inner_lostStripTIBHits_, "muon_inner_lostStripTIBHits[nMuon]/I");
+  ntuple_->Branch("muon_inner_lostStripTIDHits", &muon_inner_lostStripTIDHits_, "muon_inner_lostStripTIDHits[nMuon]/I");
+  ntuple_->Branch("muon_inner_lostStripTOBHits", &muon_inner_lostStripTOBHits_, "muon_inner_lostStripTOBHits[nMuon]/I");
+  ntuple_->Branch("muon_inner_lostStripTECHits", &muon_inner_lostStripTECHits_, "muon_inner_lostStripTECHits[nMuon]/I");
   ntuple_->Branch("muon_inner_pixelLayers", &muon_inner_pixelLayers_, "muon_inner_pixelLayers[nMuon]/I");
   ntuple_->Branch("muon_inner_pixelHits", &muon_inner_pixelHits_, "muon_inner_pixelHits[nMuon]/I");
   ntuple_->Branch("muon_global_muonHits", &muon_global_muonHits_, "muon_global_muonHits[nMuon]/I");
@@ -983,6 +1046,14 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3OI_inner_lostTrackerHits", &iterL3OI_inner_lostTrackerHits_, "iterL3OI_inner_lostTrackerHits[nIterL3OI]/I");
   ntuple_->Branch("iterL3OI_inner_lostTrackerHitsIn", &iterL3OI_inner_lostTrackerHitsIn_, "iterL3OI_inner_lostTrackerHitsIn[nIterL3OI]/I");
   ntuple_->Branch("iterL3OI_inner_lostTrackerHitsOut", &iterL3OI_inner_lostTrackerHitsOut_, "iterL3OI_inner_lostTrackerHitsOut[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_lostPixelHits", &iterL3OI_inner_lostPixelHits_, "iterL3OI_inner_lostPixelHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_lostPixelBarrelHits", &iterL3OI_inner_lostPixelBarrelHits_, "iterL3OI_inner_lostPixelBarrelHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_lostPixelEndcapHits", &iterL3OI_inner_lostPixelEndcapHits_, "iterL3OI_inner_lostPixelEndcapHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_lostStripHits", &iterL3OI_inner_lostStripHits_, "iterL3OI_inner_lostStripHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_lostStripTIBHits", &iterL3OI_inner_lostStripTIBHits_, "iterL3OI_inner_lostStripTIBHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_lostStripTIDHits", &iterL3OI_inner_lostStripTIDHits_, "iterL3OI_inner_lostStripTIDHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_lostStripTOBHits", &iterL3OI_inner_lostStripTOBHits_, "iterL3OI_inner_lostStripTOBHits[nIterL3OI]/I");
+  ntuple_->Branch("iterL3OI_inner_lostStripTECHits", &iterL3OI_inner_lostStripTECHits_, "iterL3OI_inner_lostStripTECHits[nIterL3OI]/I");
   ntuple_->Branch("iterL3OI_inner_pixelLayers", &iterL3OI_inner_pixelLayers_, "iterL3OI_inner_pixelLayers[nIterL3OI]/I");
   ntuple_->Branch("iterL3OI_inner_pixelHits", &iterL3OI_inner_pixelHits_, "iterL3OI_inner_pixelHits[nIterL3OI]/I");
   ntuple_->Branch("iterL3OI_outer_pt", &iterL3OI_outer_pt_, "iterL3OI_outer_pt[nIterL3OI]/D");
@@ -1010,6 +1081,14 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3IOFromL2_inner_lostTrackerHits", &iterL3IOFromL2_inner_lostTrackerHits_, "iterL3IOFromL2_inner_lostTrackerHits[nIterL3IOFromL2]/I");
   ntuple_->Branch("iterL3IOFromL2_inner_lostTrackerHitsIn", &iterL3IOFromL2_inner_lostTrackerHitsIn_, "iterL3IOFromL2_inner_lostTrackerHitsIn[nIterL3IOFromL2]/I");
   ntuple_->Branch("iterL3IOFromL2_inner_lostTrackerHitsOut", &iterL3IOFromL2_inner_lostTrackerHitsOut_, "iterL3IOFromL2_inner_lostTrackerHitsOut[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_lostPixelHits", &iterL3IOFromL2_inner_lostPixelHits_, "iterL3IOFromL2_inner_lostPixelHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_lostPixelBarrelHits", &iterL3IOFromL2_inner_lostPixelBarrelHits_, "iterL3IOFromL2_inner_lostPixelBarrelHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_lostPixelEndcapHits", &iterL3IOFromL2_inner_lostPixelEndcapHits_, "iterL3IOFromL2_inner_lostPixelEndcapHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_lostStripHits", &iterL3IOFromL2_inner_lostStripHits_, "iterL3IOFromL2_inner_lostStripHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_lostStripTIBHits", &iterL3IOFromL2_inner_lostStripTIBHits_, "iterL3IOFromL2_inner_lostStripTIBHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_lostStripTIDHits", &iterL3IOFromL2_inner_lostStripTIDHits_, "iterL3IOFromL2_inner_lostStripTIDHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_lostStripTOBHits", &iterL3IOFromL2_inner_lostStripTOBHits_, "iterL3IOFromL2_inner_lostStripTOBHits[nIterL3IOFromL2]/I");
+  ntuple_->Branch("iterL3IOFromL2_inner_lostStripTECHits", &iterL3IOFromL2_inner_lostStripTECHits_, "iterL3IOFromL2_inner_lostStripTECHits[nIterL3IOFromL2]/I");
   ntuple_->Branch("iterL3IOFromL2_inner_pixelLayers", &iterL3IOFromL2_inner_pixelLayers_, "iterL3IOFromL2_inner_pixelLayers[nIterL3IOFromL2]/I");
   ntuple_->Branch("iterL3IOFromL2_inner_pixelHits", &iterL3IOFromL2_inner_pixelHits_, "iterL3IOFromL2_inner_pixelHits[nIterL3IOFromL2]/I");
   ntuple_->Branch("iterL3IOFromL2_outer_pt", &iterL3IOFromL2_outer_pt_, "iterL3IOFromL2_outer_pt[nIterL3IOFromL2]/D");
@@ -1037,6 +1116,14 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3FromL2_inner_lostTrackerHits", &iterL3FromL2_inner_lostTrackerHits_, "iterL3FromL2_inner_lostTrackerHits[nIterL3FromL2]/I");
   ntuple_->Branch("iterL3FromL2_inner_lostTrackerHitsIn", &iterL3FromL2_inner_lostTrackerHitsIn_, "iterL3FromL2_inner_lostTrackerHitsIn[nIterL3FromL2]/I");
   ntuple_->Branch("iterL3FromL2_inner_lostTrackerHitsOut", &iterL3FromL2_inner_lostTrackerHitsOut_, "iterL3FromL2_inner_lostTrackerHitsOut[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_lostPixelHits", &iterL3FromL2_inner_lostPixelHits_, "iterL3FromL2_inner_lostPixelHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_lostPixelBarrelHits", &iterL3FromL2_inner_lostPixelBarrelHits_, "iterL3FromL2_inner_lostPixelBarrelHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_lostPixelEndcapHits", &iterL3FromL2_inner_lostPixelEndcapHits_, "iterL3FromL2_inner_lostPixelEndcapHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_lostStripHits", &iterL3FromL2_inner_lostStripHits_, "iterL3FromL2_inner_lostStripHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_lostStripTIBHits", &iterL3FromL2_inner_lostStripTIBHits_, "iterL3FromL2_inner_lostStripTIBHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_lostStripTIDHits", &iterL3FromL2_inner_lostStripTIDHits_, "iterL3FromL2_inner_lostStripTIDHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_lostStripTOBHits", &iterL3FromL2_inner_lostStripTOBHits_, "iterL3FromL2_inner_lostStripTOBHits[nIterL3FromL2]/I");
+  ntuple_->Branch("iterL3FromL2_inner_lostStripTECHits", &iterL3FromL2_inner_lostStripTECHits_, "iterL3FromL2_inner_lostStripTECHits[nIterL3FromL2]/I");
   ntuple_->Branch("iterL3FromL2_inner_pixelLayers", &iterL3FromL2_inner_pixelLayers_, "iterL3FromL2_inner_pixelLayers[nIterL3FromL2]/I");
   ntuple_->Branch("iterL3FromL2_inner_pixelHits", &iterL3FromL2_inner_pixelHits_, "iterL3FromL2_inner_pixelHits[nIterL3FromL2]/I");
   ntuple_->Branch("iterL3FromL2_outer_pt", &iterL3FromL2_outer_pt_, "iterL3FromL2_outer_pt[nIterL3FromL2]/D");
@@ -1065,6 +1152,14 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3IOFromL1_lostTrackerHits", &iterL3IOFromL1_lostTrackerHits_, "iterL3IOFromL1_lostTrackerHits[nIterL3IOFromL1]/I");
   ntuple_->Branch("iterL3IOFromL1_lostTrackerHitsIn", &iterL3IOFromL1_lostTrackerHitsIn_, "iterL3IOFromL1_lostTrackerHitsIn[nIterL3IOFromL1]/I");
   ntuple_->Branch("iterL3IOFromL1_lostTrackerHitsOut", &iterL3IOFromL1_lostTrackerHitsOut_, "iterL3IOFromL1_lostTrackerHitsOut[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_lostPixelHits", &iterL3IOFromL1_lostPixelHits_, "iterL3IOFromL1_lostPixelHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_lostPixelBarrelHits", &iterL3IOFromL1_lostPixelBarrelHits_, "iterL3IOFromL1_lostPixelBarrelHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_lostPixelEndcapHits", &iterL3IOFromL1_lostPixelEndcapHits_, "iterL3IOFromL1_lostPixelEndcapHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_lostStripHits", &iterL3IOFromL1_lostStripHits_, "iterL3IOFromL1_lostStripHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_lostStripTIBHits", &iterL3IOFromL1_lostStripTIBHits_, "iterL3IOFromL1_lostStripTIBHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_lostStripTIDHits", &iterL3IOFromL1_lostStripTIDHits_, "iterL3IOFromL1_lostStripTIDHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_lostStripTOBHits", &iterL3IOFromL1_lostStripTOBHits_, "iterL3IOFromL1_lostStripTOBHits[nIterL3IOFromL1]/I");
+  ntuple_->Branch("iterL3IOFromL1_lostStripTECHits", &iterL3IOFromL1_lostStripTECHits_, "iterL3IOFromL1_lostStripTECHits[nIterL3IOFromL1]/I");
   ntuple_->Branch("iterL3IOFromL1_pixelLayers", &iterL3IOFromL1_pixelLayers_, "iterL3IOFromL1_pixelLayers[nIterL3IOFromL1]/I");
   ntuple_->Branch("iterL3IOFromL1_pixelHits", &iterL3IOFromL1_pixelHits_, "iterL3IOFromL1_pixelHits[nIterL3IOFromL1]/I");
 
@@ -1084,6 +1179,14 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3MuonNoID_inner_lostTrackerHits", &iterL3MuonNoID_inner_lostTrackerHits_, "iterL3MuonNoID_inner_lostTrackerHits[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_inner_lostTrackerHitsIn", &iterL3MuonNoID_inner_lostTrackerHitsIn_, "iterL3MuonNoID_inner_lostTrackerHitsIn[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_inner_lostTrackerHitsOut", &iterL3MuonNoID_inner_lostTrackerHitsOut_, "iterL3MuonNoID_inner_lostTrackerHitsOut[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_lostPixelHits", &iterL3MuonNoID_inner_lostPixelHits_, "iterL3MuonNoID_inner_lostPixelHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_lostPixelBarrelHits", &iterL3MuonNoID_inner_lostPixelBarrelHits_, "iterL3MuonNoID_inner_lostPixelBarrelHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_lostPixelEndcapHits", &iterL3MuonNoID_inner_lostPixelEndcapHits_, "iterL3MuonNoID_inner_lostPixelEndcapHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_lostStripHits", &iterL3MuonNoID_inner_lostStripHits_, "iterL3MuonNoID_inner_lostStripHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_lostStripTIBHits", &iterL3MuonNoID_inner_lostStripTIBHits_, "iterL3MuonNoID_inner_lostStripTIBHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_lostStripTIDHits", &iterL3MuonNoID_inner_lostStripTIDHits_, "iterL3MuonNoID_inner_lostStripTIDHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_lostStripTOBHits", &iterL3MuonNoID_inner_lostStripTOBHits_, "iterL3MuonNoID_inner_lostStripTOBHits[nIterL3MuonNoID]/I");
+  ntuple_->Branch("iterL3MuonNoID_inner_lostStripTECHits", &iterL3MuonNoID_inner_lostStripTECHits_, "iterL3MuonNoID_inner_lostStripTECHits[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_inner_pixelLayers", &iterL3MuonNoID_inner_pixelLayers_, "iterL3MuonNoID_inner_pixelLayers[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_inner_pixelHits", &iterL3MuonNoID_inner_pixelHits_, "iterL3MuonNoID_inner_pixelHits[nIterL3MuonNoID]/I");
   ntuple_->Branch("iterL3MuonNoID_global_muonHits", &iterL3MuonNoID_global_muonHits_, "iterL3MuonNoID_global_muonHits[nIterL3MuonNoID]/I");
@@ -1118,6 +1221,14 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("iterL3Muon_inner_lostTrackerHits", &iterL3Muon_inner_lostTrackerHits_, "iterL3Muon_inner_lostTrackerHits[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_inner_lostTrackerHitsIn", &iterL3Muon_inner_lostTrackerHitsIn_, "iterL3Muon_inner_lostTrackerHitsIn[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_inner_lostTrackerHitsOut", &iterL3Muon_inner_lostTrackerHitsOut_, "iterL3Muon_inner_lostTrackerHitsOut[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_lostPixelHits", &iterL3Muon_inner_lostPixelHits_, "iterL3Muon_inner_lostPixelHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_lostPixelBarrelHits", &iterL3Muon_inner_lostPixelBarrelHits_, "iterL3Muon_inner_lostPixelBarrelHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_lostPixelEndcapHits", &iterL3Muon_inner_lostPixelEndcapHits_, "iterL3Muon_inner_lostPixelEndcapHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_lostStripHits", &iterL3Muon_inner_lostStripHits_, "iterL3Muon_inner_lostStripHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_lostStripTIBHits", &iterL3Muon_inner_lostStripTIBHits_, "iterL3Muon_inner_lostStripTIBHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_lostStripTIDHits", &iterL3Muon_inner_lostStripTIDHits_, "iterL3Muon_inner_lostStripTIDHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_lostStripTOBHits", &iterL3Muon_inner_lostStripTOBHits_, "iterL3Muon_inner_lostStripTOBHits[nIterL3Muon]/I");
+  ntuple_->Branch("iterL3Muon_inner_lostStripTECHits", &iterL3Muon_inner_lostStripTECHits_, "iterL3Muon_inner_lostStripTECHits[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_inner_pixelLayers", &iterL3Muon_inner_pixelLayers_, "iterL3Muon_inner_pixelLayers[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_inner_pixelHits", &iterL3Muon_inner_pixelHits_, "iterL3Muon_inner_pixelHits[nIterL3Muon]/I");
   ntuple_->Branch("iterL3Muon_global_muonHits", &iterL3Muon_global_muonHits_, "iterL3Muon_global_muonHits[nIterL3Muon]/I");
@@ -1228,15 +1339,23 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent, const edm::EventSetup &
           if (innerTrk->dxyError(*bs) > 0.) {
             muon_IPSig_[_nMuon] = abs(innerTrk->dxy(bs->position()) / innerTrk->dxyError(*bs));
           }
-          muon_inner_trkChi2_[_nMuon]            = innerTrk->normalizedChi2();
-          muon_inner_validFraction_[_nMuon]      = innerTrk->validFraction();
-          muon_inner_trackerLayers_[_nMuon]      = innerTrk->hitPattern().trackerLayersWithMeasurement();
-          muon_inner_trackerHits_[_nMuon]        = innerTrk->hitPattern().numberOfValidTrackerHits();
-          muon_inner_lostTrackerHits_[_nMuon]    = innerTrk->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
-          muon_inner_lostTrackerHitsIn_[_nMuon]  = innerTrk->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
-          muon_inner_lostTrackerHitsOut_[_nMuon] = innerTrk->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
-          muon_inner_pixelLayers_[_nMuon]        = innerTrk->hitPattern().pixelLayersWithMeasurement();
-          muon_inner_pixelHits_[_nMuon]          = innerTrk->hitPattern().numberOfValidPixelHits();
+          muon_inner_trkChi2_[_nMuon]             = innerTrk->normalizedChi2();
+          muon_inner_validFraction_[_nMuon]       = innerTrk->validFraction();
+          muon_inner_trackerLayers_[_nMuon]       = innerTrk->hitPattern().trackerLayersWithMeasurement();
+          muon_inner_trackerHits_[_nMuon]         = innerTrk->hitPattern().numberOfValidTrackerHits();
+          muon_inner_lostTrackerHits_[_nMuon]     = innerTrk->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
+          muon_inner_lostTrackerHitsIn_[_nMuon]   = innerTrk->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
+          muon_inner_lostTrackerHitsOut_[_nMuon]  = innerTrk->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
+          muon_inner_lostPixelHits_[_nMuon]       = innerTrk->hitPattern().numberOfLostPixelHits(HitPattern::TRACK_HITS);
+          muon_inner_lostPixelBarrelHits_[_nMuon] = innerTrk->hitPattern().numberOfLostPixelBarrelHits(HitPattern::TRACK_HITS);
+          muon_inner_lostPixelEndcapHits_[_nMuon] = innerTrk->hitPattern().numberOfLostPixelEndcapHits(HitPattern::TRACK_HITS);
+          muon_inner_lostStripHits_[_nMuon]       = innerTrk->hitPattern().numberOfLostStripHits(HitPattern::TRACK_HITS);
+          muon_inner_lostStripTIBHits_[_nMuon]    = innerTrk->hitPattern().numberOfLostStripTIBHits(HitPattern::TRACK_HITS);
+          muon_inner_lostStripTIDHits_[_nMuon]    = innerTrk->hitPattern().numberOfLostStripTIDHits(HitPattern::TRACK_HITS);
+          muon_inner_lostStripTOBHits_[_nMuon]    = innerTrk->hitPattern().numberOfLostStripTOBHits(HitPattern::TRACK_HITS);
+          muon_inner_lostStripTECHits_[_nMuon]    = innerTrk->hitPattern().numberOfLostStripTECHits(HitPattern::TRACK_HITS);
+          muon_inner_pixelLayers_[_nMuon]         = innerTrk->hitPattern().pixelLayersWithMeasurement();
+          muon_inner_pixelHits_[_nMuon]           = innerTrk->hitPattern().numberOfValidPixelHits();
         }
 
       reco::TrackRef globalTrk = mu->globalTrack();
@@ -1691,19 +1810,27 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
     {
       if( h_iterL3OI->at(i).trackerTrack().isNonnull() )
       {
-        iterL3OI_inner_pt_[_nIterL3OI]                 = h_iterL3OI->at(i).trackerTrack()->pt();
-        iterL3OI_inner_eta_[_nIterL3OI]                = h_iterL3OI->at(i).trackerTrack()->eta();
-        iterL3OI_inner_phi_[_nIterL3OI]                = h_iterL3OI->at(i).trackerTrack()->phi();
-        iterL3OI_inner_charge_[_nIterL3OI]             = h_iterL3OI->at(i).trackerTrack()->charge();
-        iterL3OI_inner_trkChi2_[_nIterL3OI]            = h_iterL3OI->at(i).trackerTrack()->normalizedChi2();
-        iterL3OI_inner_validFraction_[_nIterL3OI]      = h_iterL3OI->at(i).trackerTrack()->validFraction();
-        iterL3OI_inner_trackerLayers_[_nIterL3OI]      = h_iterL3OI->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
-        iterL3OI_inner_trackerHits_[_nIterL3OI]        = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
-        iterL3OI_inner_lostTrackerHits_[_nIterL3OI]    = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
-        iterL3OI_inner_lostTrackerHitsIn_[_nIterL3OI]  = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
-        iterL3OI_inner_lostTrackerHitsOut_[_nIterL3OI] = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
-        iterL3OI_inner_pixelLayers_[_nIterL3OI]        = h_iterL3OI->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
-        iterL3OI_inner_pixelHits_[_nIterL3OI]          = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
+        iterL3OI_inner_pt_[_nIterL3OI]                  = h_iterL3OI->at(i).trackerTrack()->pt();
+        iterL3OI_inner_eta_[_nIterL3OI]                 = h_iterL3OI->at(i).trackerTrack()->eta();
+        iterL3OI_inner_phi_[_nIterL3OI]                 = h_iterL3OI->at(i).trackerTrack()->phi();
+        iterL3OI_inner_charge_[_nIterL3OI]              = h_iterL3OI->at(i).trackerTrack()->charge();
+        iterL3OI_inner_trkChi2_[_nIterL3OI]             = h_iterL3OI->at(i).trackerTrack()->normalizedChi2();
+        iterL3OI_inner_validFraction_[_nIterL3OI]       = h_iterL3OI->at(i).trackerTrack()->validFraction();
+        iterL3OI_inner_trackerLayers_[_nIterL3OI]       = h_iterL3OI->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3OI_inner_trackerHits_[_nIterL3OI]         = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3OI_inner_lostTrackerHits_[_nIterL3OI]     = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_lostTrackerHitsIn_[_nIterL3OI]   = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
+        iterL3OI_inner_lostTrackerHitsOut_[_nIterL3OI]  = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
+        iterL3OI_inner_lostPixelHits_[_nIterL3OI]       = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostPixelHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_lostPixelBarrelHits_[_nIterL3OI] = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostPixelBarrelHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_lostPixelEndcapHits_[_nIterL3OI] = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostPixelEndcapHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_lostStripHits_[_nIterL3OI]       = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostStripHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_lostStripTIBHits_[_nIterL3OI]    = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostStripTIBHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_lostStripTIDHits_[_nIterL3OI]    = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostStripTIDHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_lostStripTOBHits_[_nIterL3OI]    = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostStripTOBHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_lostStripTECHits_[_nIterL3OI]    = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfLostStripTECHits(HitPattern::TRACK_HITS);
+        iterL3OI_inner_pixelLayers_[_nIterL3OI]         = h_iterL3OI->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3OI_inner_pixelHits_[_nIterL3OI]           = h_iterL3OI->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
       }
       if( h_iterL3OI->at(i).standAloneTrack().isNonnull() )
       {
@@ -1745,19 +1872,27 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
     {
       if( h_iterL3IOFromL2->at(i).trackerTrack().isNonnull() )
       {
-        iterL3IOFromL2_inner_pt_[_nIterL3IOFromL2]                 = h_iterL3IOFromL2->at(i).trackerTrack()->pt();
-        iterL3IOFromL2_inner_eta_[_nIterL3IOFromL2]                = h_iterL3IOFromL2->at(i).trackerTrack()->eta();
-        iterL3IOFromL2_inner_phi_[_nIterL3IOFromL2]                = h_iterL3IOFromL2->at(i).trackerTrack()->phi();
-        iterL3IOFromL2_inner_charge_[_nIterL3IOFromL2]             = h_iterL3IOFromL2->at(i).trackerTrack()->charge();
-        iterL3IOFromL2_inner_trkChi2_[_nIterL3IOFromL2]            = h_iterL3IOFromL2->at(i).trackerTrack()->normalizedChi2();
-        iterL3IOFromL2_inner_validFraction_[_nIterL3IOFromL2]      = h_iterL3IOFromL2->at(i).trackerTrack()->validFraction();
-        iterL3IOFromL2_inner_trackerLayers_[_nIterL3IOFromL2]      = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
-        iterL3IOFromL2_inner_trackerHits_[_nIterL3IOFromL2]        = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
-        iterL3IOFromL2_inner_lostTrackerHits_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
-        iterL3IOFromL2_inner_lostTrackerHitsIn_[_nIterL3IOFromL2]  = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
-        iterL3IOFromL2_inner_lostTrackerHitsOut_[_nIterL3IOFromL2] = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
-        iterL3IOFromL2_inner_pixelLayers_[_nIterL3IOFromL2]        = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
-        iterL3IOFromL2_inner_pixelHits_[_nIterL3IOFromL2]          = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
+        iterL3IOFromL2_inner_pt_[_nIterL3IOFromL2]                  = h_iterL3IOFromL2->at(i).trackerTrack()->pt();
+        iterL3IOFromL2_inner_eta_[_nIterL3IOFromL2]                 = h_iterL3IOFromL2->at(i).trackerTrack()->eta();
+        iterL3IOFromL2_inner_phi_[_nIterL3IOFromL2]                 = h_iterL3IOFromL2->at(i).trackerTrack()->phi();
+        iterL3IOFromL2_inner_charge_[_nIterL3IOFromL2]              = h_iterL3IOFromL2->at(i).trackerTrack()->charge();
+        iterL3IOFromL2_inner_trkChi2_[_nIterL3IOFromL2]             = h_iterL3IOFromL2->at(i).trackerTrack()->normalizedChi2();
+        iterL3IOFromL2_inner_validFraction_[_nIterL3IOFromL2]       = h_iterL3IOFromL2->at(i).trackerTrack()->validFraction();
+        iterL3IOFromL2_inner_trackerLayers_[_nIterL3IOFromL2]       = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3IOFromL2_inner_trackerHits_[_nIterL3IOFromL2]         = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3IOFromL2_inner_lostTrackerHits_[_nIterL3IOFromL2]     = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_lostTrackerHitsIn_[_nIterL3IOFromL2]   = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
+        iterL3IOFromL2_inner_lostTrackerHitsOut_[_nIterL3IOFromL2]  = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
+        iterL3IOFromL2_inner_lostPixelHits_[_nIterL3IOFromL2]       = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostPixelHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_lostPixelBarrelHits_[_nIterL3IOFromL2] = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostPixelBarrelHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_lostPixelEndcapHits_[_nIterL3IOFromL2] = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostPixelEndcapHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_lostStripHits_[_nIterL3IOFromL2]       = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_lostStripTIBHits_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripTIBHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_lostStripTIDHits_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripTIDHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_lostStripTOBHits_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripTOBHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_lostStripTECHits_[_nIterL3IOFromL2]    = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripTECHits(HitPattern::TRACK_HITS);
+        iterL3IOFromL2_inner_pixelLayers_[_nIterL3IOFromL2]         = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3IOFromL2_inner_pixelHits_[_nIterL3IOFromL2]           = h_iterL3IOFromL2->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
       }
       if( h_iterL3IOFromL2->at(i).standAloneTrack().isNonnull() )
       {
@@ -1793,19 +1928,27 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
     {
       if( h_iterL3FromL2->at(i).trackerTrack().isNonnull() )
       {
-        iterL3FromL2_inner_pt_[_nIterL3FromL2]                 = h_iterL3FromL2->at(i).trackerTrack()->pt();
-        iterL3FromL2_inner_eta_[_nIterL3FromL2]                = h_iterL3FromL2->at(i).trackerTrack()->eta();
-        iterL3FromL2_inner_phi_[_nIterL3FromL2]                = h_iterL3FromL2->at(i).trackerTrack()->phi();
-        iterL3FromL2_inner_charge_[_nIterL3FromL2]             = h_iterL3FromL2->at(i).trackerTrack()->charge();
-        iterL3FromL2_inner_trkChi2_[_nIterL3FromL2]            = h_iterL3FromL2->at(i).trackerTrack()->normalizedChi2();
-        iterL3FromL2_inner_validFraction_[_nIterL3FromL2]      = h_iterL3FromL2->at(i).trackerTrack()->validFraction();
-        iterL3FromL2_inner_trackerLayers_[_nIterL3FromL2]      = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
-        iterL3FromL2_inner_trackerHits_[_nIterL3FromL2]        = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
-        iterL3FromL2_inner_lostTrackerHits_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
-        iterL3FromL2_inner_lostTrackerHitsIn_[_nIterL3FromL2]  = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
-        iterL3FromL2_inner_lostTrackerHitsOut_[_nIterL3FromL2] = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
-        iterL3FromL2_inner_pixelLayers_[_nIterL3FromL2]        = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
-        iterL3FromL2_inner_pixelHits_[_nIterL3FromL2]          = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
+        iterL3FromL2_inner_pt_[_nIterL3FromL2]                  = h_iterL3FromL2->at(i).trackerTrack()->pt();
+        iterL3FromL2_inner_eta_[_nIterL3FromL2]                 = h_iterL3FromL2->at(i).trackerTrack()->eta();
+        iterL3FromL2_inner_phi_[_nIterL3FromL2]                 = h_iterL3FromL2->at(i).trackerTrack()->phi();
+        iterL3FromL2_inner_charge_[_nIterL3FromL2]              = h_iterL3FromL2->at(i).trackerTrack()->charge();
+        iterL3FromL2_inner_trkChi2_[_nIterL3FromL2]             = h_iterL3FromL2->at(i).trackerTrack()->normalizedChi2();
+        iterL3FromL2_inner_validFraction_[_nIterL3FromL2]       = h_iterL3FromL2->at(i).trackerTrack()->validFraction();
+        iterL3FromL2_inner_trackerLayers_[_nIterL3FromL2]       = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3FromL2_inner_trackerHits_[_nIterL3FromL2]         = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3FromL2_inner_lostTrackerHits_[_nIterL3FromL2]     = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_lostTrackerHitsIn_[_nIterL3FromL2]   = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
+        iterL3FromL2_inner_lostTrackerHitsOut_[_nIterL3FromL2]  = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
+        iterL3FromL2_inner_lostPixelHits_[_nIterL3FromL2]       = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostPixelHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_lostPixelBarrelHits_[_nIterL3FromL2] = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostPixelBarrelHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_lostPixelEndcapHits_[_nIterL3FromL2] = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostPixelEndcapHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_lostStripHits_[_nIterL3FromL2]       = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_lostStripTIBHits_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripTIBHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_lostStripTIDHits_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripTIDHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_lostStripTOBHits_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripTOBHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_lostStripTECHits_[_nIterL3FromL2]    = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfLostStripTECHits(HitPattern::TRACK_HITS);
+        iterL3FromL2_inner_pixelLayers_[_nIterL3FromL2]         = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3FromL2_inner_pixelHits_[_nIterL3FromL2]           = h_iterL3FromL2->at(i).trackerTrack()->hitPattern().numberOfValidPixelHits();
       }
       if( h_iterL3FromL2->at(i).standAloneTrack().isNonnull() )
       {
@@ -1839,20 +1982,28 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
     int _nIterL3IOFromL1 = 0;
     for( unsigned int i=0; i<h_iterL3IOFromL1->size(); i++)
     {
-      iterL3IOFromL1_pt_[_nIterL3IOFromL1]                 = h_iterL3IOFromL1->at(i).pt();
-      iterL3IOFromL1_eta_[_nIterL3IOFromL1]                = h_iterL3IOFromL1->at(i).eta();
-      iterL3IOFromL1_phi_[_nIterL3IOFromL1]                = h_iterL3IOFromL1->at(i).phi();
-      iterL3IOFromL1_charge_[_nIterL3IOFromL1]             = h_iterL3IOFromL1->at(i).charge();
-      iterL3IOFromL1_muonHits_[_nIterL3IOFromL1]           = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidMuonHits();
-      iterL3IOFromL1_trkChi2_[_nIterL3IOFromL1]            = h_iterL3IOFromL1->at(i).normalizedChi2();
-      iterL3IOFromL1_validFraction_[_nIterL3IOFromL1]      = h_iterL3IOFromL1->at(i).validFraction();
-      iterL3IOFromL1_trackerLayers_[_nIterL3IOFromL1]      = h_iterL3IOFromL1->at(i).hitPattern().trackerLayersWithMeasurement();
-      iterL3IOFromL1_trackerHits_[_nIterL3IOFromL1]        = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidTrackerHits();
-      iterL3IOFromL1_lostTrackerHits_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
-      iterL3IOFromL1_lostTrackerHitsIn_[_nIterL3IOFromL1]  = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
-      iterL3IOFromL1_lostTrackerHitsOut_[_nIterL3IOFromL1] = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
-      iterL3IOFromL1_pixelLayers_[_nIterL3IOFromL1]        = h_iterL3IOFromL1->at(i).hitPattern().pixelLayersWithMeasurement();
-      iterL3IOFromL1_pixelHits_[_nIterL3IOFromL1]          = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidPixelHits();
+      iterL3IOFromL1_pt_[_nIterL3IOFromL1]                  = h_iterL3IOFromL1->at(i).pt();
+      iterL3IOFromL1_eta_[_nIterL3IOFromL1]                 = h_iterL3IOFromL1->at(i).eta();
+      iterL3IOFromL1_phi_[_nIterL3IOFromL1]                 = h_iterL3IOFromL1->at(i).phi();
+      iterL3IOFromL1_charge_[_nIterL3IOFromL1]              = h_iterL3IOFromL1->at(i).charge();
+      iterL3IOFromL1_muonHits_[_nIterL3IOFromL1]            = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidMuonHits();
+      iterL3IOFromL1_trkChi2_[_nIterL3IOFromL1]             = h_iterL3IOFromL1->at(i).normalizedChi2();
+      iterL3IOFromL1_validFraction_[_nIterL3IOFromL1]       = h_iterL3IOFromL1->at(i).validFraction();
+      iterL3IOFromL1_trackerLayers_[_nIterL3IOFromL1]       = h_iterL3IOFromL1->at(i).hitPattern().trackerLayersWithMeasurement();
+      iterL3IOFromL1_trackerHits_[_nIterL3IOFromL1]         = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidTrackerHits();
+      iterL3IOFromL1_lostTrackerHits_[_nIterL3IOFromL1]     = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_lostTrackerHitsIn_[_nIterL3IOFromL1]   = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
+      iterL3IOFromL1_lostTrackerHitsOut_[_nIterL3IOFromL1]  = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
+      iterL3IOFromL1_lostPixelHits_[_nIterL3IOFromL1]       = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostPixelHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_lostPixelBarrelHits_[_nIterL3IOFromL1] = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostPixelBarrelHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_lostPixelEndcapHits_[_nIterL3IOFromL1] = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostPixelEndcapHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_lostStripHits_[_nIterL3IOFromL1]       = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostStripHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_lostStripTIBHits_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostStripTIBHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_lostStripTIDHits_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostStripTIDHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_lostStripTOBHits_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostStripTOBHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_lostStripTECHits_[_nIterL3IOFromL1]    = h_iterL3IOFromL1->at(i).hitPattern().numberOfLostStripTECHits(HitPattern::TRACK_HITS);
+      iterL3IOFromL1_pixelLayers_[_nIterL3IOFromL1]         = h_iterL3IOFromL1->at(i).hitPattern().pixelLayersWithMeasurement();
+      iterL3IOFromL1_pixelHits_[_nIterL3IOFromL1]           = h_iterL3IOFromL1->at(i).hitPattern().numberOfValidPixelHits();
       _nIterL3IOFromL1++;
     }
     nIterL3IOFromL1_ = _nIterL3IOFromL1;
@@ -1878,15 +2029,23 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
 
       if( mu->innerTrack().isNonnull() )
       {
-        iterL3MuonNoID_inner_trkChi2_[_nIterL3MuonNoID]            = mu->innerTrack()->normalizedChi2();
-        iterL3MuonNoID_inner_validFraction_[_nIterL3MuonNoID]      = mu->innerTrack()->validFraction();
-        iterL3MuonNoID_inner_trackerLayers_[_nIterL3MuonNoID]      = mu->innerTrack()->hitPattern().trackerLayersWithMeasurement();
-        iterL3MuonNoID_inner_trackerHits_[_nIterL3MuonNoID]        = mu->innerTrack()->hitPattern().numberOfValidTrackerHits();
-        iterL3MuonNoID_inner_lostTrackerHits_[_nIterL3MuonNoID]    = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
-        iterL3MuonNoID_inner_lostTrackerHitsIn_[_nIterL3MuonNoID]  = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
-        iterL3MuonNoID_inner_lostTrackerHitsOut_[_nIterL3MuonNoID] = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
-        iterL3MuonNoID_inner_pixelLayers_[_nIterL3MuonNoID]        = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement();
-        iterL3MuonNoID_inner_pixelHits_[_nIterL3MuonNoID]          = mu->innerTrack()->hitPattern().numberOfValidPixelHits();
+        iterL3MuonNoID_inner_trkChi2_[_nIterL3MuonNoID]             = mu->innerTrack()->normalizedChi2();
+        iterL3MuonNoID_inner_validFraction_[_nIterL3MuonNoID]       = mu->innerTrack()->validFraction();
+        iterL3MuonNoID_inner_trackerLayers_[_nIterL3MuonNoID]       = mu->innerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3MuonNoID_inner_trackerHits_[_nIterL3MuonNoID]         = mu->innerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3MuonNoID_inner_lostTrackerHits_[_nIterL3MuonNoID]     = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_lostTrackerHitsIn_[_nIterL3MuonNoID]   = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
+        iterL3MuonNoID_inner_lostTrackerHitsOut_[_nIterL3MuonNoID]  = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
+        iterL3MuonNoID_inner_lostPixelHits_[_nIterL3MuonNoID]       = mu->innerTrack()->hitPattern().numberOfLostPixelHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_lostPixelBarrelHits_[_nIterL3MuonNoID] = mu->innerTrack()->hitPattern().numberOfLostPixelBarrelHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_lostPixelEndcapHits_[_nIterL3MuonNoID] = mu->innerTrack()->hitPattern().numberOfLostPixelEndcapHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_lostStripHits_[_nIterL3MuonNoID]       = mu->innerTrack()->hitPattern().numberOfLostStripHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_lostStripTIBHits_[_nIterL3MuonNoID]    = mu->innerTrack()->hitPattern().numberOfLostStripTIBHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_lostStripTIDHits_[_nIterL3MuonNoID]    = mu->innerTrack()->hitPattern().numberOfLostStripTIDHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_lostStripTOBHits_[_nIterL3MuonNoID]    = mu->innerTrack()->hitPattern().numberOfLostStripTOBHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_lostStripTECHits_[_nIterL3MuonNoID]    = mu->innerTrack()->hitPattern().numberOfLostStripTECHits(HitPattern::TRACK_HITS);
+        iterL3MuonNoID_inner_pixelLayers_[_nIterL3MuonNoID]         = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3MuonNoID_inner_pixelHits_[_nIterL3MuonNoID]           = mu->innerTrack()->hitPattern().numberOfValidPixelHits();
       }
       if( mu->globalTrack().isNonnull() )
       {
@@ -1945,15 +2104,23 @@ void MuonHLTNtupler::Fill_IterL3(const edm::Event &iEvent, const edm::EventSetup
 
       if( mu->innerTrack().isNonnull() )
       {
-        iterL3Muon_inner_trkChi2_[_nIterL3Muon]            = mu->innerTrack()->normalizedChi2();
-        iterL3Muon_inner_validFraction_[_nIterL3Muon]      = mu->innerTrack()->validFraction();
-        iterL3Muon_inner_trackerLayers_[_nIterL3Muon]      = mu->innerTrack()->hitPattern().trackerLayersWithMeasurement();
-        iterL3Muon_inner_trackerHits_[_nIterL3Muon]        = mu->innerTrack()->hitPattern().numberOfValidTrackerHits();
-        iterL3Muon_inner_lostTrackerHits_[_nIterL3Muon]    = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
-        iterL3Muon_inner_lostTrackerHitsIn_[_nIterL3Muon]  = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
-        iterL3Muon_inner_lostTrackerHitsOut_[_nIterL3Muon] = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
-        iterL3Muon_inner_pixelLayers_[_nIterL3Muon]        = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement();
-        iterL3Muon_inner_pixelHits_[_nIterL3Muon]          = mu->innerTrack()->hitPattern().numberOfValidPixelHits();
+        iterL3Muon_inner_trkChi2_[_nIterL3Muon]             = mu->innerTrack()->normalizedChi2();
+        iterL3Muon_inner_validFraction_[_nIterL3Muon]       = mu->innerTrack()->validFraction();
+        iterL3Muon_inner_trackerLayers_[_nIterL3Muon]       = mu->innerTrack()->hitPattern().trackerLayersWithMeasurement();
+        iterL3Muon_inner_trackerHits_[_nIterL3Muon]         = mu->innerTrack()->hitPattern().numberOfValidTrackerHits();
+        iterL3Muon_inner_lostTrackerHits_[_nIterL3Muon]     = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_lostTrackerHitsIn_[_nIterL3Muon]   = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_INNER_HITS);
+        iterL3Muon_inner_lostTrackerHitsOut_[_nIterL3Muon]  = mu->innerTrack()->hitPattern().numberOfLostTrackerHits(HitPattern::MISSING_OUTER_HITS);
+        iterL3Muon_inner_lostPixelHits_[_nIterL3Muon]       = mu->innerTrack()->hitPattern().numberOfLostPixelHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_lostPixelBarrelHits_[_nIterL3Muon] = mu->innerTrack()->hitPattern().numberOfLostPixelBarrelHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_lostPixelEndcapHits_[_nIterL3Muon] = mu->innerTrack()->hitPattern().numberOfLostPixelEndcapHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_lostStripHits_[_nIterL3Muon]       = mu->innerTrack()->hitPattern().numberOfLostStripHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_lostStripTIBHits_[_nIterL3Muon]    = mu->innerTrack()->hitPattern().numberOfLostStripTIBHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_lostStripTIDHits_[_nIterL3Muon]    = mu->innerTrack()->hitPattern().numberOfLostStripTIDHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_lostStripTOBHits_[_nIterL3Muon]    = mu->innerTrack()->hitPattern().numberOfLostStripTOBHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_lostStripTECHits_[_nIterL3Muon]    = mu->innerTrack()->hitPattern().numberOfLostStripTECHits(HitPattern::TRACK_HITS);
+        iterL3Muon_inner_pixelLayers_[_nIterL3Muon]         = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement();
+        iterL3Muon_inner_pixelHits_[_nIterL3Muon]           = mu->innerTrack()->hitPattern().numberOfValidPixelHits();
       }
       if( mu->globalTrack().isNonnull() )
       {
