@@ -30,15 +30,12 @@ config.Data.allowNonValidInputDataset = True
 
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 12    # 2(DY) # 12(Data)
+config.Data.unitsPerJob = 20    # 2(DY) # 20(Data)
 #config.Data.totalUnits = 800 # 800(DY)                                                                                                     ## Only MC
-#config.Data.lumiMask = 'Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON_Last5invfb.txt'                       ## Only Data
+#config.Data.lumiMask = 'Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON_Last5invfb.txt'                        ## Only Data
 #config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions22/Cert_Collisions2022_355100_362760_Golden.json'   ## Only Data
+config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json'   ## Only Data
 
-config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions23/Cert_Collisions2023_366442_370092_Golden.json'   ## Only Data
-
-config.JobType.maxMemoryMB = 4000
-config.JobType.maxJobRuntimeMin = 2700
 config.Data.outLFNDirBase = '%(mainOutputDir)s'
 config.Data.publication = False
 config.Site.storageSite = 'T2_CH_CERN'
@@ -50,8 +47,8 @@ config.Site.storageSite = 'T2_CH_CERN'
         #("DYToLL_M50_126X", "/DYTo2L_MLL-50_TuneCP5_13p6TeV_pythia8/Run3Winter23Reco-KeepSi_RnD_126X_mcRun3_2023_forPU65_v1-v2/AODSIM"),
         #("Zprime_126X", "/ZprimeToMuMu_M-6000_TuneCP5_13p6TeV_pythia8/Run3Winter23Reco-KeepSi_126X_mcRun3_2023_forPU65_v1-v2/AODSIM"),
 
-        #("Muon0_Run2023B", "/Muon0/Run2023B-ZMu-PromptReco-v1/RAW-RECO"),
-        #("Muon1_Run2023B", "/Muon1/Run2023B-ZMu-PromptReco-v1/RAW-RECO"),
+        ("Muon0_Run2023B", "/Muon0/Run2023B-ZMu-PromptReco-v1/RAW-RECO"),
+        ("Muon1_Run2023B", "/Muon1/Run2023B-ZMu-PromptReco-v1/RAW-RECO"),
         ("Muon0_Run2023C", "/Muon0/Run2023C-ZMu-PromptReco-v1/RAW-RECO"),
         ("Muon1_Run2023C", "/Muon1/Run2023C-ZMu-PromptReco-v1/RAW-RECO"),
         ("Muon0_Run2023Cv2", "/Muon0/Run2023C-ZMu-PromptReco-v2/RAW-RECO"),
@@ -60,8 +57,8 @@ config.Site.storageSite = 'T2_CH_CERN'
         ("Muon1_Run2023Cv3", "/Muon1/Run2023C-ZMu-PromptReco-v3/RAW-RECO"),
         ("Muon0_Run2023Cv4", "/Muon0/Run2023C-ZMu-PromptReco-v4/RAW-RECO"),
         ("Muon1_Run2023Cv4", "/Muon1/Run2023C-ZMu-PromptReco-v4/RAW-RECO"),
-        ("Muon0_Run2023D", "/Muon0/Run2023D-ZMu-PromptReco-v1/RAW-RECO"),
-        ("Muon1_Run2023D", "/Muon1/Run2023D-ZMu-PromptReco-v1/RAW-RECO"),
+        ("Muon0_Run2023Dv1", "/Muon0/Run2023D-ZMu-PromptReco-v1/RAW-RECO"),
+        ("Muon1_Run2023Dv1", "/Muon1/Run2023D-ZMu-PromptReco-v1/RAW-RECO"),
         ("Muon0_Run2023Dv2", "/Muon0/Run2023D-ZMu-PromptReco-v2/RAW-RECO"),
         ("Muon1_Run2023Dv2", "/Muon1/Run2023D-ZMu-PromptReco-v2/RAW-RECO"),
 
@@ -80,9 +77,7 @@ config.Site.storageSite = 'T2_CH_CERN'
 
     HLT_menus = [
         #"hlt_muon_mc_Run3.py",
-        #"hlt_muon_data.py",
-        "hlt_muon_data_old_align.py",
-        #"hlt_muon_data_FullL1.py",
+        "hlt_muon_data.py",
      ]
 
     # proxy = '"/tmp/x509up_u95096"'

@@ -8258,7 +8258,7 @@ process.hltIterL3MuonsNoID = cms.EDProducer( "MuonIdProducer",
     fillShowerDigis = cms.bool( False ),
     ptThresholdToFillCandidateP4WithGlobalFit = cms.double( 200.0 ),
     sigmaThresholdToFillCandidateP4WithGlobalFit = cms.double( 2.0 ),
-    fillGlobalTrackQuality = cms.bool( False ),
+    fillGlobalTrackQuality = cms.bool( True ),
     globalTrackQualityInputTag = cms.InputTag( "glbTrackQual" ),
     selectHighPurity = cms.bool( False ),
     pvInputTag = cms.InputTag( "offlinePrimaryVertices" ),
@@ -11822,6 +11822,18 @@ process.ntupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hlt
 #    process.HLTIterL3IOmuonTkCandidateSequence +
 #    process.hltIterL3MuonsFromL2LinksCombination
 #)
+
+from RecoMuon.GlobalTrackingTools.GlobalTrackQuality_cfi import glbTrackQual as _glbTrackQual
+process.glbTrackQual = _glbTrackQual.clone()
+#process.glbTrackQual.RefitterParameters = process.hltIterL3GlbMuon.L3TrajBuilderParameters.GlbRefitterParameters
+#process.glbTrackQual.GlobalMuonTrackMatcher = process.hltIterL3GlbMuon.L3TrajBuilderParameters.GlobalMuonTrackMatcher
+process.glbTrackQual.InputCollection = cms.InputTag("hltIterL3GlbMuon")
+process.glbTrackQual.InputLinksCollection = cms.InputTag("hltIterL3GlbMuon")
+process.glbTrackQual.RefitterParameters.Fitter = cms.string("hltESPL3MuKFTrajectoryFitter")
+process.glbTrackQual.RefitterParameters.TrackerRecHitBuilder = cms.string( "hltESPTTRHBWithTrackAngle" )
+process.glbTrackQual.RefitterParameters.MuonRecHitBuilder = cms.string( "hltESPMuonTransientTrackingRecHitBuilder" )
+
+process.HLTL3muonrecoNocandSequence = cms.Sequence( process.HLTIterL3muonTkCandidateSequence + process.hltIterL3MuonMerged + process.hltIterL3MuonAndMuonFromL1Merged + process.hltIterL3GlbMuon + process.glbTrackQual + process.hltIterL3MuonsNoID + process.hltIterL3Muons + process.hltL3MuonsIterL3Links + process.hltIterL3MuonTracks )
 
 process.HLT_IsoMu24_v17 = cms.Path(
     process.HLTBeginSequence +
